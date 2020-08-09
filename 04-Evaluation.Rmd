@@ -1,0 +1,165 @@
+---
+title: "Forecasting for Economics and Business"
+subtitle: "Lecture 4: Forecast Accuracy"
+author: "David Ubilava"
+date: "`r format(Sys.time(), '%B %Y')`"
+output:
+  xaringan::moon_reader:
+    css: [default, metropolis, metropolis-fonts, style.css]
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      countIncrementalSlides: false
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, fig.width = 11, fig.height = 7)
+```
+
+
+
+```{r echo=FALSE, include=FALSE, message=FALSE}
+library(ggplot2)
+```
+
+# Simple Forecasting Methods
+
+Recall that any guess may serve as a forecast, but an 'educated' guess is likely to be a better one.	We will now consider several simple methods for making an educated guess.
+
+---
+
+# Simple Forecasting Methods
+
+The *average method* assumes that all future values of a given variable are equal to the mean of their historically observed values: $$E(y_{T+h}|\Omega_T) \equiv y_{T+h|T} = T^{-1}\sum_{t=1}^{T}y_t,\;~~\forall\;h=1,2,\ldots$$
+
+The *naive method* assumes that all future values of a given variable are equal to its most recent realization: $$E(y_{T+h}|\Omega_T) \equiv y_{T+h|T} = y_T,\;~~\forall\;h=1,2,\ldots$$
+
+---
+
+# Simple Forecasting Methods
+
+This method is derived from a *random walk* model, which assumes that the future is the present plus an unpredictable disturbance: $$y_{t} = y_{t-1}+\varepsilon_{t},\;~~\varepsilon_{t}\sim iid(0,\sigma^2)$$
+
+---
+
+# Simple Forecasting Methods
+
+Alternatively, we an assume that the series are a random walk around a linear trend (i.e., the future is the present plus the 'known' drift plus an unpredictable disturbance): $$y_t = y_{t-1}+\delta+\varepsilon_t,\;~~\varepsilon_t\sim iid(0,\sigma^2),$$ where $$\delta = E(\Delta y_t) = \frac{1}{T-1}\sum_{t=2}^{T}\Delta y_t = \frac{y_T - y_1}{T-1}$$
+
+It then follows that: $$E(y_{T+h}|\Omega_T) \equiv y_{T+h|T} = y_T + h \delta = y_T + \frac{h(y_T - y_1)}{T-1}$$
+
+---
+
+# Simple Forecasting Methods
+
+The average and naive forecasting methods can be seen as the two extreme cases of what is known as the *simple exponential smoothing* (SES). SES offers something 'in-between' of the aforementioned two methods. That is, larger weights are assigned to more recent observations, and the weights decrease exponentially (hence the name) as the lags increase.
+
+---
+
+
+# Simple Forecasting Methods
+
+A one-step-ahead forecast from SES is given by: $$y_{T+1|T} = \alpha y_{T} + (1-\alpha)y_{T|T-1},$$ where $0 \leq \alpha \leq 1$ is a smoothing parameter. Substitute recursively to obtain: $$y_{T+1|T} = \sum_{i=0}^{T-1}\alpha\left(1-\alpha\right)^{i}y_{T-i} + (1-\alpha)^T y_{1|0}$$ In practice, $y_{1|0}$ is often simply set to $y_1$.
+
+---
+
+
+# Simple Forecasting Methods
+
+A forecast for horizon $h$ at time $T$ is equal to a weighted average of the most recent realization of the random variable and its forecast:
+$$y_{T+h|T} = \alpha y_{T} + (1-\alpha)y_{T|T-1},\;~~\forall\;h=1,2,\ldots$$ That is, SES also has a 'flat' multi-step forecast function (which is intuitive, as both the average and naive methods also have 'flat' multi-step forecast functions).
+
+---
+
+
+# Measures of Forecast Accuracy
+
+The most commonly applied accuracy measures are the mean absolute forecast error (MAFE) and the root mean squared forecast error (RMSFE):
+$$\begin{aligned}
+\text{MAFE}  = & \frac{1}{P}\sum_{i=1}^{P}|e_i|\\
+\text{RMSFE} = & \sqrt{\frac{1}{P}\sum_{i=1}^{P}e_i^2}
+\end{aligned}$$
+where $P$ is the total number of out-of-sample forecasts.
+
+Note, similar measures can be calculated for an in-sample environment as well.
+
+---
+
+
+# Measures of Forecast Accuracy
+
+Forecast accuracy should only be determined by considering how well a model performs on data not used in estimation. At this point it is worth mentioning that a model which fits the data well, may not necessarily forecast well: A perfect fit can always be obtained by using a model with enough parameters. Overfitting a model to data is as bad as failing to identify the systematic pattern in the data.
+
+---
+
+
+# Generating and Evaluating Forecasts
+
+In model-based forecasting, 'genuine' forecasts are made based on information from in-sample environment, but are assessed in an out-of-sample setting.
+- The in-sample segment of a series is also known as the estimation~set or the training~set.
+- The out-of-sample part of a series is also known as the hold-out~set or the test~set.
+
+---
+
+
+# Generating and Evaluating Forecasts
+
+Consider a time series, $\{y_t\}$, with a total of $T$ observations. We can divide the sample into two parts, the in-sample set with a total of $R$ observations, such that $R < T$ (typically, $R \approx 0.75T$), and the out-of-sample set. he goal is to recreate a 'genuine' forecasting environment.
+
+For example, If we are interested in one-step-ahead forecast assessment, this way we will produce a sequence of forecasts: $\{y_{R+1|R},y_{R+2|{R+1}},\ldots,y_{T|{T-1}}\}$ for $\{Y_{R+1},Y_{R+2},\ldots,Y_{T}\}$.
+
+Forecast errors, $e_{R+j} = y_{R+j} - y_{R+j|{R+j-1}}$, then can be computed for $j = 1,\ldots,T-R$.
+
+---
+
+
+# Generating and Evaluating Forecasts
+
+Three forecasting schemes are available for a forecaster: recursive, rolling, and fixed.
+- The recursive forecasting environment uses a sequence of expanding windows to update model estimates and the information set.
+- The rolling forecasting environment uses a sequence of rolling windows of the same size to update model estimates and the information set.
+- The fixed forecasting environment uses one fixed window for model estimates, and only updates the information set.
+
+---
+
+
+# Forecast Error Diagnostics
+
+Forecast errors of a 'good' forecasting method will have the following properties:
+- zero mean; otherwise, the forecasts are biased.
+- no correlation with the forecasts; otherwise, there is information left that should be used in computing forecasts.
+- no serial correlation among one-step-ahead forecast errors. Note that $k$-step-ahead forecasts, for $k>1$, can be, and usually are, serially correlated.
+
+Any forecasting method that does not satisfy these properties has a potential to be improved. 
+
+---
+
+
+# Forecast Error Diagnostics
+
+## Unbiasedness
+
+Testing $E(e_{t+h|t})=0$. Set up a regression: $$e_{t+h|t} = \alpha+\upsilon_{t+h} \hspace{.5in} t = R,\ldots,T-h,$$
+where $R$ is the estimation window size, $T$ is the sample size, and $h$ is the forecast horizon length. The null of zero-mean forecast error is equivalent of testing $H_0: \alpha = 0$ in the OLS setting. For $h$-step-ahead forecast errors, when $h>1$, autocorrelation consistent standard errors should be used.
+
+---
+
+
+# Forecast Error Diagnostics
+
+## Efficiency
+
+Testing $Cov(e_{t+h|t},y_{t+h|t})=0$. Set up a regression: $$e_{t+h|t} = \alpha + \beta y_{t+h|t} + \upsilon_{t+h} \hspace{.5in} t = R,\ldots,T-h.$$ The null of forecast error independence of the information set is equivalent of testing $H_0: \beta = 0$ in the OLS setting. For $h$-step-ahead forecast errors, when $h>1$, autocorrelation consistent standard errors should be used.
+
+---
+
+
+# Forecast Error Diagnostics
+
+## No Autocorrelation
+
+Testing $Cov(e_{t+1|t},e_{t|t-1})=0$. Set up a regression: $$e_{t+1|t} = \alpha + \gamma e_{t|t-1} + \upsilon_{t+1} \hspace{.5in} t = R+1,\ldots,T-1.$$ The null of no forecast error autocorrelation is equivalent of testing $H_0: \gamma = 0$ in the OLS setting.
+
+
+

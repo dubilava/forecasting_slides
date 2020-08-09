@@ -1,0 +1,103 @@
+---
+title: "Forecasting for Economics and Business"
+subtitle: "Lecture 1: Introduction to Forecasting"
+author: "David Ubilava"
+date: "`r format(Sys.time(), '%B %Y')`"
+output:
+  xaringan::moon_reader:
+    css: [default, metropolis, metropolis-fonts, style.css]
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      countIncrementalSlides: false
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+
+
+# What is Forecasting?
+
+Forecasting is making a guess about the future. Roots of forecasting extend very much to the beginning of human history. 
+
+In their desire to predict the future, people have attempted to make forecasts of their own, or have used services of others. 
+- Fortunetellers, for example, have been forecast 'experts' of some sort, basing their predictions on magic. They are less common in this age. 
+- Astrologers, who rely on astronomical phenomena to foresee the future, maintain their relevance to this date. 
+
+Over time, and particularly with the development of the study of econometrics, more rigorous forecasting methods have been introduced and developed. All methods have one thing in common: they all rely (or, at least, pretend to rely) on *information*.
+
+---
+
+
+# What is a Forecast?
+	
+A Forecast is an educated guess about the future event.
+
+It can be any statement about the future, regardless of whether such statement is well founded or lacks any sound basis; is precise or imprecise; is model-based or informal.
+
+Forecasts can be produced using econometric methods and hundreds (thousands, millions) of historical observations, but may also rely on methods which have hardly any observable basis.
+
+---
+
+
+# What Can We Forecast?
+	
+We can forecast virtually anything, whether it is tomorrow's exchange rate or the value of the Dow Jones Index at the start of the next year.
+
+Not all the forecasts are useful, however. 
+- That the sun will raise at a given time tomorrow is a forecast that we can make with great precision, but it has little value. 
+- That a COVID-19 vaccine will become available in February of 2021 would be a much useful forecast---this information will help policy makers in their decision making.
+
+---
+
+
+# How Well Can We Forecast?
+	
+Some events are easier to forecast than others. A forecast of electricity demand can be highly accurate, but forecasting exchange rates is never an easy task. Several factors play role in our ability to forecast an event:
+
+- understanding of the processes that contribute to the event realization;
+- availability of data that facilitates the understanding;
+- (in)ability of the forecasts to impact the event realization.
+
+---
+
+
+# How Far Ahead Should We Forecast?
+	
+Forecast horizons may vary, depending on their uses:
+
+- short-term forecasts are needed in managing the personnel, production, transportation, etc.
+- medium-term forecasts are needed in determining future resource requirements in order to purchase raw materials, hire personnel, or buy machinery and equipment.
+- long-term forecasts are needed in strategic planning.
+
+---
+
+
+# How Do We Forecast?
+	
+In economics, methods of forecasting include:
+
+- guessing, 'rules of thumb,' or 'informal models'
+- expert judgment
+- extrapolation
+- leading indicators
+- surveys
+- time-series models
+- econometric systems
+
+---
+
+
+# Forecasting and Time Series Analysis
+	
+Economic forecasting lends itself naturally to time series analysis. Indeed, the study of time series econometrics has evolved as a result of a quest for accurate forecasting methods.
+
+In econometric time series analysis, the implied assumption is that the past tends to repeat itself, at least to some extent. So, if we well study the past, we should be able to forecast an event with some degree of accuracy. 
+
+But there still is a surprise element concerning the forecast - something that has never happened in past, and is only specific to the future. Because of this, there is no such thing as precise forecast. Best we can hope for is that we get close to it.
+
+
+

@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Forecasting for Economics and Business</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="David Ubilava" />
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/metropolis.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/metropolis-fonts.css" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Forecasting for Economics and Business
+## Lecture 3: Basics of Forecasting
+### David Ubilava
+### August 2020
+
+---
+
+
+
+
+
+
+
+
+
+# Information Set and A Forecast
+	
+A forecast is a guess about the *unknown*, and so, we can think of it as a random variable. A Random Variable is a variable that takes on a set of possible different values that are determined probabilistically.
+
+---
+
+
+# Information Set and A Forecast
+
+Let `\(\Omega_t\)` denote the information set at a time of forecast being made. Then a complete `\(h\)`-step-ahead forecast, `\(y_{t+h|\Omega_t}\)`, can be fully summarized by the (conditional) distribution `\(F(y_{t+h|\Omega_t})\)` or the density `\(f(y_{t+h|\Omega_t})\)`.		
+
+Both `\(F(y_{t+h|\Omega_t})\)` and `\(f(y_{t+h|\Omega_t})\)` summarize all the knowns and unknowns about the potential values of `\(y\)` at time `\(t+h\)`.
+
+Based on the forecast distribution, we can report the *point forecast*, the *interval forecast*, and the *density forecast* of the random variable. 
+
+---
+
+
+# Information Set and A Forecast
+
+When forecasting, we usually need to decide on the horizon length, i.e., how far ahead do we want to forecast.
+
+In *time series forecasting*, we typically distinguish between the *one-step-ahead* forecast, `\(y_{t+1|t}\)`, and the *multi-step-ahead* forecast, `\(y_{t+h|t}\)`, for `\(h &gt; 1\)`.
+
+---
+
+
+# A Forecast Error
+	
+A point forecast for period `\(t+h\)`, denoted by `\(y_{t+h|t}\)`, is our 'best guess' that is made in period `\(t\)`, about the actual realization of the random variable in period `\(t+h\)`, denoted by `\(y_{t+h}\)`.
+
+The difference between the two is the forecast error. That is, `$$e_{t+h|t} = y_{t+h} - y_{t+h|t}$$`
+
+---
+
+
+# A Forecast Error
+	
+The more accurate is the forecast the smaller is the forecast error. Three types of uncertainty contribute to the forecast error:
+`$$\begin{aligned}
+		e_{t+h|t} &amp; = \big[y_{t+h}-E(y_{t+h}|\Omega_{t})\big]\;~~\text{(forecast uncertainty)}  \\
+		&amp; + \big[E(y_{t+h}|\Omega_{t}) - g(\Omega_{t};\theta)\big]\;~~\text{(model uncertainty)}  \\
+		&amp; + \big[g(\Omega_{t};\theta)-g(\Omega_{t};\hat{\theta})\big]\;~~\text{(parameter uncertainty)} 
+		\end{aligned}$$`
+		
+---
+
+
+# The Loss Function
+	
+Because uncertainty cannot be avoided, a forecaster is bound to commit forecast errors. The goal of the forecaster is to minimize the 'cost' associated with the forecast errors. This is achieved by minimizing the expected loss function.
+
+A loss function, `\(L(e_{t+h|t})\)`, can take many different forms, but is should satisfy the following properties:
+`$$\begin{aligned}
+		&amp; L(e_{t+h|t}) = 0,\;~~\forall\;e_{t+h|t} = 0 \\
+		&amp; L(e_{t+h|t}) \geq 0,\;~~\forall\;e_{t+h|t} \neq 0 \\
+		&amp; L(e_{t+h|t}^{(i)}) &gt; L(e_{t+h|t}^{(j)}),\;~~\forall\;|e_{t+h|t}^{(i)}| &gt; |e_{t+h|t}^{(j)}|
+		\end{aligned}$$`
+
+---
+
+
+# The Loss Function
+	
+Two commonly used symmetric loss functions are *absolute* and *quadratic* loss functions:
+`$$\begin{aligned}
+		&amp; L{(e_{t+h|t})} = |e_{t+h|t}|\;~~\text{(absolute loss function)} \\
+		&amp; L{(e_{t+h|t})} = (e_{t+h|t})^2\;~~\text{(quadratic loss function)}	
+		\end{aligned}$$`
+
+The quadratic loss function is popular, partly because we typically select models based on 'in-sample' quadratic loss (i.e. by minimizing the sum of squared residuals).
+
+---
+
+
+# An Optimal Forecast
+	
+Optimal forecast is the forecast that minimizes the expected loss:
+		`$$\min_{y_{t+h|t}} E\left[L\left(e_{t+h|t}\right)\right] = \min_{y_{t+h|t}} E\left[L\left(y_{t+h}-y_{t+h|t}\right)\right]$$`
+		where the expected loss is given by:
+		`$$E\left[L\left(y_{t+h}-y_{t+h|t}\right)\right]=\int L\left(y_{t+h}-y_{t+h|t}\right) f(y_{t+h}|\mathcal{F}_t)dy$$`
+		
+		
+---
+
+
+# An Optimal Forecast
+
+We can assume that the conditional density is a normal density with mean `\(\mu_{t+h} \equiv E(y_{t+h})\)`, and variance `\(\sigma_{t+h}^2 \equiv Var(y_{t+h})\)`.
+
+Under the assumption of the quadratic loss function:
+`$$\begin{aligned}
+		E\left[L(e_{t+h|t})\right] &amp; = E(e_{t+h|t}^2) = E(y_{t+h} - \hat{y}_{t+h|t})^2 \\
+		&amp; = E(y_{t+h}^2)-2E(y_{t+h})\hat{y}_{t+h|t} + \hat{y}_{t+h|t}^2
+		\end{aligned}$$`
+
+By solving the optimization problem it follows that: `$$\hat{y}_{t+h|t} = E(y_{t+h}) \equiv \mu_{t+h}$$`
+
+Thus, the optimal point forecast under the quadratic loss is the *mean*.
+
+For reference, the optimal point forecast under absolute loss is the *median*.
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

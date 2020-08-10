@@ -52,7 +52,7 @@ y <- rnorm(n)
 df <- data.frame(t=c(1:n),y=y)
 
 ggplot(df,aes(x=t,y=y))+
-  geom_line(size=1,col="skyblue")+
+  geom_line(size=1,col="steelblue")+
   labs(y=expression(paste(y[t],sep="")))+
   theme_classic()+
   theme(axis.title = element_text(size=18),axis.text = element_text(size=14))
@@ -115,7 +115,7 @@ df <- data.frame(k=c(1:maxlag),rho=c(acf(y,plot=F)[1:10]$acf))
 ggplot(df,aes(x=k,y=rho))+
   geom_segment(aes(xend=k,yend=0))+
   geom_hline(yintercept=0,size=.8)+
-  geom_hline(yintercept=c(-1.96/sqrt(n),1.96/sqrt(n)),size=.5,linetype=5,col="skyblue")+
+  geom_hline(yintercept=c(-1.96/sqrt(n),1.96/sqrt(n)),size=.5,linetype=5,col="steelblue")+
   scale_x_continuous(breaks=c(1:10),labels=c(1:10))+
   labs(x="k",y=expression(rho[k]))+
   coord_cartesian(ylim=c(-1,1))+
@@ -160,7 +160,7 @@ df <- data.frame(t=c(1:n),y=y,lny=lny,dlny=dlny)
 
 ```{r echo=FALSE, message=FALSE}
 ggplot(df,aes(x=t,y=y))+
-  geom_line(size=1,color="skyblue")+
+  geom_line(size=1,color="steelblue")+
   labs(y=expression(paste(y[t],sep="")))+
   theme_classic()+
   theme(axis.title = element_text(size=18),axis.text = element_text(size=14),axis.text.y = element_text(angle=90,hjust=0.5))
@@ -173,7 +173,7 @@ ggplot(df,aes(x=t,y=y))+
 
 ```{r echo=FALSE, message=FALSE}
 ggplot(df,aes(x=t,y=lny))+
-  geom_line(size=1,color="skyblue")+
+  geom_line(size=1,color="steelblue")+
   labs(y=expression(paste("ln",y[t],sep="")))+
   theme_classic()+
   theme(axis.title = element_text(size=18),axis.text = element_text(size=14),axis.text.y = element_text(angle=90,hjust=0.5))
@@ -186,7 +186,7 @@ ggplot(df,aes(x=t,y=lny))+
 
 ```{r echo=FALSE, message=FALSE}
 ggplot(df,aes(x=t,y=dlny))+
-  geom_line(size=1,color="skyblue")+
+  geom_line(size=1,color="steelblue")+
   labs(y=expression(paste(Delta,"ln",y[t],sep="")))+
   theme_classic()+
   theme(axis.title = element_text(size=18),axis.text = element_text(size=14),axis.text.y = element_text(angle=90,hjust=0.5))

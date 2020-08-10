@@ -1,6 +1,6 @@
 .remark-slide-content {
   background-color: #ffffff;
-  border-top: 80px solid #5faed1; /* change this */
+  border-top: 80px solid #4682b4; /* change this */
   font-size: 24px;
   font-weight: 300;
   line-height: 1.5;
@@ -12,7 +12,7 @@
 }
 
 .inverse {
-  background-color: #5faed1; /* change this */
+  background-color: #4682b4; /* change this */
   text-shadow: none;
 }
 
@@ -56,7 +56,7 @@ h2, h3, h4 {
 }
 
 .title-slide h1  {
-  color: #5faed1; /* change this */
+  color: #4682b4; /* change this */
   font-size: 40px;
   text-shadow: none;
   font-weight: 400;
@@ -67,7 +67,7 @@ h2, h3, h4 {
 .title-slide h2  {
   margin-top: -25px;
   padding-bottom: -20px;
-  color: #5faed1; /* change this */
+  color: #4682b4; /* change this */
   text-shadow: none;
   font-weight: 300;
   font-size: 35px;
@@ -88,7 +88,7 @@ hr, .title-slide h2::after, .mline h1::after {
   content: '';
   display: block;
   border: none;
-  background-color: #5faed1; /* change this */
+  background-color: #4682b4; /* change this */
   color: #cd5555;
   height: 1px;
 }

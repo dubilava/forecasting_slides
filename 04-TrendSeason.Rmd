@@ -1,6 +1,6 @@
 ---
 title: "Forecasting for Economics and Business"
-subtitle: "Lecture 5: Forecasting Trends and Seasonality"
+subtitle: "Lecture 4: Forecasting Trends and Seasonality"
 author: "David Ubilava"
 date: "`r format(Sys.time(), '%B %Y')`"
 output:

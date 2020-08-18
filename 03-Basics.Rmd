@@ -23,106 +23,149 @@ knitr::opts_chunk$set(echo = FALSE, fig.width = 11, fig.height = 7)
 library(ggplot2)
 ```
 
-# Information Set and A Forecast
-	
-A forecast is a guess about the *unknown*, and so, we can think of it as a random variable. A Random Variable is a variable that takes on a set of possible different values that are determined probabilistically.
+
+# Simple Forecasting Methods
+
+Recall that any guess may serve as a forecast, but an 'educated' guess is likely to be a better one.	We will now consider several simple methods for making an educated guess.
+
+## The Average Method
+
+The *average method* assumes that all future values of a given variable are equal to the mean of their historically observed values: $$E(y_{T+h}|\Omega_T) \equiv y_{T+h|T} = T^{-1}\sum_{t=1}^{T}y_t,\;~~\forall\;h=1,2,\ldots$$
+
+---
+
+# Simple Forecasting Methods
+
+## The Naive Method
+
+The *naive method* assumes that all future values of a given variable are equal to its most recent realization: $$E(y_{T+h}|\Omega_T) \equiv y_{T+h|T} = y_T,\;~~\forall\;h=1,2,\ldots$$
+
+This method is derived from a *random walk* model, which assumes that the future is the present plus an unpredictable disturbance: $$y_{t} = y_{t-1}+\varepsilon_{t},\;~~\varepsilon_{t}\sim iid(0,\sigma^2)$$
+
+---
+
+# Simple Forecasting Methods
+
+Alternatively, we can assume that the series are a random walk around a linear trend: $$y_t = y_{t-1}+\delta+\varepsilon_t,\;~~\varepsilon_t\sim iid(0,\sigma^2),$$ where $$\delta = E(\Delta y_t) = \frac{1}{T-1}\sum_{t=2}^{T}\Delta y_t = \frac{y_T - y_1}{T-1}$$
+
+It then follows that: $$E(y_{T+h}|\Omega_T) \equiv y_{T+h|T} = y_T + h \delta = y_T + \frac{h(y_T - y_1)}{T-1}$$
+
+---
+
+# Simple Forecasting Methods
+
+## Simple Exponential Smoothing
+
+The average and naive forecasting methods can be seen as the two extreme cases of what is known as the *simple exponential smoothing* (SES). 
+
+SES offers something 'in-between' of the aforementioned two methods. That is, larger weights are assigned to more recent observations, and the weights decrease exponentially (hence the name) as the lags increase.
 
 ---
 
 
-# Information Set and A Forecast
+# Simple Forecasting Methods
 
-Let $\Omega_t$ denote the information set at a time of forecast being made. Then a complete $h$-step-ahead forecast, $y_{t+h|\Omega_t}$, can be fully summarized by the (conditional) distribution $F(y_{t+h|\Omega_t})$ or the density $f(y_{t+h|\Omega_t})$.		
-
-Both $F(y_{t+h|\Omega_t})$ and $f(y_{t+h|\Omega_t})$ summarize all the knowns and unknowns about the potential values of $y$ at time $t+h$.
-
-Based on the forecast distribution, we can report the *point forecast*, the *interval forecast*, and the *density forecast* of the random variable. 
+A one-step-ahead forecast from SES is given by: $$y_{T+1|T} = \alpha y_{T} + (1-\alpha)y_{T|T-1},$$ where $0 \leq \alpha \leq 1$ is a smoothing parameter. Substitute recursively to obtain: $$y_{T+1|T} = \sum_{i=0}^{T-1}\alpha\left(1-\alpha\right)^{i}y_{T-i} + (1-\alpha)^T y_{1|0}$$ In practice, $y_{1|0}$ is often simply set to $y_1$.
 
 ---
 
 
-# Information Set and A Forecast
+# Simple Forecasting Methods
 
-When forecasting, we usually need to decide on the horizon length, i.e., how far ahead do we want to forecast.
-
-In *time series forecasting*, we typically distinguish between the *one-step-ahead* forecast, $y_{t+1|t}$, and the *multi-step-ahead* forecast, $y_{t+h|t}$, for $h > 1$.
-
----
-
-
-# A Forecast Error
-	
-A point forecast for period $t+h$, denoted by $y_{t+h|t}$, is our 'best guess' that is made in period $t$, about the actual realization of the random variable in period $t+h$, denoted by $y_{t+h}$.
-
-The difference between the two is the forecast error. That is, $$e_{t+h|t} = y_{t+h} - y_{t+h|t}$$
+A forecast for horizon $h$ at time $T$ is equal to a weighted average of the most recent realization of the random variable and its forecast:
+$$y_{T+h|T} = \alpha y_{T} + (1-\alpha)y_{T|T-1},\;~~\forall\;h=1,2,\ldots$$ That is, SES also has a 'flat' multi-step forecast function (which is intuitive, as both the average and naive methods also have 'flat' multi-step forecast functions).
 
 ---
 
 
-# A Forecast Error
-	
-The more accurate is the forecast the smaller is the forecast error. Three types of uncertainty contribute to the forecast error:
+# Measures of Forecast Accuracy
+
+The most commonly applied accuracy measures are the mean absolute forecast error (MAFE) and the root mean squared forecast error (RMSFE):
 $$\begin{aligned}
-		e_{t+h|t} & = \big[y_{t+h}-E(y_{t+h}|\Omega_{t})\big]\;~~\text{(forecast uncertainty)}  \\
-		& + \big[E(y_{t+h}|\Omega_{t}) - g(\Omega_{t};\theta)\big]\;~~\text{(model uncertainty)}  \\
-		& + \big[g(\Omega_{t};\theta)-g(\Omega_{t};\hat{\theta})\big]\;~~\text{(parameter uncertainty)} 
-		\end{aligned}$$
-		
----
-
-
-# The Loss Function
-	
-Because uncertainty cannot be avoided, a forecaster is bound to commit forecast errors. The goal of the forecaster is to minimize the 'cost' associated with the forecast errors. This is achieved by minimizing the expected loss function.
-
-A loss function, $L(e_{t+h|t})$, can take many different forms, but is should satisfy the following properties:
-$$\begin{aligned}
-		& L(e_{t+h|t}) = 0,\;~~\forall\;e_{t+h|t} = 0 \\
-		& L(e_{t+h|t}) \geq 0,\;~~\forall\;e_{t+h|t} \neq 0 \\
-		& L(e_{t+h|t}^{(i)}) > L(e_{t+h|t}^{(j)}),\;~~\forall\;|e_{t+h|t}^{(i)}| > |e_{t+h|t}^{(j)}|
-		\end{aligned}$$
+\text{MAFE}  = & \frac{1}{P}\sum_{i=1}^{P}|e_i|\\
+\text{RMSFE} = & \sqrt{\frac{1}{P}\sum_{i=1}^{P}e_i^2}
+\end{aligned}$$
+where $P$ is the total number of out-of-sample forecasts.
 
 ---
 
 
-# The Loss Function
-	
-Two commonly used symmetric loss functions are *absolute* and *quadratic* loss functions:
-$$\begin{aligned}
-		& L{(e_{t+h|t})} = |e_{t+h|t}|\;~~\text{(absolute loss function)} \\
-		& L{(e_{t+h|t})} = (e_{t+h|t})^2\;~~\text{(quadratic loss function)}	
-		\end{aligned}$$
+# Measures of Forecast Accuracy
 
-The quadratic loss function is popular, partly because we typically select models based on 'in-sample' quadratic loss (i.e. by minimizing the sum of squared residuals).
+Forecast accuracy should only be determined by considering how well a model performs on data not used in estimation.
+
+At this point it is worth mentioning that a model which fits the data well, may not necessarily forecast well. While a perfect fit can always be achieved by using a model with 'enough' parameters, such overfitting can be seen as bad as failing to identify the systematic pattern in the data.
 
 ---
 
 
-# An Optimal Forecast
-	
-Optimal forecast is the forecast that minimizes the expected loss:
-		$$\min_{y_{t+h|t}} E\left[L\left(e_{t+h|t}\right)\right] = \min_{y_{t+h|t}} E\left[L\left(y_{t+h}-y_{t+h|t}\right)\right]$$
-		where the expected loss is given by:
-		$$E\left[L\left(y_{t+h}-y_{t+h|t}\right)\right]=\int L\left(y_{t+h}-y_{t+h|t}\right) f(y_{t+h}|\mathcal{F}_t)dy$$
-		
-		
+# Generating and Evaluating Forecasts
+
+In model-based forecasting, 'genuine' forecasts are made based on information from in-sample environment, but are assessed in an out-of-sample setting.
+- The in-sample segment of a series is also known as the estimation set or the training set.
+- The out-of-sample part of a series is also known as the hold-out set or the test set.
+
 ---
 
 
-# An Optimal Forecast
+# Generating and Evaluating Forecasts
 
-We can assume that the conditional density is a normal density with mean $\mu_{t+h} \equiv E(y_{t+h})$, and variance $\sigma_{t+h}^2 \equiv Var(y_{t+h})$.
+Consider a time series, $\{y_t\}$, with a total of $T$ observations. We can divide the sample into two parts, the in-sample set with a total of $R$ observations, such that $R < T$ (typically, $R \approx 0.75T$), and the out-of-sample set. he goal is to recreate a 'genuine' forecasting environment.
 
-Under the assumption of the quadratic loss function:
-$$\begin{aligned}
-		E\left[L(e_{t+h|t})\right] & = E(e_{t+h|t}^2) = E(y_{t+h} - \hat{y}_{t+h|t})^2 \\
-		& = E(y_{t+h}^2)-2E(y_{t+h})\hat{y}_{t+h|t} + \hat{y}_{t+h|t}^2
-		\end{aligned}$$
+For example, If we are interested in one-step-ahead forecast assessment, this way we will produce a sequence of forecasts: $\{y_{R+1|R},y_{R+2|{R+1}},\ldots,y_{T|{T-1}}\}$ for $\{Y_{R+1},Y_{R+2},\ldots,Y_{T}\}$.
 
-By solving the optimization problem it follows that: $$\hat{y}_{t+h|t} = E(y_{t+h}) \equiv \mu_{t+h}$$
+Forecast errors, $e_{R+j} = y_{R+j} - y_{R+j|{R+j-1}}$, then can be computed for $j = 1,\ldots,T-R$.
 
-Thus, the optimal point forecast under the quadratic loss is the *mean*.
+---
 
-For reference, the optimal point forecast under absolute loss is the *median*.
+
+# Generating and Evaluating Forecasts
+
+Three forecasting schemes are available for a forecaster: recursive, rolling, and fixed.
+- The recursive forecasting environment uses a sequence of expanding windows to update model estimates and the information set.
+- The rolling forecasting environment uses a sequence of rolling windows of the same size to update model estimates and the information set.
+- The fixed forecasting environment uses one fixed window for model estimates, and only updates the information set.
+
+---
+
+
+# Forecast Error Diagnostics
+
+Forecast errors of a 'good' forecasting method will have the following properties:
+- zero mean; otherwise, the forecasts are biased.
+- no correlation with the forecasts; otherwise, there is information left that should be used in computing forecasts.
+- no serial correlation among one-step-ahead forecast errors. Note that $k$-step-ahead forecasts, for $k>1$, can be, and usually are, serially correlated.
+
+Any forecasting method that does not satisfy these properties has a potential to be improved. 
+
+---
+
+
+# Forecast Error Diagnostics
+
+## Unbiasedness
+
+Testing $E(e_{t+h|t})=0$. Set up a regression: $$e_{t+h|t} = \alpha+\upsilon_{t+h} \hspace{.5in} t = R,\ldots,T-h,$$
+where $R$ is the estimation window size, $T$ is the sample size, and $h$ is the forecast horizon length. The null of zero-mean forecast error is equivalent of testing $H_0: \alpha = 0$ in the OLS setting. For $h$-step-ahead forecast errors, when $h>1$, autocorrelation consistent standard errors should be used.
+
+---
+
+
+# Forecast Error Diagnostics
+
+## Efficiency
+
+Testing $Cov(e_{t+h|t},y_{t+h|t})=0$. Set up a regression: $$e_{t+h|t} = \alpha + \beta y_{t+h|t} + \upsilon_{t+h} \hspace{.5in} t = R,\ldots,T-h.$$ The null of forecast error independence of the information set is equivalent of testing $H_0: \beta = 0$ in the OLS setting. For $h$-step-ahead forecast errors, when $h>1$, autocorrelation consistent standard errors should be used.
+
+---
+
+
+# Forecast Error Diagnostics
+
+## No Autocorrelation
+
+Testing $Cov(e_{t+1|t},e_{t|t-1})=0$. Set up a regression: $$e_{t+1|t} = \alpha + \gamma e_{t|t-1} + \upsilon_{t+1} \hspace{.5in} t = R+1,\ldots,T-1.$$ The null of no forecast error autocorrelation is equivalent of testing $H_0: \gamma = 0$ in the OLS setting.
+
+
 
 

@@ -25,6 +25,11 @@ class: center, middle, inverse, title-slide
 
 
 
+# Readings
+
+Hyndman &amp; Athanasopoulos, Chapter 1
+
+---
 
 # Forecasting
 
@@ -168,7 +173,7 @@ The quadratic loss function is popular, partly because we typically select model
 Optimal forecast is the forecast that minimizes the expected loss:
 		`$$\min_{y_{t+h|t}} E\left[L\left(e_{t+h|t}\right)\right] = \min_{y_{t+h|t}} E\left[L\left(y_{t+h}-y_{t+h|t}\right)\right]$$`
 		where the expected loss is given by:
-		`$$E\left[L\left(y_{t+h}-y_{t+h|t}\right)\right]=\int L\left(y_{t+h}-y_{t+h|t}\right) f(y_{t+h}|\mathcal{F}_t)dy$$`
+		`$$E\left[L\left(y_{t+h}-y_{t+h|t}\right)\right]=\int L\left(y_{t+h}-y_{t+h|t}\right) f(y_{t+h}|\Omega_t)dy$$`
 		
 		
 ---

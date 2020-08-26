@@ -93,6 +93,12 @@ Consider a generic representation of a trend model with an additive error term: 
 # Fitting and Forecasting Trends
 
 Any future realisation of a random variable that i assumed to follow a linear trend model is: `$$y_{t+h} = \alpha + \beta (t+h) + \varepsilon_{t+h}.$$` 
+
+---
+
+
+# Fitting and Forecasting Trends
+
 An optimal forecast of `\(y_{t+h}\)` is given by: `$$y_{t+h|t} = E(y_{t+h}|\Omega_t) = E[\alpha + \beta (t+h) + \varepsilon_{t+h}] = \alpha + \beta (t+h).$$` 
 The forecast error is given by: `$$e_{t+h|t} = y_{t+h} - y_{t+h|t} = \varepsilon_{t+h}$$` The forecast variance, thus, is given by: `$$\sigma_{t+h|t}^2 = E(e_{t+h|t}^2) =  E(\varepsilon_{t+h}^2) = \sigma^2,\;~~\forall\;h$$`
 
@@ -149,7 +155,12 @@ Both approches result in an identical fit and forecasts.
 
 # Fitting and Forecasting Seasonality
 
-Any future realisation of a random variable that i assumed to follow a seasonal model is: `$$y_{t+h} = \alpha + \sum_{i=1}^{s-1}\delta_i d_{i,t+h} + \varepsilon_{t+h}.$$` 
+Any future realization of a random variable that i assumed to follow a seasonal model is: `$$y_{t+h} = \alpha + \sum_{i=1}^{s-1}\delta_i d_{i,t+h} + \varepsilon_{t+h}.$$` 
+
+---
+
+
+# Fitting and Forecasting Seasonality
 
 The optimal forecast of `\(y_{t+h}\)` is given by: `$$y_{t+h|t} = E(y_{t+h}|\Omega_t) = \alpha + \sum_{i=1}^{s-1}\delta_i d_{i,t+h}$$`
 
@@ -199,7 +210,7 @@ Things to remember about the information criteria:
 
 # Readings
 
-Hyndman &amp; Athanasopoulos, Chapter 2
+Hyndman &amp; Athanasopoulos, Section 2.3
 
 Gonzalez-Rivera, Chapter 10
     </textarea>

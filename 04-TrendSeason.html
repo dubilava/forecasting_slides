@@ -31,9 +31,11 @@ class: center, middle, inverse, title-slide
 # Time Series Components
 
 Some general features of the economic time series can be classified within three broad categories:
+
 - Trends
 - Seasonality
 - Cycles
+
 A time series can exhibit one or several of these features.
 
 ---
@@ -74,6 +76,7 @@ Exponential trends are suitable when a time series is characterized with a stabl
 # Trends
 
 An exponential trend is equivalent to a linear trend fitted to natural logarithm of the series. For a given time series `\(\{y_t: t=1,\ldots,T\}\)`, the natural logarithm is: `\(z_t - \ln{y_t}\)`. Some of the benefits of such a transformation are that:
+
 - they are easier to interpret (relative/percentage change).
 - they homogenizes the variance of the time series. 
 - they may result in improved forecasting accuracy.
@@ -92,7 +95,7 @@ Consider a generic representation of a trend model with an additive error term: 
 
 # Fitting and Forecasting Trends
 
-Any future realisation of a random variable that i assumed to follow a linear trend model is: `$$y_{t+h} = \alpha + \beta (t+h) + \varepsilon_{t+h}.$$` 
+Any future realization of a random variable that i assumed to follow a linear trend model is: `$$y_{t+h} = \alpha + \beta (t+h) + \varepsilon_{t+h}.$$` 
 
 ---
 
@@ -108,7 +111,8 @@ The forecast error is given by: `$$e_{t+h|t} = y_{t+h} - y_{t+h|t} = \varepsilon
 # Fitting and Forecasting Trends
 
 A few features of trend forecasts to note:
-- they yend to understate uncertainty (at long horizons).
+
+- they tend to understate uncertainty (at long horizons).
 - short-term trend forecasts can perform poorly; long-term trend forecasts typically perform poorly.
 - sometimes it may be beneficial to forecast growth rates, and reconstruct level forecasts from growth.
 
@@ -117,9 +121,10 @@ A few features of trend forecasts to note:
 
 # Seasonality
 
-Seasonality is a fluctuating, self-repeating pattern within a year that arises from links of technologies, preferences, and institutions to the calendar.
+Seasonality is a self-repeating fluctuating pattern within a year that may arise from links of technologies, preferences, and institutions to the calendar.
 
-Seasonality is typically modeled as monthly or quarterly pattern, but can also be modeled as a higher frequency pattern (e.g. weekly). Typical examples of time series with apparent seasonal patterns are:
+Seasonality is typically modeled as monthly or quarterly pattern, but can also be modeled as a higher frequency pattern (e.g. weekly). Some examples of time series with apparent seasonal patterns are:
+
 - Agricultural production.
 - Sales of energy products.
 - Airfare.

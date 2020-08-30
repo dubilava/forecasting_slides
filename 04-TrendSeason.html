@@ -75,7 +75,7 @@ Exponential trends are suitable when a time series is characterized with a stabl
 
 # Trends
 
-An exponential trend is equivalent to a linear trend fitted to natural logarithm of the series. For a given time series `\(\{y_t: t=1,\ldots,T\}\)`, the natural logarithm is: `\(z_t - \ln{y_t}\)`. Some of the benefits of such a transformation are that:
+An exponential trend is equivalent to a linear trend fitted to natural logarithm of the series. For a time series `\(\{y_t: t=1,\ldots,T\}\)`, the natural logarithm is: `\(z_t = \ln{y_t}\)`. Some of the benefits of such a transformation are that:
 
 - they are easier to interpret (relative/percentage change).
 - they homogenizes the variance of the time series. 
@@ -95,7 +95,7 @@ Consider a generic representation of a trend model with an additive error term: 
 
 # Fitting and Forecasting Trends
 
-Any future realization of a random variable that i assumed to follow a linear trend model is: `$$y_{t+h} = \alpha + \beta (t+h) + \varepsilon_{t+h}.$$` 
+Any future realization of a random variable is assumed to follow a linear trend model: `$$y_{t+h} = \alpha + \beta (t+h) + \varepsilon_{t+h}.$$` 
 
 ---
 
@@ -103,7 +103,10 @@ Any future realization of a random variable that i assumed to follow a linear tr
 # Fitting and Forecasting Trends
 
 An optimal forecast of `\(y_{t+h}\)` is given by: `$$y_{t+h|t} = E(y_{t+h}|\Omega_t) = E[\alpha + \beta (t+h) + \varepsilon_{t+h}] = \alpha + \beta (t+h).$$` 
-The forecast error is given by: `$$e_{t+h|t} = y_{t+h} - y_{t+h|t} = \varepsilon_{t+h}$$` The forecast variance, thus, is given by: `$$\sigma_{t+h|t}^2 = E(e_{t+h|t}^2) =  E(\varepsilon_{t+h}^2) = \sigma^2,\;~~\forall\;h$$`
+
+The forecast error is given by: `$$e_{t+h|t} = y_{t+h} - y_{t+h|t} = \varepsilon_{t+h}$$` 
+
+The forecast variance, thus, is given by: `$$\sigma_{t+h|t}^2 = E(e_{t+h|t}^2) =  E(\varepsilon_{t+h}^2) = \sigma^2,\;~~\forall\;h$$`
 
 ---
 

@@ -320,7 +320,12 @@ The h-step-ahead forecast error: `$$e_{t+h|t} = y_{t+h} - y_{t+h|t} = \varepsilo
 
 # AR(2) Forecasting
 
-The h-step-ahead forecast variance: `$$\sigma_{t+h|t}^2 = Var(y_{t+h}|\Omega_t) = E(e_{t+h|t}^2) = \sigma_{\varepsilon}^2+\beta_1^2 Var(e_{t+h-1|t})$$`
+The h-step-ahead forecast variance: 
+`$$\begin{align}
+\sigma_{t+h|t}^2 &amp;= Var(y_{t+h}|\Omega_t) = E(e_{t+h|t}^2) \\
+&amp;= \sigma_{\varepsilon}^2+\beta_1^2 Var(e_{t+h-1|t})+\beta_2^2 Var(e_{t+h-2|t}) \\
+&amp;+2\beta_1\beta_2Cov(e_{t+h-1|t},e_{t+h-2|t})
+\end{align}$$`
 
 Note that, in general, formulas for `\(\sigma_{t+1|t}^2,\sigma_{t+2|t}^2,\ldots,\sigma_{t+h|t}^2\)` are the same for any `\(AR(p)\)`, `\(p \geq h-1\)`.
 

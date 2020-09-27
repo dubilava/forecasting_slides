@@ -1,0 +1,194 @@
+---
+title: "Forecasting for Economics and Business"
+subtitle: "Lecture 1: Introduction to Forecasting"
+author: "David Ubilava"
+date: "`r format(Sys.time(), '%B %Y')`"
+output:
+  xaringan::moon_reader:
+    css: [default, metropolis, metropolis-fonts, style.css]
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      countIncrementalSlides: false
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+
+# Forecasting
+
+Forecasting is making a guess about the future. Roots of forecasting extend very much to the beginning of human history. 
+
+In their desire to predict the future, people have attempted to make forecasts of their own, or have used services of others. 
+- Fortunetellers, for example, have been forecast 'experts' of some sort, basing their predictions on magic. They are less common in this age. 
+- Astrologers, who rely on astronomical phenomena to foresee the future, maintain their relevance to this date. 
+
+---
+
+
+# Forecasting
+
+Over time, and particularly with the development of the study of econometrics, more rigorous forecasting methods have been introduced and developed. 
+
+All methods have one thing in common: they all rely (or, at least, pretend to rely) on *information*.
+
+Information summarizes everything that we know about the variable to be forecast. We shall denote the information set at a time a forecast is being made by $\Omega_t$.
+
+---
+
+
+# A Forecast
+	
+A Forecast is an educated guess about the future event.
+
+It can be any statement about the future, regardless of whether such statement is well founded or lacks any sound basis.
+
+Forecasts can be produced using econometric methods and a large number of historical observations, or they may rely on methods that have little observable basis.
+
+---
+
+
+# A Forecast
+
+A complete $h$-step-ahead forecast, $y_{t+h|t}$, can be fully summarized by the (conditional) distribution $F(y_{t+h|\Omega_t})$ or the density $f(y_{t+h|\Omega_t})$.		
+
+Both $F(y_{t+h|\Omega_t})$ and $f(y_{t+h|\Omega_t})$ summarize all the knowns and unknowns about the potential values of $y$ at time $t+h$, given the available knowledge at time $t$.
+
+---
+
+
+# The Use and Usefullness of a Forecast
+	
+We can forecast virtually anything, whether it is tomorrow's exchange rate or the unemployment rate at the start of the next year.
+
+Not all the forecasts are useful, however. 
+
+- That the sun will raise at a given time tomorrow morning is a forecast that we can make with great precision, but is of little value to people. 
+- That a COVID-19 vaccine will become available early next year would be a much useful forecast---this information will help policy makers in their decision making.
+
+---
+
+
+# The Ease of Forecasting
+	
+Forecasting is difficult. That said, some events are easier to forecast than others. 
+
+A forecast of electricity demand can be highly accurate, but forecasting exchange rates is never an easy task.
+
+Several factors play role in our ability to forecast an event:
+
+- understanding of the processes that contribute to the event realization;
+- availability of data that facilitates the understanding;
+- (in)ability of the forecasts to impact the event realization.
+
+---
+
+
+# Forecasting Methods
+	
+Methods of forecasting can be grouped into the following two categories:
+
+- qualitative (e.g., guessing, 'rules of thumb,' expert judgment, surveys) - particularly useful when the data are not available;
+- quantitative (e.g., using time series models) - applied, and indeed a preferred method, when the data are available.
+
+---
+
+# The Forecast Horizon and Accuracy
+	
+When forecasting, we usually need to decide on the horizon length, i.e., how far ahead do we want to forecast.
+
+In *time series forecasting*, we typically distinguish between the *one-step-ahead* forecast, $y_{t+1|t}$, and the *multi-step-ahead* forecast, $y_{t+h|t}$, for $h > 1$.
+
+Forecasting becomes increasingly difficult (inaccurate) with the horizon length, as more unknowns 'get in the way' between the time when the forecast is made and the future time period.
+
+---
+
+
+# A Forecast Error
+	
+A point forecast for period $t+h$, denoted by $y_{t+h|t}$, is our 'best guess' that is made in period $t$, about the actual realization of the random variable in period $t+h$, denoted by $y_{t+h}$.
+
+The difference between the two is the forecast error. That is, $$e_{t+h|t} = y_{t+h} - y_{t+h|t}$$
+
+---
+
+
+# A Forecast Error
+	
+The more accurate is the forecast the smaller is the forecast error. Three types of uncertainty contribute to the forecast error:
+$$\begin{aligned}
+		e_{t+h|t} & = \big[y_{t+h}-E(y_{t+h}|\Omega_{t})\big]\;~~\text{(forecast uncertainty)}  \\
+		& + \big[E(y_{t+h}|\Omega_{t}) - g(\Omega_{t};\theta)\big]\;~~\text{(model uncertainty)}  \\
+		& + \big[g(\Omega_{t};\theta)-g(\Omega_{t};\hat{\theta})\big]\;~~\text{(parameter uncertainty)} 
+		\end{aligned}$$
+		
+---
+
+
+# The Loss Function
+	
+Because uncertainty cannot be avoided, a forecaster is bound to commit forecast errors. The goal of the forecaster is to minimize the 'cost' associated with the forecast errors. This is achieved by minimizing the expected loss function.
+
+A loss function, $L(e_{t+h|t})$, can take many different forms, but is should satisfy the following properties:
+$$\begin{aligned}
+		& L(e_{t+h|t}) = 0,\;~~\forall\;e_{t+h|t} = 0 \\
+		& L(e_{t+h|t}) \geq 0,\;~~\forall\;e_{t+h|t} \neq 0 \\
+		& L(e_{t+h|t}^{(i)}) > L(e_{t+h|t}^{(j)}),\;~~\forall\;|e_{t+h|t}^{(i)}| > |e_{t+h|t}^{(j)}|
+		\end{aligned}$$
+
+---
+
+
+# The Loss Function
+	
+Two commonly used symmetric loss functions are *absolute* and *quadratic* loss functions:
+$$\begin{aligned}
+		& L{(e_{t+h|t})} = |e_{t+h|t}|\;~~\text{(absolute loss function)} \\
+		& L{(e_{t+h|t})} = (e_{t+h|t})^2\;~~\text{(quadratic loss function)}	
+		\end{aligned}$$
+
+The quadratic loss function is popular, partly because we typically select models based on 'in-sample' quadratic loss (i.e. by minimizing the sum of squared residuals).
+
+---
+
+
+# An Optimal Forecast
+	
+Optimal forecast is the forecast that minimizes the expected loss:
+		$$\min_{y_{t+h|t}} E\left[L\left(e_{t+h|t}\right)\right] = \min_{y_{t+h|t}} E\left[L\left(y_{t+h}-y_{t+h|t}\right)\right]$$
+		where the expected loss is given by:
+		$$E\left[L\left(y_{t+h}-y_{t+h|t}\right)\right]=\int L\left(y_{t+h}-y_{t+h|t}\right) f(y_{t+h}|\Omega_t)dy$$
+		
+		
+---
+
+
+# An Optimal Forecast
+
+We can assume that the conditional density is a normal density with mean $\mu_{t+h} \equiv E(y_{t+h})$, and variance $\sigma_{t+h}^2 \equiv Var(y_{t+h})$.
+
+Under the assumption of the quadratic loss function:
+$$\begin{aligned}
+		E\left[L(e_{t+h|t})\right] & = E(e_{t+h|t}^2) = E(y_{t+h} - \hat{y}_{t+h|t})^2 \\
+		& = E(y_{t+h}^2)-2E(y_{t+h})\hat{y}_{t+h|t} + \hat{y}_{t+h|t}^2
+		\end{aligned}$$
+
+By solving the optimization problem it follows that: $$\hat{y}_{t+h|t} = E(y_{t+h}) \equiv \mu_{t+h}$$
+
+Thus, the optimal point forecast under the quadratic loss is the *mean*.
+
+For reference, the optimal point forecast under absolute loss is the *median*.
+
+---
+
+
+# Readings
+
+Hyndman & Athanasopoulos, Sections: 1.1 - 1.7
+
+Gonzalez-Rivera, Chapter 1
+
+

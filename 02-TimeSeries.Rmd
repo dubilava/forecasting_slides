@@ -203,3 +203,12 @@ ggplot(df,aes(x=t,y=dlny))+
   theme_classic()+
   theme(axis.title = element_text(size=18),axis.text = element_text(size=14),axis.text.y = element_text(angle=90,hjust=0.5))
 ```
+
+---
+
+
+# Readings
+
+Hyndman & Athanasopoulos, Sections: 2.8, 2.9, 3.2
+
+Gonzalez-Rivera, Chapter 3

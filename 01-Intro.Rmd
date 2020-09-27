@@ -18,7 +18,6 @@ knitr::opts_chunk$set(echo = FALSE)
 ```
 
 
-
 # Forecasting
 
 Forecasting is making a guess about the future. Roots of forecasting extend very much to the beginning of human history. 
@@ -161,7 +160,7 @@ The quadratic loss function is popular, partly because we typically select model
 Optimal forecast is the forecast that minimizes the expected loss:
 		$$\min_{y_{t+h|t}} E\left[L\left(e_{t+h|t}\right)\right] = \min_{y_{t+h|t}} E\left[L\left(y_{t+h}-y_{t+h|t}\right)\right]$$
 		where the expected loss is given by:
-		$$E\left[L\left(y_{t+h}-y_{t+h|t}\right)\right]=\int L\left(y_{t+h}-y_{t+h|t}\right) f(y_{t+h}|\mathcal{F}_t)dy$$
+		$$E\left[L\left(y_{t+h}-y_{t+h|t}\right)\right]=\int L\left(y_{t+h}-y_{t+h|t}\right) f(y_{t+h}|\Omega_t)dy$$
 		
 		
 ---
@@ -182,3 +181,14 @@ By solving the optimization problem it follows that: $$\hat{y}_{t+h|t} = E(y_{t+
 Thus, the optimal point forecast under the quadratic loss is the *mean*.
 
 For reference, the optimal point forecast under absolute loss is the *median*.
+
+---
+
+
+# Readings
+
+Hyndman & Athanasopoulos, Sections: 1.1 - 1.7
+
+Gonzalez-Rivera, Chapter 1
+
+

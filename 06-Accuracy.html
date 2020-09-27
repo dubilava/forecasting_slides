@@ -76,9 +76,9 @@ Here we will cover two tests for the hypothesis that two forecasts are equivalen
 
 # Comparing Forecasts
 
-Consider forecasts from two competing models `\(i\)` and `\(j\)`: `\(y_{t+h|t}^{i}\)` and `\(y_{t+h|t}^{j}\)`, with corresponding forecast errors: `\(e_{t+h|t}^{i}\)` and `\(e_{t+h|t}^{j}\)`.
+Consider a time series of length `\(T\)`. Suppose `\(h\)`-step-ahead forecasts for periods `\(R+h\)` through `\(T\)` have been generated from two competing models `\(i\)` and `\(j\)`: `\(y_{i,t+h|t}\)` and `\(y_{j,t+h|t}\)`, with corresponding forecast errors: `\(e_{i,t+h|t}\)` and `\(e_{j,t+h|t}\)`.
 
-The null hypothesis of equal predictive ability can be given in terms of the unconditional expectation of the loss difference: `$$H_0: E\left[\Delta L(e_{t+h|t})\right] = 0,$$` where `\(\Delta L(e_{t+h|t}) = L(e_{t+h|t}^{i})-L(e_{t+h|t}^{j})\)`.
+The null hypothesis of equal predictive ability can be given in terms of the unconditional expectation of the loss difference: `$$H_0: E\left[\Delta L(e_{t+h|t})\right] = 0,$$` where `\(\Delta L(e_{t+h|t}) = L(e_{i,t+h|t})-L(e_{j,t+h|t})\)`.
 		
 ---
 
@@ -87,7 +87,7 @@ The null hypothesis of equal predictive ability can be given in terms of the unc
 
 ## Morgan-Granger-Newbold Test
 
-The test is based on auxiliary variables: `\(u_{1,t+h|t} = e_{t+h|t}^{i}-e_{t+h|t}^{j}\)` and `\(u_{2,t+h|t} = e_{t+h|t}^{i}+e_{t+h|t}^{j}\)`. It follows that: `$$E(u_1,u_2) = MSFE(i)-MSFE(j),$$` thus, the hypothesis of interest is equivalent to testing whether the two auxillary variables are correlated.
+The Morgan-Granger-Newbold (MGN) test is based on auxiliary variables: `\(u_{1,t+h|t} = e_{i,t+h|t}-e_{j,t+h|t}\)` and `\(u_{2,t+h|t} = e_{i,t+h|t}+e_{j,t+h|t}\)`. It follows that: `$$E(u_1,u_2) = MSFE(i)-MSFE(j).$$` Thus, the hypothesis of interest is equivalent to testing whether the two auxiliary variables are correlated.
 		
 ---
 
@@ -96,7 +96,7 @@ The test is based on auxiliary variables: `\(u_{1,t+h|t} = e_{t+h|t}^{i}-e_{t+h|
 
 ## Morgan-Granger-Newbold Test
 
-The test statistic is: `$$\frac{r}{\sqrt{(P-1)^{-1}(1-r^2)}}\sim t_{P-1},$$` where `\(t_{P-1}\)` is a Student t distribution with `\(P-1\)` degrees of freedom, `\(P\)` is the length of the out-of-sample series, and `$$r=\frac{\hat{\sigma}_{u_1 u_2}}{\hat{\sigma}_{u_1}\hat{\sigma}_{u_2}}$$`
+The MGN test statistic is: `$$\frac{r}{\sqrt{(P-1)^{-1}(1-r^2)}}\sim t_{P-1},$$` where `\(t_{P-1}\)` is a Student t distribution with `\(P-1\)` degrees of freedom, `\(P\)` is the number of out-of-sample forecasts, and `$$r=\frac{\sum_{t=R}^{T-h}{u_{1,t+h|t}u_{2,t+h|t}}}{\sqrt{\sum_{t=R}^{T-h}{u_{1,t+h|t}^2}\sum_{t=R}^{T-h}{u_{2,t+h|t}^2}}}$$`
 		
 ---
 
@@ -105,7 +105,7 @@ The test statistic is: `$$\frac{r}{\sqrt{(P-1)^{-1}(1-r^2)}}\sim t_{P-1},$$` whe
 
 ## Morgan-Granger-Newbold Test
 
-The Morgan-Granger-Newbold test relies on the assumption that forecast errors of the forecasts to be compared, are unbiased, normally distributed, and uncorrelated (with each other). These are rather strict requirements that are, often, violated in empirical applications.
+The MGN test relies on the assumption that forecast errors of the forecasts to be compared, are unbiased, normally distributed, and uncorrelated (with each other). These are rather strict requirements that are, often, violated in empirical applications.
 		
 ---
 
@@ -114,9 +114,9 @@ The Morgan-Granger-Newbold test relies on the assumption that forecast errors of
 
 ## Diebold-Mariano Test
 
-This test relaxes the requirements on the forecast errors. 
+The Diebold-Mariano (DM) test relaxes the aforementioned requirements on the forecast errors. 
 
-The test statistic is: `$$\frac{\bar{d}}{\sqrt{\sigma_d^2/P}} \sim N(0,1),$$` where `\(\bar{d}=P^{-1}\sum_{t=1}^{P} d_t\)` and where `\(d_t \equiv \Delta L(e_{t+h|t})\)`. 
+The DM test statistic is: `$$\frac{\bar{d}}{\sqrt{\sigma_d^2/P}} \sim N(0,1),$$` where `\(\bar{d}=P^{-1}\sum_{t=1}^{P} d_t\)` and where `\(d_t \equiv \Delta L(e_{t+h|t})\)`. 
 		
 ---
 
@@ -136,7 +136,14 @@ In practice, the test of equal predictive ability can be applied within the fram
 
 The null of equal predictive ability is equivalent of testing `\(H_0: \beta = 0\)` in the OLS setting.
 
-Because `\(\Delta L(e_{t+h|t})\)` are likely to be serially correlated, an autocorrelation consistent standard errors should be used for inference.
+Because `\(\Delta L(e_{t+h|t})\)` may be serially correlated, an autocorrelation consistent standard errors should be used for inference.
+
+---
+
+
+# Readings
+
+Gonzalez-Rivera, Chapter 9
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>

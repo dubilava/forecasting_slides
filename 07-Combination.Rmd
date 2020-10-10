@@ -122,25 +122,13 @@ If we work with $P$ out-of-sample forecasts, the sample estimator of $\lambda^*$
 ---
 
 
-# Optimal Weights for Combination
-
-The optimal weight has a straightforward interpretation in a regression setting. Rewrite previous equations as: $$y_{t+1} = (1-\lambda)y_{i,t+1|t} + \lambda y_{j,t+1|t} + e_{c,t+1|t}$$
-
-It turns out that the equation is simply the least squares estimator of $\lambda$.
-
-In more general terms: $$y_{t+1} = \alpha + \beta_1 y_{i,t+1|t} + \beta_2 y_{j,t+1|t} + e_{c,t+1|t}$$
-
-
----
-
-
 # Forecast Encompassing
 
 A special case of forecast combination is when $\lambda=0$ (or when $\lambda=1$). Such an outcome (of the optimal weights) is known as forecast encompassing.
 
 It is said that $y_{i,t+1|t}$ encompasses $y_{j,t+1|t}$, when given that the former is available, the latter provides no additional useful information.
 
-This is equivalent of testing the null hypothesis of $\lambda=0$ in the previous equation, which, after rearranging terms, yields the following regression: $$e_{i,t+1|t} = \lambda\left(e_{j,t+1|t}-e_{i,t+1|t}\right)+\varepsilon_{t+1},$$ where $\varepsilon_{t+1}\equiv e_{c,t+1|t}$.
+This is equivalent of testing the null hypothesis of $\lambda=0$ in the previous equation, which, after rearranging terms, yields the following regression: $$e_{i,t+1|t} = \lambda\left(e_{i,t+1|t}-e_{j,t+1|t}\right)+\varepsilon_{t+1},$$ where $\varepsilon_{t+1}\equiv e_{c,t+1|t}$.
 
 ---
 
@@ -154,11 +142,11 @@ That is, the information set from the second method should not be of any value t
 ---
 
 
-# Forecast Encompassing
+# Optimal Weights for Combination
 
-Another option is to test the null hypothesis of $\beta_2=0$ in the following regression setting: $$y_{t+1} = \alpha + \beta_1 y_{i,t+1|t} + \beta_2 y_{j,t+1|t} + \varepsilon_{t+1}$$
+The optimal weight has a straightforward interpretation in a regression setting. Rewrite the combined forecast equation as: $$y_{t+1} = (1-\lambda)y_{i,t+1|t} + \lambda y_{j,t+1|t} + e_{c,t+1|t}.$$ Note that the equation is simply the least squares estimator of $\lambda$. Thus, we can estimate weights and test the forecast encompassing hypothesis by regressing the realized value on individual forecasts as follows: $$y_{t+1} = \alpha + \beta_1 y_{i,t+1|t} + \beta_2 y_{j,t+1|t} + e_{c,t+1|t}$$
 
-In this regression setting, one can, in fact, test a joint hypothesis that $\{\alpha,\beta_1,\beta_2\} = \{0,1,0\}$.
+In this regression setting, the test of the null hypothesis of $\lambda=0$ is equivalent to the test of the null hypothesis of $\beta_2=0$. We can, in fact, test a joint hypothesis that $\{\alpha,\beta_1,\beta_2\} = \{0,1,0\}$.
 
 ---
 

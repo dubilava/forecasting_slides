@@ -1,0 +1,97 @@
+---
+title: "Forecasting for Economics and Business"
+subtitle: "Lecture 8: Direct vs Iterated Multi-Step Forecasting"
+author: "David Ubilava"
+date: "`r format(Sys.time(), '%B %Y')`"
+output:
+  xaringan::moon_reader:
+    css: [default, metropolis, metropolis-fonts, style.css]
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      countIncrementalSlides: false
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, fig.width = 11, fig.height = 7)
+```
+
+
+```{r echo=FALSE, include=FALSE, message=FALSE}
+library(ggplot2)
+```
+
+# Multi-step Forecasts
+
+Consider an AR(1): $y_t=\alpha+\beta y_{t-1}+\varepsilon_t.$ 
+
+From this, the one-step-ahead forecast is readily given by: $$y_{t+1|t}=\alpha+\beta y_{t}.$$
+
+We can obtain a two-step-ahead forecast using the *iterated* method: $$y_{t+2|t}=\alpha+\beta y_{t+1|t}.$$
+
+Alternatively, we can substitute $y_{t+1|t}$ in here to obtain: $$y_{t+2|t}=\alpha+\beta (\alpha+\beta y_{t}) = \alpha(1+\beta)+\beta^2y_t.$$
+Thus, we can obtain a two-step-ahead forecast using the *plug-in* method.
+
+---
+
+
+# Multi-step Forecasts
+
+Similarly, we can substitute $y_{t-1}=\alpha+\beta y_{t-2}+\varepsilon_{t-1}$ into the original equation to obtain:
+$$y_t=\alpha(1+\beta)+\beta^2y_{t-2} + \varepsilon_t + \beta\varepsilon_{t-1} = \tilde{\alpha} + \tilde{\beta} y_{t-2} + u_t,$$ where $\tilde{\alpha}=\alpha(1+\beta)$ and $\tilde{\beta}=\beta^2$, and $u_t=\varepsilon_t + \beta\varepsilon_{t-1}.$
+
+Thus, a way to obtain two-step-ahead forecast is if we regress $y_t$ on $y_{t-2}$, and then use the parameter estimates to *directly* forecast $y_{t+2}$. 
+
+This method is referred to as the *direct* method of forecasting.
+
+The approach can be extended to higher order autoregressive models, as well as to multi-step forecasts at any horizon. 
+
+
+---
+
+
+# Multi-step Forecasts
+
+To summarize, an $h$-step-ahead forecast from an AR(p) model, using:
+
+- the iterated method is: 
+$$y_{i,t+h|t} = \alpha + \sum_{j=1}^{p}\beta_j y_{t+h-j|t},$$ where $y_{t+h-j|t}=y_{t+h-j}$ when $h-j\le 0.$
+- the direct method is: 
+$$y_{d,t+h|t} = \tilde{\alpha} + \sum_{j=1}^{p}\tilde{\beta}_j y_{t+1-j}$$
+- the plug-in method can take a rather cumbersome expression as the autoregressive order and the horizon length increase.
+
+---
+
+
+# Multi-step Forecasts
+
+The relative performance of the two forecasts, $y_{i,t+h|t}$ and $y_{d,t+h|t}$, in terms of bias and efficiency depends on the bias and efficiency of the estimators of each method. 
+
+In the case of correctly specified models, both estimators are consistent, but that of the iterated method is more efficient. Thus, in large samples, the iterated forecast can be expected to perform better than the direct forecast.
+
+In the case of mis-specified models, the ranking may very well change.
+
+---
+
+
+# Multi-step Forecasts
+
+The residual of the regression for direct method, $u_t$, while uncorrelated with the right-hand-side variables, is serially correlated. For example, in the case of the direct two-step-ahead forecast from a re-specified AR(1) model: $$u_t = \varepsilon_t+\beta\varepsilon_{t-1}.$$
+
+It then follows that $Var(u_t) = Var(\varepsilon_t+\beta\varepsilon_{t-1}) = \sigma^2(1+\beta^2).$ 
+
+Note that this is also the expression of the two-step-ahead forecast error variance from an AR(1) model.
+
+Thus, in the case of the direct forecast method, interval forecasts for a given horizon are obtained 'directly,' based on the square root of the error variance of the direct regression.
+
+---
+
+
+# Readings
+
+Marcellino, Stock & Watson (2006)
+
+
+
+

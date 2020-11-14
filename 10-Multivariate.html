@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Forecasting for Economics and Business</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="David Ubilava" />
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/metropolis.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/metropolis-fonts.css" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Forecasting for Economics and Business
+## Vector Autoregressive Modeling and Forecasting
+### David Ubilava
+### November 2020
+
+---
+
+
+
+
+
+
+
+
+# Vector Autoregressive Model
+
+Economic variables are often (and usually) interrelated; for example,
+
+- income affects consumption; 
+- interest rates impact investment
+
+The dynamic linkages between two (or more) economic variables can be modeled in a *system of equations* setting, better known as a vector~autoregressive (VAR) process
+
+---
+
+# Vector Autoregressive Model
+
+Consider an `\(n\)`-dimensional vector autoregression of order `\(p\)`, VAR(p), presented in matrix notation: `$$\mathbf{x}_t = \mathbf{\alpha} + \Pi_1 \mathbf{x}_{t-1} + \ldots + \Pi_p \mathbf{x}_{t-p} + \mathbf{\varepsilon}_t,$$` where `\(\mathbf{x}_t = (x_{1,t},\ldots,x_{n,t})'\)` is a vector of `\(n\)` (potentially) related variables; `\(\mathbf{\varepsilon}_t = (\varepsilon_{1,t},\ldots,\varepsilon_{n,t})'\)` is a vector of error terms, such that `\(E(\mathbf{\varepsilon}_t) = \mathbf{0}\)`, `\(E(\mathbf{\varepsilon}_t^{}\mathbf{\varepsilon}_t^{\prime}) = \Sigma\)`, and `\(E(\mathbf{\varepsilon}_{t}^{}\mathbf{\varepsilon}_{s \neq t}^{\prime}) = 0\)`. `\(\Pi_1,\ldots,\Pi_p\)` are `\(n\)`-dimensional parameter matrices: 
+`$$\Pi_j = 
+	    \left[ 
+		\begin{array}{cccc} 
+		\pi_{11j} &amp; \pi_{12j} &amp; \cdots &amp;  \pi_{1nj} \\ 
+		\pi_{21j} &amp; \pi_{22j} &amp; \cdots &amp;  \pi_{2nj} \\  
+		\vdots &amp; \vdots &amp; \ddots &amp;  \vdots \\  
+		\pi_{n1j} &amp; \pi_{n2j} &amp; \cdots &amp;  \pi_{nnj} \\  
+		\end{array} 
+		\right],\;~~j=1,\ldots,p$$`
+		
+---
+
+# Vector Autoregressive Model
+
+A system of two equations is know as the bivariate VAR. As an example, let's consider a bivariate VAR of order 1, VAR(1). 
+
+Let `\(\{Y_{t}\}\)` and `\(\{Z_t\}\)` be the stationary stochastic processes. A bivariate VAR(1), is then given by:
+`$$\begin{aligned}
+y_t &amp;= \alpha_1 + \pi_{11}^{(y)}y_{t-1} + \pi_{11}^{(z)}z_{t-1} + \varepsilon_{y,t} \\
+z_t &amp;= \alpha_2 + \pi_{21}^{(y)}y_{t-1} + \pi_{21}^{(z)}z_{t-1} + \varepsilon_{z,t}
+\end{aligned}$$`
+
+where `\(\varepsilon_{y,t} \sim iid(0,\sigma_y^2)\)` and `\(\varepsilon_{z,t} \sim iid(0,\sigma_z^2)\)`, and the two can be correlated, i.e., `\(Cov(\varepsilon_{y,t},\varepsilon_{z,t}) \neq 0\)`.
+
+---
+
+# Vector Autoregressive Model
+
+Substitute recursively in a bivariate VAR(1) to get: 
+`$$\begin{aligned}
+\mathbf{x}_t &amp;= \mathbf{\alpha} + \Pi_1 \mathbf{x}_{t-1}+ \mathbf{\varepsilon}_t \notag \\
+&amp;= \mathbf{\alpha} + \Pi_1\left(\mathbf{\alpha} + \Pi_1 \mathbf{x}_{t-2}+ \mathbf{\varepsilon}_{t-1}\right)+ \mathbf{\varepsilon}_t \notag \\
+&amp;= \left(I + \Pi_1\right)\mathbf{\alpha} + \Pi_1^2 \mathbf{x}_{t-2}+ \Pi_1 \mathbf{\varepsilon}_{t-1}+ \mathbf{\varepsilon}_t \notag \\
+&amp;\vdots  \notag \\
+&amp;= \left(I + \sum_{i=1}^{k-1}\Pi_1^i\right)\mathbf{\alpha} + \Pi_1^k \mathbf{x}_{t-k}+ \sum_{i=0}^{k-1}\Pi_1^{i} \mathbf{\varepsilon}_{t-i} 
+\end{aligned}$$`
+As `\(k \to \infty\)`, the stable VAR(1) process converges to: `$$\mathbf{x}_t = \left(I - \Pi_1\right)^{-1}\mathbf{\alpha} + \sum_{i=0}^{\infty}\Pi_1^{i} \mathbf{\varepsilon}_{t-i}$$`
+
+---
+
+# Vector Autoregressive Model
+
+The expectation of `\(\mathbf{x_t}\)` will yield the unconditional mean: `$$E(\mathbf{x}_t) \equiv \mathbf{\mu} = \left(I - \Pi_1\right)^{-1}\mathbf{\alpha}.$$` More generally, i.e., in the case of a multivariate VAR(p),
+`$$\mathbf{\mu} =\left(I - \Pi_1 - \cdots - \Pi_p\right)^{-1}\mathbf{\alpha}$$`
+
+---
+
+# Vector Autoregressive Model
+
+The general features of a vector autoregressive model are:
+
+- Only lagged values of the dependent variables are considered as the right-hand-side variables.
+  * Although, trend and seasonal variables might also be included in higher-frequency data analysis.
+- Each equation has the same set of right-hand-side variables.
+  * However, it is possible to impose different lag structure across the equations, especially when `\(p\)` is relatively large. This is because the number of parameters increases very quickly with the number of lags or the number of variables in the system.
+- The autregressive order, `\(p\)`, is the largest number of lags across all equations.
+
+---
+
+# Modeling Vector Autoregression
+
+The autoregressive order, `\(p\)`, can be determined using system-wide information criteria:
+
+`$$\begin{aligned}
+&amp; AIC = \ln\left|\Sigma_{\varepsilon}\right| + \frac{2}{T}(pn^2+n) \\
+&amp; SIC = \ln\left|\Sigma_{\varepsilon}\right| + \frac{\ln{T}}{T}(pn^2+n)
+\end{aligned}$$`
+
+where `\(\left|\Sigma_{\varepsilon}\right|\)` is the determinant of the residual covariance matrix; `\(n\)` is the number of equations, and `\(T\)` is the total number of observations.
+
+---
+
+# Modeling Vector Autoregression
+
+When each equation of VAR has the same regressors, the OLS can be applied to each equation individually to estimate the regression parameters - i.e., the estimation can be carried out on the equation-by-equation basis (otherwise, the method of maximum likelihood is to be applied).
+
+When processes are covariance-stationarity, conventional t-tests and F-tests are applicable for hypotheses testing.
+
+---
+
+# Testing In-Sample Granger Causality
+
+Consider a bivariate VAR(p): 
+`$$\begin{aligned}
+y_{t} &amp;= \alpha_1 + \pi_{111} y_{t-1} + \cdots + \pi_{11p} y_{t-p} \\
+&amp;+ \pi_{121} z_{t-1} + \cdots + \pi_{12p} z_{t-p} +\varepsilon_{yt}  \\
+z_{t} &amp;= \alpha_1 + \pi_{211} y_{t-1} + \cdots + \pi_{21p} y_{t-p} \\
+&amp;+ \pi_{221} z_{t-1} + \cdots + \pi_{22p} z_{t-p} +\varepsilon_{zt} 
+\end{aligned}$$`
+
+It is said that:
+- `\(\{Z\}\)` does not Granger cause `\(\{Y\}\)` if `\(\pi_{121}=\cdots=\pi_{12p}=0\)`
+- `\(\{Y\}\)` does not Granger cause `\(\{Z\}\)` if `\(\pi_{211}=\cdots=\pi_{21p}=0\)`
+
+---
+
+
+# Forecasting with Multivariate Models
+
+Consider, again, a bivariate VAR(1): 
+`$$\begin{aligned}
+y_t &amp;= \alpha_1 + \pi_{11} y_{t-1} + \pi_{12} z_{t-1} + \varepsilon_{yt} \\
+z_t &amp;= \alpha_2 + \pi_{21} y_{t-1} + \pi_{22} z_{t-1} + \varepsilon_{zt}
+\end{aligned}$$`
+
+The optimal one-step-ahead forecasts are:
+`$$\begin{aligned}
+y_{t+1|t} &amp;= E(y_{t+1}|\Omega_t) = \alpha_1 + \pi_{11} y_{t} + \pi_{12} z_{t} \\
+z_{t+1|t} &amp;= E(z_{t+1}|\Omega_t) = \alpha_2 + \pi_{21} y_{t} + \pi_{22} z_{t}
+\end{aligned}$$`
+
+---
+
+# Forecasting with Multivariate Models
+
+The one-step-ahead forecast errors are: 
+`$$\begin{aligned}
+e_{1,t+1|t} &amp;= y_{t+1} - y_{t+1|t} = \varepsilon_{1,t+1} \\
+e_{2,t+1|t} &amp;= z_{t+1} - z_{t+1|t} = \varepsilon_{2,t+1}
+\end{aligned}$$`
+
+The one-step-ahead forecast variances are:
+`$$\begin{aligned}
+\sigma_{1,t+1|t}^2 &amp;= E(y_{t+1} - y_{t+1|t}|\Omega_t)^2 = E(\varepsilon_{1,t+1}^2) = \sigma_{1}^2 \\
+\sigma_{2,t+1|t}^2 &amp;= E(z_{t+1} - z_{t+1|t}|\Omega_t)^2 = E(\varepsilon_{2,t+1}^2) = \sigma_{2}^2
+\end{aligned}$$`
+
+---
+
+# Forecasting with Multivariate Models
+
+The optimal two-step-ahead forecasts are:
+`$$\begin{aligned}
+y_{t+2|t} &amp;= E(y_{t+2}|\Omega_t) = \alpha_1 + \pi_{11} y_{t+1|t} + \pi_{12} z_{t+1|t} \\
+z_{t+2|t} &amp;= E(z_{t+2}|\Omega_t) = \alpha_2 + \pi_{21} y_{t+1|t} + \pi_{22} z_{t+1|t}
+\end{aligned}$$`
+
+The two-step-ahead forecast errors are:
+`$$\begin{aligned}
+e_{1,t+2|t} &amp;= y_{t+2} - y_{t+2|t} = \pi_{11} e_{1,t+1|t} + \pi_{12} e_{2,t+1|t} + \varepsilon_{1,t+2} \\
+e_{2,t+2|t} &amp;= z_{t+2} - z_{t+2|t} = \pi_{21} e_{1,t+1|t} + \pi_{22} e_{2,t+1|t} + \varepsilon_{2,t+2}
+\end{aligned}$$`
+
+---
+
+# Forecasting with Multivariate Models
+
+The two-step-ahead forecast variances are:
+`$$\begin{aligned}
+\sigma_{1,t+2|t}^2 &amp;= E(y_{t+2} - y_{t+2|t}|\Omega_t)^2 \\ 
+&amp;= \sigma_{1}^2(1+\pi_{11}^2) + \sigma_{2}^2\pi_{12}^2 + 2\pi_{11}\pi_{12} Cov(\varepsilon_{1},\varepsilon_{2})\\
+\sigma_{2,t+2|t}^2 &amp;= E(z_{t+2} - z_{t+2|t}|\Omega_t)^2 \\ 
+&amp;= \sigma_{2}^2(1+\pi_{21}^2) + \sigma_{1}^2\pi_{21}^2 + 2\pi_{21}\pi_{11} Cov(\varepsilon_{1},\varepsilon_{2})
+\end{aligned}$$`
+
+---
+
+
+# Out-of-Sample Granger Causality
+
+The previously discussed (in sample) Granger causality tests are frequently performed in practice, but the 'true spirit' of the causality testing in Granger sense is to assess the relationship between the variables in an out-of-sample setting.
+
+Consider restricted and unrestricted information sets:
+`$$\begin{aligned}
+&amp;\Omega_{t}^r \equiv \Omega_{t}(y) = \{y_t,y_{t-1},\ldots\} \\
+&amp;\Omega_{t}^u \equiv \Omega_{t}(y,z) = \{y_t,y_{t-1},\ldots,z_t,z_{t-1},\ldots\}
+\end{aligned}$$`
+
+---
+
+# Out-of-Sample Granger Causality
+
+Following Granger's definition of causality: `\(\{Z\}\)` is said to cause `\(\{Y\}\)` if `\(\sigma^2\left[y_t|\Omega_{t}(y,z)\right] &lt; \sigma^2\left[y_t|\Omega_{t}(y)\right]\)`, meaning that we can better predict `\(Y_t\)` using all available information (including `\(\{z\}\)`), than if the information apart from `\(\{z\}\)` had been used.
+
+Let the forecasts based on each of the information sets be:
+`$$\begin{aligned}
+	&amp;y_{r,t+h|t} = E\left(y_{t+h}|\Omega_t^{r}\right) \\
+	&amp;y_{u,t+h|t} = E\left(y_{t+h}|\Omega_t^{u}\right)
+\end{aligned}$$`
+
+---
+
+# Out-of-Sample Granger Causality
+
+For each forecast, the corresponding forecast error is:
+`$$\begin{aligned}
+	&amp; e_{r,t+h|t} = y_{t+h} - y_{r,t+h|t}\\
+	&amp; e_{u,t+h|t} = y_{t+h} - y_{u,t+h|t}
+\end{aligned}$$`
+
+The out-of-sample forecast errors are then evaluated on the basis of a loss function.
+
+---
+
+# Out-of-Sample Granger Causality
+
+For example, assuming quadratic loss, and `\(P\)` out-of-sample forecasts:
+`$$\begin{aligned}
+MSFE^{r} &amp;= \frac{1}{P}\sum_{s=1}^{P}\left(e_{r,R+s|R-1+s}\right)^2 \\
+MSFE^{u} &amp;= \frac{1}{P}\sum_{s=1}^{P}\left(e_{u,R+s|R-1+s}\right)^2
+\end{aligned}$$`
+where `\(R\)` is the size of the (first) estimation window.
+
+`\(\{Z\}\)` causes `\(\{Y\}\)`, *in Granger sense*, if `\(MSFE^{r} &gt; MSFE^{u}\)`.
+
+---
+
+# Readings
+
+Hyndman &amp; Athanasopoulos, Section: 11.2
+
+Gonzalez-Rivera, Chapter 11
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

@@ -16,7 +16,7 @@ class: center, middle, inverse, title-slide
 # Forecasting for Economics and Business
 ## Vector Autoregressive Modeling and Forecasting
 ### David Ubilava
-### November 2020
+### December 2020
 
 ---
 
@@ -193,7 +193,7 @@ The two-step-ahead forecast variances are:
 \sigma_{1,t+2|t}^2 &amp;= E(y_{t+2} - y_{t+2|t}|\Omega_t)^2 \\ 
 &amp;= \sigma_{1}^2(1+\pi_{11}^2) + \sigma_{2}^2\pi_{12}^2 + 2\pi_{11}\pi_{12} Cov(\varepsilon_{1},\varepsilon_{2})\\
 \sigma_{2,t+2|t}^2 &amp;= E(z_{t+2} - z_{t+2|t}|\Omega_t)^2 \\ 
-&amp;= \sigma_{2}^2(1+\pi_{21}^2) + \sigma_{1}^2\pi_{21}^2 + 2\pi_{21}\pi_{11} Cov(\varepsilon_{1},\varepsilon_{2})
+&amp;= \sigma_{2}^2(1+\pi_{22}^2) + \sigma_{1}^2\pi_{21}^2 + 2\pi_{21}\pi_{22} Cov(\varepsilon_{1},\varepsilon_{2})
 \end{aligned}$$`
 
 ---

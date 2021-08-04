@@ -2,7 +2,7 @@
 title: "Forecasting for Economics and Business"
 subtitle: "Lecture 1: Introduction to Forecasting"
 author: "David Ubilava"
-date: "`r format(Sys.time(), '%B %Y')`"
+date: "University of Sydney"
 output:
   xaringan::moon_reader:
     css: [default, metropolis, metropolis-fonts, style.css]
@@ -67,7 +67,7 @@ We can forecast virtually anything, whether it is tomorrow's exchange rate or th
 Not all the forecasts are useful, however. 
 
 - That the sun will raise at a given time tomorrow morning is a forecast that we can make with great precision, but is of little value to people. 
-- That a COVID-19 vaccine will become available early next year would be a much useful forecast---this information will help policy makers in their decision making.
+- That the borders will open and Australians will be able to travel beginning from early next year would be a much useful forecast---this information will help people, businesses, and policy makers in their decision making.
 
 ---
 
@@ -107,87 +107,87 @@ Forecasting becomes increasingly difficult (inaccurate) with the horizon length,
 ---
 
 
-# A Forecast Error
-	
-A point forecast for period $t+h$, denoted by $y_{t+h|t}$, is our 'best guess' that is made in period $t$, about the actual realization of the random variable in period $t+h$, denoted by $y_{t+h}$.
+<!-- # A Forecast Error -->
 
-The difference between the two is the forecast error. That is, $$e_{t+h|t} = y_{t+h} - y_{t+h|t}$$
+<!-- A point forecast for period $t+h$, denoted by $y_{t+h|t}$, is our 'best guess' that is made in period $t$, about the actual realization of the random variable in period $t+h$, denoted by $y_{t+h}$. -->
 
----
+<!-- The difference between the two is the forecast error. That is, $$e_{t+h|t} = y_{t+h} - y_{t+h|t}$$ -->
 
-
-# A Forecast Error
-	
-The more accurate is the forecast the smaller is the forecast error. Three types of uncertainty contribute to the forecast error:
-$$\begin{aligned}
-		e_{t+h|t} & = \big[y_{t+h}-E(y_{t+h}|\Omega_{t})\big]\;~~\text{(forecast uncertainty)}  \\
-		& + \big[E(y_{t+h}|\Omega_{t}) - g(\Omega_{t};\theta)\big]\;~~\text{(model uncertainty)}  \\
-		& + \big[g(\Omega_{t};\theta)-g(\Omega_{t};\hat{\theta})\big]\;~~\text{(parameter uncertainty)} 
-		\end{aligned}$$
-		
----
+<!-- --- -->
 
 
-# The Loss Function
-	
-Because uncertainty cannot be avoided, a forecaster is bound to commit forecast errors. The goal of the forecaster is to minimize the 'cost' associated with the forecast errors. This is achieved by minimizing the expected loss function.
+<!-- # A Forecast Error -->
 
-A loss function, $L(e_{t+h|t})$, can take many different forms, but is should satisfy the following properties:
-$$\begin{aligned}
-		& L(e_{t+h|t}) = 0,\;~~\forall\;e_{t+h|t} = 0 \\
-		& L(e_{t+h|t}) \geq 0,\;~~\forall\;e_{t+h|t} \neq 0 \\
-		& L(e_{t+h|t}^{(i)}) > L(e_{t+h|t}^{(j)}),\;~~\forall\;|e_{t+h|t}^{(i)}| > |e_{t+h|t}^{(j)}|
-		\end{aligned}$$
+<!-- The more accurate is the forecast the smaller is the forecast error. Three types of uncertainty contribute to the forecast error: -->
+<!-- $$\begin{aligned} -->
+<!-- 		e_{t+h|t} & = \big[y_{t+h}-E(y_{t+h}|\Omega_{t})\big]\;~~\text{(forecast uncertainty)}  \\ -->
+<!-- 		& + \big[E(y_{t+h}|\Omega_{t}) - g(\Omega_{t};\theta)\big]\;~~\text{(model uncertainty)}  \\ -->
+<!-- 		& + \big[g(\Omega_{t};\theta)-g(\Omega_{t};\hat{\theta})\big]\;~~\text{(parameter uncertainty)}  -->
+<!-- 		\end{aligned}$$ -->
 
----
+<!-- --- -->
 
 
-# The Loss Function
-	
-Two commonly used symmetric loss functions are *absolute* and *quadratic* loss functions:
-$$\begin{aligned}
-		& L{(e_{t+h|t})} = |e_{t+h|t}|\;~~\text{(absolute loss function)} \\
-		& L{(e_{t+h|t})} = (e_{t+h|t})^2\;~~\text{(quadratic loss function)}	
-		\end{aligned}$$
+<!-- # The Loss Function -->
 
-The quadratic loss function is popular, partly because we typically select models based on 'in-sample' quadratic loss (i.e. by minimizing the sum of squared residuals).
+<!-- Because uncertainty cannot be avoided, a forecaster is bound to commit forecast errors. The goal of the forecaster is to minimize the 'cost' associated with the forecast errors. This is achieved by minimizing the expected loss function. -->
 
----
+<!-- A loss function, $L(e_{t+h|t})$, can take many different forms, but is should satisfy the following properties: -->
+<!-- $$\begin{aligned} -->
+<!-- 		& L(e_{t+h|t}) = 0,\;~~\forall\;e_{t+h|t} = 0 \\ -->
+<!-- 		& L(e_{t+h|t}) \geq 0,\;~~\forall\;e_{t+h|t} \neq 0 \\ -->
+<!-- 		& L(e_{t+h|t}^{(i)}) > L(e_{t+h|t}^{(j)}),\;~~\forall\;|e_{t+h|t}^{(i)}| > |e_{t+h|t}^{(j)}| -->
+<!-- 		\end{aligned}$$ -->
 
-
-# An Optimal Forecast
-	
-Optimal forecast is the forecast that minimizes the expected loss:
-		$$\min_{y_{t+h|t}} E\left[L\left(e_{t+h|t}\right)\right] = \min_{y_{t+h|t}} E\left[L\left(y_{t+h}-y_{t+h|t}\right)\right]$$
-		where the expected loss is given by:
-		$$E\left[L\left(y_{t+h}-y_{t+h|t}\right)\right]=\int L\left(y_{t+h}-y_{t+h|t}\right) f(y_{t+h}|\Omega_t)dy$$
-		
-		
----
+<!-- --- -->
 
 
-# An Optimal Forecast
+<!-- # The Loss Function -->
 
-We can assume that the conditional density is a normal density with mean $\mu_{t+h} \equiv E(y_{t+h})$, and variance $\sigma_{t+h}^2 \equiv Var(y_{t+h})$.
+<!-- Two commonly used symmetric loss functions are *absolute* and *quadratic* loss functions: -->
+<!-- $$\begin{aligned} -->
+<!-- 		& L{(e_{t+h|t})} = |e_{t+h|t}|\;~~\text{(absolute loss function)} \\ -->
+<!-- 		& L{(e_{t+h|t})} = (e_{t+h|t})^2\;~~\text{(quadratic loss function)}	 -->
+<!-- 		\end{aligned}$$ -->
 
-Under the assumption of the quadratic loss function:
-$$\begin{aligned}
-		E\left[L(e_{t+h|t})\right] & = E(e_{t+h|t}^2) = E(y_{t+h} - \hat{y}_{t+h|t})^2 \\
-		& = E(y_{t+h}^2)-2E(y_{t+h})\hat{y}_{t+h|t} + \hat{y}_{t+h|t}^2
-		\end{aligned}$$
+<!-- The quadratic loss function is popular, partly because we typically select models based on 'in-sample' quadratic loss (i.e. by minimizing the sum of squared residuals). -->
 
-By solving the optimization problem it follows that: $$\hat{y}_{t+h|t} = E(y_{t+h}) \equiv \mu_{t+h}$$
+<!-- --- -->
 
-Thus, the optimal point forecast under the quadratic loss is the *mean*.
 
-For reference, the optimal point forecast under absolute loss is the *median*.
+<!-- # An Optimal Forecast -->
 
----
+<!-- Optimal forecast is the forecast that minimizes the expected loss: -->
+<!-- 		$$\min_{y_{t+h|t}} E\left[L\left(e_{t+h|t}\right)\right] = \min_{y_{t+h|t}} E\left[L\left(y_{t+h}-y_{t+h|t}\right)\right]$$ -->
+<!-- 		where the expected loss is given by: -->
+<!-- 		$$E\left[L\left(y_{t+h}-y_{t+h|t}\right)\right]=\int L\left(y_{t+h}-y_{t+h|t}\right) f(y_{t+h}|\Omega_t)dy$$ -->
+
+
+<!-- --- -->
+
+
+<!-- # An Optimal Forecast -->
+
+<!-- We can assume that the conditional density is a normal density with mean $\mu_{t+h} \equiv E(y_{t+h})$, and variance $\sigma_{t+h}^2 \equiv Var(y_{t+h})$. -->
+
+<!-- Under the assumption of the quadratic loss function: -->
+<!-- $$\begin{aligned} -->
+<!-- 		E\left[L(e_{t+h|t})\right] & = E(e_{t+h|t}^2) = E(y_{t+h} - \hat{y}_{t+h|t})^2 \\ -->
+<!-- 		& = E(y_{t+h}^2)-2E(y_{t+h})\hat{y}_{t+h|t} + \hat{y}_{t+h|t}^2 -->
+<!-- 		\end{aligned}$$ -->
+
+<!-- By solving the optimization problem it follows that: $$\hat{y}_{t+h|t} = E(y_{t+h}) \equiv \mu_{t+h}$$ -->
+
+<!-- Thus, the optimal point forecast under the quadratic loss is the *mean*. -->
+
+<!-- For reference, the optimal point forecast under absolute loss is the *median*. -->
+
+<!-- --- -->
 
 
 # Readings
 
-Hyndman & Athanasopoulos, Sections: 1.1 - 1.7
+Hyndman & Athanasopoulos, [Chapter 1](https://otexts.com/fpp3/intro.html)
 
 Gonzalez-Rivera, Chapter 1
 

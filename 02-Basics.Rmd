@@ -1,8 +1,8 @@
 ---
 title: "Forecasting for Economics and Business"
-subtitle: "Lecture 3: Basics of Forecasting"
+subtitle: "Lecture 2: Basics of Forecasting"
 author: "David Ubilava"
-date: "`r format(Sys.time(), '%B %Y')`"
+date: "University of Sydney"
 output:
   xaringan::moon_reader:
     css: [default, metropolis, metropolis-fonts, style.css]
@@ -23,6 +23,99 @@ knitr::opts_chunk$set(echo = FALSE, fig.width = 11, fig.height = 7)
 library(ggplot2)
 ```
 
+# A Forecast
+
+A forecast is a random variable which has some distribution and, thus, moments.
+
+A simplest form of a forecast is a point forecast (usually a mean of the distribution, but can be a median or, really, any quantile).
+
+---
+
+
+# A Forecast Error
+
+A point forecast made in period $t$ for horizon $h$ can be denoted as $y_{t+h|t}$; this is our 'best guess', that is made in period $t$, about the actual realization of the random variable in period $t+h$, denoted by $y_{t+h}$.
+
+The difference between the two is the forecast error. That is, $$e_{t+h|t} = y_{t+h} - y_{t+h|t}$$
+
+---
+
+
+# A Forecast Error
+
+The more accurate is the forecast the smaller is the forecast error. 
+
+Three types of uncertainty contribute to the forecast error:
+$$\begin{aligned}
+		e_{t+h|t} & = \big[y_{t+h}-E(y_{t+h}|\Omega_{t})\big]\;~~\text{(forecast uncertainty)}  \\
+		& + \big[E(y_{t+h}|\Omega_{t}) - g(\Omega_{t};\theta)\big]\;~~\text{(model uncertainty)}  \\
+		& + \big[g(\Omega_{t};\theta)-g(\Omega_{t};\hat{\theta})\big]\;~~\text{(parameter uncertainty)}
+		\end{aligned}$$
+		
+- $\Omega_t$ denotes the information set available at the time when the forecast is made
+- $g(\cdot)$ is a functional form of a model used to fit the data
+- $\theta$ is a set of parameters of the model, and $\hat{\theta}$ are their estimates
+
+---
+
+
+# The Loss Function
+
+Because uncertainty cannot be avoided, a forecaster is bound to commit forecast errors. 
+
+The goal of the forecaster is to minimize the 'cost' associated with the forecast errors. This is achieved by minimizing the expected loss function.
+
+A loss function, $L(e_{t+h|t})$, can take many different forms, but is should satisfy the following properties:
+$$\begin{aligned}
+		& L(e_{t+h|t}) = 0,\;~~\forall\;e_{t+h|t} = 0 \\
+		& L(e_{t+h|t}) \geq 0,\;~~\forall\;e_{t+h|t} \neq 0 \\
+		& L(e_{t+h|t}^{(i)}) > L(e_{t+h|t}^{(j)}),\;~~\forall\;|e_{t+h|t}^{(i)}| > |e_{t+h|t}^{(j)}|
+		\end{aligned}$$
+
+---
+
+
+# The Loss Function
+
+Two commonly used symmetric loss functions are *absolute* and *quadratic* loss functions:
+$$\begin{aligned}
+		& L{(e_{t+h|t})} = |e_{t+h|t}|\;~~\text{(absolute loss function)} \\
+		& L{(e_{t+h|t})} = (e_{t+h|t})^2\;~~\text{(quadratic loss function)}
+		\end{aligned}$$
+
+The quadratic loss function is popular, partly because we typically select models based on 'in-sample' quadratic loss (i.e. by minimizing the sum of squared residuals).
+
+---
+
+
+# An Optimal Forecast
+
+Optimal forecast is the forecast that minimizes the expected loss:
+		$$\min_{y_{t+h|t}} E\left[L\left(e_{t+h|t}\right)\right] = \min_{y_{t+h|t}} E\left[L\left(y_{t+h}-y_{t+h|t}\right)\right]$$
+		where the expected loss is given by:
+		$$E\left[L\left(y_{t+h}-y_{t+h|t}\right)\right]=\int L\left(y_{t+h}-y_{t+h|t}\right) f(y_{t+h}|\Omega_t)dy$$
+
+
+---
+
+
+# An Optimal Forecast
+
+We can assume that the conditional density is a normal density with mean $\mu_{t+h} \equiv E(y_{t+h})$, and variance $\sigma_{t+h}^2 \equiv Var(y_{t+h})$.
+
+Under the assumption of the quadratic loss function:
+$$\begin{aligned}
+		E\left[L(e_{t+h|t})\right] & = E(e_{t+h|t}^2) = E(y_{t+h} - \hat{y}_{t+h|t})^2 \\
+		& = E(y_{t+h}^2)-2E(y_{t+h})\hat{y}_{t+h|t} + \hat{y}_{t+h|t}^2
+		\end{aligned}$$
+
+By solving the optimization problem it follows that: $$\hat{y}_{t+h|t} = E(y_{t+h}) \equiv \mu_{t+h}$$
+
+Thus, the optimal point forecast under the quadratic loss is the *mean*.
+
+For reference, the optimal point forecast under absolute loss is the *median*.
+
+---
 
 # Simple Forecasting Methods
 
@@ -52,30 +145,30 @@ It then follows that: $$E(y_{T+h}|\Omega_T) \equiv y_{T+h|T} = y_T + h \delta = 
 
 ---
 
-# Simple Forecasting Methods
+<!-- # Simple Forecasting Methods -->
 
-## Simple Exponential Smoothing
+<!-- ## Simple Exponential Smoothing -->
 
-The average and naive forecasting methods can be seen as the two extreme cases of what is known as the *simple exponential smoothing* (SES). 
+<!-- The average and naive forecasting methods can be seen as the two extreme cases of what is known as the *simple exponential smoothing* (SES).  -->
 
-SES offers something 'in-between' of the aforementioned two methods. That is, larger weights are assigned to more recent observations, and the weights decrease exponentially (hence the name) as the lags increase.
+<!-- SES offers something 'in-between' of the aforementioned two methods. That is, larger weights are assigned to more recent observations, and the weights decrease exponentially (hence the name) as the lags increase. -->
 
----
-
-
-# Simple Forecasting Methods
-
-A one-step-ahead forecast from SES is given by: $$y_{T+1|T} = \alpha y_{T} + (1-\alpha)y_{T|T-1},$$ where $0 \leq \alpha \leq 1$ is a smoothing parameter. Substitute recursively to obtain: $$y_{T+1|T} = \sum_{i=0}^{T-1}\alpha\left(1-\alpha\right)^{i}y_{T-i} + (1-\alpha)^T y_{1|0}$$ In practice, $y_{1|0}$ is often simply set to $y_1$.
-
----
+<!-- --- -->
 
 
-# Simple Forecasting Methods
+<!-- # Simple Forecasting Methods -->
 
-A forecast for horizon $h$ at time $T$ is equal to a weighted average of the most recent realization of the random variable and its forecast:
-$$y_{T+h|T} = \alpha y_{T} + (1-\alpha)y_{T|T-1},\;~~\forall\;h=1,2,\ldots$$ That is, SES also has a 'flat' multi-step forecast function (which is intuitive, as both the average and naive methods also have 'flat' multi-step forecast functions).
+<!-- A one-step-ahead forecast from SES is given by: $$y_{T+1|T} = \alpha y_{T} + (1-\alpha)y_{T|T-1},$$ where $0 \leq \alpha \leq 1$ is a smoothing parameter. Substitute recursively to obtain: $$y_{T+1|T} = \sum_{i=0}^{T-1}\alpha\left(1-\alpha\right)^{i}y_{T-i} + (1-\alpha)^T y_{1|0}$$ In practice, $y_{1|0}$ is often simply set to $y_1$. -->
 
----
+<!-- --- -->
+
+
+<!-- # Simple Forecasting Methods -->
+
+<!-- A forecast for horizon $h$ at time $T$ is equal to a weighted average of the most recent realization of the random variable and its forecast: -->
+<!-- $$y_{T+h|T} = \alpha y_{T} + (1-\alpha)y_{T|T-1},\;~~\forall\;h=1,2,\ldots$$ That is, SES also has a 'flat' multi-step forecast function (which is intuitive, as both the average and naive methods also have 'flat' multi-step forecast functions). -->
+
+<!-- --- -->
 
 
 # Measures of Forecast Accuracy
@@ -172,7 +265,7 @@ Testing $Cov(e_{t+1|t},e_{t|t-1})=0$. Set up a regression: $$e_{t+1|t} = \alpha 
 
 # Readings
 
-Hyndman & Athanasopoulos, Sections: 3.1, 3.3, 3.4, 7.1
+Hyndman & Athanasopoulos, [Chapter 5](https://otexts.com/fpp3/toolbox.html)
 
 Gonzalez-Rivera, Chapter 4
 

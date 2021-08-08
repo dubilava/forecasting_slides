@@ -67,14 +67,16 @@ We can forecast virtually anything, whether it is tomorrow's exchange rate or th
 Not all the forecasts are useful, however. 
 
 - That the sun will raise at a given time tomorrow morning is a forecast that we can make with great precision, but is of little value to people. 
-- That the borders will open and Australians will be able to travel beginning from early next year would be a much useful forecast---this information will help people, businesses, and policy makers in their decision making.
+- That the borders will open and Australians will be able to travel from early 2022 would be a much useful forecast---this information will help people, businesses, and policy makers in their decision making.
 
 ---
 
 
 # The Ease of Forecasting
 	
-Forecasting is difficult. That said, some events are easier to forecast than others. 
+Forecasting is difficult. 
+
+That said, some events are easier to forecast than others. 
 
 A forecast of electricity demand can be highly accurate, but forecasting exchange rates is never an easy task.
 
@@ -82,6 +84,7 @@ Several factors play role in our ability to forecast an event:
 
 - understanding of the processes that contribute to the event realization;
 - availability of data that facilitates the understanding;
+- plausibility that future resembles the past;
 - (in)ability of the forecasts to impact the event realization.
 
 ---

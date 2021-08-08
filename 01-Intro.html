@@ -75,14 +75,16 @@ We can forecast virtually anything, whether it is tomorrow's exchange rate or th
 Not all the forecasts are useful, however. 
 
 - That the sun will raise at a given time tomorrow morning is a forecast that we can make with great precision, but is of little value to people. 
-- That the borders will open and Australians will be able to travel beginning from early next year would be a much useful forecast---this information will help people, businesses, and policy makers in their decision making.
+- That the borders will open and Australians will be able to travel from early 2022 would be a much useful forecast---this information will help people, businesses, and policy makers in their decision making.
 
 ---
 
 
 # The Ease of Forecasting
 	
-Forecasting is difficult. That said, some events are easier to forecast than others. 
+Forecasting is difficult. 
+
+That said, some events are easier to forecast than others. 
 
 A forecast of electricity demand can be highly accurate, but forecasting exchange rates is never an easy task.
 
@@ -90,6 +92,7 @@ Several factors play role in our ability to forecast an event:
 
 - understanding of the processes that contribute to the event realization;
 - availability of data that facilitates the understanding;
+- plausibility that future resembles the past;
 - (in)ability of the forecasts to impact the event realization.
 
 ---
@@ -104,6 +107,7 @@ Methods of forecasting can be grouped into the following two categories:
 
 ---
 
+
 # The Forecast Horizon and Accuracy
 	
 When forecasting, we usually need to decide on the horizon length, i.e., how far ahead do we want to forecast.
@@ -113,84 +117,6 @@ In *time series forecasting*, we typically distinguish between the *one-step-ahe
 Forecasting becomes increasingly difficult (inaccurate) with the horizon length, as more unknowns 'get in the way' between the time when the forecast is made and the future time period.
 
 ---
-
-
-&lt;!-- # A Forecast Error --&gt;
-
-&lt;!-- A point forecast for period `\(t+h\)`, denoted by `\(y_{t+h|t}\)`, is our 'best guess' that is made in period `\(t\)`, about the actual realization of the random variable in period `\(t+h\)`, denoted by `\(y_{t+h}\)`. --&gt;
-
-&lt;!-- The difference between the two is the forecast error. That is, `$$e_{t+h|t} = y_{t+h} - y_{t+h|t}$$` --&gt;
-
-&lt;!-- --- --&gt;
-
-
-&lt;!-- # A Forecast Error --&gt;
-
-&lt;!-- The more accurate is the forecast the smaller is the forecast error. Three types of uncertainty contribute to the forecast error: --&gt;
-&lt;!-- $$\begin{aligned} --&gt;
-&lt;!-- 		e_{t+h|t} &amp; = \big[y_{t+h}-E(y_{t+h}|\Omega_{t})\big]\;~~\text{(forecast uncertainty)}  \\ --&gt;
-&lt;!-- 		&amp; + \big[E(y_{t+h}|\Omega_{t}) - g(\Omega_{t};\theta)\big]\;~~\text{(model uncertainty)}  \\ --&gt;
-&lt;!-- 		&amp; + \big[g(\Omega_{t};\theta)-g(\Omega_{t};\hat{\theta})\big]\;~~\text{(parameter uncertainty)}  --&gt;
-&lt;!-- 		\end{aligned}$$ --&gt;
-
-&lt;!-- --- --&gt;
-
-
-&lt;!-- # The Loss Function --&gt;
-
-&lt;!-- Because uncertainty cannot be avoided, a forecaster is bound to commit forecast errors. The goal of the forecaster is to minimize the 'cost' associated with the forecast errors. This is achieved by minimizing the expected loss function. --&gt;
-
-&lt;!-- A loss function, `\(L(e_{t+h|t})\)`, can take many different forms, but is should satisfy the following properties: --&gt;
-&lt;!-- $$\begin{aligned} --&gt;
-&lt;!-- 		&amp; L(e_{t+h|t}) = 0,\;~~\forall\;e_{t+h|t} = 0 \\ --&gt;
-&lt;!-- 		&amp; L(e_{t+h|t}) \geq 0,\;~~\forall\;e_{t+h|t} \neq 0 \\ --&gt;
-&lt;!-- 		&amp; L(e_{t+h|t}^{(i)}) &gt; L(e_{t+h|t}^{(j)}),\;~~\forall\;|e_{t+h|t}^{(i)}| &gt; |e_{t+h|t}^{(j)}| --&gt;
-&lt;!-- 		\end{aligned}$$ --&gt;
-
-&lt;!-- --- --&gt;
-
-
-&lt;!-- # The Loss Function --&gt;
-
-&lt;!-- Two commonly used symmetric loss functions are *absolute* and *quadratic* loss functions: --&gt;
-&lt;!-- $$\begin{aligned} --&gt;
-&lt;!-- 		&amp; L{(e_{t+h|t})} = |e_{t+h|t}|\;~~\text{(absolute loss function)} \\ --&gt;
-&lt;!-- 		&amp; L{(e_{t+h|t})} = (e_{t+h|t})^2\;~~\text{(quadratic loss function)}	 --&gt;
-&lt;!-- 		\end{aligned}$$ --&gt;
-
-&lt;!-- The quadratic loss function is popular, partly because we typically select models based on 'in-sample' quadratic loss (i.e. by minimizing the sum of squared residuals). --&gt;
-
-&lt;!-- --- --&gt;
-
-
-&lt;!-- # An Optimal Forecast --&gt;
-
-&lt;!-- Optimal forecast is the forecast that minimizes the expected loss: --&gt;
-&lt;!-- 		`$$\min_{y_{t+h|t}} E\left[L\left(e_{t+h|t}\right)\right] = \min_{y_{t+h|t}} E\left[L\left(y_{t+h}-y_{t+h|t}\right)\right]$$` --&gt;
-&lt;!-- 		where the expected loss is given by: --&gt;
-&lt;!-- 		`$$E\left[L\left(y_{t+h}-y_{t+h|t}\right)\right]=\int L\left(y_{t+h}-y_{t+h|t}\right) f(y_{t+h}|\Omega_t)dy$$` --&gt;
-
-
-&lt;!-- --- --&gt;
-
-
-&lt;!-- # An Optimal Forecast --&gt;
-
-&lt;!-- We can assume that the conditional density is a normal density with mean `\(\mu_{t+h} \equiv E(y_{t+h})\)`, and variance `\(\sigma_{t+h}^2 \equiv Var(y_{t+h})\)`. --&gt;
-
-&lt;!-- Under the assumption of the quadratic loss function: --&gt;
-&lt;!-- $$\begin{aligned} --&gt;
-&lt;!-- 		E\left[L(e_{t+h|t})\right] &amp; = E(e_{t+h|t}^2) = E(y_{t+h} - \hat{y}_{t+h|t})^2 \\ --&gt;
-&lt;!-- 		&amp; = E(y_{t+h}^2)-2E(y_{t+h})\hat{y}_{t+h|t} + \hat{y}_{t+h|t}^2 --&gt;
-&lt;!-- 		\end{aligned}$$ --&gt;
-
-&lt;!-- By solving the optimization problem it follows that: `$$\hat{y}_{t+h|t} = E(y_{t+h}) \equiv \mu_{t+h}$$` --&gt;
-
-&lt;!-- Thus, the optimal point forecast under the quadratic loss is the *mean*. --&gt;
-
-&lt;!-- For reference, the optimal point forecast under absolute loss is the *median*. --&gt;
-
-&lt;!-- --- --&gt;
 
 
 # Readings

@@ -100,6 +100,17 @@ Methods of forecasting can be grouped into the following two categories:
 ---
 
 
+# Time Series Forecasting 
+	
+Economic forecasting lends itself naturally to time series analysis. Indeed, the study of time series econometrics has evolved as a result of a quest for accurate forecasting methods.
+
+In econometric time series analysis, the implied assumption is that the past tends to repeat itself, at least to some extent. So, if we well study the past, we should be able to forecast an event with some degree of accuracy. 
+
+But there still is a surprise element concerning the forecast - something that has never happened in past, and is only specific to the future. Because of this, there is no such thing as precise forecast. Best we can hope for is that we get close to it.
+
+---
+
+
 # The Forecast Horizon and Accuracy
 	
 When forecasting, we usually need to decide on the horizon length, i.e., how far ahead do we want to forecast.

@@ -1,8 +1,8 @@
 ---
 title: "Forecasting for Economics and Business"
-subtitle: "Lecture 2: Time Series"
+subtitle: "Lecture 3: Time Series"
 author: "David Ubilava"
-date: "`r format(Sys.time(), '%B %Y')`"
+date: "University of Sydney"
 output:
   xaringan::moon_reader:
     css: [default, metropolis, metropolis-fonts, style.css]
@@ -24,22 +24,15 @@ library(ggplot2)
 
 
 
-# Forecasting and Time Series
-	
-Economic forecasting lends itself naturally to time series analysis. Indeed, the study of time series econometrics has evolved as a result of a quest for accurate forecasting methods.
+# Stochastic Pricess and Time Series
 
-In econometric time series analysis, the implied assumption is that the past tends to repeat itself, at least to some extent. So, if we well study the past, we should be able to forecast an event with some degree of accuracy. 
+Time series are realizations of a chronologically stored sequence of random variables. This sequence of random variables is referred to as the *stochastic process*. 
 
-But there still is a surprise element concerning the forecast - something that has never happened in past, and is only specific to the future. Because of this, there is no such thing as precise forecast. Best we can hope for is that we get close to it.
+Thus, a time series is a realisation of the stochastic process. 
 
----
+We index time periods as $1,2,\ldots,T$, and denote the set of observations as $\{y_t: t=1,\ldots,T\}$. 
 
-
-# Time Series
-
-Time series are realizations of a chronologically stored sequence of random variables. This sequence of random variables is referred to as the *stochastic process*. Thus, a time series is a realisation of the stochastic process. 
-
-We index time periods as $1,2,\ldots,T$, and denote the set of observations as $\{y_t: t=1,\ldots,T\}$. A time series is a finite sample from an underlying doubly--infinite sequence: $\{\ldots,y_{-1},y_{0},y_1,\ldots,y_{T-1},y_{T},y_{T+1},\ldots\}$.
+A time series is a finite sample from an underlying doubly-infinite sequence: $\{\ldots,y_{-1},y_{0},y_1,\ldots,y_{T-1},y_{T},y_{T+1},\ldots\}$.
 
 ---
 
@@ -75,7 +68,9 @@ ggplot(df,aes(x=t,y=y))+
 
 # White Noise
 
-Such time series are referred to as *white noise*. That is, a time series, $y$, is a white noise process if: 
+Such time series are referred to as *white noise*. 
+
+A time series, $y$, is a white noise process if: 
 \begin{align*}
 & E(y_t) = 0,\;~\forall~t\\
 & Var(y_t) = \sigma^2,\;~\forall~t\\
@@ -100,7 +95,11 @@ Thus, a time series, $\{y_t\}$ is stationary if the mean and variance are indepe
 
 # Autocorrelation
 
-It is more of a norm, rather than an exception, for a time series to be correlated. Indeed, we often observe dependence among the temporally adjacent time series. That is, for reasonably small values of $k$, $y_t$ and $y_{t-k}$ tend to be correlated. Such correlations are referred to as *autocorrelations*, and are given by: $$\rho_k \equiv Corr(y_t,y_{t-k}) = \frac{Cov(y_t,y_{t-k})}{Var(y_t)},\;~~k=1,2,\ldots$$ 
+It is more of a norm, rather than an exception, for a time series to be correlated. 
+
+Indeed, we often observe dependence among the temporally adjacent time series. That is, for reasonably small values of $k$, $y_t$ and $y_{t-k}$ tend to be correlated. 
+
+Such correlations are referred to as *autocorrelations*, and are given by: $$\rho_k \equiv Corr(y_t,y_{t-k}) = \frac{Cov(y_t,y_{t-k})}{Var(y_t)},\;~~k=1,2,\ldots$$ 
 
 ---
 
@@ -207,8 +206,72 @@ ggplot(df,aes(x=t,y=dlny))+
 ---
 
 
+# Evaluating Time Series Forecasts
+
+To evaluate forecasts of a time series, $\{y_t\}$, with a total of $T$ observations, we divide the sample into two parts, the in-sample set with a total of $R$ observations, such that $R < T$ (typically, $R \approx 0.75T$), and the out-of-sample set. 
+
+The goal is to recreate a 'genuine' forecasting environment.
+
+For example, If we are interested in one-step-ahead forecast assessment, this way we will produce a sequence of forecasts: $\{y_{R+1|R},y_{R+2|{R+1}},\ldots,y_{T|{T-1}}\}$ for $\{Y_{R+1},Y_{R+2},\ldots,Y_{T}\}$.
+
+Forecast errors, $e_{R+j} = y_{R+j} - y_{R+j|{R+j-1}}$, then can be computed for $j = 1,\ldots,T-R$.
+
+---
+
+
+# Evaluating Time Series Forecasts
+
+Three forecasting schemes are available for a forecaster: *recursive*, *rolling*, and *fixed*.
+- The recursive forecasting environment uses a sequence of expanding windows to update model estimates and the information set.
+- The rolling forecasting environment uses a sequence of rolling windows of the same size to update model estimates and the information set.
+- The fixed forecasting environment uses one fixed window for model estimates, and only updates the information set.
+
+---
+
+
+# Evaluating Time Series Forecasts
+
+Forecast errors of a 'good' forecasting method will have the following properties:
+- zero mean; otherwise, the forecasts are biased.
+- no correlation with the forecasts; otherwise, there is information left that should be used in computing forecasts.
+- no serial correlation among one-step-ahead forecast errors. Note that $k$-step-ahead forecasts, for $k>1$, can be, and usually are, serially correlated.
+
+Any forecasting method that does not satisfy these properties has a potential to be improved. 
+
+---
+
+
+# Forecast Error Diagnostics
+
+## Unbiasedness
+
+Testing $E(e_{t+h|t})=0$. Set up a regression: $$e_{t+h|t} = \alpha+\upsilon_{t+h} \hspace{.5in} t = R,\ldots,T-h,$$
+where $R$ is the estimation window size, $T$ is the sample size, and $h$ is the forecast horizon length. The null of zero-mean forecast error is equivalent of testing $H_0: \alpha = 0$ in the OLS setting. For $h$-step-ahead forecast errors, when $h>1$, autocorrelation consistent standard errors should be used.
+
+---
+
+
+# Forecast Error Diagnostics
+
+## Efficiency
+
+Testing $Cov(e_{t+h|t},y_{t+h|t})=0$. Set up a regression: $$e_{t+h|t} = \alpha + \beta y_{t+h|t} + \upsilon_{t+h} \hspace{.5in} t = R,\ldots,T-h.$$ The null of forecast error independence of the information set is equivalent of testing $H_0: \beta = 0$ in the OLS setting. For $h$-step-ahead forecast errors, when $h>1$, autocorrelation consistent standard errors should be used.
+
+---
+
+
+# Forecast Error Diagnostics
+
+## No Autocorrelation
+
+Testing $Cov(e_{t+1|t},e_{t|t-1})=0$. Set up a regression: $$e_{t+1|t} = \alpha + \gamma e_{t|t-1} + \upsilon_{t+1} \hspace{.5in} t = R+1,\ldots,T-1.$$ The null of no forecast error autocorrelation is equivalent of testing $H_0: \gamma = 0$ in the OLS setting.
+
+
+---
+
+
 # Readings
 
-Hyndman & Athanasopoulos, Sections: 2.8, 2.9, 3.2
+Hyndman & Athanasopoulos, [Sections from Chapters 2, 3 & 4](https://otexts.com/fpp3/toolbox.html)
 
 Gonzalez-Rivera, Chapter 3

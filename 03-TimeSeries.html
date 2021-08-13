@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Forecasting for Economics and Business</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="David Ubilava" />
+    <script src="libs/header-attrs-2.9.7/header-attrs.js"></script>
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/metropolis.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/metropolis-fonts.css" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Forecasting for Economics and Business
+## Lecture 3: Time Series
+### David Ubilava
+### University of Sydney
+
+---
+
+
+
+
+
+
+
+
+
+
+# Stochastic Pricess and Time Series
+
+Time series are realizations of a chronologically stored sequence of random variables. This sequence of random variables is referred to as the *stochastic process*. 
+
+Thus, a time series is a realisation of the stochastic process. 
+
+We index time periods as `\(1,2,\ldots,T\)`, and denote the set of observations as `\(\{y_t: t=1,\ldots,T\}\)`. 
+
+A time series is a finite sample from an underlying doubly-infinite sequence: `\(\{\ldots,y_{-1},y_{0},y_1,\ldots,y_{T-1},y_{T},y_{T+1},\ldots\}\)`.
+
+---
+
+
+# White Noise
+
+The simplest kind of time series is comprised of realisations from an independent and indentically distributed random variable with zero mean and constant variance: `\(\varepsilon_t \sim iid\left(0,\sigma^2\right)\)`. 
+
+The next graph plots this series against time.
+
+---
+
+
+# White Noise
+
+![](03-TimeSeries_files/figure-html/unnamed-chunk-2-1.png)&lt;!-- --&gt;
+
+---
+
+
+# White Noise
+
+Such time series are referred to as *white noise*. 
+
+A time series, `\(y\)`, is a white noise process if: 
+`\begin{align*}
+&amp; E(y_t) = 0,\;~\forall~t\\
+&amp; Var(y_t) = \sigma^2,\;~\forall~t\\
+&amp; Cov(y_t,y_{t-k}) = 0,\;~\forall~k \ne 0
+\end{align*}`
+
+Because each observation is drawn from the same distribution, white noise is a *stationary* time series. Indeed, it is a special type of stationary time series insofar as it has time-invariant mean, variance, and covariance. 
+
+Stationarity is an important feature, and the assumption, on which the time series analysis heavily relies. 
+
+---
+
+
+# Stationarity
+
+For a covariance stationary (or, weakly stationary) time series, the mean doesn't need to be equal to zero, it only needs to be constant over time; nor covariances need to be equal to zero, they also only need to be constant over time, though they may vary with `\(k\)`. 
+
+Thus, a time series, `\(\{y_t\}\)` is stationary if the mean and variance are independent of `\(t\)`, and the autocovariances are independent of `\(t\)` for all `\(k\)`.
+
+---
+
+
+# Autocorrelation
+
+It is more of a norm, rather than an exception, for a time series to be correlated. 
+
+Indeed, we often observe dependence among the temporally adjacent time series. That is, for reasonably small values of `\(k\)`, `\(y_t\)` and `\(y_{t-k}\)` tend to be correlated. 
+
+Such correlations are referred to as *autocorrelations*, and are given by: `$$\rho_k \equiv Corr(y_t,y_{t-k}) = \frac{Cov(y_t,y_{t-k})}{Var(y_t)},\;~~k=1,2,\ldots$$` 
+
+---
+
+
+# Autocorrelation
+
+We can illustrate the time series autocorrelations using *autocorrelogram*, which plots the sequence of autocorrelation coefficients against the lags at which these coefficients are obtained. 
+
+Under the null of independence, the estimated autocorrelations, `\(\hat{\rho}_k\)`, are asymptotically standard normally distributed, `\(\sqrt{T}\hat{\rho}_k\xrightarrow{d}N(0,1)\)`, and thus: `\(\hat{\rho}_k \sim N(0,T^{-1})\)`
+
+The approximate `\((1-\alpha)\)`% confidence interval is bounded by `\(-z_{\alpha/2}T^{-1/2}\;\text{and}\;z_{\alpha/2}T^{-1/2}\)`
+
+The next graph plots an autocorrelogram of the previously illustrated white noise process along with the 95% confidence interval.
+
+---
+
+
+# Autocorrelation
+
+![](03-TimeSeries_files/figure-html/unnamed-chunk-3-1.png)&lt;!-- --&gt;
+
+---
+
+
+# Transformations
+
+Sometimes we (have to) transform time series, either by first-differencing or by taking natural logarithms (or both), to work with a suitable variable for the desired econometric analysis. 
+
+The first-difference operator is denoted by `\(\Delta\)`, so that `\(\Delta y_t = y_t-y_{t-1}\)`. First-differencing helps remove a linear trend from the time series.
+
+If an economic time series is characterized by an apparent exponential growth (e.g., real GDP), by taking natural logarithms the time series 'flatten' and the fluctuations become proportionate. 
+
+The next three graphs illustrate (i) a time series with an apparent exponential growth, (ii) the natural logarithms of this time series, and (iii) the first-differences of the log--transformed series.
+
+---
+
+
+
+
+# Transformations
+
+![](03-TimeSeries_files/figure-html/unnamed-chunk-5-1.png)&lt;!-- --&gt;
+
+---
+
+
+# Transformations
+
+![](03-TimeSeries_files/figure-html/unnamed-chunk-6-1.png)&lt;!-- --&gt;
+
+---
+
+
+# Transformations
+
+![](03-TimeSeries_files/figure-html/unnamed-chunk-7-1.png)&lt;!-- --&gt;
+
+---
+
+
+# Evaluating Time Series Forecasts
+
+To evaluate forecasts of a time series, `\(\{y_t\}\)`, with a total of `\(T\)` observations, we divide the sample into two parts, the in-sample set with a total of `\(R\)` observations, such that `\(R &lt; T\)` (typically, `\(R \approx 0.75T\)`), and the out-of-sample set. 
+
+The goal is to recreate a 'genuine' forecasting environment.
+
+For example, If we are interested in one-step-ahead forecast assessment, this way we will produce a sequence of forecasts: `\(\{y_{R+1|R},y_{R+2|{R+1}},\ldots,y_{T|{T-1}}\}\)` for `\(\{Y_{R+1},Y_{R+2},\ldots,Y_{T}\}\)`.
+
+Forecast errors, `\(e_{R+j} = y_{R+j} - y_{R+j|{R+j-1}}\)`, then can be computed for `\(j = 1,\ldots,T-R\)`.
+
+---
+
+
+# Evaluating Time Series Forecasts
+
+Three forecasting schemes are available for a forecaster: *recursive*, *rolling*, and *fixed*.
+- The recursive forecasting environment uses a sequence of expanding windows to update model estimates and the information set.
+- The rolling forecasting environment uses a sequence of rolling windows of the same size to update model estimates and the information set.
+- The fixed forecasting environment uses one fixed window for model estimates, and only updates the information set.
+
+---
+
+
+# Evaluating Time Series Forecasts
+
+Forecast errors of a 'good' forecasting method will have the following properties:
+- zero mean; otherwise, the forecasts are biased.
+- no correlation with the forecasts; otherwise, there is information left that should be used in computing forecasts.
+- no serial correlation among one-step-ahead forecast errors. Note that `\(k\)`-step-ahead forecasts, for `\(k&gt;1\)`, can be, and usually are, serially correlated.
+
+Any forecasting method that does not satisfy these properties has a potential to be improved. 
+
+---
+
+
+# Forecast Error Diagnostics
+
+## Unbiasedness
+
+Testing `\(E(e_{t+h|t})=0\)`. Set up a regression: `$$e_{t+h|t} = \alpha+\upsilon_{t+h} \hspace{.5in} t = R,\ldots,T-h,$$`
+where `\(R\)` is the estimation window size, `\(T\)` is the sample size, and `\(h\)` is the forecast horizon length. The null of zero-mean forecast error is equivalent of testing `\(H_0: \alpha = 0\)` in the OLS setting. For `\(h\)`-step-ahead forecast errors, when `\(h&gt;1\)`, autocorrelation consistent standard errors should be used.
+
+---
+
+
+# Forecast Error Diagnostics
+
+## Efficiency
+
+Testing `\(Cov(e_{t+h|t},y_{t+h|t})=0\)`. Set up a regression: `$$e_{t+h|t} = \alpha + \beta y_{t+h|t} + \upsilon_{t+h} \hspace{.5in} t = R,\ldots,T-h.$$` The null of forecast error independence of the information set is equivalent of testing `\(H_0: \beta = 0\)` in the OLS setting. For `\(h\)`-step-ahead forecast errors, when `\(h&gt;1\)`, autocorrelation consistent standard errors should be used.
+
+---
+
+
+# Forecast Error Diagnostics
+
+## No Autocorrelation
+
+Testing `\(Cov(e_{t+1|t},e_{t|t-1})=0\)`. Set up a regression: `$$e_{t+1|t} = \alpha + \gamma e_{t|t-1} + \upsilon_{t+1} \hspace{.5in} t = R+1,\ldots,T-1.$$` The null of no forecast error autocorrelation is equivalent of testing `\(H_0: \gamma = 0\)` in the OLS setting.
+
+
+---
+
+
+# Readings
+
+Hyndman &amp; Athanasopoulos, [Sections from Chapters 2, 3 &amp; 4](https://otexts.com/fpp3/toolbox.html)
+
+Gonzalez-Rivera, Chapter 3
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

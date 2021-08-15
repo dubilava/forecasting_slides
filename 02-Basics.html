@@ -4,7 +4,6 @@
     <title>Forecasting for Economics and Business</title>
     <meta charset="utf-8" />
     <meta name="author" content="David Ubilava" />
-    <script src="libs/header-attrs-2.9.7/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/metropolis.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/metropolis-fonts.css" rel="stylesheet" />
@@ -166,10 +165,7 @@ where `\(P\)` is the total number of out-of-sample forecasts.
 
 # Measures of Forecast Accuracy
 
-Forecast accuracy should only be determined by considering how well a model performs on data not used in estimation.
-
 It must be noted that a model which fits the data well, may not necessarily forecast well. 
-
 While a perfect fit can always be achieved by using a model with 'enough' parameters, such over-fitting can be seen as bad as failing to identify the systematic pattern in the data.
 
 ---
@@ -177,11 +173,23 @@ While a perfect fit can always be achieved by using a model with 'enough' parame
 
 # Generating and Evaluating Forecasts
 
-In model-based forecasting, 'genuine' forecasts are made based on information from in-sample environment, but are assessed in an out-of-sample setting.
-- The in-sample segment of a series is also known as the estimation set or the training set.
-- The out-of-sample part of a series is also known as the hold-out set or the test set.
+Forecast accuracy should only be determined by considering how well a model performs on data not used in estimation.
 
-Because forecasting is often performed in a time series context, the training set typically predates the hold-out set. In non-dynamic settings such chronological ordering may not be necessary, however.
+But to assess forecast accuracy we need access to the data, typically from future time periods, that was not used in estimation.
+
+This leads to the so-called 'pseudo forecasting' routine. The routine involves slitting the available data into two segments referred to as 'in-sample' and 'out-of-sample'
+
+- The in-sample segment of a series is also known as the 'estimation set' or the 'training set.'
+- The out-of-sample segment of a series is also known as the 'hold-out set' or the 'test set.'
+
+---
+
+
+# Generating and Evaluating Forecasts
+
+Thus, we make the so-called 'genuine' forecasts using only the information from the estimation set, and assess the accuracy of these forecasts in an out-of-sample setting.
+
+Because forecasting is often performed in a time series context, the estimation set typically predates the hold-out set. In non-dynamic settings such chronological ordering may not be necessary, however.
 
 ---
 
@@ -191,8 +199,6 @@ Because forecasting is often performed in a time series context, the training se
 Hyndman &amp; Athanasopoulos, [Sections from Chapter 5](https://otexts.com/fpp3/toolbox.html)
 
 Gonzalez-Rivera, Chapter 4
-
-
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>

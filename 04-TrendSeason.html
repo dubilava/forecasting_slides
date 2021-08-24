@@ -4,6 +4,7 @@
     <title>Forecasting for Economics and Business</title>
     <meta charset="utf-8" />
     <meta name="author" content="David Ubilava" />
+    <script src="libs/header-attrs-2.9.7/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/metropolis.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/metropolis-fonts.css" rel="stylesheet" />
@@ -14,9 +15,9 @@
 class: center, middle, inverse, title-slide
 
 # Forecasting for Economics and Business
-## Lecture 4: Forecasting Trends and Seasonality
+## Lecture 4: Trends and Seasonality
 ### David Ubilava
-### September 2020
+### University of Sydney
 
 ---
 
@@ -52,7 +53,7 @@ The simplest (and perhaps most frequently applied) model to account for the tren
 
 # Trends
 
-Other likely candidate trend specifications are *polynomial* (e.g. quadratic, cubic, etc.), *exponential*, and *shifting* (or *switching*) trend models, respectively given by:
+Other trend specifications are *polynomial* (e.g. quadratic, cubic, etc.), *exponential*, and *shifting* (or *switching*) trend models, respectively given by:
 `$$\begin{aligned}
 	y_t &amp;= \alpha + \beta_1 t + \beta_2 t^2 + \ldots + \beta_p t^p \\
 	y_t &amp;= e^{\alpha + \beta t}\;~~\mbox{or}\;~~\ln{y_t} = \alpha + \beta t \\
@@ -81,21 +82,27 @@ An exponential trend is equivalent to a linear trend fitted to natural logarithm
 - they homogenizes the variance of the time series. 
 - they may result in improved forecasting accuracy.
 
-The fitted trend can be reverse-transformed to fit the original series: `$$\hat{y}_{t} = e^{\hat{z}_{t}}$$`
+The fitted trend can be reverse-transformed to fit the original series: `$$\hat{y}_{t} = e^{\hat{z}_{t}+\hat{\sigma}_{\varepsilon}^2/2}$$`
+The second term in the exponential function comes from the implied assumption that the error term in the log-transformed model is normally distributed.
+
 
 ---
 
 
+&lt;!-- # Fitting and Forecasting Trends --&gt;
+
+&lt;!-- Consider a generic representation of a trend model with an additive error term: `$$y_t = g\big(t;\theta\big) + \varepsilon_t$$` We estimate parameters, `\(\theta\)`, by fitting the trend model to a time series using the least-squares regression: `$$\hat{\theta} = \operatorname*{argmin}_{\theta} \sum_{t=1}^{T}\big(y_t - g(t;\theta)\big)^2.$$` Fitted values are then given by: `$$\hat{y}_t = g\big(t;\hat{\theta}\big)$$` --&gt;
+
+&lt;!-- --- --&gt;
+
+
 # Fitting and Forecasting Trends
 
-Consider a generic representation of a trend model with an additive error term: `$$y_t = g\big(t;\theta\big) + \varepsilon_t$$` We estimate parameters, `\(\theta\)`, by fitting the trend model to a time series using the least-squares regression: `$$\hat{\theta} = \operatorname*{argmin}_{\theta} \sum_{t=1}^{T}\big(y_t - g(t;\theta)\big)^2.$$` Fitted values are then given by: `$$\hat{y}_t = g\big(t;\hat{\theta}\big)$$`
+## Linear trend model
 
----
+Suppose we assume a random vairable follows a linear trend model: `$$y_t = \alpha + \beta t + \varepsilon_t$$`
 
-
-# Fitting and Forecasting Trends
-
-Any future realization of a random variable is assumed to follow a linear trend model: `$$y_{t+h} = \alpha + \beta (t+h) + \varepsilon_{t+h}.$$` 
+Any future realization of the random variable is also assumed to follow a linear trend model: `$$y_{t+h} = \alpha + \beta (t+h) + \varepsilon_{t+h}.$$` 
 
 ---
 
@@ -149,6 +156,32 @@ Otherwise, and perhaps more interestingly, we can directly model seasonality in 
 A seasonal model is given by: `$$y_t = \sum_{i=1}^{s}\gamma_i d_{it} + \varepsilon_t,$$`
 where `\(s\)` denotes the frequency of the data, and `\(d_{it}\)` takes the value of 1 repeatedly after every `\(s\)` periods, and such that `\(\sum_{i} d_{it} = 1\)`, `\(\forall t\)`.
 
+In matrix notation (easier to visualize): 
+`$$\begin{bmatrix}
+y_{1}\\
+y_{2}\\
+\vdots \\
+y_{T}
+\end{bmatrix} = 
+\begin{bmatrix}
+1 &amp; 0 &amp; \cdots &amp; 0 \\
+0 &amp; 1 &amp; \cdots &amp; 0 \\
+\vdots &amp; \vdots &amp; \ddots &amp;\vdots \\
+0 &amp; 0 &amp; \cdots &amp; 1
+\end{bmatrix}
+\begin{bmatrix}
+\gamma_{1}\\
+\gamma_{2}\\
+\vdots \\
+\gamma_{s}
+\end{bmatrix}+
+\begin{bmatrix}
+\varepsilon_{1}\\
+\varepsilon_{2}\\
+\vdots \\
+\varepsilon_{T}
+\end{bmatrix}$$`
+
 ---
 
 
@@ -163,7 +196,7 @@ Both approaches result in an identical fit and forecasts.
 
 # Fitting and Forecasting Seasonality
 
-Any future realization of a random variable that i assumed to follow a seasonal model is: `$$y_{t+h} = \alpha + \sum_{i=1}^{s-1}\delta_i d_{i,t+h} + \varepsilon_{t+h}.$$` 
+Any future realization of a random variable that is assumed to follow a seasonal model is: `$$y_{t+h} = \alpha + \sum_{i=1}^{s-1}\delta_i d_{i,t+h} + \varepsilon_{t+h}.$$` 
 
 ---
 
@@ -181,9 +214,9 @@ The forecast variance is given by: `$$\sigma_{t+h|t}^2 = E(e_{t+h|t}^2) =  E(\va
 
 # Model Selection
 
-Recall the most frequently used (and often abused) R-squared: `$$R^2 = 1-\frac{\sum_{t=1}^{T}\varepsilon_t^2}{\sum_{t=1}^{T}(y_t - \bar{y})^2}$$`
+Recall the most frequently used (and often abused) R-squared: `$$R^2 = 1-\frac{\sum_{t=1}^{T}\hat{e}_t^2}{\sum_{t=1}^{T}(y_t - \bar{y})^2}$$`
 
-Adjusted R-squared accounts for the loss in degrees of freedom: `$$\bar{R}^2 = 1-\frac{\sum_{t=1}^{T}\varepsilon_t^2}{\sum_{t=1}^{T}(y_t - \bar{y})^2}\left(\frac{T-1}{T-k}\right),$$` where `\(k\)` denotes the number of estimated parameters including the constant term.
+Adjusted R-squared accounts for the loss in degrees of freedom: `$$\bar{R}^2 = 1-\frac{\sum_{t=1}^{T}\hat{e}_t^2}{\sum_{t=1}^{T}(y_t - \bar{y})^2}\left(\frac{T-1}{T-k}\right),$$` where `\(k\)` denotes the number of estimated parameters including the constant term.
 
 Such an adjustment might not be 'enough' so select a 'good' forecasting model, however.
 
@@ -194,8 +227,8 @@ Such an adjustment might not be 'enough' so select a 'good' forecasting model, h
 
 Information criteria penalize for the loss in degrees of freedom more 'harshly' than the adjusted R-squared:
 `$$\begin{aligned}
-AIC &amp; = \ln{\left(\frac{1}{T}\sum_{t=1}^{T}{\varepsilon_t^2}\right)} + 2\frac{k}{T} \\
-SIC &amp; = \ln{\left(\frac{1}{T}\sum_{t=1}^{T}{\varepsilon_t^2}\right)} + \ln{T}\frac{k}{T}
+AIC &amp; = \ln{\left(\sum_{t=1}^{T}{\hat{e}_t^2}\right)} + 2\frac{k}{T} \\
+SIC &amp; = \ln{\left(\sum_{t=1}^{T}{\hat{e}_t^2}\right)} + \ln{T}\frac{k}{T}
 \end{aligned}$$`
 
 
@@ -218,9 +251,10 @@ Things to remember about the information criteria:
 
 # Readings
 
-Hyndman &amp; Athanasopoulos, Section 2.3
+Hyndman &amp; Athanasopoulos, [Sections from Chapter 2](https://otexts.com/fpp3/toolbox.html)
 
 Gonzalez-Rivera, Chapter 10
+
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>

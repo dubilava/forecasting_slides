@@ -14,9 +14,9 @@
 class: center, middle, inverse, title-slide
 
 # Forecasting for Economics and Business
-## Lecture 5: Forecasting Autoregressive Processes
+## Lecture 5: Autoregression
 ### David Ubilava
-### September 2020
+### University of Sydney
 
 ---
 
@@ -221,7 +221,7 @@ The (95%) interval forecast: `$$y_{t+h|t} \pm z_{.025}\sigma_{t+h|t} = \frac{\al
 ---
 
 
-# AR(2) Forecasting
+# AR(2) Modeling and Forecasting
 
 Consider the second-order autoregression: `$$y_t = \alpha + \beta_1 y_{t-1} + \beta_2 y_{t-2} + \varepsilon_t$$`
 
@@ -237,7 +237,7 @@ In what follows, the necessary (1 and 2) and sufficient (3 and 4) conditions for
 ---
 
 
-# AR(2) Forecasting
+# AR(2) Modeling and Forecasting
 
 The autocorrelation functions of the AR(2) process have the following distinctive features:
 
@@ -248,7 +248,7 @@ The autocorrelation functions of the AR(2) process have the following distinctiv
 ---
 
 
-# AR(2) Forecasting
+# AR(2) Modeling and Forecasting
 
 The optimal one-step-ahead forecast: 
 `$$\begin{align}
@@ -265,7 +265,7 @@ e_{t+1|t} &amp;= y_{t+1} - y_{t+1|t} \\
 ---
 
 
-# AR(2) Forecasting
+# AR(2) Modeling and Forecasting
 
 The one-step-ahead forecast variance: `$$\sigma_{t+1|t}^2 = Var(y_{t+1}|\Omega_t) = E(e_{t+1|t}^2) = E(\varepsilon_{t+1}^2) = \sigma_{\varepsilon}^2$$`
 
@@ -274,7 +274,7 @@ The one-step-ahead (95%) interval forecast: `$$y_{t+1|t} \pm z_{.025}\sigma_{t+1
 ---
 
 
-# AR(2) Forecasting
+# AR(2) Modeling and Forecasting
 
 The optimal two-step-ahead forecast: 
 `$$\begin{align}
@@ -291,7 +291,7 @@ e_{t+2|t} = y_{t+2} - y_{t+2|t} =&amp; \alpha + \beta_1 y_{t+1} + \beta_2 y_{t} 
 ---
 
 
-# AR(2) Forecasting
+# AR(2) Modeling and Forecasting
 
 The two-step-ahead forecast variance: 
 `$$\sigma_{t+2|t}^2 = Var(y_{t+2}|\Omega_t) = E(e_{t+2|t}^2) = E(\beta_1\varepsilon_{t+1} + \varepsilon_{t+2})^2 = \sigma_{\varepsilon}^2(1+\beta_1^2)$$`
@@ -301,7 +301,7 @@ The two-step-ahead (95%) interval forecast: `$$y_{t+2|t} \pm z_{.025}\sigma_{t+2
 ---
 
 
-# AR(2) Forecasting
+# AR(2) Modeling and Forecasting
 
 The optimal h-step-ahead forecast (iterated method): 
 `$$\begin{align}
@@ -317,7 +317,7 @@ The h-step-ahead forecast error: `$$e_{t+h|t} = y_{t+h} - y_{t+h|t} = \varepsilo
 ---
 
 
-# AR(2) Forecasting
+# AR(2) Modeling and Forecasting
 
 The h-step-ahead forecast variance: 
 `$$\begin{align}
@@ -357,7 +357,7 @@ The h-step-ahead (95%) interval forecast: `$$y_{t+h|t} \pm z_{.025}\sigma_{t+h|t
 
 # Readings
 
-Hyndman &amp; Athanasopoulos, Section 8.3
+Hyndman &amp; Athanasopoulos, [Sections from Chapter 9](https://otexts.com/fpp3/toolbox.html)
 
 Gonzalez-Rivera, Chapter 7
     </textarea>

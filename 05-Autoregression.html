@@ -4,6 +4,7 @@
     <title>Forecasting for Economics and Business</title>
     <meta charset="utf-8" />
     <meta name="author" content="David Ubilava" />
+    <script src="libs/header-attrs-2.9.7/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/metropolis.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/metropolis-fonts.css" rel="stylesheet" />
@@ -278,7 +279,7 @@ The one-step-ahead (95%) interval forecast: `$$y_{t+1|t} \pm z_{.025}\sigma_{t+1
 
 The optimal two-step-ahead forecast: 
 `$$\begin{align}
-y_{t+2|t} = E(y_{t+2}|\Omega_t) &amp;= E(\alpha + \beta_1 y_{t+1} + \beta_2 y_{t} + \varepsilon_{t+1}) \\
+y_{t+2|t} = E(y_{t+2}|\Omega_t) &amp;= E(\alpha + \beta_1 y_{t+1} + \beta_2 y_{t} + \varepsilon_{t+2}) \\
 &amp;= \alpha(1+\beta_1) + (\beta_1^2+\beta_2) y_{t} + \beta_1\beta_2 y_{t-1}
 \end{align}$$`
 
@@ -328,7 +329,7 @@ The h-step-ahead forecast variance:
 
 Note that, in general, formulas for `\(\sigma_{t+1|t}^2,\sigma_{t+2|t}^2,\ldots,\sigma_{t+h|t}^2\)` are the same for any `\(AR(p)\)`, `\(p \geq h-1\)`.
 
-The h-step-ahead (95%) interval forecast: `$$y_{t+h|t} \pm z_{.025}\sigma_{t+h|t} = y_{t+1|t} \pm 1.96\sigma_{t+h|t}$$`
+The h-step-ahead (95%) interval forecast: `$$y_{t+h|t} \pm z_{.025}\sigma_{t+h|t} = y_{t+h|t} \pm 1.96\sigma_{t+h|t}$$`
 
 ---
 
@@ -346,7 +347,7 @@ The h-step-ahead forecast error: `$$e_{t+h|t} = \varepsilon_{t+h} + \beta_1 e_{t
 
 The h-step-ahead forecast variance: 
 `$$\begin{align}
-\sigma_{t+h|t}^2 &amp; = Var(y_{t+h}|\Omega_t) = E(e_{t+2|t}^2) \\
+\sigma_{t+h|t}^2 &amp; = Var(y_{t+h}|\Omega_t) = E(e_{t+h|t}^2) \\
 &amp;= \sigma_{\varepsilon}^2 + \sum_{i=1}^{p}\beta_i^2 Var(e_{t+h-i|t}) + 2\sum_{i \neq j}\beta_i\beta_j Cov(e_{t+h-i|t},e_{t+h-j|t})
 \end{align}$$`
 
@@ -360,6 +361,9 @@ The h-step-ahead (95%) interval forecast: `$$y_{t+h|t} \pm z_{.025}\sigma_{t+h|t
 Hyndman &amp; Athanasopoulos, [Sections from Chapter 9](https://otexts.com/fpp3/toolbox.html)
 
 Gonzalez-Rivera, Chapter 7
+
+
+
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>

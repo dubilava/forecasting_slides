@@ -1,8 +1,8 @@
 ---
 title: "Forecasting for Economics and Business"
-subtitle: "Lecture 9: Forecasting with Nonlinear Models"
+subtitle: "Lecture 7: Threshold Autoregression"
 author: "David Ubilava"
-date: "`r format(Sys.time(), '%B %Y')`"
+date: "University of Sydney"
 output:
   xaringan::moon_reader:
     css: [default, metropolis, metropolis-fonts, style.css]
@@ -29,7 +29,7 @@ Thus far we have considered linear models (i.e., the cases where a stochastic pr
 
 In contrast, a nonlinear process is characterized by a conditional mean that is a nonlinear function of the information set.
 
-There are many different functional forms of nonlinear models.
+There can be a wide range of functional forms of nonlinear models.
 
 ---
 
@@ -81,7 +81,7 @@ If in TAR(p), $s_t = \Delta y_{t-d}$, $d = 1,\ldots,m$, then it is referred as m
 
 # Regime-Dependent Models
 
-TAR (or any version of it) can take any multiple-regime form: $$y_t = \alpha_0 + \sum_{i=1}^{p}\beta_{0i} y_{t-i} + \sum_{j=1}^{K-1}{\left(\alpha_j + \sum_{i=1}^{p}\beta_{ji} y_{t-i}\right)I(s_t>c_j)} + \varepsilon_t,$$ where $K$ depicts the number of regimes in the equation.
+TAR (or any version of it) can take any multiple-regime form: $$y_t = \alpha_1 + \sum_{i=1}^{p}\beta_{1i} y_{t-i} + \sum_{j=2}^{K}{\left(\alpha_j + \sum_{i=1}^{p}\beta_{ji} y_{t-i}\right)I(s_t>c_j)} + \varepsilon_t,$$ where $K$ depicts the number of regimes in the equation.
 
 ---
 
@@ -96,7 +96,7 @@ When threshold values are unknown (and need to be estimated), standard statistic
 
 # Forecasting with Nonlinear Models
 
-In the case of time-varying shifting trend (mean) models, the most recent trend component is used to obtain forecasts. 
+In the case of time-varying shifting trend (mean) models, the most recent trend component is used to obtain forecasts. To that end, the forecasting routine is similar to that of linear trend models.
 
 In the case of regime-switching models (e.g., TAR), obtaining one-step-ahead forecasts is a straightforward exercise: 
 $$\begin{aligned}
@@ -113,7 +113,7 @@ Obtaining h-step-ahead forecasts (where $h\geq2$) is less trivial, however.
 
 - The iterated method (or, the so-called skeleton extrapolation) is an easy but an inefficient option. 
 - The analytical method can be unbearably tedious.
-- A numerical method can be applicable.
+- A numerical method can be applicable, however.
 
 ---
 
@@ -139,7 +139,7 @@ This is fine for linear models; but not okay for nonlinear models.
 
 One-step-ahead forecast is the same as before (no uncertainty about the observed data).
 
-Two-step-ahead forecast is: $$\tilde{y}_{t+2|t} = \int_{-\infty}^{\infty}g(y_{t+1|t}+\varepsilon_{t+1},y_{t},\ldots,y_{t+2-p};\theta)d\varepsilon_{t+1}$$
+Two-step-ahead forecast is: $$\tilde{y}_{t+2|t} = \int_{-\infty}^{\infty}g(y_{t+1|t}+\varepsilon_{t+1},y_{t},\ldots,y_{t+2-p};\theta)f(\varepsilon_{t+1})d\varepsilon_{t+1}$$
 
 Unless the model is linear, $\tilde{y}_{t+2|t} \ne y_{t+2|t}$.
 

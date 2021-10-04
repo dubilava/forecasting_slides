@@ -1,8 +1,8 @@
 ---
 title: "Forecasting for Economics and Business"
-subtitle: "Lecture 6: Forecast Comparison Tests"
+subtitle: "Lecture 8: Forecast Comparison Tests"
 author: "David Ubilava"
-date: "`r format(Sys.time(), '%B %Y')`"
+date: "University of Sydney"
 output:
   xaringan::moon_reader:
     css: [default, metropolis, metropolis-fonts, style.css]
@@ -26,21 +26,18 @@ library(ggplot2)
 
 We typically have several methods at hand to forecast an economic variable of interest.
 
-The usual challenge is to identify the best model to forecast from.
+The challenge, typically, is to identify the best or the most adequate of these models.
 
-One way to select the most adequate model is using in-sample goodness of fit measures (e.g., AIC or SIC). 
+One way to do so is using in-sample goodness of fit measures (e.g., AIC or SIC). 
 
-A more sensible approach to evaluate forecasts, at least from the standpoint of a forecaster, is their assessment in an out-of-sample environment.
+Another more sensible approach, at least from the standpoint of a forecaster, is out-of-sample model assessment - i.e., forecast evaluation.
 
 ---
 
 
 # The Need for the Forecast Evaluation
 
-Recall that models with the best in-sample fit don't necessarily produce the best out-of-sample forecasts:
-
-- Better in-sample fit can be obtained by incorporating additional parameters in the model.
-- The more complex models, however, extrapolate the estimated parameter uncertainty into the forecasts.
+Recall that models with the best in-sample fit don't necessarily produce the best out-of-sample forecasts. While a better in-sample fit can be obtained by incorporating additional parameters in the model, the more complex models can lead to sub-optimal forecasts as they extrapolate the estimated parameter uncertainty into the forecasts.
 
 ---
 
@@ -49,7 +46,7 @@ Recall that models with the best in-sample fit don't necessarily produce the bes
 
 Thus far we have applied the following algorithm to identify 'the best' among the competing forecasts:
 
-- Select a loss function (e.g., quadratic loss).
+- Decide on a loss function (e.g., quadratic loss).
 - Obtain forecasts, the forecast errors, and the corresponding sample expected loss (e.g., root mean squared forecast error) for each model in consideration.
 - Rank the models according to their sample expected loss values.
 - Select the model with the lowest sample expected loss.
@@ -70,9 +67,11 @@ Here we will cover two tests for the hypothesis that two forecasts are equivalen
 
 # Comparing Forecasts
 
-Consider a time series of length $T$. Suppose $h$-step-ahead forecasts for periods $R+h$ through $T$ have been generated from two competing models $i$ and $j$: $y_{i,t+h|t}$ and $y_{j,t+h|t}$, with corresponding forecast errors: $e_{i,t+h|t}$ and $e_{j,t+h|t}$.
+Consider a time series of length $T$. 
 
-The null hypothesis of equal predictive ability can be given in terms of the unconditional expectation of the loss difference: $$H_0: E\left[\Delta L(e_{t+h|t})\right] = 0,$$ where $\Delta L(e_{t+h|t}) = L(e_{i,t+h|t})-L(e_{j,t+h|t})$.
+Suppose $h$-step-ahead forecasts for periods $R+h$ through $T$ have been generated from two competing models $i$ and $j$: $y_{t+h|t,i}$ and $y_{t+h|t,j}$, for all $t=R,\ldots,T-h$, with corresponding forecast errors: $e_{t+h,i}$ and $e_{t+h,j}$.
+
+The null hypothesis of equal predictive ability can be given in terms of the unconditional expectation of the loss difference: $$H_0: E\left[d(e_{t+h})\right] = 0,$$ where $d(e_{t+h,ij}) = L(e_{t+h,i})-L(e_{t+h,j})$.
 		
 ---
 
@@ -81,7 +80,7 @@ The null hypothesis of equal predictive ability can be given in terms of the unc
 
 ## Morgan-Granger-Newbold Test
 
-The Morgan-Granger-Newbold (MGN) test is based on auxiliary variables: $u_{1,t+h|t} = e_{i,t+h|t}-e_{j,t+h|t}$ and $u_{2,t+h|t} = e_{i,t+h|t}+e_{j,t+h|t}$. It follows that: $$E(u_1,u_2) = MSFE(i)-MSFE(j).$$ Thus, the hypothesis of interest is equivalent to testing whether the two auxiliary variables are correlated.
+The Morgan-Granger-Newbold (MGN) test is based on auxiliary variables: $u_{1,t+h} = e_{t+h,i}-e_{t+h,j}$ and $u_{2,t+h} = e_{t+h,i}+e_{t+h,j}$. It follows that: $$E(u_1,u_2) = MSFE(i)-MSFE(j).$$ Thus, the hypothesis of interest is equivalent to testing whether the two auxiliary variables are correlated.
 		
 ---
 
@@ -90,7 +89,7 @@ The Morgan-Granger-Newbold (MGN) test is based on auxiliary variables: $u_{1,t+h
 
 ## Morgan-Granger-Newbold Test
 
-The MGN test statistic is: $$\frac{r}{\sqrt{(P-1)^{-1}(1-r^2)}}\sim t_{P-1},$$ where $t_{P-1}$ is a Student t distribution with $P-1$ degrees of freedom, $P$ is the number of out-of-sample forecasts, and $$r=\frac{\sum_{t=R}^{T-h}{u_{1,t+h|t}u_{2,t+h|t}}}{\sqrt{\sum_{t=R}^{T-h}{u_{1,t+h|t}^2}\sum_{t=R}^{T-h}{u_{2,t+h|t}^2}}}$$
+The MGN test statistic is: $$\frac{r}{\sqrt{(P-1)^{-1}(1-r^2)}}\sim t_{P-1},$$ where $t_{P-1}$ is a Student t distribution with $P-1$ degrees of freedom, $P$ is the number of out-of-sample forecasts, and $$r=\frac{\sum_{t=R}^{T-h}{u_{1,t+h}u_{2,t+h}}}{\sqrt{\sum_{t=R}^{T-h}{u_{1,t+h}^2}\sum_{t=R}^{T-h}{u_{2,t+h}^2}}}$$
 		
 ---
 
@@ -99,7 +98,9 @@ The MGN test statistic is: $$\frac{r}{\sqrt{(P-1)^{-1}(1-r^2)}}\sim t_{P-1},$$ w
 
 ## Morgan-Granger-Newbold Test
 
-The MGN test relies on the assumption that forecast errors of the forecasts to be compared, are unbiased, normally distributed, and uncorrelated (with each other). These are rather strict requirements that are, often, violated in empirical applications.
+The MGN test relies on the assumptions that forecast errors of the forecasts to be compared, are unbiased, normally distributed, and uncorrelated (with each other). 
+
+These are rather strict requirements that are, often, violated in empirical applications.
 		
 ---
 
@@ -110,7 +111,7 @@ The MGN test relies on the assumption that forecast errors of the forecasts to b
 
 The Diebold-Mariano (DM) test relaxes the aforementioned requirements on the forecast errors. 
 
-The DM test statistic is: $$\frac{\bar{d}}{\sqrt{\sigma_d^2/P}} \sim N(0,1),$$ where $\bar{d}=P^{-1}\sum_{t=1}^{P} d_t$ and where $d_t \equiv \Delta L(e_{t+h|t})$. 
+The DM test statistic is: $$\frac{\bar{d}}{\sqrt{\sigma_d^2/P}} \sim N(0,1),$$ where $\bar{d}=P^{-1}\sum_{t=1}^{P} d_t$, and where $d_t \equiv d(e_{t+h,ij})$. 
 		
 ---
 
@@ -126,11 +127,11 @@ A modified version of the DM statistic, due to Harvey, Leybourne, and Newbold (1
 
 # Relative Forecast Accuracy Tests
 
-In practice, the test of equal predictive ability can be applied within the framework of a regression model as follows: $$\Delta L(e_{t+h|t}) = \beta + \upsilon_{t+h} \hspace{.5in} t = R,\ldots,T-h.$$
+In practice, the test of equal predictive ability can be applied within the framework of a regression model: $$d(e_{t+h,ij}) = \delta + \upsilon_{t+h} \hspace{.5in} t = R,\ldots,T-h.$$
 
-The null of equal predictive ability is equivalent of testing $H_0: \beta = 0$ in the OLS setting.
+The null of equal predictive ability is equivalent of testing $H_0: \delta = 0$ in the OLS setting.
 
-Because $\Delta L(e_{t+h|t})$ may be serially correlated, an autocorrelation consistent standard errors should be used for inference.
+Because $d(e_{t+h,ij})$ may be serially correlated, an autocorrelation consistent standard errors should be used for inference.
 
 ---
 

@@ -233,7 +233,7 @@ Here, $B$ is the total number of bootstrap iterations (usually many thousand ite
 
 # Readings
 
-Kock, A. B., & Terasvirta, T. (2011). Forecasting with Nonlinear Time Series Models. In Clements M.P & Hendry D.F. (Eds.) *Oxford Handbook of Economic Forecasting*, pp. 61-87.
+Gonzalez-Rivera, Chapter 16
 
 
 

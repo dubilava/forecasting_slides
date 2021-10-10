@@ -71,7 +71,7 @@ Consider a time series of length $T$.
 
 Suppose $h$-step-ahead forecasts for periods $R+h$ through $T$ have been generated from two competing models $i$ and $j$: $y_{t+h|t,i}$ and $y_{t+h|t,j}$, for all $t=R,\ldots,T-h$, with corresponding forecast errors: $e_{t+h,i}$ and $e_{t+h,j}$.
 
-The null hypothesis of equal predictive ability can be given in terms of the unconditional expectation of the loss difference: $$H_0: E\left[d(e_{t+h})\right] = 0,$$ where $d(e_{t+h,ij}) = L(e_{t+h,i})-L(e_{t+h,j})$.
+The null hypothesis of equal predictive ability can be given in terms of the unconditional expectation of the loss difference: $$H_0: E\left[d(e_{t+h})\right] = 0,$$ where $d(e_{t+h,ij}) = e_{t+h,i}^2-e_{t+h,j}^2$.
 		
 ---
 
@@ -132,6 +132,30 @@ In practice, the test of equal predictive ability can be applied within the fram
 The null of equal predictive ability is equivalent of testing $H_0: \delta = 0$ in the OLS setting.
 
 Because $d(e_{t+h,ij})$ may be serially correlated, an autocorrelation consistent standard errors should be used for inference.
+
+---
+
+
+# Accuracy Tests for Nested Models
+
+When assessing out-of-sample Granger causality, we are comparing nested models.
+
+For example, consider a bivariate VAR(1). A test of out-of-sample Granger causality involves comparing forecasts from these two models:
+$$\begin{aligned}
+(A)~~x_{1t} &= \beta_0+\beta_{1}x_{1t-1}+\beta_{2}x_{2t-1}+\upsilon_t \\
+(B)~~x_{1t} &= \alpha_0+\alpha_{1}x_{1t-1}+\varepsilon_t
+\end{aligned}$$
+
+Obviously, here model (B) is nested in model (A). Under the null of Granger non-causality, the disturbances of the two models are identical. This leads to 'issues' in the usual tests. 
+
+---
+
+
+# Accuracy Tests for Nested Models
+
+There is a way to circumvent these issues, which involves an adjustment of the loss differential. 
+
+In particular, the loss differential now becomes: $$d(e_{t+h,ij})=e_{t+h,i}^2-e_{t+h,j}^2+(y_{t+h|t,i}-y_{t+h|t,j})^2,$$ where model $i$ is nested in model $j$.
 
 ---
 

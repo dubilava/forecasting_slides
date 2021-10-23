@@ -4,6 +4,7 @@
     <title>Forecasting for Economics and Business</title>
     <meta charset="utf-8" />
     <meta name="author" content="David Ubilava" />
+    <script src="libs/header-attrs-2.9.7/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/metropolis.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/metropolis-fonts.css" rel="stylesheet" />
@@ -14,9 +15,9 @@
 class: center, middle, inverse, title-slide
 
 # Forecasting for Economics and Business
-## Lecture 8: Direct vs Iterated Multi-Step Forecasting
+## Lecture 10: Multistep Forecasting Methods
 ### David Ubilava
-### October 2020
+### University of Sydney
 
 ---
 
@@ -27,7 +28,7 @@ class: center, middle, inverse, title-slide
 
 
 
-# Multi-step Forecasts
+# Multistep Forecasting Methods
 
 Consider an AR(1): `\(y_t=\alpha+\beta y_{t-1}+\varepsilon_t.\)` 
 
@@ -35,13 +36,13 @@ From this, the one-step-ahead forecast is readily given by: `$$y_{t+1|t}=\alpha+
 
 We can obtain a two-step-ahead forecast using the *iterated* method: `$$y_{t+2|t}=\alpha+\beta y_{t+1|t}.$$`
 
-Alternatively, we can substitute `\(y_{t+1|t}\)` in here to obtain: `$$y_{t+2|t}=\alpha+\beta (\alpha+\beta y_{t}) = \alpha(1+\beta)+\beta^2y_t.$$`
-Thus, we can obtain a two-step-ahead forecast using the *plug-in* method.
+Alternatively, we can substitute the expression of `\(y_{t+1|t}\)` in here to obtain: `$$y_{t+2|t}=\alpha+\beta (\alpha+\beta y_{t}) = \alpha(1+\beta)+\beta^2y_t.$$`
+Thus, we obtain a two-step-ahead forecast using the *plug-in* method.
 
 ---
 
 
-# Multi-step Forecasts
+# Multistep Forecasting Methods
 
 Similarly, we can substitute `\(y_{t-1}=\alpha+\beta y_{t-2}+\varepsilon_{t-1}\)` into the original equation to obtain:
 `$$y_t=\alpha(1+\beta)+\beta^2y_{t-2} + \varepsilon_t + \beta\varepsilon_{t-1} = \tilde{\alpha} + \tilde{\beta} y_{t-2} + u_t,$$` where `\(\tilde{\alpha}=\alpha(1+\beta)\)` and `\(\tilde{\beta}=\beta^2\)`, and `\(u_t=\varepsilon_t + \beta\varepsilon_{t-1}.\)`
@@ -50,37 +51,37 @@ Thus, a way to obtain two-step-ahead forecast is if we regress `\(y_t\)` on `\(y
 
 This method is referred to as the *direct* method of forecasting.
 
-The approach can be extended to higher order autoregressive models, as well as to multi-step forecasts at any horizon. 
+The approach can be extended to higher order autoregressive models, as well as to Multistep forecasts at any horizon. 
 
 
 ---
 
 
-# Multi-step Forecasts
+# Multistep Forecasting Methods
 
 To summarize, an `\(h\)`-step-ahead forecast from an AR(p) model, using:
 
-- the iterated method is: 
-`$$y_{i,t+h|t} = \alpha + \sum_{j=1}^{p}\beta_j y_{t+h-j|t},$$` where `\(y_{t+h-j|t}=y_{t+h-j}\)` when `\(h-j\le 0.\)`
+- the iterated method: 
+`$$y_{t+h|t,i} = \alpha + \sum_{j=1}^{p}\beta_j y_{t+h-j|t,i},$$` where `\(y_{t+h-j|t,i}=y_{t+h-j}\)` when `\(h-j\le 0.\)`
 - the direct method is: 
-`$$y_{d,t+h|t} = \tilde{\alpha} + \sum_{j=1}^{p}\tilde{\beta}_j y_{t+1-j}$$`
-- the plug-in method can take a rather cumbersome expression as the autoregressive order and the horizon length increase.
+`$$y_{t+h|t,d} = \tilde{\alpha} + \sum_{j=1}^{p}\tilde{\beta}_j y_{t+1-j}$$`
+- the plug-in method can take a rather cumbersome expression as the order of autoregression and the horizon length increase.
 
 ---
 
 
-# Multi-step Forecasts
+# Direct vs Iterated Multistep Forecasts
 
 The relative performance of the two forecasts, `\(y_{i,t+h|t}\)` and `\(y_{d,t+h|t}\)`, in terms of bias and efficiency depends on the bias and efficiency of the estimators of each method. 
 
-In the case of correctly specified models, both estimators are consistent, but that of the iterated method is more efficient. Thus, in large samples, the iterated forecast can be expected to perform better than the direct forecast.
+In the case of correctly specified models, both estimators are consistent, but the one-step model (which leads to the iterated method) is more efficient. Thus, in large samples, the iterated forecast can be expected to perform better than the direct forecast.
 
 In the case of mis-specified models, the ranking may very well change.
 
 ---
 
 
-# Multi-step Forecasts
+# Direct vs Iterated Multistep Forecasts
 
 The residual of the regression for direct method, `\(u_t\)`, while uncorrelated with the right-hand-side variables, is serially correlated. For example, in the case of the direct two-step-ahead forecast from a re-specified AR(1) model: `$$u_t = \varepsilon_t+\beta\varepsilon_{t-1}.$$`
 
@@ -93,9 +94,50 @@ Thus, in the case of the direct forecast method, interval forecasts for a given 
 ---
 
 
+# Interval Forecast Evaluation
+
+Suppose `\(y_{t+h}: t=R,\ldots,T-h\)` is a sequence of `\(P\)` (observed) realizations of the random variable, where `\(P=T-R-h+1\)`.
+
+Suppose `\(\left\{l_{t+h|t,\pi},u_{t+h|t,\pi}\right\}\)` is a corresponding sequence of interval forecasts for some *ex ante* coverage probability, `\(\pi\)`. 
+
+Obtain an indicator function, `\(I_t(h,\pi)\)` as follows: 
+`$$I_t(h,\pi) = \left\{\begin{array}
+{ll}
+1 &amp; \text{if}~~y_{t+h}\in \left[l_{t+h|t,\pi},u_{t+h|t,\pi}\right]\\
+0 &amp; \text{otherwise}
+\end{array}\right.$$`
+
+---
+
+
+# Interval Forecast Evaluation
+
+Let `\(\tilde{\pi}=E\left[I_t(h,\pi)\right]\)` denote the *ex post* coverage, that is, the proportion of instances when the observed variable lies within the forecast interval.
+
+Suppose `\(P_1\)` and `\(P_0\)` are numbers of realizations that fall within and outside the forecast intervals, respectively.
+
+From the binomial distribution, the likelihood under the null hypothesis is `$$L(\pi)=(1-\pi)^{P_0}(\pi)^{P_1},$$` 
+and the likelihood under the alternative alternative hypothesis is `$$L(\tilde{\pi})=(1-\tilde{\pi})^{P_0}(\tilde{\pi})^{P_1}.$$`
+
+---
+
+
+# Interval Forecast Evaluation
+
+A test of correct unconditional coverage then is given by the likelihood ratio test statistic: `$$LR=-2\ln\left[\frac{L(\pi)}{L(\tilde{\pi})}\right],$$` which is `\(\chi^2\)` distributed with 1 degree of freedom.
+
+---
+
+
 # Readings
 
 Marcellino, Stock &amp; Watson (2006)
+
+Christoffersen (1998)
+
+
+
+
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>

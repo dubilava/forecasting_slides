@@ -4,7 +4,7 @@
     <title>Forecasting for Economics and Business</title>
     <meta charset="utf-8" />
     <meta name="author" content="David Ubilava" />
-    <script src="libs/header-attrs-2.9.7/header-attrs.js"></script>
+    <script src="libs/header-attrs-2.14/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/metropolis.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/metropolis-fonts.css" rel="stylesheet" />
@@ -14,10 +14,18 @@
     <textarea id="source">
 class: center, middle, inverse, title-slide
 
+.title[
 # Forecasting for Economics and Business
+]
+.subtitle[
 ## Lecture 1: Introduction to Forecasting
+]
+.author[
 ### David Ubilava
+]
+.date[
 ### University of Sydney
+]
 
 ---
 
@@ -28,7 +36,7 @@ class: center, middle, inverse, title-slide
 
 # Forecasting
 
-Forecasting is making a guess about the future. Roots of forecasting extend very much to the beginning of human history. 
+The roots of forecasting extend to the early stages of human history. 
 
 In their desire to predict the future, people have attempted to make forecasts of their own, or have used services of others. 
 - Fortunetellers, for example, have been forecast 'experts' of some sort, basing their predictions on magic. They are less common in this age. 
@@ -43,7 +51,7 @@ Over time, and particularly with the development of the study of econometrics, m
 
 All methods have one thing in common: they all rely (or, at least, pretend to rely) on *information*.
 
-Information summarizes everything that we know about the variable to be forecast. We shall denote the information set at a time a forecast is being made by `\(\Omega_t\)`.
+Information summarizes everything that we know about the variable we wish to forecast. We denote the information set at a time a forecast is made by `\(\Omega_t\)`.
 
 ---
 
@@ -54,28 +62,65 @@ A Forecast is an educated guess about the future event.
 
 It can be any statement about the future, regardless of whether such statement is well founded or lacks any sound basis.
 
-Forecasts can be produced using econometric methods and a large number of historical observations, or they may rely on methods that have little observable basis.
+Forecasts can be produced using rigorous quantitative methods based on a large volume of historical observations, or they can rely on qualitative methods that may have little observable basis.
 
 ---
 
 
 # A Forecast
 
-A complete `\(h\)`-step-ahead forecast, `\(y_{t+h|t}\)`, can be fully summarized by the (conditional) distribution `\(F(y_{t+h|\Omega_t})\)` or the density `\(f(y_{t+h|\Omega_t})\)`.		
 
-Both `\(F(y_{t+h|\Omega_t})\)` and `\(f(y_{t+h|\Omega_t})\)` summarize all the knowns and unknowns about the potential values of `\(y\)` at time `\(t+h\)`, given the available knowledge at time `\(t\)`.
+Consider a forecast made in period `\(t\)` for some future period `\(t+h\)`, where `\(h\)` denotes the forecast horizon.
+
+A complete `\(h\)`-step-ahead forecast, `\(y_{t+h|t}\)`, can be fully summarized by the (conditional) distribution `\(F(y_{t+h}|\Omega_t)\)` or the density `\(f(y_{t+h}|\Omega_t)\)`.		
+Both `\(F(y_{t+h}|\Omega_t)\)` and `\(f(y_{t+h}|\Omega_t)\)` summarize all the knowns and unknowns about the potential values of `\(y\)` at time `\(t+h\)`, given the available knowledge at time `\(t\)`.
 
 ---
 
 
-# The Use and Usefullness of a Forecast
+# Point Forecast
+
+A simplest form of a forecast is a point forecast (usually a mean of the distribution, but can be a median or, really, any percentile).
+
+A point forecast made in period `\(t\)` for horizon `\(h\)` can be denoted as `\(y_{t+h|t}\)`; this is our 'best guess', that is made in period `\(t\)`, about the actual realization of the random variable in period `\(t+h\)`, denoted by `\(y_{t+h}\)`.
+
+---
+
+
+# Forecast Error
+
+The difference between the two is the forecast error. That is, `$$e_{t+h|t} = y_{t+h} - \hat{y}_{t+h|t}$$`
+
+The more accurate is the forecast the smaller is the forecast error. 
+
+---
+
+
+# Forecast Uncertainty
+
+Three types of uncertainty contribute to the forecast error:
+`$$\begin{aligned}
+		e_{t+h|t} &amp; = \big[y_{t+h}-E(y_{t+h}|\Omega_{t})\big]\;~~\text{(information uncertainty)}  \\
+		&amp; + \big[E(y_{t+h}|\Omega_{t}) - g_h(\Omega_{t};\theta)\big]\;~~\text{(model uncertainty)}  \\
+		&amp; + \big[g_h(\Omega_{t};\theta)-g_h(\Omega_{t};\hat{\theta})\big]\;~~\text{(parameter uncertainty)}
+		\end{aligned}$$`
+where `\(g_h(\Omega_{t};\hat{\theta})\equiv \hat{y}_{t+h|t}\)`
+		
+- `\(g(\cdot)\)` is a functional form of a model used to fit the data
+- `\(\theta\)` is a set of parameters of the model, and `\(\hat{\theta}\)` are their estimates
+
+---
+
+
+
+# The Uses and Usefullness of a Forecast
 	
 We can forecast virtually anything, whether it is tomorrow's exchange rate or the unemployment rate at the start of the next year.
 
 Not all the forecasts are useful, however. 
 
 - That the sun will raise at a given time tomorrow morning is a forecast that we can make with great precision, but is of little value to people. 
-- That the borders will open and Australians will be able to travel from early 2022 would be a much useful forecast---this information will help people, businesses, and policy makers in their decision making.
+- That the next wave of a Covid-19 will not cause restrictions and lockdowns in Australia would be a much useful forecast - it can help people, businesses, and policy makers in their decision making.
 
 ---
 
@@ -86,7 +131,7 @@ Forecasting is difficult.
 
 That said, some events are easier to forecast than others. 
 
-A forecast of electricity demand can be highly accurate, but forecasting exchange rates is never an easy task.
+- A forecast of electricity demand can be highly accurate, but forecasting exchange rates is never an easy task.
 
 Several factors play role in our ability to forecast an event:
 
@@ -183,6 +228,19 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
     deleted = true;
   });
 })();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
 (function() {
   "use strict"
   // Replace <script> tags in slides area to make them executable
@@ -209,6 +267,33 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
     }
   }
 })();</script>
+<style>
+.logo {
+  background-image: url(forecasting-logo.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+  position: absolute;
+  bottom: 1em;
+  right: 2em;
+  width: 110px;
+  height: 128px;
+  z-index: 0;
+}
+</style>
+
+<script>
+document
+  .querySelectorAll(
+    '.remark-slide-content' +
+    ':not(.title-slide)' +
+    // add additional classes to exclude here, e.g.
+    // ':not(.inverse)' +
+    ':not(.hide-logo)'
+  )
+  .forEach(el => {
+    el.innerHTML += '<div class="logo"></div>';
+  });
+</script>
 
 <script>
 slideshow._releaseMath = function(el) {

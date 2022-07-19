@@ -1,0 +1,133 @@
+---
+title: "Forecasting for Economics and Business"
+subtitle: "Lecture 10: Multistep Forecasting Methods"
+author: "David Ubilava"
+date: "University of Sydney"
+output:
+  xaringan::moon_reader:
+    css: [default, metropolis, metropolis-fonts, style.css]
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      countIncrementalSlides: false
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, fig.width = 11, fig.height = 7)
+```
+
+
+```{r echo=FALSE, include=FALSE, message=FALSE}
+library(ggplot2)
+```
+
+# Multistep Forecasting Methods
+
+Consider an AR(1): $y_t=\alpha+\beta y_{t-1}+\varepsilon_t.$ 
+
+From this, the one-step-ahead forecast is readily given by: $$y_{t+1|t}=\alpha+\beta y_{t}.$$
+
+We can obtain a two-step-ahead forecast using the *iterated* method: $$y_{t+2|t}=\alpha+\beta y_{t+1|t}.$$
+
+Alternatively, we can substitute the expression of $y_{t+1|t}$ in here to obtain: $$y_{t+2|t}=\alpha+\beta (\alpha+\beta y_{t}) = \alpha(1+\beta)+\beta^2y_t.$$
+Thus, we obtain a two-step-ahead forecast using the *plug-in* method.
+
+---
+
+
+# Multistep Forecasting Methods
+
+Similarly, we can substitute $y_{t-1}=\alpha+\beta y_{t-2}+\varepsilon_{t-1}$ into the original equation to obtain:
+$$y_t=\alpha(1+\beta)+\beta^2y_{t-2} + \varepsilon_t + \beta\varepsilon_{t-1} = \tilde{\alpha} + \tilde{\beta} y_{t-2} + u_t,$$ where $\tilde{\alpha}=\alpha(1+\beta)$ and $\tilde{\beta}=\beta^2$, and $u_t=\varepsilon_t + \beta\varepsilon_{t-1}.$
+
+Thus, a way to obtain two-step-ahead forecast is if we regress $y_t$ on $y_{t-2}$, and then use the parameter estimates to *directly* forecast $y_{t+2}$. 
+
+This method is referred to as the *direct* method of forecasting.
+
+The approach can be extended to higher order autoregressive models, as well as to Multistep forecasts at any horizon. 
+
+
+---
+
+
+# Multistep Forecasting Methods
+
+To summarize, an $h$-step-ahead forecast from an AR(p) model, using:
+
+- the iterated method: 
+$$y_{t+h|t,i} = \alpha + \sum_{j=1}^{p}\beta_j y_{t+h-j|t,i},$$ where $y_{t+h-j|t,i}=y_{t+h-j}$ when $h-j\le 0.$
+- the direct method is: 
+$$y_{t+h|t,d} = \tilde{\alpha} + \sum_{j=1}^{p}\tilde{\beta}_j y_{t+1-j}$$
+- the plug-in method can take a rather cumbersome expression as the order of autoregression and the horizon length increase.
+
+---
+
+
+# Direct vs Iterated Multistep Forecasts
+
+The relative performance of the two forecasts, $y_{i,t+h|t}$ and $y_{d,t+h|t}$, in terms of bias and efficiency depends on the bias and efficiency of the estimators of each method. 
+
+In the case of correctly specified models, both estimators are consistent, but the one-step model (which leads to the iterated method) is more efficient. Thus, in large samples, the iterated forecast can be expected to perform better than the direct forecast.
+
+In the case of mis-specified models, the ranking may very well change.
+
+---
+
+
+# Direct vs Iterated Multistep Forecasts
+
+The residual of the regression for direct method, $u_t$, while uncorrelated with the right-hand-side variables, is serially correlated. For example, in the case of the direct two-step-ahead forecast from a re-specified AR(1) model: $$u_t = \varepsilon_t+\beta\varepsilon_{t-1}.$$
+
+It then follows that $Var(u_t) = Var(\varepsilon_t+\beta\varepsilon_{t-1}) = \sigma^2(1+\beta^2).$ 
+
+Note that this is also the expression of the two-step-ahead forecast error variance from an AR(1) model.
+
+Thus, in the case of the direct forecast method, interval forecasts for a given horizon are obtained 'directly,' based on the square root of the error variance of the direct regression.
+
+---
+
+
+# Interval Forecast Evaluation
+
+Suppose $y_t: t=R+h,\ldots,T$ is a sequence of $P$ (observed) realizations of the random variable, where $P=T-R-h+1$.
+
+Suppose $\left\{l_{t|t-h},u_{t|t-h}\right\}$ is a corresponding sequence of interval forecasts for some *ex ante* coverage probability, $\pi$. 
+
+Obtain an indicator function, $I_t(\pi)$ as follows: 
+$$I_t(\pi) = \left\{\begin{array}
+{ll}
+1 & \text{if}~~y_{t}\in \left[l_{t|t-h},u_{t|t-h}\right]\\
+0 & \text{otherwise}
+\end{array}\right.$$
+
+---
+
+
+# Interval Forecast Evaluation
+
+Let $p=E\left[I_t(\pi)\right]$ denote the *ex post* coverage, that is, the proportion of instances when the observed variable lies within the forecast interval.
+
+Suppose $n_0$ and $n_1$ are numbers of realizations that fall within and outside the forecast intervals, respectively.
+
+From the binomial distribution, the likelihood under the null hypothesis is $$L(\pi)=(1-\pi)^{n_0}(\pi)^{n_1},$$ and the likelihood under the alternative alternative hypothesis is $$L(\pi)=(1-p)^{n_0}(p)^{n_1}.$$
+
+---
+
+
+# Interval Forecast Evaluation
+
+A test of unconditional coverage then is given by the likelihood ratio test statistic: $$LR=-2\ln\left[\frac{L(\pi)}{L(p)}\right],$$ which is $\chi^2$ distributed with 1 degree of freedom.
+
+---
+
+
+# Readings
+
+Marcellino, Stock & Watson (2006)
+
+Christoffersen (1998)
+
+
+
+

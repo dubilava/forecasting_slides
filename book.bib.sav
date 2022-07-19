@@ -1,0 +1,11 @@
+% Encoding: UTF-8
+
+@Book{hyndman2018,
+  author    = {Hyndman, Rob J and Athanasopoulos, George},
+  publisher = {OTexts},
+  title     = {Forecasting: principles and practice},
+  year      = {2018},
+  edition   = {2nd},
+}
+
+@Comment{jabref-meta: databaseType:bibtex;}

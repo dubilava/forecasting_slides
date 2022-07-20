@@ -53,52 +53,6 @@ Forecasts can be produced using rigorous quantitative methods based on a large v
 ---
 
 
-# A Forecast
-
-
-Consider a forecast made in period $t$ for some future period $t+h$, where $h$ denotes the forecast horizon.
-
-A complete $h$-step-ahead forecast, $y_{t+h|t}$, can be fully summarized by the (conditional) distribution $F(y_{t+h}|\Omega_t)$ or the density $f(y_{t+h}|\Omega_t)$.		
-Both $F(y_{t+h}|\Omega_t)$ and $f(y_{t+h}|\Omega_t)$ summarize all the knowns and unknowns about the potential values of $y$ at time $t+h$, given the available knowledge at time $t$.
-
----
-
-
-# Point Forecast
-
-A simplest form of a forecast is a point forecast (usually a mean of the distribution, but can be a median or, really, any percentile).
-
-A point forecast made in period $t$ for horizon $h$ can be denoted as $y_{t+h|t}$; this is our 'best guess', that is made in period $t$, about the actual realization of the random variable in period $t+h$, denoted by $y_{t+h}$.
-
----
-
-
-# Forecast Error
-
-The difference between the two is the forecast error. That is, $$e_{t+h|t} = y_{t+h} - \hat{y}_{t+h|t}$$
-
-The more accurate is the forecast the smaller is the forecast error. 
-
----
-
-
-# Forecast Uncertainty
-
-Three types of uncertainty contribute to the forecast error:
-$$\begin{aligned}
-		e_{t+h|t} & = \big[y_{t+h}-E(y_{t+h}|\Omega_{t})\big]\;~~\text{(information uncertainty)}  \\
-		& + \big[E(y_{t+h}|\Omega_{t}) - g_h(\Omega_{t};\theta)\big]\;~~\text{(model uncertainty)}  \\
-		& + \big[g_h(\Omega_{t};\theta)-g_h(\Omega_{t};\hat{\theta})\big]\;~~\text{(parameter uncertainty)}
-		\end{aligned}$$
-where $g_h(\Omega_{t};\hat{\theta})\equiv \hat{y}_{t+h|t}$
-		
-- $g(\cdot)$ is a functional form of a model used to fit the data
-- $\theta$ is a set of parameters of the model, and $\hat{\theta}$ are their estimates
-
----
-
-
-
 # The Uses and Usefullness of a Forecast
 	
 We can forecast virtually anything, whether it is tomorrow's exchange rate or the unemployment rate at the start of the next year.
@@ -163,8 +117,10 @@ Forecasting becomes increasingly difficult (inaccurate) with the horizon length,
 
 # Readings
 
+Gonzalez-Rivera, Chapter 1
+
 Hyndman & Athanasopoulos, [Chapter 1](https://otexts.com/fpp3/intro.html)
 
-Gonzalez-Rivera, Chapter 1
+
 
 

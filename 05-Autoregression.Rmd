@@ -352,7 +352,7 @@ The h-step-ahead (95%) interval forecast: $$y_{t+h|t} \pm z_{.025}\sigma_{t+h|t}
 
 # Readings
 
-Hyndman & Athanasopoulos, [Sections from Chapter 9](https://otexts.com/fpp3/toolbox.html)
+Hyndman & Athanasopoulos, [Chapter 9](https://otexts.com/fpp3/toolbox.html)
 
 Gonzalez-Rivera, Chapter 7
 

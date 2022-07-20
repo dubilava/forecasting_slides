@@ -242,7 +242,7 @@ $\{X_2\}$ is said to cause *in Granger sense* $\{X_1\}$ if $RMSFE_{u} < RMSFE_{r
 
 # Readings
 
-Hyndman & Athanasopoulos, [Sections from Chapter 12](https://otexts.com/fpp3/toolbox.html)
+Hyndman & Athanasopoulos, [Chapter 12](https://otexts.com/fpp3/toolbox.html)
 
 Gonzalez-Rivera, Chapter 11
 

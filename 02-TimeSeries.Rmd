@@ -1,12 +1,14 @@
 ---
 title: "Forecasting for Economics and Business"
-subtitle: "Lecture 3: Time Series"
+subtitle: "Lecture 2: Features of Time Series Data"
 author: "David Ubilava"
 date: "University of Sydney"
 output:
   xaringan::moon_reader:
     css: [default, metropolis, metropolis-fonts, style.css]
     lib_dir: libs
+    includes:
+      after_body: insert-logo.html
     nature:
       highlightStyle: github
       countIncrementalSlides: false
@@ -14,7 +16,7 @@ output:
 
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE, fig.width = 11, fig.height = 7)
+knitr::opts_chunk$set(echo = FALSE, fig.width = 9, fig.height = 6)
 ```
 
 
@@ -39,9 +41,7 @@ A time series is a finite sample from an underlying doubly-infinite sequence: $\
 
 # White Noise
 
-The simplest kind of time series is comprised of realisations from an independent and indentically distributed random variable with zero mean and constant variance: $\varepsilon_t \sim iid\left(0,\sigma^2\right)$. 
-
-The next graph plots this series against time.
+The simplest kind of time series is comprised of realizations from an independent and identically distributed random variable with zero mean and constant variance: $\varepsilon_t \sim iid\left(0,\sigma^2\right)$. 
 
 ---
 
@@ -57,7 +57,7 @@ y <- rnorm(n)
 df <- data.frame(t=c(1:n),y=y)
 
 ggplot(df,aes(x=t,y=y))+
-  geom_line(size=1,col="steelblue")+
+  geom_line(size=1,col="coral")+
   labs(y=expression(paste(y[t],sep="")))+
   theme_classic()+
   theme(axis.title = element_text(size=18),axis.text = element_text(size=14))
@@ -79,12 +79,12 @@ A time series, $y$, is a white noise process if:
 
 Because each observation is drawn from the same distribution, white noise is a *stationary* time series. Indeed, it is a special type of stationary time series insofar as it has time-invariant mean, variance, and covariance. 
 
-Stationarity is an important feature, and the assumption, on which the time series analysis heavily relies. 
-
 ---
 
 
 # Stationarity
+
+Stationarity is an important feature, and the assumption, on which the time series analysis heavily relies.
 
 For a covariance stationary (or, weakly stationary) time series, the mean doesn't need to be equal to zero, it only needs to be constant over time; nor covariances need to be equal to zero, they also only need to be constant over time, though they may vary with $k$. 
 
@@ -111,8 +111,6 @@ We can illustrate the time series autocorrelations using *autocorrelogram*, whic
 Under the null of independence, the estimated autocorrelations, $\hat{\rho}_k$, are asymptotically standard normally distributed, $\sqrt{T}\hat{\rho}_k\xrightarrow{d}N(0,1)$, and thus: $\hat{\rho}_k \sim N(0,T^{-1})$
 
 The approximate $(1-\alpha)$% confidence interval is bounded by $-z_{\alpha/2}T^{-1/2}\;\text{and}\;z_{\alpha/2}T^{-1/2}$
-
-The next graph plots an autocorrelogram of the previously illustrated white noise process along with the 95% confidence interval.
 
 ---
 
@@ -143,6 +141,11 @@ Sometimes we (have to) transform time series, either by first-differencing or by
 
 The first-difference operator is denoted by $\Delta$, so that $\Delta y_t = y_t-y_{t-1}$. First-differencing helps remove a linear trend from the time series.
 
+---
+
+
+# Transformations
+
 If an economic time series is characterized by an apparent exponential growth (e.g., real GDP), by taking natural logarithms the time series 'flatten' and the fluctuations become proportionate. 
 
 The next three graphs illustrate (i) a time series with an apparent exponential growth, (ii) the natural logarithms of this time series, and (iii) the first-differences of the log--transformed series.
@@ -171,7 +174,7 @@ df <- data.frame(t=c(1:n),y=y,lny=lny,dlny=dlny)
 
 ```{r echo=FALSE, message=FALSE}
 ggplot(df,aes(x=t,y=y))+
-  geom_line(size=1,color="steelblue")+
+  geom_line(size=1,color="coral")+
   labs(y=expression(paste(y[t],sep="")))+
   theme_classic()+
   theme(axis.title = element_text(size=18),axis.text = element_text(size=14),axis.text.y = element_text(angle=90,hjust=0.5))
@@ -184,7 +187,7 @@ ggplot(df,aes(x=t,y=y))+
 
 ```{r echo=FALSE, message=FALSE}
 ggplot(df,aes(x=t,y=lny))+
-  geom_line(size=1,color="steelblue")+
+  geom_line(size=1,color="coral")+
   labs(y=expression(paste("ln",y[t],sep="")))+
   theme_classic()+
   theme(axis.title = element_text(size=18),axis.text = element_text(size=14),axis.text.y = element_text(angle=90,hjust=0.5))
@@ -197,7 +200,7 @@ ggplot(df,aes(x=t,y=lny))+
 
 ```{r echo=FALSE, message=FALSE}
 ggplot(df,aes(x=t,y=dlny))+
-  geom_line(size=1,color="steelblue")+
+  geom_line(size=1,color="coral")+
   labs(y=expression(paste(Delta,"ln",y[t],sep="")))+
   theme_classic()+
   theme(axis.title = element_text(size=18),axis.text = element_text(size=14),axis.text.y = element_text(angle=90,hjust=0.5))
@@ -272,6 +275,8 @@ Testing $Cov(e_{t+1|t},e_{t|t-1})=0$. Set up a regression: $$e_{t+1|t} = \alpha 
 
 # Readings
 
-Hyndman & Athanasopoulos, [Sections from Chapters 2, 3 & 4](https://otexts.com/fpp3/toolbox.html)
-
 Gonzalez-Rivera, Chapter 3
+
+Hyndman & Athanasopoulos, [Chapters 2, 3 & 4](https://otexts.com/fpp3/toolbox.html)
+
+

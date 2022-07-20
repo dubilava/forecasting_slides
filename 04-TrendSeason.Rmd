@@ -245,7 +245,7 @@ Things to remember about the information criteria:
 
 # Readings
 
-Hyndman & Athanasopoulos, [Sections from Chapter 2](https://otexts.com/fpp3/toolbox.html)
+Hyndman & Athanasopoulos, [Chapter 2](https://otexts.com/fpp3/toolbox.html)
 
 Gonzalez-Rivera, Chapter 10
 

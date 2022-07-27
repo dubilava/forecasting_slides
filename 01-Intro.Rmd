@@ -20,9 +20,9 @@ knitr::opts_chunk$set(echo = FALSE)
 ```
 
 
-# Forecasting
+# People have made forecasts for ages
 
-The roots of forecasting extend to the early stages of human history. 
+The roots of forecasting extend to the early days of human history. 
 
 In their desire to predict the future, people have attempted to make forecasts of their own, or have used services of others. 
 - Fortunetellers, for example, have been forecast 'experts' of some sort, basing their predictions on magic. They are less common in this age. 
@@ -31,29 +31,29 @@ In their desire to predict the future, people have attempted to make forecasts o
 ---
 
 
-# Forecasting
+# Information is key in forecasting
 
 Over time, and particularly with the development of the study of econometrics, more rigorous forecasting methods have been introduced and developed. 
 
 All methods have one thing in common: they all rely (or, at least, pretend to rely) on *information*.
 
-Information summarizes everything that we know about the variable we wish to forecast. We denote the information set at a time a forecast is made by $\Omega_t$.
+Information summarizes everything that we know about the event or observation we wish to forecast.
 
 ---
 
 
-# A Forecast
+# What is forecast if not a guess
 	
-A Forecast is an educated guess about the future event.
+A forecast is a guess about the future event.
 
-It can be any statement about the future, regardless of whether such statement is well founded or lacks any sound basis.
+Usually an educated guess - based on one's experience and available knowledge. But, really, it can be any statement about the future, regardless of whether such statement is well founded or lacks any sound basis.
 
 Forecasts can be produced using rigorous quantitative methods based on a large volume of historical observations, or they can rely on qualitative methods that may have little observable basis.
 
 ---
 
 
-# The Uses and Usefullness of a Forecast
+# Some forecasts are useful
 	
 We can forecast virtually anything, whether it is tomorrow's exchange rate or the unemployment rate at the start of the next year.
 
@@ -65,11 +65,9 @@ Not all the forecasts are useful, however.
 ---
 
 
-# The Ease of Forecasting
+# Forecasting is difficult
 	
-Forecasting is difficult. 
-
-That said, some events are easier to forecast than others. 
+Some events are easier to forecast than others. 
 
 - A forecast of electricity demand can be highly accurate, but forecasting exchange rates is never an easy task.
 
@@ -83,36 +81,35 @@ Several factors play role in our ability to forecast an event:
 ---
 
 
-# Forecasting Methods
-	
-Methods of forecasting can be grouped into the following two categories:
-
-- qualitative (e.g., guessing, 'rules of thumb,' expert judgment, surveys) - particularly useful when the data are not available;
-- quantitative (e.g., using time series models) - applied, and indeed a preferred method, when the data are available.
-
----
-
-
-# Time Series Forecasting 
-	
-Economic forecasting lends itself naturally to time series analysis. Indeed, the study of time series econometrics has evolved as a result of a quest for accurate forecasting methods.
-
-In econometric time series analysis, the implied assumption is that the past tends to repeat itself, at least to some extent. So, if we well study the past, we should be able to forecast an event with some degree of accuracy. 
-
-But there still is a surprise element concerning the forecast - something that has never happened in past, and is only specific to the future. Because of this, there is no such thing as precise forecast. Best we can hope for is that we get close to it.
-
----
-
-
-# The Forecast Horizon and Accuracy
+# Forecast horizons
 	
 When forecasting, we usually need to decide on the horizon length, i.e., how far ahead do we want to forecast.
-
-In *time series forecasting*, we typically distinguish between the *one-step-ahead* forecast, $y_{t+1|t}$, and the *multi-step-ahead* forecast, $y_{t+h|t}$, for $h > 1$.
 
 Forecasting becomes increasingly difficult (inaccurate) with the horizon length, as more unknowns 'get in the way' between the time when the forecast is made and the future time period.
 
 ---
+
+
+# Qualitative vs quantitative forecasts
+	
+Methods of forecasting can be grouped into the following two categories:
+
+- qualitative (e.g., guessing, 'rules of thumb,' expert judgment, surveys) - particularly useful when the data are not available;
+- quantitative (e.g., with time series models) - applied, and indeed a preferred method, when the data are available.
+
+---
+
+
+# Forecasting with time series models
+	
+Economic forecasting lends itself naturally to time series analysis. Indeed, the study of time series econometrics has evolved as a result of the quest for accurate forecasting methods.
+
+In econometric time series analysis, the implied assumption is that the past tends to repeat itself, at least to some extent. So, if we well study the past, we should be able to forecast an event with some degree of accuracy. 
+
+But there still is a surprise element concerning the forecast - something that has never happened in past, and is only specific to the future. Because of this, there is no such thing as precise forecast. Best we can hope for is that we get close to it (on average).
+
+---
+
 
 
 # Readings

@@ -215,6 +215,69 @@ Because forecasting is often performed in a time series context, the estimation 
 ---
 
 
+# Evaluating Time Series Forecasts
+
+Three forecasting schemes are available for a forecaster: *recursive*, *rolling*, and *fixed*.
+- The recursive forecasting environment uses a sequence of expanding windows to update model estimates and the information set.
+- The rolling forecasting environment uses a sequence of rolling windows of the same size to update model estimates and the information set.
+- The fixed forecasting environment uses one fixed window for model estimates, and only updates the information set.
+
+---
+
+
+# Evaluating Time Series Forecasts
+
+To evaluate forecasts of a time series, $\{y_t\}$, with a total of $T$ observations, we divide the sample into two parts, the in-sample set with a total of $R$ observations, such that $R < T$ (typically, $R \approx 0.75T$), and the out-of-sample set. 
+
+If we are interested in one-step-ahead forecast assessment, this way we will produce a sequence of forecasts: $\{y_{R+1|R},y_{R+2|{R+1}},\ldots,y_{T|{T-1}}\}$ for $\{Y_{R+1},Y_{R+2},\ldots,Y_{T}\}$.
+
+Forecast errors, $e_{R+j} = y_{R+j} - y_{R+j|{R+j-1}}$, then can be computed for $j = 1,\ldots,T-R$.
+
+---
+
+
+# Evaluating Time Series Forecasts
+
+Forecast errors of a 'good' forecasting method will have the following properties:
+- zero mean; otherwise, the forecasts are biased.
+- no correlation with the forecasts; otherwise, there is information left that should be used in computing forecasts.
+- no serial correlation among one-step-ahead forecast errors. Note that $k$-step-ahead forecasts, for $k>1$, can be, and usually are, serially correlated.
+
+Any forecasting method that does not satisfy these properties has a potential to be improved. 
+
+---
+
+
+# Forecast Error Diagnostics
+
+## Unbiasedness
+
+Testing $E(e_{t+h|t})=0$. Set up a regression: $$e_{t+h|t} = \alpha+\upsilon_{t+h} \hspace{.5in} t = R,\ldots,T-h,$$
+where $R$ is the estimation window size, $T$ is the sample size, and $h$ is the forecast horizon length. The null of zero-mean forecast error is equivalent of testing $H_0: \alpha = 0$ in the OLS setting. For $h$-step-ahead forecast errors, when $h>1$, autocorrelation consistent standard errors should be used.
+
+---
+
+
+# Forecast Error Diagnostics
+
+## Efficiency
+
+Testing $Cov(e_{t+h|t},y_{t+h|t})=0$. Set up a regression: $$e_{t+h|t} = \alpha + \beta y_{t+h|t} + \upsilon_{t+h} \hspace{.5in} t = R,\ldots,T-h.$$ The null of forecast error independence of the information set is equivalent of testing $H_0: \beta = 0$ in the OLS setting. For $h$-step-ahead forecast errors, when $h>1$, autocorrelation consistent standard errors should be used.
+
+---
+
+
+# Forecast Error Diagnostics
+
+## No Autocorrelation
+
+Testing $Cov(e_{t+1|t},e_{t|t-1})=0$. Set up a regression: $$e_{t+1|t} = \alpha + \gamma e_{t|t-1} + \upsilon_{t+1} \hspace{.5in} t = R+1,\ldots,T-1.$$ The null of no forecast error autocorrelation is equivalent of testing $H_0: \gamma = 0$ in the OLS setting.
+
+
+---
+
+
+
 # Readings
 
 Gonzalez-Rivera, Chapter 4

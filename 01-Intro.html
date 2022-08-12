@@ -30,57 +30,73 @@ class: center, middle, inverse, title-slide
 ---
 
 
+      
+
 
 
 
 
 # People have made forecasts for ages
 
-The roots of forecasting extend to the early days of human history. 
+.pull-left[
+![](Art/astrologer.png)
+]
+
+.pull-right[
+The roots of forecasting extend to the early days of human history.
 
 In their desire to predict the future, people have attempted to make forecasts of their own, or have used services of others. 
 - Fortunetellers, for example, have been forecast 'experts' of some sort, basing their predictions on magic. They are less common in this age. 
 - Astrologers, who rely on astronomical phenomena to foresee the future, maintain their relevance to this date. 
+]
 
 ---
 
 
 # Information is key in forecasting
 
+.right-column[
 Over time, and particularly with the development of the study of econometrics, more rigorous forecasting methods have been introduced and developed. 
 
 All methods have one thing in common: they all rely (or, at least, pretend to rely) on *information*.
 
 Information summarizes everything that we know about the event or observation we wish to forecast.
+]
+
 
 ---
 
 
 # What is forecast if not a guess
 	
+.right-column[	
 A forecast is a guess about the future event.
 
 Usually an educated guess - based on one's experience and available knowledge. But, really, it can be any statement about the future, regardless of whether such statement is well founded or lacks any sound basis.
 
 Forecasts can be produced using rigorous quantitative methods based on a large volume of historical observations, or they can rely on qualitative methods that may have little observable basis.
+]
 
 ---
 
 
 # Some forecasts are useful
 	
+.right-column[	
 We can forecast virtually anything, whether it is tomorrow's exchange rate or the unemployment rate at the start of the next year.
 
 Not all the forecasts are useful, however. 
 
-- That the sun will raise at a given time tomorrow morning is a forecast that we can make with great precision, but is of little value to people. 
-- That the next wave of a Covid-19 will not cause restrictions and lockdowns in Australia would be a much useful forecast - it can help people, businesses, and policy makers in their decision making.
+- That the sun will raise at a given time on a given day of a year is a forecast that we can make with great precision, but is of little value to people. 
+- That inflation will reach a certain level in the near future would be a much more useful forecast - it can help businesses and policy makers in their decision making.
+]
 
 ---
 
 
 # Forecasting is difficult
-	
+
+.right-column[	
 Some events are easier to forecast than others. 
 
 - A forecast of electricity demand can be highly accurate, but forecasting exchange rates is never an easy task.
@@ -91,36 +107,43 @@ Several factors play role in our ability to forecast an event:
 - availability of data that facilitates the understanding;
 - plausibility that future resembles the past;
 - (in)ability of the forecasts to impact the event realization.
+]
 
 ---
 
 
 # Forecast horizons
-	
+
+.right-column[	
 When forecasting, we usually need to decide on the horizon length, i.e., how far ahead do we want to forecast.
 
-Forecasting becomes increasingly difficult (inaccurate) with the horizon length, as more unknowns 'get in the way' between the time when the forecast is made and the future time period.
+Forecasting becomes increasingly difficult (inaccurate) with the horizon length, as more unknowns 'get in the way' between the time periods when the forecast is made and when it is realised.
+]
 
 ---
 
 
 # Qualitative vs quantitative forecasts
-	
-Methods of forecasting can be grouped into the following two categories:
 
-- qualitative (e.g., guessing, 'rules of thumb,' expert judgment, surveys) - particularly useful when the data are not available;
-- quantitative (e.g., with time series models) - applied, and indeed a preferred method, when the data are available.
+.right-column[	
+Methods of forecasting can be grouped into two categories:
+
+- *qualitative* (e.g., guessing, 'rules of thumb,' expert judgment, surveys) - particularly useful when the data are not available;
+- *quantitative* (e.g., with time series models) - applied, and indeed a preferred method, when the data are available.
+]
 
 ---
 
 
 # Forecasting with time series models
-	
-Economic forecasting lends itself naturally to time series analysis. Indeed, the study of time series econometrics has evolved as a result of the quest for accurate forecasting methods.
+
+.right-column[	
+Economic forecasting lends itself naturally to time series analysis. Indeed, time series econometrics has evolved as a result of the quest for accurate forecasting methods.
 
 In econometric time series analysis, the implied assumption is that the past tends to repeat itself, at least to some extent. So, if we well study the past, we should be able to forecast an event with some degree of accuracy. 
 
 But there still is a surprise element concerning the forecast - something that has never happened in past, and is only specific to the future. Because of this, there is no such thing as precise forecast. Best we can hope for is that we get close to it (on average).
+]
 
 ---
 
@@ -128,9 +151,19 @@ But there still is a surprise element concerning the forecast - something that h
 
 # Readings
 
+.pull-left[
+![](Art/todolist.png)
+]
+
+.pull-right[
+Ubilava, [Chapter 1](https://davidubilava.com/forecasting/docs/introduction-to-forecasting.html)
+
 Gonzalez-Rivera, Chapter 1
 
-Hyndman &amp; Athanasopoulos, [Chapter 1](https://otexts.com/fpp3/intro.html)
+Hyndman &amp; Athanasopoulos, [1.1](https://otexts.com/fpp3/what-can-be-forecast.html), [1.2](https://otexts.com/fpp3/planning.html), [1.3](https://otexts.com/fpp3/determining-what-to-forecast.html), [1.4](https://otexts.com/fpp3/data-methods.html), [1.5](https://otexts.com/fpp3/case-studies.html), [1.6](https://otexts.com/fpp3/basic-steps.html)
+]
+
+
 
 
 
@@ -140,7 +173,8 @@ Hyndman &amp; Athanasopoulos, [Chapter 1](https://otexts.com/fpp3/intro.html)
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
 <script>var slideshow = remark.create({
 "highlightStyle": "github",
-"countIncrementalSlides": false
+"countIncrementalSlides": false,
+"ratio": "16:9"
 });
 if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
   window.dispatchEvent(new Event('resize'));

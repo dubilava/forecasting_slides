@@ -124,3 +124,26 @@ a:hover {
 a:active {
   color: coral;
 }
+
+
+.pull-left {
+  padding-top: 0;
+  float: left;
+  width: 35%;
+}
+.pull-right {
+  padding-top: 0;
+  float: right;
+  width: 60%;
+}
+
+.left-column {
+  padding-top: 0;
+  float: left;
+  width: 10%;
+}
+.right-column {
+  padding-top: 0;
+  float: right;
+  width: 85%;
+}

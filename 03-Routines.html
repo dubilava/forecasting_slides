@@ -47,11 +47,11 @@ class: center, middle, inverse, title-slide
 .pull-right[
 A forecast is a random variable which has some distribution and, thus, moments.
 
-A simplest form of a forecast is *point forecast* (usually the mean of the distribution, because of the assumed loss function).
+A simplest form of a forecast is *point forecast*.
 
 A more complex but much more informative form of a forecast is *density forecast*.
 
-A relatively less complex form of a forecast (that still gives a bit more detail than point forecast) is *interval forecast*, which is the lower and upper percentiles of the forecast distribution.
+A relatively less complex form of a forecast is *interval forecast*, which is the lower and upper percentiles of the forecast distribution.
 ]
 
 
@@ -75,20 +75,11 @@ Both `\(F(y_{t+h}|\Omega_t)\)` and `\(f(y_{t+h}|\Omega_t)\)` summarize all the k
 # Point forecast
 
 .right-column[
-A simplest form of a forecast is a point forecast (usually a mean of the distribution, but can be a median or, really, any percentile).
+Point forecast made in period `\(t\)` for horizon `\(h\)` is denoted as `\(y_{t+h|t}\)`. It is our 'best guess' that is made in period `\(t\)`, about the actual realization of the random variable in period `\(t+h\)`, denoted by `\(y_{t+h}\)`.
 
-A point forecast made in period `\(t\)` for horizon `\(h\)` can be denoted as `\(y_{t+h|t}\)`; this is our 'best guess', that is made in period `\(t\)`, about the actual realization of the random variable in period `\(t+h\)`, denoted by `\(y_{t+h}\)`.
-]
-
----
-
-
-# Forecast error
-
-.right-column[
 The difference between the two is the forecast error. That is, `$$e_{t+h|t} = y_{t+h} - \hat{y}_{t+h|t}$$`
 
-We use 'hat' to indicate that parameter estimates are used to generate the forecast.
+'Hat' is for estimated parameters in generating the forecast.
 
 The more accurate is the forecast the smaller is the forecast error. 
 ]
@@ -117,7 +108,14 @@ where `\(E(y_{t+h}|\Omega_{t};\hat{\theta})\equiv \hat{y}_{t+h|t}\)`
 Because uncertainty cannot be avoided, a forecaster is bound to commit forecast errors. 
 
 The goal of the forecaster is to minimize the 'cost' associated with the forecast errors. This is achieved by minimizing the expected loss function.
+]
 
+---
+
+
+# The loss function
+
+.right-column[
 A loss function, `\(L(e_{t+h|t})\)`, can take many different forms, but is should satisfy the following properties:
 `$$\begin{aligned}
 		&amp; L(e_{t+h|t}) = 0,\;~~\forall\;e_{t+h|t} = 0 \\
@@ -151,10 +149,16 @@ Optimal forecast is the forecast that minimizes the expected loss:
 		`$$\min_{y_{t+h|t}} E\left[L\left(e_{t+h|t}\right)\right] = \min_{y_{t+h|t}} E\left[L\left(y_{t+h}-y_{t+h|t}\right)\right]$$`
 
 Under the assumption of the quadratic loss function:
-`$$E\left[L(e_{t+h|t})\right] = E(y_{t+h}^2)-2E(y_{t+h})\hat{y}_{t+h|t} + \hat{y}_{t+h|t}^2
-		$$`
+`$$E\left[L(e_{t+h|t})\right] = E(y_{t+h}^2)-2E(y_{t+h})\hat{y}_{t+h|t} + \hat{y}_{t+h|t}^2$$`
+]
 
-By solving the optimization problem it follows that `\(\hat{y}_{t+h|t} = E(y_{t+h})\)`.
+---
+
+
+# An optimal forecast
+
+.right-column[
+By solving the optimization problem it follows that `$$\hat{y}_{t+h|t} = E(y_{t+h})$$`.
 
 Thus, under the quadratic loss, assuming that forecast is normally distributed: `$$\hat{y}_{t+h|t} = \mu_y$$` 
 ]

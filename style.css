@@ -1,10 +1,10 @@
 .remark-slide-content {
   background-color: white;
   border-top: 80px solid coral; /* change this */
-  font-size: 24px;
+  font-size: 28px;
   font-weight: 300;
   line-height: 1.5;
-  padding: 1em 2em 1em 2em
+  padding: 1em 3em 1em 3em;
 }
 
 .title-slide .inverse .remark-slide-content {

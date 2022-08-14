@@ -36,9 +36,7 @@ library(Quandl)
 ]
 
 .pull-right[
-Time series are realizations of chronologically stored sequence of random variables. This sequence of random variables is referred to as the *stochastic process*. 
-
-A time series is a realization of the stochastic process. 
+Time series is a realization of chronologically stored sequence of random variables. This sequence of random variables is referred to as the *stochastic process*. 
 
 We index the observed time periods as $1,2,\ldots,T$, and denote the set of observations as $\{y_1,y_2,\ldots,y_T\}$. 
 
@@ -51,9 +49,7 @@ Thus, a time series is a finite sample from an underlying doubly-infinite sequen
 # White noise process
 
 .right-column[
-A simplest kind of the time series is the realisation of a stochastic process that is comprised of independent and identically distributed random variables with zero mean and constant variance: $Y_t \sim iid\left(0,\sigma^2\right)$. 
-
-This is referred to as a *white noise* process. 
+A simplest kind of the time series is the realisation of a stochastic process that is comprised of independent and identically distributed random variables with zero mean and constant variance: $Y_t \sim iid\left(0,\sigma^2\right)$. This is referred to as a *white noise* process. 
 
 A stochastic process, $\{Y_t: t=1,\ldots,T\}$, is white noise if: 
 \begin{align*}
@@ -97,8 +93,15 @@ ggplot(df,aes(x=t,y=y))+
 Because in a white noise sequence observations are drawn from the same distribution, it is a *stationary* process. Indeed, a special type of stationary process insofar as it has time-invariant mean, variance, and covariance. 
 
 For a stochastic process to be stationary, neither its mean needs to be equal to zero, it only needs to be constant over time, nor its covariances need to be equal to zero, they only need to be constant over time, though they may vary with $k$. 
+]
 
-Thus, a time series is a realization of the stationary process (or, to be more specific, weakly stationary process) if the mean and variance are independent of $t$, and the autocovariances are independent of $t$ for all $k$.
+---
+
+
+# Stationarity
+
+.right-column[
+Thus, a time series is a realization of the stationary process (specifically of the weakly stationary process) if the mean and variance are independent of $t$, and the autocovariances are independent of $t$ for all $k$.
 ]
 
 ---

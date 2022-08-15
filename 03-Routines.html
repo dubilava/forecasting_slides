@@ -146,7 +146,7 @@ The quadratic loss function is popular, partly because we typically select model
 
 .right-column[
 Optimal forecast is the forecast that minimizes the expected loss:
-		`$$\min_{y_{t+h|t}} E\left[L\left(e_{t+h|t}\right)\right] = \min_{y_{t+h|t}} E\left[L\left(y_{t+h}-y_{t+h|t}\right)\right]$$`
+		`$$\min_{\hat{y}_{t+h|t}} E\left[L\left(e_{t+h|t}\right)\right] = \min_{\hat{y}_{t+h|t}} E\left[L\left(y_{t+h}-\hat{y}_{t+h|t}\right)\right]$$`
 
 Under the assumption of the quadratic loss function:
 `$$E\left[L(e_{t+h|t})\right] = E(y_{t+h}^2)-2E(y_{t+h})\hat{y}_{t+h|t} + \hat{y}_{t+h|t}^2$$`

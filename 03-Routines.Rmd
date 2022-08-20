@@ -23,6 +23,7 @@ knitr::opts_chunk$set(echo = FALSE, fig.width = 11, fig.height = 7)
 
 
 ```{r echo=FALSE, include=FALSE, message=FALSE}
+library(data.table)
 library(ggplot2)
 ```
 
@@ -42,8 +43,6 @@ A more complex but much more informative form of a forecast is *density forecast
 
 A relatively less complex form of a forecast is *interval forecast*, which is the lower and upper percentiles of the forecast distribution.
 ]
-
-
 
 ---
 

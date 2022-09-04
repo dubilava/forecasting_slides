@@ -570,6 +570,6 @@ Ubilava, [Chapter 4](https://davidubilava.com/forecasting/docs/trends.html) and 
 
 Gonzalez-Rivera, Chapter 10
 
-Hyndman & Athanasopoulos, [3.2](https://otexts.com/fpp3/components.html)
+Hyndman & Athanasopoulos, [3.2](https://otexts.com/fpp3/components.html), [13.1](https://otexts.com/fpp3/weekly.html)
 ]
 

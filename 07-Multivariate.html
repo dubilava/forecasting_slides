@@ -36,7 +36,7 @@ class: center, middle, inverse, title-slide
 
 
 
-# Vector Autoregressive Model
+# Economic variables are inter-related
 
 .pull-left[
 ![](Art/multivariate.png)
@@ -53,15 +53,15 @@ The dynamic linkages between two (or more) economic variables can be modeled as 
 
 ---
 
-# Vector Autoregressive Model
+# Vector autoregression
 
 .right-column[
 To begin, consider a bivariate first-order VAR. 
 
-Let `\(\{X_{1,t}\}\)` and `\(\{X_{2,t}\}\)` be the stationary stochastic processes. A bivariate VAR(1), is then given by:
+Let `\(\{X_{1t}\}\)` and `\(\{X_{2t}\}\)` be the stationary stochastic processes. A bivariate VAR(1), is then given by:
 `$$\begin{aligned}
-x_{1,t} &amp;= \alpha_1 + \pi_{11}x_{1,t-1} + \pi_{12}x_{2,t-1} + \varepsilon_{1,t} \\
-x_{2,t} &amp;= \alpha_2 + \pi_{21}x_{1,t-1} + \pi_{22}x_{2,t-1} + \varepsilon_{2,t}
+x_{1t} &amp;= \alpha_1 + \pi_{11}x_{1t-1} + \pi_{12}x_{2t-1} + \varepsilon_{1t} \\
+x_{2t} &amp;= \alpha_2 + \pi_{21}x_{1t-1} + \pi_{22}x_{2t-1} + \varepsilon_{2t}
 \end{aligned}$$`
 
 where `\(\varepsilon_{1,t} \sim iid(0,\sigma_1^2)\)` and `\(\varepsilon_{2,t} \sim iid(0,\sigma_2^2)\)`, and the two can be correlated, i.e., `\(Cov(\varepsilon_{1,t},\varepsilon_{2,t}) \neq 0\)`.
@@ -69,62 +69,38 @@ where `\(\varepsilon_{1,t} \sim iid(0,\sigma_1^2)\)` and `\(\varepsilon_{2,t} \s
 
 ---
 
-# Vector Autoregressive Model
+# Vector autoregression
 
 .right-column[
-An `\(n\)`-dimensional VAR of order `\(p\)`, VAR(p), presented in matrix notation: `$$\mathbf{x}_t = \mathbf{\alpha} + \Pi_1 \mathbf{x}_{t-1} + \ldots + \Pi_p \mathbf{x}_{t-p} + \mathbf{\varepsilon}_t,$$` where `\(\mathbf{x}_t = (x_{1,t},\ldots,x_{n,t})'\)` is a vector of `\(n\)` (potentially) related variables; `\(\mathbf{\varepsilon}_t = (\varepsilon_{1,t},\ldots,\varepsilon_{n,t})'\)` is a vector of error terms, such that `\(E\left(\mathbf{\varepsilon}_t\right) = \mathbf{0}\)`, `\(E\left(\mathbf{\varepsilon}_t^{}\mathbf{\varepsilon}_t^{\prime}\right) = \Sigma\)`, and `\(E\left(\mathbf{\varepsilon}_{t}^{}\mathbf{\varepsilon}_{s \neq t}^{\prime}\right) = 0\)`.
+An `\(n\)`-dimensional VAR of order `\(p\)`, VAR(p), presented in matrix notation: `$$\mathbf{x}_t = \mathbf{\alpha} + \Pi^{(1)} \mathbf{x}_{t-1} + \ldots + \Pi^{(p)} \mathbf{x}_{t-p} + \mathbf{\varepsilon}_t,$$` where `\(\mathbf{x}_t = (x_{1,t},\ldots,x_{n,t})'\)` is a vector of `\(n\)` (potentially) related variables; `\(\mathbf{\varepsilon}_t = (\varepsilon_{1,t},\ldots,\varepsilon_{n,t})'\)` is a vector of error terms, such that `\(E\left(\mathbf{\varepsilon}_t\right) = \mathbf{0}\)`, `\(E\left(\mathbf{\varepsilon}_t^{}\mathbf{\varepsilon}_t^{\prime}\right) = \Sigma_{\mathbf{\varepsilon}}\)`, and `\(E\left(\mathbf{\varepsilon}_{t}^{}\mathbf{\varepsilon}_{s \neq t}^{\prime}\right) = 0\)`.
 ]
 		
 ---
 
-# Vector Autoregressive Model
+# A parameter matrix of vector Autoregression
 
 .right-column[
-`\(\Pi_1,\ldots,\Pi_p\)` are `\(n\)`-dimensional parameter matrices: 
-`$$\Pi_j = 
+`\(\Pi^{(1)},\ldots,\Pi^{(p)}\)` are `\(n\)`-dimensional parameter matrices such that: 
+`$$\Pi^{(j)} = 
 	    \left[ 
 		\begin{array}{cccc} 
-		\pi_{11j} &amp; \pi_{12j} &amp; \cdots &amp;  \pi_{1nj} \\ 
-		\pi_{21j} &amp; \pi_{22j} &amp; \cdots &amp;  \pi_{2nj} \\  
+		\pi_{11}^{(j)} &amp; \pi_{12}^{(j)} &amp; \cdots &amp;  \pi_{1n}^{(j)} \\ 
+		\pi_{21}^{(j)} &amp; \pi_{22}^{(j)} &amp; \cdots &amp;  \pi_{2n}^{(j)} \\  
 		\vdots &amp; \vdots &amp; \ddots &amp;  \vdots \\  
-		\pi_{n1j} &amp; \pi_{n2j} &amp; \cdots &amp;  \pi_{nnj} \\  
+		\pi_{n1}^{(j)} &amp; \pi_{n2}^{(j)} &amp; \cdots &amp;  \pi_{nn}^{(j)} 
 		\end{array} 
 		\right],\;~~j=1,\ldots,p$$`
 ]
 		
 ---
 
-# Vector Autoregressive Model
+
+# Features of vector autoregression
 
 .right-column[
-Substitute recursively in a bivariate VAR(1) to get: 
-`$$\begin{aligned}
-\mathbf{x}_t &amp;= \mathbf{\alpha} + \Pi_1 \mathbf{x}_{t-1}+ \mathbf{\varepsilon}_t \notag \\
-&amp;= \mathbf{\alpha} + \Pi_1\left(\mathbf{\alpha} + \Pi_1 \mathbf{x}_{t-2}+ \mathbf{\varepsilon}_{t-1}\right)+ \mathbf{\varepsilon}_t \notag \\
-&amp;= \left(I + \Pi_1\right)\mathbf{\alpha} + \Pi_1^2 \mathbf{x}_{t-2}+ \Pi_1 \mathbf{\varepsilon}_{t-1}+ \mathbf{\varepsilon}_t \notag \\
-&amp;\vdots  \notag \\
-&amp;= \left(I + \sum_{i=1}^{k-1}\Pi_1^i\right)\mathbf{\alpha} + \Pi_1^k \mathbf{x}_{t-k}+ \sum_{i=0}^{k-1}\Pi_1^{i} \mathbf{\varepsilon}_{t-i} 
-\end{aligned}$$`
-]
-
----
-
-# Vector Autoregressive Model
-
-.right-column[
-As `\(k \to \infty\)`, the stable VAR(1) process converges to: `$$\mathbf{x}_t = \left(I - \Pi_1\right)^{-1}\mathbf{\alpha} + \sum_{i=0}^{\infty}\Pi_1^{i} \mathbf{\varepsilon}_{t-i}$$`
-The expectation of `\(\mathbf{x_t}\)` will yield the unconditional mean: `$$E(\mathbf{x}_t) \equiv \mathbf{\mu} = \left(I - \Pi_1\right)^{-1}\mathbf{\alpha}.$$` More generally, i.e., in the case of a multivariate VAR(p),
-`$$\mathbf{\mu} =\left(I - \Pi_1 - \cdots - \Pi_p\right)^{-1}\mathbf{\alpha}$$`
-]
-
----
-
-# Vector Autoregressive Model
-
-.right-column[
-The general features of a vector autoregressive model are:
-- Only lagged values of the dependent variables are considered as the right-hand-side variables.
-  * Although, trend and seasonal variables might also be included.
+General features of a (reduced-form) vector autoregression are that:
+- only the lagged values of the dependent variables are on the right-hand-side of the equations.
+  * Although, trends and seasonal variables can also be included.
 - Each equation has the same set of right-hand-side variables.
   * However, it is possible to impose different lag structure across the equations, especially when `\(p\)` is relatively large. This is because the number of parameters increases very quickly with the number of lags or the number of variables in the system.
 - The autregressive order, `\(p\)`, is the largest lag across all equations.
@@ -132,114 +108,113 @@ The general features of a vector autoregressive model are:
 
 ---
 
-# Modeling Vector Autoregression
+# Modeling vector autoregression
 
 .right-column[
 The autoregressive order, `\(p\)`, can be determined using system-wide information criteria:
 
 `$$\begin{aligned}
-&amp; AIC = \ln\left|\Sigma_{\varepsilon}\right| + \frac{2}{T}(pn^2+n) \\
-&amp; SIC = \ln\left|\Sigma_{\varepsilon}\right| + \frac{\ln{T}}{T}(pn^2+n)
+&amp; AIC = \ln\left|\Sigma_{\mathbf{\varepsilon}}\right| + \frac{2}{T}(pn^2+n) \\
+&amp; SIC = \ln\left|\Sigma_{\mathbf{\varepsilon}}\right| + \frac{\ln{T}}{T}(pn^2+n)
 \end{aligned}$$`
 
-where `\(\left|\Sigma_{\varepsilon}\right|\)` is the determinant of the residual covariance matrix; `\(n\)` is the number of equations, and `\(T\)` is the total number of observations.
+where `\(\left|\Sigma_{\mathbf{\varepsilon}}\right|\)` is the determinant of the residual covariance matrix; `\(n\)` is the number of equations, and `\(T\)` is the total number of observations.
 ]
 
 ---
 
-# Modeling Vector Autoregression
+# Estimating vector autoregression
 
 .right-column[
-When each equation of VAR has the same regressors, the OLS can be applied to each equation individually to estimate the regression parameters - i.e., the estimation can be carried out on the equation-by-equation basis (otherwise, the method of maximum likelihood is to be applied).
+When each equation of VAR has the same regressors, the OLS can be applied to each equation individually to estimate the regression parameters - i.e., the estimation can be carried out on the equation-by-equation basis.
 
 When processes are covariance-stationarity, conventional t-tests and F-tests are applicable for hypotheses testing.
 ]
 
 ---
 
-# Testing In-Sample Granger Causality
+# Testing in-sample Granger causality
 
 .right-column[
 Consider a bivariate VAR(p): 
 `$$\begin{aligned}
-x_{1,t} &amp;= \alpha_1 + \pi_{111} x_{1,t-1} + \cdots + \pi_{11p} x_{1,t-p} \\
-&amp;+ \pi_{121} x_{2,t-1} + \cdots + \pi_{12p} x_{2,t-p} +\varepsilon_{1,t}  \\
-x_{2,t} &amp;= \alpha_1 + \pi_{211} x_{1,t-1} + \cdots + \pi_{21p} x_{1,t-p} \\
-&amp;+ \pi_{221} x_{2,t-1} + \cdots + \pi_{22p} x_{2,t-p} +\varepsilon_{2,t} 
+x_{1t} &amp;= \alpha_1 + \pi_{11}^{(1)} x_{1t-1} + \cdots + \pi_{11}^{(p)} x_{1t-p} \\
+&amp;+ \pi_{12}^{(1)} x_{2t-1} + \cdots + \pi_{12}^{(p)} x_{2t-p} +\varepsilon_{1t}  \\
+x_{2t} &amp;= \alpha_1 + \pi_{21}^{(1)} x_{1t-1} + \cdots + \pi_{21}^{(p)} x_{1t-p} \\
+&amp;+ \pi_{22}^{(1)} x_{2t-1} + \cdots + \pi_{22}^{(p)} x_{2t-p} +\varepsilon_{2t} 
 \end{aligned}$$`
 
-It is said that:
-- `\(\{X_2\}\)` does not Granger cause `\(\{X_1\}\)` if `\(\pi_{121}=\cdots=\pi_{12p}=0\)`
-- `\(\{X_1\}\)` does not Granger cause `\(\{X_2\}\)` if `\(\pi_{211}=\cdots=\pi_{21p}=0\)`
+- `\(\{X_2\}\)` does not Granger cause `\(\{X_1\}\)` if `\(\pi_{12}^{(1)}=\cdots=\pi_{12}^{(p)}=0\)`
+- `\(\{X_1\}\)` does not Granger cause `\(\{X_2\}\)` if `\(\pi_{21}^{(1)}=\cdots=\pi_{21}^{(p)}=0\)`
 ]
 
 ---
 
 
-# Forecasting with Multivariate Models
+# One-step-ahead forecasts
 
 .right-column[
-Consider, again, a bivariate VAR(1): 
+Consider realizations of dependent variables from a bivariate VAR(1): 
 `$$\begin{aligned}
-x_{1,t} &amp;= \alpha_1 + \pi_{11} x_{1,t-1} + \pi_{12} x_{2,t-1} + \varepsilon_{1,t} \\
-x_{2,t} &amp;= \alpha_2 + \pi_{21} x_{1,t-1} + \pi_{22} x_{2,t-1} + \varepsilon_{2,t}
+x_{1t+1} &amp;= \alpha_1 + \pi_{11} x_{1t} + \pi_{12} x_{2t} + \varepsilon_{1t+1} \\
+x_{2t+1} &amp;= \alpha_2 + \pi_{21} x_{1t} + \pi_{22} x_{2t} + \varepsilon_{2t+1}
 \end{aligned}$$`
 
-The optimal one-step-ahead forecasts are:
+Point forecasts are:
 `$$\begin{aligned}
-x_{1,t+1|t} &amp;= E(x_{1,t+1}|\Omega_t) = \alpha_1 + \pi_{11} x_{1,t} + \pi_{12} x_{2,t} \\
-x_{2,t+1|t} &amp;= E(x_{2,t+1}|\Omega_t) = \alpha_2 + \pi_{21} x_{1,t} + \pi_{22} x_{2,t}
+x_{1t+1|t} &amp;= E(x_{1t+1}|\Omega_t) = \alpha_1 + \pi_{11} x_{1t} + \pi_{12} x_{2t} \\
+x_{2t+1|t} &amp;= E(x_{2t+1}|\Omega_t) = \alpha_2 + \pi_{21} x_{1t} + \pi_{22} x_{2t}
 \end{aligned}$$`
 ]
 
 ---
 
-# Forecasting with Multivariate Models
+# One-step-ahead forecasts
 
 .right-column[
-The one-step-ahead forecast errors are: 
+Forecast errors are: 
 `$$\begin{aligned}
-e_{1,t+1|t} &amp;= x_{1,t+1} - x_{1,t+1|t} = \varepsilon_{1,t+1} \\
-e_{2,t+1|t} &amp;= x_{2,t+1} - x_{2,t+1|t} = \varepsilon_{2,t+1}
+e_{1t+1} &amp;= x_{1t+1} - x_{1t+1|t} = \varepsilon_{1t+1} \\
+e_{2t+1} &amp;= x_{2t+1} - x_{2t+1|t} = \varepsilon_{2t+1}
 \end{aligned}$$`
 
-The one-step-ahead forecast variances are:
+Forecast variances are:
 `$$\begin{aligned}
-\sigma_{1,t+1|t}^2 &amp;= E(x_{1,t+1} - x_{1,t+1|t}|\Omega_t)^2 = E(\varepsilon_{1,t+1}^2) = \sigma_{1}^2 \\
-\sigma_{2,t+1|t}^2 &amp;= E(x_{2,t+1} - x_{2,t+1|t}|\Omega_t)^2 = E(\varepsilon_{2,t+1}^2) = \sigma_{2}^2
+\sigma_{1t+1}^2 &amp;= E(x_{1t+1} - x_{1t+1|t}|\Omega_t)^2 = E(\varepsilon_{1t+1}^2) = \sigma_{1}^2 \\
+\sigma_{2t+1}^2 &amp;= E(x_{2t+1} - x_{2t+1|t}|\Omega_t)^2 = E(\varepsilon_{2t+1}^2) = \sigma_{2}^2
 \end{aligned}$$`
 ]
 
 ---
 
-# Forecasting with Multivariate Models
+# Multi-step-ahead forecasts
 
 .right-column[
-The optimal two-step-ahead forecasts are:
+Realizations of dependent variables in period `\(t+h\)`: 
 `$$\begin{aligned}
-x_{1,t+2|t} &amp;= E(x_{1,t+2}|\Omega_t) = \alpha_1 + \pi_{11} x_{1,t+1|t} + \pi_{12} x_{2,t+1|t} \\
-x_{2,t+2|t} &amp;= E(x_{2,t+2}|\Omega_t) = \alpha_2 + \pi_{21} x_{1,t+1|t} + \pi_{22} x_{2,t+1|t}
+x_{1t+h} &amp;= \alpha_1 + \pi_{11} x_{1t+h-1} + \pi_{12} x_{2t+h-1} + \varepsilon_{1t+h} \\
+x_{2t+h} &amp;= \alpha_2 + \pi_{21} x_{1t+h-1} + \pi_{22} x_{2t+h-1} + \varepsilon_{2t+h}
 \end{aligned}$$`
 
-The two-step-ahead forecast errors are:
+Point forecasts are:
 `$$\begin{aligned}
-e_{1,t+2|t} &amp;= x_{1,t+2} - x_{1,t+2|t} = \pi_{11} e_{1,t+1|t} + \pi_{12} e_{2,t+1|t} + \varepsilon_{1,t+2} \\
-e_{2,t+2|t} &amp;= x_{2,t+2} - x_{2,t+2|t} = \pi_{21} e_{1,t+1|t} + \pi_{22} e_{2,t+1|t} + \varepsilon_{2,t+2}
+x_{1t+h|t} &amp;= E(x_{1t+1}|\Omega_t) = \alpha_1 + \pi_{11} x_{1t+h-1|t} + \pi_{12} x_{2t+h-1|t} \\
+x_{2t+h|t} &amp;= E(x_{2t+1}|\Omega_t) = \alpha_2 + \pi_{21} x_{1t+h-1|t} + \pi_{22} x_{2t+h-1|t}
 \end{aligned}$$`
 ]
 
 ---
 
-# Forecasting with Multivariate Models
+# Multi-step-ahead forecasts
 
 .right-column[
-The two-step-ahead forecast variances are:
+Forecast errors are: 
 `$$\begin{aligned}
-\sigma_{1,t+2|t}^2 &amp;= E(x_{1,t+2} - x_{1,t+2|t}|\Omega_t)^2 \\ 
-&amp;= \sigma_{1}^2(1+\pi_{11}^2) + \sigma_{2}^2\pi_{12}^2 + 2\pi_{11}\pi_{12} Cov(\varepsilon_{1},\varepsilon_{2})\\
-\sigma_{2,t+2|t}^2 &amp;= E(x_{2,t+2} - x_{2,t+2|t}|\Omega_t)^2 \\ 
-&amp;= \sigma_{2}^2(1+\pi_{22}^2) + \sigma_{1}^2\pi_{21}^2 + 2\pi_{21}\pi_{22} Cov(\varepsilon_{1},\varepsilon_{2})
+e_{1t+h} &amp;= x_{1t+h} - x_{1t+h|t} = \pi_{11} e_{1t+h-1} + \pi_{12} e_{2t+h-1} + \varepsilon_{1t+h} \\
+e_{2t+h} &amp;= x_{2t+h} - x_{2t+h|t} = \pi_{21} e_{1t+h-1} + \pi_{22} e_{2t+h-1} + \varepsilon_{2t+h}
 \end{aligned}$$`
+
+Forecast variances are the functions of error variances and covariances, and the model parameters.
 ]
 
 ---
@@ -248,15 +223,22 @@ The two-step-ahead forecast variances are:
 # Out-of-Sample Granger Causality
 
 .right-column[
-The previously discussed (in sample) tests of causality in granger sense are frequently performed in practice, but the 'true spirit' of such test is to assess the ability of a variable to help predict another variable in an out-of-sample setting.
+The previously discussed (in sample) tests of causality in Granger sense are frequently performed in practice, but the 'true spirit' of such test is to assess the ability of a variable to help predict another variable in an out-of-sample setting.
+]
 
+---
+
+
+# Out-of-Sample Granger Causality
+
+.right-column[
 Consider restricted and unrestricted information sets:
 `$$\begin{aligned}
-&amp;\Omega_{t,r} \equiv \Omega_{t}(X_1) = \{x_{1,t},x_{1,t-1},\ldots\} \\
-&amp;\Omega_{t,u} \equiv \Omega_{t}(X_1,X_2) = \{x_{1,t},x_{1,t-1},\ldots,x_{2,t},x_{2,t-1},\ldots\}
+&amp;\Omega_{t}^{(r)} \equiv \Omega_{t}(X_1) = \{x_{1,t},x_{1,t-1},\ldots\} \\
+&amp;\Omega_{t}^{(u)} \equiv \Omega_{t}(X_1,X_2) = \{x_{1,t},x_{1,t-1},\ldots,x_{2,t},x_{2,t-1},\ldots\}
 \end{aligned}$$`
 
-Following Granger's definition of causality: `\(\{X_2\}\)` is said to cause `\(\{X_1\}\)` if `\(\sigma_{x_1}^2\left(\Omega_{t,u}\right) &lt; \sigma_{x_1}^2\left(\Omega_{t,r}\right)\)`, meaning that we can better predict `\(X_1\)` using all available information on `\(X_1\)` and `\(X_2\)`, rather than that on `\(X_1\)` only.
+Following Granger's definition of causality: `\(\{X_2\}\)` is said to cause `\(\{X_1\}\)` if `\(\sigma_{x_1}^2\left(\Omega_{t}^{(u)}\right) &lt; \sigma_{x_1}^2\left(\Omega_{t}^{(r)}\right)\)`, meaning that we can better predict `\(X_1\)` using all available information on `\(X_1\)` and `\(X_2\)`, rather than that on `\(X_1\)` only.
 ]
 
 ---
@@ -266,14 +248,21 @@ Following Granger's definition of causality: `\(\{X_2\}\)` is said to cause `\(\
 .right-column[
 Let the forecasts based on each of the information sets be:
 `$$\begin{aligned}
-	&amp;x_{1,t+h|t,r} = E\left(x_{1,t+h}|\Omega_{t,r}\right) \\
-	&amp;x_{1,t+h|t,u} = E\left(x_{1,t+h}|\Omega_{t,u}\right)
+	&amp;x_{1t+h|t}^{(r)} = E\left(x_{1t+h}|\Omega_{t}^{(r)}\right) \\
+	&amp;x_{1t+h|t}^{(u)} = E\left(x_{1t+h}|\Omega_{t}^{(u)}\right)
 \end{aligned}$$`
+]
 
+---
+
+
+# Out-of-Sample Granger Causality
+
+.right-column[
 For these forecasts, the corresponding forecast errors are:
 `$$\begin{aligned}
-	&amp; e_{1,t+h|t,r} = x_{1,t+h} - x_{1,t+h|t,r}\\
-	&amp; e_{1,t+h|t,u} = x_{1,t+h} - x_{1,t+h|t,u}
+	&amp; e_{1t+h}^{(r)} = x_{1t+h} - x_{1t+h|t}^{(r)}\\
+	&amp; e_{1t+h}^{(u)} = x_{1t+h} - x_{1t+h|t}^{(u)}
 \end{aligned}$$`
 
 The out-of-sample forecast errors are then evaluated by comparing the loss functions based on these forecasts errors.
@@ -286,12 +275,12 @@ The out-of-sample forecast errors are then evaluated by comparing the loss funct
 .right-column[
 For example, assuming quadratic loss, and `\(P\)` out-of-sample forecasts:
 `$$\begin{aligned}
-RMSFE_{r} &amp;= \sqrt{\frac{1}{P}\sum_{s=1}^{P}\left(e_{1,R+s|R-1+s,r}\right)^2} \\
-RMSFE_{u} &amp;= \sqrt{\frac{1}{P}\sum_{s=1}^{P}\left(e_{1,R+s|R-1+s,u}\right)^2}
+RMSFE^{(r)} &amp;= \sqrt{\frac{1}{P}\sum_{s=1}^{P}\left(e_{1R+s|R-1+s}^{(r)}\right)^2} \\
+RMSFE^{(u)} &amp;= \sqrt{\frac{1}{P}\sum_{s=1}^{P}\left(e_{1R+s|R-1+s}^{(u)}\right)^2}
 \end{aligned}$$`
 where `\(R\)` is the size of the (first) estimation window.
 
-`\(\{X_2\}\)` is said to cause *in Granger sense* `\(\{X_1\}\)` if `\(RMSFE_{u} &lt; RMSFE_{r}\)`.
+`\(\{X_2\}\)` causes `\(\{X_1\}\)` *in Granger sense* if `\(RMSFE^{(u)} &lt; RMSFE^{(r)}\)`.
 ]
 
 ---

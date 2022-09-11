@@ -23,6 +23,12 @@ knitr::opts_chunk$set(echo = FALSE, fig.width = 11, fig.height = 7)
 
 ```{r echo=FALSE, include=FALSE, message=FALSE}
 library(ggplot2)
+library(data.table)
+library(vars)
+library(stringr)
+library(forecast)
+library(knitr)
+library(kableExtra)
 ```
 
 # Economic variables are inter-related
@@ -66,7 +72,7 @@ An $n$-dimensional VAR of order $p$, VAR(p), presented in matrix notation: $$\ma
 		
 ---
 
-# A parameter matrix of vector Autoregression
+# A parameter matrix of a vector autoregression
 
 .right-column[
 $\Pi^{(1)},\ldots,\Pi^{(p)}$ are $n$-dimensional parameter matrices such that: 
@@ -122,6 +128,112 @@ When processes are covariance-stationarity, conventional t-tests and F-tests are
 
 ---
 
+# U.S. Interest Rates and Inflation
+
+.right-column[
+```{r echo=FALSE, message=FALSE, cache=FALSE}
+load("../../Books/forecasting/data/funds.RData")
+load("../../Books/forecasting/data/inflation.RData")
+
+dt <- merge(funds,inflation,by="date")
+colnames(dt) <- c("date","funds","inflation")
+
+dl <- melt(dt,id.vars="date")
+
+dl$variable <- factor(dl$variable,levels=c("funds","inflation"),labels=c("Federal Funds Rate","Year-Over-Year Inflation"))
+
+ggplot(dl,aes(x=date,y=value,color=variable,linetype=variable))+
+  geom_line(size=.8)+
+  scale_color_manual(values=c("powderblue","coral"))+
+  scale_linetype_manual(values=c(1,5))+
+  labs(x="Year",y="%",caption="retrieved from FRED, Federal Reserve Bank of St. Louis\nhttps://fred.stlouisfed.org/series/CPIAUCNS")+
+  theme_classic()+
+  theme(axis.title = element_text(size=22),axis.text = element_text(size=18),legend.position="top",legend.title=element_blank(),legend.text=element_text(size=18))
+```
+]
+
+---
+
+# U.S. Interest Rates and Inflation: VAR(3)
+
+.pull-left[
+```{r echo=FALSE, message=FALSE, cache=FALSE}
+dt[,`:=`(funds1=shift(funds,1),funds2=shift(funds,2),funds3=shift(funds,3),funds4=shift(funds,4),inflation1=shift(inflation,1),inflation2=shift(inflation,2),inflation3=shift(inflation,3),inflation4=shift(inflation,4))]
+
+var11 <- lm(funds~funds1+inflation1,data=dt)
+var12 <- lm(inflation~funds1+inflation1,data=dt)
+
+var21 <- lm(funds~funds1+funds2+inflation1+inflation2,data=dt)
+var22 <- lm(inflation~funds1+funds2+inflation1+inflation2,data=dt)
+
+var31 <- lm(funds~funds1+funds2+funds3+inflation1+inflation2+inflation3,data=dt)
+var32 <- lm(inflation~funds1+funds2+funds3+inflation1+inflation2+inflation3,data=dt)
+
+var41 <- lm(funds~funds1+funds2+funds3+funds4+inflation1+inflation2+inflation3+inflation4,data=dt)
+var42 <- lm(inflation~funds1+funds2+funds3+funds4+inflation1+inflation2+inflation3+inflation4,data=dt)
+
+
+p <- 1
+k <- 2
+var1r <- cbind(var11$residuals,var12$residuals)
+cov1r <- crossprod(var1r)/(nrow(dt)-(p*k^2+k))
+
+AIC1 <- log(det(cov1r))+2*(p*k^2+k)/nrow(dt)
+
+
+p <- 2
+k <- 2
+var2r <- cbind(var21$residuals,var22$residuals)
+cov2r <- crossprod(var2r)/(nrow(dt)-(p*k^2+k))
+
+AIC2 <- log(det(cov2r))+2*(p*k^2+k)/nrow(dt)
+
+
+p <- 3
+k <- 2
+var3r <- cbind(var31$residuals,var32$residuals)
+cov3r <- crossprod(var3r)/(nrow(dt)-(p*k^2+k))
+
+AIC3 <- log(det(cov3r))+2*(p*k^2+k)/nrow(dt)
+
+
+p <- 4
+k <- 2
+var4r <- cbind(var41$residuals,var42$residuals)
+cov4r <- crossprod(var4r)/(nrow(dt)-(p*k^2+k))
+
+AIC4 <- log(det(cov4r))+2*(p*k^2+k)/nrow(dt)
+
+aic_dt <- data.table(p=1:4,AIC=NA)
+
+aic_dt$AIC[1] <- AIC1
+aic_dt$AIC[2] <- AIC2
+aic_dt$AIC[3] <- AIC3
+aic_dt$AIC[4] <- AIC4
+
+knitr::kable(aic_dt,format='html',digits=3,align="l", table.attr='class="myTable"')
+
+```
+]
+
+.pull-right[
+```{r echo=FALSE, message=FALSE, cache=FALSE}
+out1 <- t(summary(var31)$coef[,c(1,2)])
+rownames(out1) <- c("estimate","s.e.")
+
+out2 <- t(summary(var32)$coef[,c(1,2)])
+rownames(out2) <- c("estimate","s.e.")
+
+out <- rbind(out1,out2)
+kable(out, booktabs = TRUE,digits=3,align="r", table.attr='class="myTable"',row.names = T,col.names = c("$\\alpha_i$","$\\pi_{i1}^{(1)}$","$\\pi_{i1}^{(2)}$","$\\pi_{i1}^{(3)}$","$\\pi_{i2}^{(1)}$","$\\pi_{i2}^{(2)}$","$\\pi_{i2}^{(3)}$"),escape = FALSE) %>% pack_rows(
+  index = c("Interest Rate (i=1)" = 2, "Inflation Rate (i=2)" = 2)
+  ) %>%
+  kable_styling(font_size = 22)
+```
+]
+
+---
+
 # Testing in-sample Granger causality
 
 .right-column[
@@ -135,6 +247,28 @@ x_{2t} &= \alpha_1 + \pi_{21}^{(1)} x_{1t-1} + \cdots + \pi_{21}^{(p)} x_{1t-p} 
 
 - $\{X_2\}$ does not Granger cause $\{X_1\}$ if $\pi_{12}^{(1)}=\cdots=\pi_{12}^{(p)}=0$
 - $\{X_1\}$ does not Granger cause $\{X_2\}$ if $\pi_{21}^{(1)}=\cdots=\pi_{21}^{(p)}=0$
+]
+
+---
+
+
+# Testing in-sample Granger causality
+
+.right-column[
+```{r echo=FALSE, message=FALSE, cache=FALSE}
+
+ar31 <- lm(funds~funds1+funds2+funds3,data=dt)
+ar32 <- lm(inflation~inflation1+inflation2+inflation3,data=dt)
+
+f31 <- anova(var31,ar31)
+f32 <- anova(var32,ar32)
+
+out <- rbind(f31[2,c(5:6)],f32[2,c(5:6)])
+rownames(out) <- c("Inflation Rate GC Interest Rate","Interest Rate GC Inflation Rate")
+
+kable(out, booktabs = TRUE,digits=3,align="l", table.attr='class="myTable"',row.names = T)
+
+```
 ]
 
 ---
@@ -208,6 +342,68 @@ Forecast variances are the functions of error variances and covariances, and the
 
 ---
 
+# Forecasting interest rate
+
+.right-column[
+```{r echo=FALSE, message=FALSE, cache=FALSE}
+est_end <- paste0(substr(dt$date[round(.75*length(dt$date))],1,4),"-12-01")
+R <- which(dt$date==est_end)
+P <- nrow(dt)-R
+
+ts_dt <- ts(dt[1:R,.(funds,inflation)],start=c(as.numeric(substr(dt$date[1],1,4)),as.numeric(substr(dt$date[1],6,7))),frequency = 12)
+
+var3 <- VAR(ts_dt,p=3,type="const")
+
+for3 <- forecast(var3,level=95,h=P)
+
+
+dt$f.funds <- NA
+dt$l.funds <- NA
+dt$u.funds <- NA
+
+dt$f.inflation <- NA
+dt$l.inflation <- NA
+dt$u.inflation <- NA
+
+dt$f.funds[(R+1):(R+P)] <- for3$forecast$funds$mean
+dt$l.funds[(R+1):(R+P)] <- for3$forecast$funds$lower
+dt$u.funds[(R+1):(R+P)] <- for3$forecast$funds$upper
+
+dt$f.inflation[(R+1):(R+P)] <- for3$forecast$inflation$mean
+dt$l.inflation[(R+1):(R+P)] <- for3$forecast$inflation$lower
+dt$u.inflation[(R+1):(R+P)] <- for3$forecast$inflation$upper
+
+ggplot(dt,aes(x=date,y=funds))+
+  geom_ribbon(aes(ymin=l.funds,ymax=u.funds),fill="coral",alpha=.2)+
+  geom_line(color="powderblue",size=.8)+
+  geom_line(data=dt[date>as.Date(est_end)],color="gray",size=.8)+
+  geom_line(aes(y=f.funds),color="coral",size=.8,linetype=5,na.rm=T)+
+  labs(x="Year",y="Federal Funds Effective Rate",caption="retrieved from FRED, Federal Reserve Bank of St. Louis\nhttps://fred.stlouisfed.org/series/FEDFUNDS")+
+  theme_classic()+
+  theme(axis.title = element_text(size=22),axis.text = element_text(size=18))
+```
+]
+
+---
+
+
+# Forecasting inflation rate
+
+.right-column[
+```{r echo=FALSE, message=FALSE, cache=FALSE}
+ggplot(dt,aes(x=date,y=inflation))+
+  geom_ribbon(aes(ymin=l.inflation,ymax=u.inflation),fill="coral",alpha=.2)+
+  geom_line(color="powderblue",size=.8)+
+  geom_line(data=dt[date>as.Date(est_end)],color="gray",size=.8)+
+  geom_line(aes(y=f.inflation),color="coral",size=.8,linetype=5,na.rm=T)+
+  labs(x="Year",y="Year-Over-Year Inflation",caption="retrieved from FRED, Federal Reserve Bank of St. Louis\nhttps://fred.stlouisfed.org/series/CPIAUCNS")+
+  theme_classic()+
+  theme(axis.title = element_text(size=22),axis.text = element_text(size=18))
+```
+]
+
+---
+
 
 # Out-of-Sample Granger Causality
 
@@ -270,6 +466,48 @@ RMSFE^{(u)} &= \sqrt{\frac{1}{P}\sum_{s=1}^{P}\left(e_{1R+s|R-1+s}^{(u)}\right)^
 where $R$ is the size of the (first) estimation window.
 
 $\{X_2\}$ causes $\{X_1\}$ *in Granger sense* if $RMSFE^{(u)} < RMSFE^{(r)}$.
+]
+
+---
+
+# Out-of-Sample Granger Causality
+
+.right-column[
+```{r echo=FALSE, message=FALSE, cache=FALSE}
+dt$funds.r <- NA
+dt$funds.u <- NA
+dt$inflation.r <- NA
+dt$inflation.u <- NA
+
+for(i in 1:P){
+  
+  ar31 <- lm(funds~funds1+funds2+funds3,data=dt[i:(R-1+i)])
+  ar32 <- lm(inflation~inflation1+inflation2+inflation3,data=dt[i:(R-1+i)])
+  
+  var31 <- lm(funds~funds1+funds2+funds3+inflation1+inflation2+inflation3,data=dt[i:(R-1+i)])
+  var32 <- lm(inflation~funds1+funds2+funds3+inflation1+inflation2+inflation3,data=dt[i:(R-1+i)])
+  
+  dt$funds.r[R+i] <- ar31$coefficients[1]+ar31$coefficients[2]*dt$funds[R-1+i]+ar31$coefficients[3]*dt$funds[R-2+i]+ar31$coefficients[4]*dt$funds[R-3+i]
+  dt$inflation.r[R+i] <- ar32$coefficients[1]+ar32$coefficients[2]*dt$inflation[R-1+i]+ar32$coefficients[3]*dt$inflation[R-2+i]+ar32$coefficients[4]*dt$inflation[R-3+i]
+  
+  dt$funds.u[R+i] <- var31$coefficients[1]+var31$coefficients[2]*dt$funds[R-1+i]+var31$coefficients[3]*dt$funds[R-2+i]+var31$coefficients[4]*dt$funds[R-3+i]+var31$coefficients[5]*dt$inflation[R-1+i]+var31$coefficients[6]*dt$inflation[R-2+i]+var31$coefficients[7]*dt$inflation[R-3+i]
+  dt$inflation.u[R+i] <- var32$coefficients[1]+var32$coefficients[2]*dt$funds[R-1+i]+var32$coefficients[3]*dt$funds[R-2+i]+var32$coefficients[4]*dt$funds[R-3+i]+var32$coefficients[5]*dt$inflation[R-1+i]+var32$coefficients[6]*dt$inflation[R-2+i]+var32$coefficients[7]*dt$inflation[R-3+i]
+  
+}
+
+dt[,`:=`(e_funds.r=funds-funds.r,e_inflation.r=inflation-inflation.r,e_funds.u=funds-funds.u,e_inflation.u=inflation-inflation.u)]
+
+rmsfe_fr <- round(sqrt(mean(dt$e_funds.r^2,na.rm=T)),4)
+rmsfe_fu <- round(sqrt(mean(dt$e_funds.u^2,na.rm=T)),4)
+
+rmsfe_ir <- round(sqrt(mean(dt$e_inflation.r^2,na.rm=T)),4)
+rmsfe_iu <- round(sqrt(mean(dt$e_inflation.u^2,na.rm=T)),4)
+```
+
+In the 'interest rate' equation, the RMSFE of the unrestricted model (`r rmsfe_fu`) is greater than the RMSFE of the restricted model (`r rmsfe_fr`), thus indicating that inflation rates do not out-of-sample Granger cause interest rates. 
+
+In the 'inflation rate' equation, the RMSFE of the unrestricted model (`r rmsfe_iu`) is less than the RMSFE of the restricted model (`r rmsfe_ir`), thus providing evidence that interest rates out-of-sample Granger cause inflation rates. 
+
 ]
 
 ---

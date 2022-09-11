@@ -1,6 +1,6 @@
 ---
 title: "Forecasting for Economics and Business"
-subtitle: "Lecture 6: Vector Autoregression"
+subtitle: "Lecture 7: Vector Autoregression"
 author: "David Ubilava"
 date: "University of Sydney"
 output:

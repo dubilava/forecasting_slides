@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Forecasting for Economics and Business</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="David Ubilava" />
+    <script src="libs/header-attrs-2.14/header-attrs.js"></script>
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/metropolis.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/metropolis-fonts.css" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+.title[
+# Forecasting for Economics and Business
+]
+.subtitle[
+## Lecture 8: Threshold Autoregression
+]
+.author[
+### David Ubilava
+]
+.date[
+### University of Sydney
+]
+
+---
+
+
+
+
+
+
+
+
+
+# Nonlinear Models
+
+.pull-left[
+![](Art/nonlinear.png)
+]
+
+.pull-right[
+Thus far we have considered linear models (i.e., the cases where a stochastic process is linear function of the information set). 
+
+In contrast, a nonlinear process is characterized by a conditional mean that is a nonlinear function of the information set.
+
+There can be a wide range of functional forms of nonlinear models.
+]
+
+---
+
+
+# Nonlinear Models
+
+.right-column[
+Consider an AR(p) process with a deterministic trend: `$$y_t = \alpha_0 + \alpha_1 t + \sum_{i=1}^{p}\beta_i y_{t-i} + \varepsilon_t,$$` where `\(\alpha_0 + \alpha_1 t\)` is the time-specific deterministic component.
+
+This specification implies a linear trend, but that doesn't need to be the case. We can have quadratic or cubic trends, for example, or we can have no trend component at all.
+]
+
+---
+
+
+# Time-Varying Models
+
+.right-column[
+A simple augmentation of the foregoing model is an autoregressive model with a switching trend component: `$$y_t = \delta_{0} + \delta_{1} t + \delta_{2}(t-\tau)I(t&gt;\tau) + \beta y_{t-1} + \varepsilon_t,$$` where `\(\tau\)` is the threshold parameter.
+
+Such switch can be extended to the whole autoregressive process. 
+]
+
+---
+
+
+# Time-Varying Models
+
+.right-column[
+Consider a two-regime AR(p) with drift: `$$y_t = \delta_0 + \delta_1 t + \sum_{i=1}^{p}\beta_{1i} y_{t-i} + \left[\delta_2(t-\tau) + \sum_{i=1}^{p}\beta_{2i} y_{t-i}\right]I(t&gt;\tau) + \varepsilon_t$$` This equation implies that not only the trend, but also the autoregressive process changes around `\(\tau\)`.
+]
+
+---
+
+
+# Regime-Dependent Models
+
+.right-column[
+Thus far we have assumed that the switch occurs at some point in time, i.e. the regime-switching variable is a function of time. 
+
+But the regime-switching variable can also be a function of the dependent variable, or other (potentially) related variables: `$$y_t = \alpha_0 + \sum_{i=1}^{p}\beta_{0i} y_{t-i} + \left(\alpha_1 + \sum_{i=1}^{p}\beta_{1i} y_{t-i}\right)I(s_t&gt;\kappa) + \varepsilon_t,$$` where `\(s_t\)` is the regime-switching variable, and `\(\kappa\)` is the threshold parameter. This model is referred as a threshold autoregression of order `\(p\)`, TAR(p). 
+]
+
+---
+
+
+# Regime-Dependent Models
+
+.right-column[
+If in TAR(p), `\(s_t = y_{t-d}\)`, where `\(d\)` is a positive integer referred to as the delay factor&amp;mdash;usually bounded by the order of the autoregression&amp;mdash;then the model is referred to as a self-exciting threshold autoregression, or SETAR(p).
+
+If in TAR(p), `\(s_t = \Delta y_{t-d}\)`, then the model is referred to as a momentum threshold autoregression, or momentum-TAR(p).
+]
+
+---
+
+
+# Regime-Dependent Models
+
+.right-column[
+TAR (or any version of it) can take any multiple-regime form: `$$y_t = \alpha_1 + \sum_{i=1}^{p}\beta_{1i} y_{t-i} + \sum_{j=2}^{K}{\left(\alpha_j + \sum_{i=1}^{p}\beta_{ji} y_{t-i}\right)I(s_t&gt;c_j)} + \varepsilon_t,$$` where `\(K\)` depicts the number of regimes in the equation.
+]
+
+---
+
+# Regime-Dependent Models
+
+.right-column[
+When we estimate TAR-type models, we have no *a priori* knowledge on the number of regimes, the order of autoregression in each regime, the regime-switching variable, and the value(s) of threshold parameter(s). 
+
+When threshold values are unknown (and need to be estimated), standard statistical inference is no longer valid. Otherwise, and given that the process is stationary, standard statistical inference applies.
+]
+
+---
+
+# U.S. Inflation
+
+.right-column[
+![](08-Nonlinear_files/figure-html/unnamed-chunk-2-1.png)&lt;!-- --&gt;
+]
+
+---
+
+# Order of autoregression and threshold parameter
+
+.pull-left[
+&lt;table class="myTable"&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; p &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; AIC &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 3.733 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 2 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 3.601 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 3 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 3.574 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 4 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 3.579 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+]
+
+.pull-right[
+![](08-Nonlinear_files/figure-html/unnamed-chunk-4-1.png)&lt;!-- --&gt;
+]
+
+---
+
+# Estimated SETAR(3)
+
+.right-column[
+We thus estimate the SETAR(3) model with `\(y_{t-1}\)` as the regime-switching variable, while setting the threshold parameter to 4.7. 
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt;   &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; `\(\alpha\)` &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; `\(\beta_{11}\)` &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; `\(\beta_{12}\)` &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; `\(\beta_{13}\)` &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; `\(\beta_{21}\)` &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; `\(\beta_{22}\)` &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; `\(\beta_{23}\)` &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; estimate &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.132 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.361 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.491 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.089 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.211 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.113 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.343 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; s.e. &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.058 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.084 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.137 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.084 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.065 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.106 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.064 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+The AIC of this SETAR(3) model is 3.534, which is less than the AIC of the AR(3) model.
+]
+
+
+---
+
+
+# Forecasting with Nonlinear Models
+
+.right-column[
+In the case of time-varying shifting trend (mean) models, the most recent trend component is used to obtain forecasts. To that end, the forecasting routine is similar to that of linear trend models.
+
+In the case of regime-switching models (e.g., TAR), one-step-ahead point forecast is obtained the usual way: 
+`$$\begin{aligned}
+y_{t+1|t} &amp;= \alpha_0+\beta_{01}y_{t}+\beta_{02}y_{t-1}+\ldots \\
+          &amp;+ (\alpha_1+\beta_{11}y_{t}+\beta_{12}y_{t-1}+\ldots)I(s_t&gt;\kappa)
+\end{aligned}$$`
+]
+
+---
+
+
+# Forecasting with Nonlinear Models
+
+.right-column[
+Obtaining `\(h\)`-step-ahead forecasts (where `\(h \ge 1\)`) is a less trivial exercise (because of the nonlinearity). Several options are available to the forecaster:
+
+- The iterated method (or, the so-called skeleton extrapolation) is an easy option, but but it yields biased forecasts and is inefficient. 
+- The analytical method yields unbiased (assuming the model is correctly specified) and efficient forecasts, but can be tedious.
+- The numerical method addresses the issues of the iterated method and offers a suitable approximation to the analytical method.
+]
+
+---
+
+
+# Iterated Method - Skeleton Extrapolation
+
+.right-column[
+Consider a `\(\text{SETAR}(p,y_{t-1})\)` model:
+
+One-step-ahead point forecast: 
+`$$\begin{aligned}
+y_{t+1|t} &amp;= (\alpha_1 + \beta_{11} y_{t} + \ldots + \beta_{1p} y_{t+1-p})I(y_{t} \leq \kappa) \\ 
+                &amp;+ (\alpha_2 + \beta_{21} y_{t} + \ldots + \beta_{2p} y_{t+1-p})I(y_{t} &gt; \kappa)
+\end{aligned}$$`
+]
+
+---
+
+
+# Iterated Method - Skeleton Extrapolation
+
+.right-column[
+h-step-ahead point forecast: 
+`$$\begin{aligned}
+y_{t+h|t} &amp;= (\alpha_1 + \beta_{11} y_{t+h-1|t} + \ldots + \beta_{1p} y_{t+h-p})I(y_{t+h-d|t} \leq \kappa) \\
+                &amp;+ (\alpha_2 + \beta_{21} y_{t+h-1|t} + \ldots + \beta_{2p} y_{t+h-p})I(y_{t+h-d|t} &gt; \kappa),
+\end{aligned}$$`
+
+where `\(y_{t+h-j|t}=y_{t+h-j}\)` if `\(j\ge h\)`. 
+
+Skeleton extrapolation yields biased point forecasts for horizons `\(h&gt;d\)`. That's because the expectation of a nonlinear function (which what point forecast should be) is not equal to the nonlinear function of the expectation (which what skeleton extrapolate is).
+]
+
+---
+
+
+# Numerical Method - Bootstrap Resampling
+
+.right-column[
+Bootstrap (or Monte Carlo) resampling helps approximate the optimal forecast from nonlinear models and circumvents the complexity of integration (which would be needed for generating forecasts using the analytical method).
+
+As an additional benefit, the procedure generates empirical density of bootstrap extrapolates, which allows us to examine the potential multimodality of these densities&amp;mdash;a characteristic feature of those generated from regime-dependent nonlinear models such as SETAR, for example.
+]
+
+---
+
+
+# Numerical Method - Bootstrap Resampling
+
+.right-column[
+Algorithm:
+
+1. Estimate the regime-dependent model and store the residuals.
+2. From this set of residuals, sample (with replacement) a vector of shocks for a bootstrap iteration, `\(\varepsilon^b = (\varepsilon_{t+1}^b,\varepsilon_{t+2}^b,\ldots,\varepsilon_{t+h}^b)'\)`.
+3. Use this sample of shocks, along with the estimated parameters and historical observations, to generate a forecast path for the given bootstrap iteration.
+4. Repeat steps 2-3 many times to generate an empirical distribution of bootstrap extrapolates.
+5. Calculate horizon-specific averages of the bootstrap extrapolates to generate point forecasts.
+]
+
+---
+
+
+# Numerical Method - Bootstrap Resampling
+
+.right-column[
+Consider a `\(\text{SETAR}(p,y_{t-1})\)`:
+
+One-step-ahead bootstrap extrapolate: 
+`$$\begin{aligned}
+y_{t+1|t}^b &amp;= (\alpha_1 + \beta_{11} y_{t} + \ldots + \beta_{1p} y_{t+1-p})I(y_{t} \leq \kappa) \\ 
+                &amp;+ (\alpha_2 + \beta_{21} y_{t} + \ldots + \beta_{2p} y_{t+1-p})I(y_{t} &gt; \kappa)+\varepsilon_{t+1}^b
+\end{aligned}$$`
+]
+
+---
+
+
+# Numerical Method - Bootstrap Resampling
+
+.right-column[
+Consider a `\(\text{SETAR}(p,y_{t-1})\)`:
+
+Two-step-ahead bootstrap extrapolate: 
+`$$\begin{aligned}
+y_{t+2|t}^b &amp;= (\alpha_1 + \beta_{11} y_{t+1|t}^b + \ldots + \beta_{1p} y_{t+2-p})I(y_{t+1|t}^b \leq \kappa) \\
+                &amp;+ (\alpha_2 + \beta_{21} y_{t+1|t}^b + \ldots + \beta_{2p} y_{t+2-p})I(y_{t+1|t}^b &gt; \kappa)+\varepsilon_{t+2}^b
+\end{aligned}$$`
+]
+
+---
+
+
+# Numerical Method - Bootstrap Resampling
+
+.right-column[
+Point forecast at horizon `\(h\)` is: `$$\bar{y}_{t+h|t} = B^{-1}\sum_{b=1}^{B}y_{t+h|t}^b,$$` where `\(B\)` is the total number of bootstrap iterations (usually many thousands of iterations).
+]
+
+---
+
+
+# Numerical Method - Bootstrap Resampling
+
+.right-column[
+Forecast error at horizon `\(h\)` is: `$$e_{t+h|t}=y_{t+h}-\bar{y}_{t+h|t}.$$` Measures of forecast accuracy measures (such as RMSFE, for example) can be obtained based on this forecast error.
+]
+
+---
+
+
+# Numerical Method - Bootstrap Resampling
+
+.right-column[
+For interval forecasts, we will need to resort to the relevant percentiles of the empirical distribution of the bootstrap extrapolates. This is because the multi-step forecast density from nonlinear models, usually, is no longer symmetric or normally distributed.  
+]
+
+---
+
+# Multistep forecasts of the inflation rate
+
+.right-column[
+![](08-Nonlinear_files/figure-html/unnamed-chunk-6-1.png)&lt;!-- --&gt;
+]
+
+---
+
+# The density forecast of the inflation rate
+
+.pull-left[
+This is a 84-step-ahead density forecast of the year-on-year inflation rate generated with a numerical method using 5000 bootstrap extrapolates.
+]
+.pull-right[
+![](08-Nonlinear_files/figure-html/unnamed-chunk-7-1.png)&lt;!-- --&gt;
+]
+
+---
+
+
+# Readings
+
+.pull-left[
+![](Art/todolist.png)
+]
+
+.pull-right[
+Ubilava, [Chapter 9](https://davidubilava.com/forecasting/docs/threshold-autoregression.html)
+
+Gonzalez-Rivera, Chapter 16
+]
+
+
+
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"countIncrementalSlides": false,
+"ratio": "16:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();</script>
+<style>
+.logo {
+  background-image: url(forecasting-logo.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+  position: absolute;
+  bottom: .5em;
+  left: 2em;
+  width: 91px;
+  height: 105px;
+  z-index: 0;
+}
+</style>
+
+<script>
+document
+  .querySelectorAll(
+    '.remark-slide-content' +
+    ':not(.title-slide)' +
+    // add additional classes to exclude here, e.g.
+    // ':not(.inverse)' +
+    ':not(.hide-logo)'
+  )
+  .forEach(el => {
+    el.innerHTML += '<div class="logo"></div>';
+  });
+</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

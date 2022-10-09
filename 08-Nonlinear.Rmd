@@ -428,7 +428,7 @@ ggplot(dt,aes(x=x))+
 ]
 
 .pull-right[
-Ubilava, [Chapter 9](https://davidubilava.com/forecasting/docs/threshold-autoregression.html)
+Ubilava, [Chapter 8](https://davidubilava.com/forecasting/docs/threshold-autoregression.html)
 
 Gonzalez-Rivera, Chapter 16
 ]

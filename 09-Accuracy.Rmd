@@ -1,15 +1,18 @@
 ---
 title: "Forecasting for Economics and Business"
-subtitle: "Lecture 8: Forecast Comparison Tests"
+subtitle: "Lecture 9: Testing Relative Forecast Accuracy"
 author: "David Ubilava"
 date: "University of Sydney"
 output:
   xaringan::moon_reader:
     css: [default, metropolis, metropolis-fonts, style.css]
     lib_dir: libs
+    includes:
+      after_body: insert-logo.html
     nature:
       highlightStyle: github
       countIncrementalSlides: false
+      ratio: '16:9'
 ---
 
 
@@ -20,59 +23,74 @@ knitr::opts_chunk$set(echo = FALSE, fig.width = 11, fig.height = 7)
 
 ```{r echo=FALSE, include=FALSE, message=FALSE}
 library(ggplot2)
+library(data.table)
+library(lmtest)
+library(sandwich)
 ```
 
 # The Need for the Forecast Evaluation
 
-We typically have several methods at hand to forecast an economic variable of interest.
+.pull-left[
+![](Art/evaluation.png)
+]
+
+.pull-right[
+We often have several methods at hand to forecast an economic variable of interest.
 
 The challenge, typically, is to identify the best or the most adequate of these models.
 
 One way to do so is using in-sample goodness of fit measures (e.g., AIC or SIC). 
 
-Another more sensible approach, at least from the standpoint of a forecaster, is out-of-sample model assessment - i.e., forecast evaluation.
+Another more sensible approach, at least from the standpoint of a forecaster, is by evaluating forecasts in out-of-sample setting.
+]
 
 ---
 
 
 # The Need for the Forecast Evaluation
 
+.right-column[
 Recall that models with the best in-sample fit don't necessarily produce the best out-of-sample forecasts. While a better in-sample fit can be obtained by incorporating additional parameters in the model, the more complex models can lead to sub-optimal forecasts as they extrapolate the estimated parameter uncertainty into the forecasts.
+]
 
 ---
 
 
 # Comparing Forecasts
 
+.right-column[
 Thus far we have applied the following algorithm to identify 'the best' among the competing forecasts:
 
 - Decide on a loss function (e.g., quadratic loss).
 - Obtain forecasts, the forecast errors, and the corresponding sample expected loss (e.g., root mean squared forecast error) for each model in consideration.
 - Rank the models according to their sample expected loss values.
 - Select the model with the lowest sample expected loss.
+]
 
 ---
 
 
 # Comparing Forecasts
 
+.right-column[
 But the loss function is a function of a random variable, and in practice we deal with sample information, so sampling variation needs to be taken into the account.
 
 Statistical methods of evaluation are, therefore, desirable.
 
 Here we will cover two tests for the hypothesis that two forecasts are equivalent, in the sense that the associated loss difference is not statistically significantly different from zero.
+]
 
 ---
 
 
 # Comparing Forecasts
 
-Consider a time series of length $T$. 
-
-Suppose $h$-step-ahead forecasts for periods $R+h$ through $T$ have been generated from two competing models $i$ and $j$: $y_{t+h|t,i}$ and $y_{t+h|t,j}$, for all $t=R,\ldots,T-h$, with corresponding forecast errors: $e_{t+h,i}$ and $e_{t+h,j}$.
+.right-column[
+Consider a time series of length $T$. Suppose $h$-step-ahead forecasts for periods $R+h$ through $T$ have been generated from two competing models $i$ and $j$: $y_{t+h|t,i}$ and $y_{t+h|t,j}$, for all $t=R,\ldots,T-h$, with corresponding forecast errors: $e_{t+h,i}$ and $e_{t+h,j}$.
 
 The null hypothesis of equal predictive ability can be given in terms of the unconditional expectation of the loss difference: $$H_0: E\left[d(e_{t+h})\right] = 0,$$ where $d(e_{t+h,ij}) = e_{t+h,i}^2-e_{t+h,j}^2$.
-		
+]
+
 ---
 
 
@@ -80,8 +98,10 @@ The null hypothesis of equal predictive ability can be given in terms of the unc
 
 ## Morgan-Granger-Newbold Test
 
+.right-column[
 The Morgan-Granger-Newbold (MGN) test is based on auxiliary variables: $u_{1,t+h} = e_{t+h,i}-e_{t+h,j}$ and $u_{2,t+h} = e_{t+h,i}+e_{t+h,j}$. It follows that: $$E(u_1,u_2) = MSFE(i)-MSFE(j).$$ Thus, the hypothesis of interest is equivalent to testing whether the two auxiliary variables are correlated.
-		
+]
+
 ---
 
 
@@ -89,8 +109,10 @@ The Morgan-Granger-Newbold (MGN) test is based on auxiliary variables: $u_{1,t+h
 
 ## Morgan-Granger-Newbold Test
 
+.right-column[
 The MGN test statistic is: $$\frac{r}{\sqrt{(P-1)^{-1}(1-r^2)}}\sim t_{P-1},$$ where $t_{P-1}$ is a Student t distribution with $P-1$ degrees of freedom, $P$ is the number of out-of-sample forecasts, and $$r=\frac{\sum_{t=R}^{T-h}{u_{1,t+h}u_{2,t+h}}}{\sqrt{\sum_{t=R}^{T-h}{u_{1,t+h}^2}\sum_{t=R}^{T-h}{u_{2,t+h}^2}}}$$
-		
+]
+
 ---
 
 
@@ -98,10 +120,12 @@ The MGN test statistic is: $$\frac{r}{\sqrt{(P-1)^{-1}(1-r^2)}}\sim t_{P-1},$$ w
 
 ## Morgan-Granger-Newbold Test
 
+.right-column[
 The MGN test relies on the assumptions that forecast errors of the forecasts to be compared, are unbiased, normally distributed, and uncorrelated (with each other). 
 
 These are rather strict requirements that are, often, violated in empirical applications.
-		
+]
+
 ---
 
 
@@ -109,9 +133,10 @@ These are rather strict requirements that are, often, violated in empirical appl
 
 ## Diebold-Mariano Test
 
+.right-column[
 The Diebold-Mariano (DM) test relaxes the aforementioned requirements on the forecast errors. 
 
-The DM test statistic is: $$\frac{\bar{d}}{\sqrt{\sigma_d^2/P}} \sim N(0,1),$$ where $\bar{d}=P^{-1}\sum_{t=1}^{P} d_t$, and where $d_t \equiv d(e_{t+h,ij})$. 
+The DM test statistic is: $$\frac{\bar{d}}{\sqrt{\sigma_d^2/P}} \sim N(0,1),$$ where $\bar{d}=P^{-1}\sum_{t=1}^{P} d_t$, and where $d_t \equiv d(e_{t+h,ij})$. ]
 		
 ---
 
@@ -120,24 +145,166 @@ The DM test statistic is: $$\frac{\bar{d}}{\sqrt{\sigma_d^2/P}} \sim N(0,1),$$ w
 
 ## Diebold-Mariano Test
 
+.right-column[
 A modified version of the DM statistic, due to Harvey, Leybourne, and Newbold (1998), addresses the finite sample properties of the test, so that: $$\sqrt{\frac{P+1-2h+P^{-1}h(h-1)}{P}}DM\sim t_{P-1},$$ where $t_{P-1}$ is a Student t distribution with $P-1$ degrees of freedom.
-		
+]
+
 ---
 
 
 # Relative Forecast Accuracy Tests
 
+.right-column[
 In practice, the test of equal predictive ability can be applied within the framework of a regression model: $$d(e_{t+h,ij}) = \delta + \upsilon_{t+h} \hspace{.5in} t = R,\ldots,T-h.$$
 
 The null of equal predictive ability is equivalent of testing $H_0: \delta = 0$ in the OLS setting.
 
 Because $d(e_{t+h,ij})$ may be serially correlated, an autocorrelation consistent standard errors should be used for inference.
+]
+
+---
+
+# Direct and Iterated Forecasts of the U.S. Inflation
+
+.right-column[
+```{r echo=FALSE, message=FALSE, cache=FALSE}
+load("../../Books/forecasting/data/inflation.RData")
+load("../../Books/forecasting/data/funds.RData")
+
+dt <- merge(funds,inflation,by="date")
+colnames(dt) <- c("date","funds","inflation")
+
+dt[,`:=`(y=inflation)]
+dt[,`:=`(y1=shift(y,1),y2=shift(y,2),y3=shift(y,3),y4=shift(y,4))]
+
+ic_dt <- data.table(p=1:4,AIC=NA,SIC=NA)
+
+ar1 <- lm(y~y1,data=dt)
+ar2 <- lm(y~y1+y2,data=dt)
+ar3 <- lm(y~y1+y2+y3,data=dt)
+ar4 <- lm(y~y1+y2+y3+y4,data=dt)
+
+ic_dt$AIC[1] <- log(crossprod(ar1$resid))+2*length(ar1$coef)/length(ar1$resid)
+ic_dt$AIC[2] <- log(crossprod(ar2$resid))+2*length(ar2$coef)/length(ar2$resid)
+ic_dt$AIC[3] <- log(crossprod(ar3$resid))+2*length(ar3$coef)/length(ar3$resid)
+ic_dt$AIC[4] <- log(crossprod(ar4$resid))+2*length(ar4$coef)/length(ar4$resid)
+
+ic_dt$SIC[1] <- log(crossprod(ar1$resid))+log(length(ar1$resid))*length(ar1$coef)/length(ar1$resid)
+ic_dt$SIC[2] <- log(crossprod(ar2$resid))+log(length(ar2$resid))*length(ar2$coef)/length(ar2$resid)
+ic_dt$SIC[3] <- log(crossprod(ar3$resid))+log(length(ar3$resid))*length(ar3$coef)/length(ar3$resid)
+ic_dt$SIC[4] <- log(crossprod(ar4$resid))+log(length(ar4$resid))*length(ar4$coef)/length(ar4$resid)
+
+
+
+dt[,`:=`(y12=shift(y,12),y13=shift(y,13),y14=shift(y,14))]
+
+R <- which(dt$date=="1990-12-01")
+h <- 12
+P <- nrow(dt)-R-h+1
+
+dt[,`:=`(itr=NA,dir=NA)]
+
+for(i in 1:P){
+  
+  ar_itr <- lm(y~y1+y2+y3,data=dt[i:(R-1+i)])
+  ar_dir <- lm(y~y12+y13+y14,data=dt[i:(R-1+i)])
+  
+  dt[,`:=`(temp=y)]
+  
+  for(j in 1:h){
+    dt$temp[R-1+i+j] <- ar_itr$coefficients["(Intercept)"]+ar_itr$coefficients["y1"]*dt$temp[R-1+i+j-1]+ar_itr$coefficients["y2"]*dt$temp[R-1+i+j-2]+ar_itr$coefficients["y3"]*dt$temp[R-1+i+j-3]
+  }
+  
+  dt$itr[R+h-1+i] <- dt$temp[R-1+i+j]
+    
+  dt$dir[R+h-1+i] <- ar_dir$coefficients["(Intercept)"]+ar_dir$coefficients["y12"]*dt$y[R+h-1+i-1]+ar_dir$coefficients["y13"]*dt$y[R+h-1+i-2]+ar_dir$coefficients["y14"]*dt$y[R+h-1+i-3]
+  
+}
+
+dt$temp <- NULL
+
+long_dt <- melt(dt[,.(date,y,itr,dir)],id.vars="date")
+
+long_dt$variable <- factor(long_dt$variable,levels=unique(long_dt$variable),labels=c("observed series","iterated forecast","direct forecast"))
+
+ggplot(long_dt,aes(x=date,y=value,color=variable,linetype=variable))+
+  geom_line(size=.8,na.rm=T)+
+  scale_color_manual(values=c("darkgray","coral","steelblue"))+
+  scale_linetype_manual(values=c(1,5,2))+
+  labs(x="Year",y="Year-Over-Year Inflation (%)",caption="retrieved from FRED, Federal Reserve Bank of St. Louis\nhttps://fred.stlouisfed.org/series/CPIAUCNS")+
+  theme_classic()+
+  theme(axis.title = element_text(size=18),axis.text = element_text(size=14),legend.position="top",legend.title=element_blank(),legend.text=element_text(size=18))
+```
+]
+
+---
+
+
+# Multi-step Forecast Errors
+
+.right-column[
+```{r echo=FALSE, message=FALSE, cache=FALSE}
+dt[,`:=`(e_itr=y-itr,e_dir=y-dir)]
+
+dt[,`:=`(e2_itr=e_itr^2,e2_dir=e_dir^2)]
+
+long_dt <- melt(dt[,.(date,e_itr,e_dir)],id.vars="date")
+
+long_dt$variable <- factor(long_dt$variable,levels=unique(long_dt$variable),labels=c("iterated forecast","direct forecast"))
+
+ggplot(long_dt[date>=dt$date[R+h]],aes(x=date,y=value,color=variable,linetype=variable))+
+  geom_line(size=.8)+
+  scale_color_manual(values=c("coral","steelblue"))+
+  scale_linetype_manual(values=c(5,2))+
+  labs(x="Year",y="12-step-ahead forecast error")+
+  theme_classic()+
+  theme(axis.title = element_text(size=18),axis.text = element_text(size=14),legend.position="top",legend.title=element_blank(),legend.text=element_text(size=18))
+```
+]
+
+---
+
+
+# Forecast Quadratic Loss
+
+.right-column[
+```{r echo=FALSE, message=FALSE, cache=FALSE}
+long_dt <- melt(dt[,.(date,e2_itr,e2_dir)],id.vars="date")
+
+long_dt$variable <- factor(long_dt$variable,levels=unique(long_dt$variable),labels=c("iterated forecast","direct forecast"))
+
+ggplot(long_dt[date>=dt$date[R+h]],aes(x=date,y=value,color=variable,linetype=variable))+
+  geom_line(size=.8)+
+  scale_color_manual(values=c("coral","steelblue"))+
+  scale_linetype_manual(values=c(5,2))+
+  labs(x="Year",y="12-step-ahead forecast quadratic loss")+
+  theme_classic()+
+  theme(axis.title = element_text(size=18),axis.text = element_text(size=14),legend.position="top",legend.title=element_blank(),legend.text=element_text(size=18))
+```
+]
+
+---
+
+
+# Testing for the Equal Forecast Accuracy 
+
+.right-column[
+We examine the relative out-of-sample performance of the two models by regressing the loss differential $d_t=e_{t,d}^2-e_{t,i}^2$ on a constant, where $t=R+h,\ldots,T$, and where the subscripts $d$ and $i$ indicate the direct and iterated multistep forecasting method, respectively. In this example, we are unable to reject the null hypothesis of equal forecast accuracy.
+```{r echo=FALSE, message=FALSE, cache=FALSE}
+dt[,`:=`(ld=e2_dir-e2_itr)]
+
+reg_ld <- lm(ld~1,data=dt[date>=dt$date[R+h]])
+
+coeftest(reg_ld,vcov=vcovHAC)
+```
+]
 
 ---
 
 
 # Accuracy Tests for Nested Models
 
+.right-column[
 When assessing out-of-sample Granger causality, we are comparing nested models.
 
 For example, consider a bivariate VAR(1). A test of out-of-sample Granger causality involves comparing forecasts from these two models:
@@ -147,21 +314,69 @@ $$\begin{aligned}
 \end{aligned}$$
 
 Obviously, here model (B) is nested in model (A). Under the null of Granger non-causality, the disturbances of the two models are identical. This leads to 'issues' in the usual tests. 
+]
 
 ---
 
 
 # Accuracy Tests for Nested Models
 
+.right-column[
 There is a way to circumvent these issues, which involves an adjustment of the loss differential. 
 
 In particular, the loss differential now becomes: $$d(e_{t+h,ij})=e_{t+h,i}^2-e_{t+h,j}^2+(y_{t+h|t,i}-y_{t+h|t,j})^2,$$ where model $i$ is nested in model $j$.
+]
+
+---
+
+
+# Does interest rate Granger cause inflation rate?
+
+.right-column[
+We examine the out-of-sample performance of the AR(p) model relative to that of the equation from the VAR(p) model by regressing the adjusted loss differential $d_t=e_{t,r}^2-e_{t,u}^2+(e_{t,r}^2-e_{t,u}^2)^2$ on a constant, where $t=R+h,\ldots,T$, and where the subscripts $r$ and $u$ indicate the restricted and unrestricted models, respectively. Here, we are unable to reject the null hypothesis of Granger non-causality.
+```{r echo=FALSE, message=FALSE, cache=FALSE}
+dt[,`:=`(z=funds)]
+dt[,`:=`(z1=shift(z,1),z2=shift(z,2),z3=shift(z,3))]
+
+R <- which(dt$date=="1990-12-01")
+P <- nrow(dt)-R
+
+dt[,`:=`(rst=NA,unr=NA)]
+
+for(i in 1:P){
+  
+  ar_rst <- lm(y~y1+y2+y3,data=dt[i:(R-1+i)])
+  ar_unr <- lm(y~y1+y2+y3+z1+z2+z3,data=dt[i:(R-1+i)])
+  
+  dt$rst[R+i] <- ar_rst$coefficients["(Intercept)"]+ar_rst$coefficients["y1"]*dt$y[R+i-1]+ar_rst$coefficients["y2"]*dt$y[R+i-2]+ar_rst$coefficients["y3"]*dt$y[R+i-3]
+  
+  dt$unr[R+i] <- ar_unr$coefficients["(Intercept)"]+ar_unr$coefficients["y1"]*dt$y[R+i-1]+ar_unr$coefficients["y2"]*dt$y[R+i-2]+ar_unr$coefficients["y3"]*dt$y[R+i-3]+ar_unr$coefficients["z1"]*dt$z[R+i-1]+ar_unr$coefficients["z2"]*dt$z[R+i-2]+ar_unr$coefficients["z3"]*dt$z[R+i-3]
+  
+}
+
+dt[,`:=`(e_rst=y-rst,e_unr=y-unr)]
+
+dt[,`:=`(e2_rst=e_rst^2,e2_unr=e_unr^2)]
+
+dt[,`:=`(ld=e2_rst-e2_unr+(e2_rst-e2_unr)^2)]
+
+reg_ld <- lm(ld~1,data=dt[date>=dt$date[R+h]])
+
+coeftest(reg_ld,vcov=vcovHAC)
+```
+]
 
 ---
 
 
 # Readings
 
+.pull-left[
+![](Art/todolist.png)
+]
+
+.pull-right[
+Ubilava, [Chapter 9](https://davidubilava.com/forecasting/docs/forecast-evaluation.html)
+
 Gonzalez-Rivera, Chapter 9
-
-
+]

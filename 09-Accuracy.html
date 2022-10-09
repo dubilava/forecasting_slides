@@ -4,7 +4,7 @@
     <title>Forecasting for Economics and Business</title>
     <meta charset="utf-8" />
     <meta name="author" content="David Ubilava" />
-    <script src="libs/header-attrs-2.9.7/header-attrs.js"></script>
+    <script src="libs/header-attrs-2.14/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/metropolis.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/metropolis-fonts.css" rel="stylesheet" />
@@ -14,10 +14,18 @@
     <textarea id="source">
 class: center, middle, inverse, title-slide
 
+.title[
 # Forecasting for Economics and Business
-## Lecture 8: Forecast Comparison Tests
+]
+.subtitle[
+## Lecture 9: Testing Relative Forecast Accuracy
+]
+.author[
 ### David Ubilava
+]
+.date[
 ### University of Sydney
+]
 
 ---
 
@@ -30,55 +38,67 @@ class: center, middle, inverse, title-slide
 
 # The Need for the Forecast Evaluation
 
-We typically have several methods at hand to forecast an economic variable of interest.
+.pull-left[
+![](Art/evaluation.png)
+]
+
+.pull-right[
+We often have several methods at hand to forecast an economic variable of interest.
 
 The challenge, typically, is to identify the best or the most adequate of these models.
 
 One way to do so is using in-sample goodness of fit measures (e.g., AIC or SIC). 
 
-Another more sensible approach, at least from the standpoint of a forecaster, is out-of-sample model assessment - i.e., forecast evaluation.
+Another more sensible approach, at least from the standpoint of a forecaster, is by evaluating forecasts in out-of-sample setting.
+]
 
 ---
 
 
 # The Need for the Forecast Evaluation
 
+.right-column[
 Recall that models with the best in-sample fit don't necessarily produce the best out-of-sample forecasts. While a better in-sample fit can be obtained by incorporating additional parameters in the model, the more complex models can lead to sub-optimal forecasts as they extrapolate the estimated parameter uncertainty into the forecasts.
+]
 
 ---
 
 
 # Comparing Forecasts
 
+.right-column[
 Thus far we have applied the following algorithm to identify 'the best' among the competing forecasts:
 
 - Decide on a loss function (e.g., quadratic loss).
 - Obtain forecasts, the forecast errors, and the corresponding sample expected loss (e.g., root mean squared forecast error) for each model in consideration.
 - Rank the models according to their sample expected loss values.
 - Select the model with the lowest sample expected loss.
+]
 
 ---
 
 
 # Comparing Forecasts
 
+.right-column[
 But the loss function is a function of a random variable, and in practice we deal with sample information, so sampling variation needs to be taken into the account.
 
 Statistical methods of evaluation are, therefore, desirable.
 
 Here we will cover two tests for the hypothesis that two forecasts are equivalent, in the sense that the associated loss difference is not statistically significantly different from zero.
+]
 
 ---
 
 
 # Comparing Forecasts
 
-Consider a time series of length `\(T\)`. 
-
-Suppose `\(h\)`-step-ahead forecasts for periods `\(R+h\)` through `\(T\)` have been generated from two competing models `\(i\)` and `\(j\)`: `\(y_{t+h|t,i}\)` and `\(y_{t+h|t,j}\)`, for all `\(t=R,\ldots,T-h\)`, with corresponding forecast errors: `\(e_{t+h,i}\)` and `\(e_{t+h,j}\)`.
+.right-column[
+Consider a time series of length `\(T\)`. Suppose `\(h\)`-step-ahead forecasts for periods `\(R+h\)` through `\(T\)` have been generated from two competing models `\(i\)` and `\(j\)`: `\(y_{t+h|t,i}\)` and `\(y_{t+h|t,j}\)`, for all `\(t=R,\ldots,T-h\)`, with corresponding forecast errors: `\(e_{t+h,i}\)` and `\(e_{t+h,j}\)`.
 
 The null hypothesis of equal predictive ability can be given in terms of the unconditional expectation of the loss difference: `$$H_0: E\left[d(e_{t+h})\right] = 0,$$` where `\(d(e_{t+h,ij}) = e_{t+h,i}^2-e_{t+h,j}^2\)`.
-		
+]
+
 ---
 
 
@@ -86,8 +106,10 @@ The null hypothesis of equal predictive ability can be given in terms of the unc
 
 ## Morgan-Granger-Newbold Test
 
+.right-column[
 The Morgan-Granger-Newbold (MGN) test is based on auxiliary variables: `\(u_{1,t+h} = e_{t+h,i}-e_{t+h,j}\)` and `\(u_{2,t+h} = e_{t+h,i}+e_{t+h,j}\)`. It follows that: `$$E(u_1,u_2) = MSFE(i)-MSFE(j).$$` Thus, the hypothesis of interest is equivalent to testing whether the two auxiliary variables are correlated.
-		
+]
+
 ---
 
 
@@ -95,8 +117,10 @@ The Morgan-Granger-Newbold (MGN) test is based on auxiliary variables: `\(u_{1,t
 
 ## Morgan-Granger-Newbold Test
 
+.right-column[
 The MGN test statistic is: `$$\frac{r}{\sqrt{(P-1)^{-1}(1-r^2)}}\sim t_{P-1},$$` where `\(t_{P-1}\)` is a Student t distribution with `\(P-1\)` degrees of freedom, `\(P\)` is the number of out-of-sample forecasts, and `$$r=\frac{\sum_{t=R}^{T-h}{u_{1,t+h}u_{2,t+h}}}{\sqrt{\sum_{t=R}^{T-h}{u_{1,t+h}^2}\sum_{t=R}^{T-h}{u_{2,t+h}^2}}}$$`
-		
+]
+
 ---
 
 
@@ -104,10 +128,12 @@ The MGN test statistic is: `$$\frac{r}{\sqrt{(P-1)^{-1}(1-r^2)}}\sim t_{P-1},$$`
 
 ## Morgan-Granger-Newbold Test
 
+.right-column[
 The MGN test relies on the assumptions that forecast errors of the forecasts to be compared, are unbiased, normally distributed, and uncorrelated (with each other). 
 
 These are rather strict requirements that are, often, violated in empirical applications.
-		
+]
+
 ---
 
 
@@ -115,9 +141,10 @@ These are rather strict requirements that are, often, violated in empirical appl
 
 ## Diebold-Mariano Test
 
+.right-column[
 The Diebold-Mariano (DM) test relaxes the aforementioned requirements on the forecast errors. 
 
-The DM test statistic is: `$$\frac{\bar{d}}{\sqrt{\sigma_d^2/P}} \sim N(0,1),$$` where `\(\bar{d}=P^{-1}\sum_{t=1}^{P} d_t\)`, and where `\(d_t \equiv d(e_{t+h,ij})\)`. 
+The DM test statistic is: `$$\frac{\bar{d}}{\sqrt{\sigma_d^2/P}} \sim N(0,1),$$` where `\(\bar{d}=P^{-1}\sum_{t=1}^{P} d_t\)`, and where `\(d_t \equiv d(e_{t+h,ij})\)`. ]
 		
 ---
 
@@ -126,24 +153,72 @@ The DM test statistic is: `$$\frac{\bar{d}}{\sqrt{\sigma_d^2/P}} \sim N(0,1),$$`
 
 ## Diebold-Mariano Test
 
+.right-column[
 A modified version of the DM statistic, due to Harvey, Leybourne, and Newbold (1998), addresses the finite sample properties of the test, so that: `$$\sqrt{\frac{P+1-2h+P^{-1}h(h-1)}{P}}DM\sim t_{P-1},$$` where `\(t_{P-1}\)` is a Student t distribution with `\(P-1\)` degrees of freedom.
-		
+]
+
 ---
 
 
 # Relative Forecast Accuracy Tests
 
+.right-column[
 In practice, the test of equal predictive ability can be applied within the framework of a regression model: `$$d(e_{t+h,ij}) = \delta + \upsilon_{t+h} \hspace{.5in} t = R,\ldots,T-h.$$`
 
 The null of equal predictive ability is equivalent of testing `\(H_0: \delta = 0\)` in the OLS setting.
 
 Because `\(d(e_{t+h,ij})\)` may be serially correlated, an autocorrelation consistent standard errors should be used for inference.
+]
+
+---
+
+# Direct and Iterated Forecasts of the U.S. Inflation
+
+.right-column[
+![](09-Accuracy_files/figure-html/unnamed-chunk-2-1.png)&lt;!-- --&gt;
+]
+
+---
+
+
+# Multi-step Forecast Errors
+
+.right-column[
+![](09-Accuracy_files/figure-html/unnamed-chunk-3-1.png)&lt;!-- --&gt;
+]
+
+---
+
+
+# Forecast Quadratic Loss
+
+.right-column[
+![](09-Accuracy_files/figure-html/unnamed-chunk-4-1.png)&lt;!-- --&gt;
+]
+
+---
+
+
+# Testing for the Equal Forecast Accuracy 
+
+.right-column[
+We examine the relative out-of-sample performance of the two models by regressing the loss differential `\(d_t=e_{t,d}^2-e_{t,i}^2\)` on a constant, where `\(t=R+h,\ldots,T\)`, and where the subscripts `\(d\)` and `\(i\)` indicate the direct and iterated multistep forecasting method, respectively. In this example, we are unable to reject the null hypothesis of equal forecast accuracy.
+
+```
+## 
+## t test of coefficients:
+## 
+##             Estimate Std. Error t value Pr(&gt;|t|)
+## (Intercept) -0.29342    0.24808 -1.1828   0.2395
+```
+]
 
 ---
 
 
 # Accuracy Tests for Nested Models
 
+.right-column[
 When assessing out-of-sample Granger causality, we are comparing nested models.
 
 For example, consider a bivariate VAR(1). A test of out-of-sample Granger causality involves comparing forecasts from these two models:
@@ -153,30 +228,57 @@ For example, consider a bivariate VAR(1). A test of out-of-sample Granger causal
 \end{aligned}$$`
 
 Obviously, here model (B) is nested in model (A). Under the null of Granger non-causality, the disturbances of the two models are identical. This leads to 'issues' in the usual tests. 
+]
 
 ---
 
 
 # Accuracy Tests for Nested Models
 
+.right-column[
 There is a way to circumvent these issues, which involves an adjustment of the loss differential. 
 
 In particular, the loss differential now becomes: `$$d(e_{t+h,ij})=e_{t+h,i}^2-e_{t+h,j}^2+(y_{t+h|t,i}-y_{t+h|t,j})^2,$$` where model `\(i\)` is nested in model `\(j\)`.
+]
+
+---
+
+
+# Does interest rate Granger cause inflation rate?
+
+.right-column[
+We examine the out-of-sample performance of the AR(p) model relative to that of the equation from the VAR(p) model by regressing the adjusted loss differential `\(d_t=e_{t,r}^2-e_{t,u}^2+(e_{t,r}^2-e_{t,u}^2)^2\)` on a constant, where `\(t=R+h,\ldots,T\)`, and where the subscripts `\(r\)` and `\(u\)` indicate the restricted and unrestricted models, respectively. Here, we are unable to reject the null hypothesis of Granger non-causality.
+
+```
+## 
+## t test of coefficients:
+## 
+##               Estimate Std. Error t value Pr(&gt;|t|)
+## (Intercept) 0.00104507 0.00069574  1.5021    0.136
+```
+]
 
 ---
 
 
 # Readings
 
+.pull-left[
+![](Art/todolist.png)
+]
+
+.pull-right[
+Ubilava, [Chapter 9](https://davidubilava.com/forecasting/docs/forecast-evaluation.html)
+
 Gonzalez-Rivera, Chapter 9
-
-
+]
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
 <script>var slideshow = remark.create({
 "highlightStyle": "github",
-"countIncrementalSlides": false
+"countIncrementalSlides": false,
+"ratio": "16:9"
 });
 if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
   window.dispatchEvent(new Event('resize'));
@@ -217,6 +319,19 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
     deleted = true;
   });
 })();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
 (function() {
   "use strict"
   // Replace <script> tags in slides area to make them executable
@@ -243,6 +358,33 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
     }
   }
 })();</script>
+<style>
+.logo {
+  background-image: url(forecasting-logo.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+  position: absolute;
+  bottom: .5em;
+  left: 2em;
+  width: 91px;
+  height: 105px;
+  z-index: 0;
+}
+</style>
+
+<script>
+document
+  .querySelectorAll(
+    '.remark-slide-content' +
+    ':not(.title-slide)' +
+    // add additional classes to exclude here, e.g.
+    // ':not(.inverse)' +
+    ':not(.hide-logo)'
+  )
+  .forEach(el => {
+    el.innerHTML += '<div class="logo"></div>';
+  });
+</script>
 
 <script>
 slideshow._releaseMath = function(el) {

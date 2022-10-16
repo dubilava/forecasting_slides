@@ -1,15 +1,18 @@
 ---
 title: "Forecasting for Economics and Business"
-subtitle: "Lecture 9: Forecast Combination"
+subtitle: "Lecture 10: Forecast Combination"
 author: "David Ubilava"
 date: "University of Sydney"
 output:
   xaringan::moon_reader:
     css: [default, metropolis, metropolis-fonts, style.css]
     lib_dir: libs
+    includes:
+      after_body: insert-logo.html
     nature:
       highlightStyle: github
       countIncrementalSlides: false
+      ratio: '16:9'
 ---
 
 
@@ -20,138 +23,347 @@ knitr::opts_chunk$set(echo = FALSE, fig.width = 11, fig.height = 7)
 
 ```{r echo=FALSE, include=FALSE, message=FALSE}
 library(ggplot2)
+library(data.table)
+library(lmtest)
+library(sandwich)
 ```
 
-# Forecast Combination
+# All forecasts are wrong, but a few may be useful
 
-Choosing the best (most adequate) model for forecasting also implies discarding all other considered methods.
+.pull-left[
+![](Art/combination.png)
+]
 
-Discarded forecasts, however, could possibly have some useful information, not available in the chosen forecast.
+.pull-right[By choosing the most appropriate model for obtaining forecasts, we implicitly discard all other candidate models.
 
-Thus, merely selecting the best model, from the available models, for forecasting may be a sub-optimal strategy.
+Those models could potentially contain useful information that the chosen model cannot offer.
+
+Thus, merely selecting the best model may be a sub-optimal strategy.
 
 An alternative strategy is to use some information from all forecasts, i.e., *forecast combination*.
+]
 
 ---
 
 
-# Forecast Combination
+# Why combine?
 	
+.right-column[
 Several factors support the idea of forecast combination:
 
-- The concept is intuitively appealing (more information is better).
-- Many forecast combination techniques are computationally simple and easy to apply
-- Empirical evidence strongly supports the idea of combining forecast to improve accuracy.
+- The concept is intuitively appealing (a combined forecast aggregates more information or more ways of processing the information);
+- Many forecast combination techniques are computationally simple and easy to apply;
+- Empirical evidence strongly supports the idea of combining forecast to improve accuracy;
 - The concept of forecast combination leads naturally to the concept of *forecast encompassing* - a valuable tool in forecast evaluation.
+]
 
 ---
 
 
-# Forecast Combination
+# How it works?
 
+.right-column[
 Consider two forecasting methods (or models), $i$ and $j$, each respectively yielding one-step-ahead forecasts $y_{t+1|t,i}$ and $y_{t+1|t,j}$, and the associated forecast errors $e_{t+1,i} = y_{t+1}-y_{t+1|t,i}$ and $e_{t+1,j} = y_{t+1}-y_{t+1|t,j}$.
 
 A combined forecast, $y_{t+1|t,c}$, is expressed as: $$y_{t+1|t,c} = (1-\omega)y_{t+1|t,i} + \omega y_{t+1|t,j},$$ where $0 \leq \omega \leq 1$ is a weight, and, thus, the combined forecast is a weighted average of the two individual forecasts.
-
-Note: more than two forecasts can be combined, of course, but to keep the illustration simple, we will work with two forecasts here.
+]
 
 ---
 
 
-# Forecast Combination
+# A combined forecast error mean
 
+.right-column[
 A combined forecast error is: $$e_{t+1,c} = (1-\omega)e_{t+1,i} + \omega e_{t+1,j}$$
 
-The mean of the combined forecast error (under the assumption of forecast error unbiasedness) is zero: $$E\left(e_{t+1,c}\right) = E\left[(1-\omega)e_{t+1,i} + \omega e_{t+1,j}\right] = 0$$
-
-The variance of the combined forecast error is: $$Var\left(e_{t+1,c}\right) = (1-\omega)^2 \sigma_i^2 + \omega^2  \sigma_j^2 + 2\omega(1-\omega)\rho\sigma_i\sigma_j,$$ where $\sigma_i$ and $\sigma_j$ are the standard deviations of the forecast errors from models $i$ and $j$, and $\rho$ is a correlation between these two forecast errors.
-
----
-
-
-# Optimal Weights for Combination
-
-A simple optimization routine yields an optimal weight (which minimizes the combined forecast error variance): $$\omega^* = \frac{\sigma_i^2-\rho\sigma_i\sigma_j}{\sigma_i^2+\sigma_j^2-2\rho\sigma_i\sigma_j}$$
-
-Substitute $\omega^*$ in place of $\omega$ in the foregoing equation to obtain: $$Var\left[e_{t+1,c}(\omega^*)\right] = \sigma_c^2(\omega^*) = \frac{\sigma_i^2\sigma_j^2(1-\rho^2)}{\sigma_i^2+\sigma_j^2-2\rho\sigma_i\sigma_j}$$
-
-
-It can be shown that $\sigma_c^2(\omega^*) \leq \min\{\sigma_i^2,\sigma_j^2\}$; that is, by combining forecasts we are not making things worse (so long as we use *optimal* weights).
+The mean of a combined forecast error (under the assumption of forecast error unbiasedness) is zero: $$E\left(e_{t+1,c}\right) = E\left[(1-\omega)e_{t+1,i} + \omega e_{t+1,j}\right] = 0$$
+]
 
 ---
 
 
-# Optimal Weights for Combination
+# A combined forecast error variance
+
+.right-column[
+The variance of a combined forecast error is: $$Var\left(e_{t+1,c}\right) = (1-\omega)^2 \sigma_i^2 + \omega^2  \sigma_j^2 + 2\omega(1-\omega)\rho\sigma_i\sigma_j,$$ where $\sigma_i$ and $\sigma_j$ are the standard deviations of the forecast errors from models $i$ and $j$, and $\rho$ is a correlation between these two forecast errors.
+]
+
+---
+
+
+# The optimal weight
+
+.right-column[
+Taking the derivative of the variance of a combined forecast error, and equating it to zero yields an optimal weight (which minimizes the combined forecast error variance): $$\omega^* = \frac{\sigma_i^2-\rho\sigma_i\sigma_j}{\sigma_i^2+\sigma_j^2-2\rho\sigma_i\sigma_j}$$
+]
+
+---
+
+
+# At least as efficient as individual forecasts
+
+.right-column[
+Substitute $\omega^*$ in place of $\omega$ in the formula for variance to obtain: $$Var\left[e_{t+1,c}(\omega^*)\right] = \sigma_c^2(\omega^*) = \frac{\sigma_i^2\sigma_j^2(1-\rho^2)}{\sigma_i^2+\sigma_j^2-2\rho\sigma_i\sigma_j}$$
+
+
+It can be shown that $\sigma_c^2(\omega^*) \leq \min\{\sigma_i^2,\sigma_j^2\}$. That is to say that by combining forecasts we are not making things worse (so long as we use *optimal* weights).
+]
+
+---
+
+
+# Combination Weights&mdash;Special Cases
 
 ## Case 1: $\sigma_i = \sigma_j = \sigma$.
 
+.right-column[
 Suppose the individual forecasts are equally accurate, then the combined forecast error variance reduces to: $$\sigma_c^2(\omega^*) = \frac{\sigma^2(1+\rho)}{2} \leq \sigma^2$$
 
-The equation shows there are diversification gains even when the forecasts are equally accurate (unless the forecasts are perfectly correlated, in which case there are no additional benefits from combination).
+The equation shows there are diversification gains even when the forecasts are equally accurate (unless the forecasts are perfectly correlated, in which case there are no gains from combination).
+]
 
 ---
 
 
-# Optimal Weights for Combination
+# Combination Weights&mdash;Special Cases
 
 ## Case 2: $\rho=0$.
 
+.right-column[
 Suppose the forecast errors are uncorrelated, then the sample estimator of $\omega^*$ is given by: $$\omega^* = \frac{\sigma_i^2}{\sigma_i^2+\sigma_j^2} = \frac{\sigma_j^{-2}}{\sigma_i^{-2}+\sigma_j^{-2}}$$
 
-Thus, weights attached to forecasts are inversely proportional to their variance.
+Thus, the weights attached to forecasts are inversely proportional to the variance of these forecasts.
+]
 
 ---
 
 
-# Optimal Weights for Combination
+# Combination Weights&mdash;Special Cases
 
 ## Case 3: $\sigma_i = \sigma_j = \sigma$ and $\rho=0$.
 
+.right-column[
 Suppose the individual forecasts are equally accurate and the forecast errors are uncorrelated, then the sample estimator of $\omega^*$ reduces to $0.5$, resulting in the equal-weighted forecast combination: $$y_{t+1|t,c} = 0.5y_{t+1|t,i} + 0.5y_{t+1|t,j}$$
+]
 
 ---
 
 
-# Optimal Weights for Combination
+# The sample optimal weight
 
+.right-column[
 In practice $\sigma_i$, $\sigma_j$, and $\rho$ are unknown.
 
-If we work with $P$ out-of-sample forecasts, the sample estimator of $\omega^*$ is: $$\hat{\omega}^* = \frac{\hat{\sigma}_i^2-\hat{\sigma}_{ij}}{\hat{\sigma}_i^2+\hat{\sigma}_j^2-2\hat{\sigma}_{ij}},$$ where $\hat{\sigma}_i^2 = \frac{1}{P-1}\sum_{t=R}^{R+P-1}{e_{t+1,i}^2}$ and $\hat{\sigma}_j^2 = \frac{1}{P-1}\sum_{t=R}^{R+P-1}{e_{t+1,j}^2}$ are sample forecast error variances, and $\hat{\sigma}_{ij}=\frac{1}{P-1}\sum_{t=R}^{R+P-1}{e_{t+1,i}e_{t+1,j}}$ is a sample forecast error covariance. 
+The sample estimator of $\omega^*$ is: $$\hat{\omega}^* = \frac{\hat{\sigma}_i^2-\hat{\sigma}_{ij}}{\hat{\sigma}_i^2+\hat{\sigma}_j^2-2\hat{\sigma}_{ij}},$$ where $\hat{\sigma}_i^2 = \frac{1}{P-1}\sum_{t=R}^{R+P-1}{e_{t+1,i}^2}$ and $\hat{\sigma}_j^2 = \frac{1}{P-1}\sum_{t=R}^{R+P-1}{e_{t+1,j}^2}$ are sample forecast error variances, and $\hat{\sigma}_{ij}=\frac{1}{P-1}\sum_{t=R}^{R+P-1}{e_{t+1,i}e_{t+1,j}}$ is a sample forecast error covariance, where $P$ denotes the number of out-of-sample forecasts. 
+]
 
 ---
 
 
-# Forecast Encompassing
+# The optimal weight in a regression setting
 
-A special case of forecast combination is when $\omega=0$ (or when $\omega=1$). Such an outcome (of the optimal weights) is known as forecast encompassing.
+.right-column[
+The optimal weight has a straightforward interpretation in a regression setting. Consider the combined forecast equation as: $$y_{t+1} = (1-\omega)y_{t+1|t,i} + \omega y_{t+1|t,j} + \varepsilon_{t+1},$$ where $\varepsilon_{t+1}\equiv e_{t+1,c}$. We can re-arrange the equation so that: $$e_{t+1,i} = \omega (y_{t+1|t,j}-y_{t+1|t,i}) + \varepsilon_{t+1},$$ where $\omega$ is obtained by estimating a linear regression with an intercept restricted to zero.
+]
+
+---
+
+# Direct and Iterated Forecasts of the U.S. Inflation
+
+.right-column[
+```{r echo=FALSE, message=FALSE, cache=FALSE}
+load("../../Books/forecasting/data/inflation.RData")
+load("../../Books/forecasting/data/funds.RData")
+
+dt <- merge(funds,inflation,by="date")
+colnames(dt) <- c("date","funds","inflation")
+
+dt[,`:=`(y=inflation)]
+dt[,`:=`(y1=shift(y,1),y2=shift(y,2),y3=shift(y,3),y4=shift(y,4))]
+
+ic_dt <- data.table(p=1:4,AIC=NA,SIC=NA)
+
+ar1 <- lm(y~y1,data=dt)
+ar2 <- lm(y~y1+y2,data=dt)
+ar3 <- lm(y~y1+y2+y3,data=dt)
+ar4 <- lm(y~y1+y2+y3+y4,data=dt)
+
+ic_dt$AIC[1] <- log(crossprod(ar1$resid))+2*length(ar1$coef)/length(ar1$resid)
+ic_dt$AIC[2] <- log(crossprod(ar2$resid))+2*length(ar2$coef)/length(ar2$resid)
+ic_dt$AIC[3] <- log(crossprod(ar3$resid))+2*length(ar3$coef)/length(ar3$resid)
+ic_dt$AIC[4] <- log(crossprod(ar4$resid))+2*length(ar4$coef)/length(ar4$resid)
+
+ic_dt$SIC[1] <- log(crossprod(ar1$resid))+log(length(ar1$resid))*length(ar1$coef)/length(ar1$resid)
+ic_dt$SIC[2] <- log(crossprod(ar2$resid))+log(length(ar2$resid))*length(ar2$coef)/length(ar2$resid)
+ic_dt$SIC[3] <- log(crossprod(ar3$resid))+log(length(ar3$resid))*length(ar3$coef)/length(ar3$resid)
+ic_dt$SIC[4] <- log(crossprod(ar4$resid))+log(length(ar4$resid))*length(ar4$coef)/length(ar4$resid)
+
+
+
+dt[,`:=`(y12=shift(y,12),y13=shift(y,13),y14=shift(y,14))]
+
+R <- which(dt$date=="1990-12-01")
+h <- 12
+P <- nrow(dt)-R-h+1
+
+dt[,`:=`(itr=NA,dir=NA)]
+
+for(i in 1:P){
+  
+  ar_itr <- lm(y~y1+y2+y3,data=dt[i:(R-1+i)])
+  ar_dir <- lm(y~y12+y13+y14,data=dt[i:(R-1+i)])
+  
+  dt[,`:=`(temp=y)]
+  
+  for(j in 1:h){
+    dt$temp[R-1+i+j] <- ar_itr$coefficients["(Intercept)"]+ar_itr$coefficients["y1"]*dt$temp[R-1+i+j-1]+ar_itr$coefficients["y2"]*dt$temp[R-1+i+j-2]+ar_itr$coefficients["y3"]*dt$temp[R-1+i+j-3]
+  }
+  
+  dt$itr[R+h-1+i] <- dt$temp[R-1+i+j]
+    
+  dt$dir[R+h-1+i] <- ar_dir$coefficients["(Intercept)"]+ar_dir$coefficients["y12"]*dt$y[R+h-1+i-1]+ar_dir$coefficients["y13"]*dt$y[R+h-1+i-2]+ar_dir$coefficients["y14"]*dt$y[R+h-1+i-3]
+  
+}
+
+dt$temp <- NULL
+
+long_dt <- melt(dt[,.(date,y,itr,dir)],id.vars="date")
+
+long_dt$variable <- factor(long_dt$variable,levels=unique(long_dt$variable),labels=c("observed series","iterated forecast","direct forecast"))
+
+ggplot(long_dt[date>="1992-01-01"],aes(x=date,y=value,color=variable,linetype=variable))+
+  geom_line(size=.8,na.rm=T)+
+  scale_color_manual(values=c("darkgray","coral","steelblue"))+
+  scale_linetype_manual(values=c(1,5,2))+
+  labs(x="Year",y="Year-Over-Year Inflation (%)",caption="retrieved from FRED, Federal Reserve Bank of St. Louis\nhttps://fred.stlouisfed.org/series/CPIAUCNS")+
+  theme_classic()+
+  theme(axis.title = element_text(size=18),axis.text = element_text(size=14),legend.position="top",legend.title=element_blank(),legend.text=element_text(size=18))
+```
+]
+
+---
+
+# Regression-based optimal weights
+
+.right-column[
+```{r echo=FALSE, message=FALSE, cache=FALSE}
+dt[,`:=`(e_itr=y-itr,e_dir=y-dir)]
+
+reg_w <- lm(e_itr~I(dir-itr)-1,data=dt)
+
+coeftest(reg_w,vcov=vcovHAC)
+
+```
+]
+
+---
+
+# Regression-based optimal weights
+
+.right-column[
+```{r echo=FALSE, message=FALSE, cache=FALSE}
+dt[,`:=`(cmb=(1-reg_w$coef)*itr+reg_w$coef*dir)]
+
+long_dt <- melt(dt[,.(date,y,itr,dir,cmb)],id.vars="date")
+
+long_dt$variable <- factor(long_dt$variable,levels=unique(long_dt$variable),labels=c("observed series","iterated forecast","direct forecast","combined forecast"))
+
+ggplot(long_dt[date>="1992-01-01"],aes(x=date,y=value,color=variable,linetype=variable))+
+  geom_line(size=.8,na.rm=T)+
+  scale_color_manual(values=c("darkgray","coral","steelblue","black"))+
+  scale_linetype_manual(values=c(1,5,2,1))+
+  labs(x="Year",y="Year-Over-Year Inflation (%)",caption="retrieved from FRED, Federal Reserve Bank of St. Louis\nhttps://fred.stlouisfed.org/series/CPIAUCNS")+
+  theme_classic()+
+  theme(axis.title = element_text(size=18),axis.text = element_text(size=14),legend.position="top",legend.title=element_blank(),legend.text=element_text(size=18))
+
+```
+]
+
+---
+
+# The optimal weight in a regression setting
+
+.right-column[
+Alternatively, we can estimate a variant of the combined forecast equation: $$y_{t+1} = \alpha+\beta_i y_{t+1|t,i} + \beta_j y_{t+1|t,j} + \varepsilon_{t+1},$$ which relaxes the assumption of forecast unbiasedness, as well as of weights adding up to one or, indeed, of non-negative weights.
+]
+
+---
+
+
+# Regression-based optimal weights
+
+.right-column[
+```{r echo=FALSE, message=FALSE, cache=FALSE}
+reg_w <- lm(y~itr+dir,data=dt)
+
+coeftest(reg_w,vcov=vcovHAC)
+
+```
+]
+
+---
+
+# Regression-based optimal weights
+
+.right-column[
+```{r echo=FALSE, message=FALSE, cache=FALSE}
+dt[,`:=`(cmb=reg_w$coef["(Intercept)"]+reg_w$coef["itr"]*itr+reg_w$coef["dir"]*dir)]
+
+long_dt <- melt(dt[,.(date,y,itr,dir,cmb)],id.vars="date")
+
+long_dt$variable <- factor(long_dt$variable,levels=unique(long_dt$variable),labels=c("observed series","iterated forecast","direct forecast","combined forecast"))
+
+ggplot(long_dt[date>="1992-01-01"],aes(x=date,y=value,color=variable,linetype=variable))+
+  geom_line(size=.8,na.rm=T)+
+  scale_color_manual(values=c("darkgray","coral","steelblue","black"))+
+  scale_linetype_manual(values=c(1,5,2,1))+
+  labs(x="Year",y="Year-Over-Year Inflation (%)",caption="retrieved from FRED, Federal Reserve Bank of St. Louis\nhttps://fred.stlouisfed.org/series/CPIAUCNS")+
+  theme_classic()+
+  theme(axis.title = element_text(size=18),axis.text = element_text(size=14),legend.position="top",legend.title=element_blank(),legend.text=element_text(size=18))
+
+```
+]
+
+---
+
+
+# Forecast encompassing
+
+.right-column[
+A special case of forecast combination is when $\omega=0$. Such an outcome (of the optimal weights) is known as forecast encompassing.
 
 It is said that $y_{t+1|t,i}$ encompasses $y_{t+1|t,j}$, when given that the former is available, the latter provides no additional useful information.
-
-This is equivalent of testing the null hypothesis of $\omega=0$ in the combined forecast error equation, which, after rearranging terms, yields the following regression: $$e_{t+1,i} = \omega\left(e_{t+1,i}-e_{t+1,j}\right)+\varepsilon_{t+1},\;~~t=R,\ldots,R+P-1$$ where $\varepsilon_{t+1}\equiv e_{t+1,c}$, and where $R$ is the size of the (forst) estimation window, and $P$ is the number of out-of-sample forecasts generated..
-
----
-
-
-# Forecast Encompassing
-
-Alternatively, the forecast encompassing hypothesis is equivalent of testing the null hypothesis of $\omega=0$ in the following regression:  $$e_{i,t+1|t} = \omega y_{j,t+1|t}+\varepsilon_{t+1}$$
-
-That is, the information set from the second method should not be of any value to (i.e. should not be correlated with) the forecast error from the first method.
+]
 
 ---
 
 
-# Optimal Weights for Combination
+# Forecast encompassing
 
-The optimal weight has a straightforward interpretation in a regression setting. Rewrite the combined forecast equation as: $$y_{t+1} = (1-\omega)y_{i,t+1|t} + \omega y_{j,t+1|t} + e_{c,t+1|t}.$$ Note that the equation is simply the least squares estimator of $\omega$. Thus, we can estimate weights and test the forecast encompassing hypothesis by regressing the realized value on individual forecasts as follows: $$y_{t+1} = \alpha + \beta_1 y_{i,t+1|t} + \beta_2 y_{j,t+1|t} + e_{c,t+1|t}$$
+.right-column[
+This is equivalent of testing the null hypothesis of $\omega=0$ in the combined forecast error equation, which, after rearranging terms, yields the following regression: $$e_{t+1,i} = \omega\left(e_{t+1,i}-e_{t+1,j}\right)+\varepsilon_{t+1},\;~~t=R,\ldots,R+P-1$$ where $\varepsilon_{t+1}\equiv e_{t+1,c}$, and where $R$ is the size of the (first) estimation window, and $P$ is the number of out-of-sample forecasts generated.
+]
 
-In this regression setting, the test of the null hypothesis of $\omega=0$ is equivalent to the test of the null hypothesis of $\beta_2=0$. We can, in fact, test a joint hypothesis that $\{\alpha,\beta_1,\beta_2\} = \{0,1,0\}$.
+---
+
+
+# Forecast encompassing in a regression setting
+
+.right-column[
+We can test for the forecast encompassing by regressing the realized value on individual forecasts: $$y_{t+1} = \alpha + \beta_1 y_{t+1|t,i} + \beta_2 y_{t+1|t,j} + \varepsilon_{t+1},$$ and testing the null hypothesis that $\beta_2=0$, given that $\beta_1=1$. 
+]
 
 ---
 
 # Readings
 
+.pull-left[
+![](Art/todolist.png)
+]
+
+.pull-right[
 Gonzalez-Rivera, Chapter 9
+]
 
 
 

@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Forecasting for Economics and Business</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="David Ubilava" />
+    <script src="libs/header-attrs-2.14/header-attrs.js"></script>
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/metropolis.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/metropolis-fonts.css" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+.title[
+# Forecasting for Economics and Business
+]
+.subtitle[
+## Lecture 10: Forecast Combination
+]
+.author[
+### David Ubilava
+]
+.date[
+### University of Sydney
+]
+
+---
+
+
+
+
+
+
+
+
+# All forecasts are wrong, but a few may be useful
+
+.pull-left[
+![](Art/combination.png)
+]
+
+.pull-right[By choosing the most appropriate model for obtaining forecasts, we implicitly discard all other candidate models.
+
+Those models could potentially contain useful information that the chosen model cannot offer.
+
+Thus, merely selecting the best model may be a sub-optimal strategy.
+
+An alternative strategy is to use some information from all forecasts, i.e., *forecast combination*.
+]
+
+---
+
+
+# Why combine?
+	
+.right-column[
+Several factors support the idea of forecast combination:
+
+- The concept is intuitively appealing (a combined forecast aggregates more information or more ways of processing the information);
+- Many forecast combination techniques are computationally simple and easy to apply;
+- Empirical evidence strongly supports the idea of combining forecast to improve accuracy;
+- The concept of forecast combination leads naturally to the concept of *forecast encompassing* - a valuable tool in forecast evaluation.
+]
+
+---
+
+
+# How it works?
+
+.right-column[
+Consider two forecasting methods (or models), `\(i\)` and `\(j\)`, each respectively yielding one-step-ahead forecasts `\(y_{t+1|t,i}\)` and `\(y_{t+1|t,j}\)`, and the associated forecast errors `\(e_{t+1,i} = y_{t+1}-y_{t+1|t,i}\)` and `\(e_{t+1,j} = y_{t+1}-y_{t+1|t,j}\)`.
+
+A combined forecast, `\(y_{t+1|t,c}\)`, is expressed as: `$$y_{t+1|t,c} = (1-\omega)y_{t+1|t,i} + \omega y_{t+1|t,j},$$` where `\(0 \leq \omega \leq 1\)` is a weight, and, thus, the combined forecast is a weighted average of the two individual forecasts.
+]
+
+---
+
+
+# A combined forecast error mean
+
+.right-column[
+A combined forecast error is: `$$e_{t+1,c} = (1-\omega)e_{t+1,i} + \omega e_{t+1,j}$$`
+
+The mean of a combined forecast error (under the assumption of forecast error unbiasedness) is zero: `$$E\left(e_{t+1,c}\right) = E\left[(1-\omega)e_{t+1,i} + \omega e_{t+1,j}\right] = 0$$`
+]
+
+---
+
+
+# A combined forecast error variance
+
+.right-column[
+The variance of a combined forecast error is: `$$Var\left(e_{t+1,c}\right) = (1-\omega)^2 \sigma_i^2 + \omega^2  \sigma_j^2 + 2\omega(1-\omega)\rho\sigma_i\sigma_j,$$` where `\(\sigma_i\)` and `\(\sigma_j\)` are the standard deviations of the forecast errors from models `\(i\)` and `\(j\)`, and `\(\rho\)` is a correlation between these two forecast errors.
+]
+
+---
+
+
+# The optimal weight
+
+.right-column[
+Taking the derivative of the variance of a combined forecast error, and equating it to zero yields an optimal weight (which minimizes the combined forecast error variance): `$$\omega^* = \frac{\sigma_i^2-\rho\sigma_i\sigma_j}{\sigma_i^2+\sigma_j^2-2\rho\sigma_i\sigma_j}$$`
+]
+
+---
+
+
+# At least as efficient as individual forecasts
+
+.right-column[
+Substitute `\(\omega^*\)` in place of `\(\omega\)` in the formula for variance to obtain: `$$Var\left[e_{t+1,c}(\omega^*)\right] = \sigma_c^2(\omega^*) = \frac{\sigma_i^2\sigma_j^2(1-\rho^2)}{\sigma_i^2+\sigma_j^2-2\rho\sigma_i\sigma_j}$$`
+
+
+It can be shown that `\(\sigma_c^2(\omega^*) \leq \min\{\sigma_i^2,\sigma_j^2\}\)`. That is to say that by combining forecasts we are not making things worse (so long as we use *optimal* weights).
+]
+
+---
+
+
+# Combination Weights&amp;mdash;Special Cases
+
+## Case 1: `\(\sigma_i = \sigma_j = \sigma\)`.
+
+.right-column[
+Suppose the individual forecasts are equally accurate, then the combined forecast error variance reduces to: `$$\sigma_c^2(\omega^*) = \frac{\sigma^2(1+\rho)}{2} \leq \sigma^2$$`
+
+The equation shows there are diversification gains even when the forecasts are equally accurate (unless the forecasts are perfectly correlated, in which case there are no gains from combination).
+]
+
+---
+
+
+# Combination Weights&amp;mdash;Special Cases
+
+## Case 2: `\(\rho=0\)`.
+
+.right-column[
+Suppose the forecast errors are uncorrelated, then the sample estimator of `\(\omega^*\)` is given by: `$$\omega^* = \frac{\sigma_i^2}{\sigma_i^2+\sigma_j^2} = \frac{\sigma_j^{-2}}{\sigma_i^{-2}+\sigma_j^{-2}}$$`
+
+Thus, the weights attached to forecasts are inversely proportional to the variance of these forecasts.
+]
+
+---
+
+
+# Combination Weights&amp;mdash;Special Cases
+
+## Case 3: `\(\sigma_i = \sigma_j = \sigma\)` and `\(\rho=0\)`.
+
+.right-column[
+Suppose the individual forecasts are equally accurate and the forecast errors are uncorrelated, then the sample estimator of `\(\omega^*\)` reduces to `\(0.5\)`, resulting in the equal-weighted forecast combination: `$$y_{t+1|t,c} = 0.5y_{t+1|t,i} + 0.5y_{t+1|t,j}$$`
+]
+
+---
+
+
+# The sample optimal weight
+
+.right-column[
+In practice `\(\sigma_i\)`, `\(\sigma_j\)`, and `\(\rho\)` are unknown.
+
+The sample estimator of `\(\omega^*\)` is: `$$\hat{\omega}^* = \frac{\hat{\sigma}_i^2-\hat{\sigma}_{ij}}{\hat{\sigma}_i^2+\hat{\sigma}_j^2-2\hat{\sigma}_{ij}},$$` where `\(\hat{\sigma}_i^2 = \frac{1}{P-1}\sum_{t=R}^{R+P-1}{e_{t+1,i}^2}\)` and `\(\hat{\sigma}_j^2 = \frac{1}{P-1}\sum_{t=R}^{R+P-1}{e_{t+1,j}^2}\)` are sample forecast error variances, and `\(\hat{\sigma}_{ij}=\frac{1}{P-1}\sum_{t=R}^{R+P-1}{e_{t+1,i}e_{t+1,j}}\)` is a sample forecast error covariance, where `\(P\)` denotes the number of out-of-sample forecasts. 
+]
+
+---
+
+
+# The optimal weight in a regression setting
+
+.right-column[
+The optimal weight has a straightforward interpretation in a regression setting. Consider the combined forecast equation as: `$$y_{t+1} = (1-\omega)y_{t+1|t,i} + \omega y_{t+1|t,j} + \varepsilon_{t+1},$$` where `\(\varepsilon_{t+1}\equiv e_{t+1,c}\)`. We can re-arrange the equation so that: `$$e_{t+1,i} = \omega (y_{t+1|t,j}-y_{t+1|t,i}) + \varepsilon_{t+1},$$` where `\(\omega\)` is obtained by estimating a linear regression with an intercept restricted to zero.
+]
+
+---
+
+# Direct and Iterated Forecasts of the U.S. Inflation
+
+.right-column[
+![](10-Combination_files/figure-html/unnamed-chunk-2-1.png)&lt;!-- --&gt;
+]
+
+---
+
+# Regression-based optimal weights
+
+.right-column[
+
+```
+## 
+## t test of coefficients:
+## 
+##              Estimate Std. Error t value  Pr(&gt;|t|)    
+## I(dir - itr)  0.75417    0.19002  3.9689 0.0001303 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+]
+
+---
+
+# Regression-based optimal weights
+
+.right-column[
+![](10-Combination_files/figure-html/unnamed-chunk-4-1.png)&lt;!-- --&gt;
+]
+
+---
+
+# The optimal weight in a regression setting
+
+.right-column[
+Alternatively, we can estimate a variant of the combined forecast equation: `$$y_{t+1} = \alpha+\beta_i y_{t+1|t,i} + \beta_j y_{t+1|t,j} + \varepsilon_{t+1},$$` which relaxes the assumption of forecast unbiasedness, as well as of weights adding up to one or, indeed, of non-negative weights.
+]
+
+---
+
+
+# Regression-based optimal weights
+
+.right-column[
+
+```
+## 
+## t test of coefficients:
+## 
+##              Estimate Std. Error t value  Pr(&gt;|t|)    
+## (Intercept)  0.908025   0.309973  2.9294  0.004159 ** 
+## itr         -0.159430   0.072151 -2.2097  0.029279 *  
+## dir          0.663267   0.087312  7.5965 1.268e-11 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+]
+
+---
+
+# Regression-based optimal weights
+
+.right-column[
+![](10-Combination_files/figure-html/unnamed-chunk-6-1.png)&lt;!-- --&gt;
+]
+
+---
+
+
+# Forecast encompassing
+
+.right-column[
+A special case of forecast combination is when `\(\omega=0\)`. Such an outcome (of the optimal weights) is known as forecast encompassing.
+
+It is said that `\(y_{t+1|t,i}\)` encompasses `\(y_{t+1|t,j}\)`, when given that the former is available, the latter provides no additional useful information.
+]
+
+---
+
+
+# Forecast encompassing
+
+.right-column[
+This is equivalent of testing the null hypothesis of `\(\omega=0\)` in the combined forecast error equation, which, after rearranging terms, yields the following regression: `$$e_{t+1,i} = \omega\left(e_{t+1,i}-e_{t+1,j}\right)+\varepsilon_{t+1},\;~~t=R,\ldots,R+P-1$$` where `\(\varepsilon_{t+1}\equiv e_{t+1,c}\)`, and where `\(R\)` is the size of the (first) estimation window, and `\(P\)` is the number of out-of-sample forecasts generated.
+]
+
+---
+
+
+# Forecast encompassing in a regression setting
+
+.right-column[
+We can test for the forecast encompassing by regressing the realized value on individual forecasts: `$$y_{t+1} = \alpha + \beta_1 y_{t+1|t,i} + \beta_2 y_{t+1|t,j} + \varepsilon_{t+1},$$` and testing the null hypothesis that `\(\beta_2=0\)`, given that `\(\beta_1=1\)`. 
+]
+
+---
+
+# Readings
+
+.pull-left[
+![](Art/todolist.png)
+]
+
+.pull-right[
+Gonzalez-Rivera, Chapter 9
+]
+
+
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"countIncrementalSlides": false,
+"ratio": "16:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();</script>
+<style>
+.logo {
+  background-image: url(forecasting-logo.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+  position: absolute;
+  bottom: .5em;
+  left: 2em;
+  width: 91px;
+  height: 105px;
+  z-index: 0;
+}
+</style>
+
+<script>
+document
+  .querySelectorAll(
+    '.remark-slide-content' +
+    ':not(.title-slide)' +
+    // add additional classes to exclude here, e.g.
+    // ':not(.inverse)' +
+    ':not(.hide-logo)'
+  )
+  .forEach(el => {
+    el.innerHTML += '<div class="logo"></div>';
+  });
+</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

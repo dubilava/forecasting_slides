@@ -333,7 +333,7 @@ In particular, the loss differential now becomes: $$d(e_{t+h,ij})=e_{t+h,i}^2-e_
 # Does interest rate Granger cause inflation rate?
 
 .right-column[
-We examine the out-of-sample performance of the AR(p) model relative to that of the equation from the VAR(p) model by regressing the adjusted loss differential $d_t=e_{t,r}^2-e_{t,u}^2+(e_{t,r}^2-e_{t,u}^2)^2$ on a constant, where $t=R+h,\ldots,T$, and where the subscripts $r$ and $u$ indicate the restricted and unrestricted models, respectively. Here, we are unable to reject the null hypothesis of Granger non-causality.
+We examine the out-of-sample performance of the AR(p) model relative to that of the equation from the VAR(p) model by regressing the adjusted loss differential $d_t=e_{t,r}^2-e_{t,u}^2+(y_{t|t-1,r}^2-y_{t|t-1,u}^2)^2$ on a constant, where $t=R+h,\ldots,T$, and where the subscripts $r$ and $u$ indicate the restricted and unrestricted models, respectively. Here, we are unable to reject the null hypothesis of Granger non-causality.
 ```{r echo=FALSE, message=FALSE, cache=FALSE}
 dt[,`:=`(z=funds)]
 dt[,`:=`(z1=shift(z,1),z2=shift(z,2),z3=shift(z,3))]

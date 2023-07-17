@@ -31,23 +31,61 @@ knitr::opts_chunk$set(echo = FALSE)
 
 .pull-right[
 The roots of forecasting extend to the early days of human history. In their desire to predict the future, people have attempted to make forecasts of their own, or have used services of others. 
-- Fortunetellers, for example, have been forecast 'experts' of some sort, basing their predictions on magic. They are less common in this age. 
+- Fortunetellers were been forecast 'experts' of some sort, basing their predictions on magic. They are less common in this age. 
 - Astrologers, who rely on astronomical phenomena to foresee the future, maintain their relevance to this date. 
 ]
 
 ---
 
 
-# Information is key in forecasting
+# Early forecasts mainly revolved around weather
 
 .right-column[
-Over time, and particularly with the development of the study of econometrics, more rigorous forecasting methods have been introduced and developed. 
+Primarily because weather was the single most important factor that impacted the livelihood of people, and indeed the fate of civilizations.
+ - The Babylonians based their weather forecasts on the appearance of clouds. 
+ - The ancient Egyptians measured the levels of the Nile River’s waters to predict an approaching famine due to droughts or destructive floods.
 
-All methods have one thing in common: they all rely (or, at least, pretend to rely) on *information*.
-
-Information summarizes everything that we know about the event or observation we wish to forecast.
 ]
 
+---
+
+
+# The tools and techniques improved over time
+
+.right-column[
+The inventions of the barometer and the thermometer contributed to the development of the study of meteorology.
+
+The telegraph made these tools useful - it became possible for the weather forecast to travel sooner than the weather itself.
+]
+
+---
+
+
+# Evolution of the economic forecasting
+
+.right-column[
+The history of economic forecasting is shorter. 
+- Irving Fisher was one of the first academic economists who contributed to the study of forecasting through his "Equation of Exchange," which he used as the
+foundation to forecast prices.
+- Charles Bullock and Warren Persons ran a Harvard-affiliated quasi-academic center for business cycle research with main purpose to generate economic forecasts
+based on historical precedents.
+
+]
+
+---
+
+
+# Computers and the Internet are key
+
+.right-column[
+The failure to predict the Great Depression adversely impacted the early economic forecasters' reputation and, indeed, fortunes.
+
+As with the telegraph back in the 19th century, the evolution of the computing power in the second half of the 20th century facilitated the resurrection of economic forecasting.
+
+The evolution of the Internet and the ease of storage and distribution of high-frequency
+granular data further aided the advancement of the study of forecasting.
+
+]
 
 ---
 
@@ -57,64 +95,148 @@ Information summarizes everything that we know about the event or observation we
 .right-column[	
 A forecast is a guess about the future event.
 
-Usually an educated guess - based on one's experience and available knowledge. But, really, it can be any statement about the future, regardless of whether such statement is well founded or lacks any sound basis.
+A guess may be based on one's experience and available knowledge. But, really, it can be any statement about the future, regardless of whether such statement is well founded or lacks any sound basis.
 
-Forecasts can be produced using rigorous quantitative methods based on a large volume of historical observations, or they can rely on qualitative methods that may have little observable basis.
+We may guess today whether it will rain tomorrow. It may or may not rain tomorrow. With each of these two outcomes having some chance of occurring, our claim about whether it will rain is a guess.
 ]
 
 ---
 
 
-# Some forecasts are useful
+
+
+# We guess because we don't know
 	
 .right-column[	
-We can forecast virtually anything, whether it is tomorrow's exchange rate or the unemployment rate at the start of the next year.
+These are events for which several outcomes, each with some chance of appearing, are possible.
+- We can think of a rain as a discrete random variable (a binary random variable, to be precise): it either rains or it does not rain. 
 
-Not all the forecasts are useful, however. 
-
-- That the sun will raise at a given time on a given day of a year is a forecast that we can make with great precision, but is of little value to people. 
-- That inflation will reach a certain level in the near future would be a much more useful forecast - it can help businesses and policy makers in their decision making.
+By contrast, making a claim about whether the sun will rise tomorrow is hardly a guess. We know with absolute precision when will the sun rise. There is no prophecy about predicting the sunrise.
 ]
 
 ---
 
 
-# Forecasting is difficult
-
+# Not all guesses are forecasts
+	
 .right-column[	
-Some events are easier to forecast than others. 
+A guess that relies on some knowledge or understanding of the underlying
+causes of an event is a forecast. 
+- When commercial banks make a guess whether the central bank will increase or decrease the cash rates, they forecast.
 
-- A forecast of electricity demand can be highly accurate, but forecasting exchange rates is never an easy task.
-
-Several factors play role in our ability to forecast an event:
-
-- understanding of the processes that contribute to the event realization;
-- availability of data that facilitates the understanding;
-- plausibility that future resembles the past;
-- (in)ability of the forecasts to impact the event realization.
+Otherwise, a guess may as well be a gamble. 
+- Everyone is welcome in a casino so long as gambling is what they
+do. But when one attempts to "beat the house" using the knowledge accumulated
+by counting cards, the gamble becomes an educated guess and the gambler becomes *persona non grata*.
 ]
 
 ---
 
 
-# Forecast horizons
+# Some events are easier to forecast than others
 
 .right-column[	
-When forecasting, we usually need to decide on the horizon length, i.e., how far ahead do we want to forecast.
+Events that are primarily guided by physical processes or relationships are easier to forecast. 
+- A storm forecast can be highly accurate.
 
-Forecasting becomes increasingly difficult (inaccurate) with the horizon length, as more unknowns 'get in the way' between the time periods when the forecast is made and when it is realised.
+Events that involve people and their behavioral peculiarities are much less predictable. People, of course, are front and center in business and economic relationships.  
+- Irving Fisher notoriously made the claim in early October 1929 that "*stock prices have reached [...] a permanently high plateau.*" The Wall Street Crash and Great Depression followed shortly after.
 ]
 
 ---
 
 
-# Qualitative vs quantitative forecasts
+# Sometimes we cannot guess because we know
 
 .right-column[	
-Methods of forecasting can be grouped into two categories:
+The issue lies in our ability to influence the future because we could forecast it reasonably well.
 
-- *qualitative* (e.g., guessing, 'rules of thumb,' expert judgment, surveys) - particularly useful when the data are not available;
-- *quantitative* (e.g., with time series models) - applied, and indeed a preferred method, when the data are available.
+Suppose we found out that stock prices of a publicly traded company would increase tomorrow. This creates a temporal arbitrage opportunity: we can buy the
+stock today, when its price is still low, and sell it tomorrow, when its
+price has increased.
+
+However, as we (and many other people) act on this information at once, we create demand and drive the prices up today, thus absorbing the temporal arbitrage opportunity.
+
+]
+
+---
+
+
+# Information is key in forecasting
+
+.right-column[
+Forecasters all rely (or, at least, pretend to rely) on *information*.
+
+Information summarizes everything that we know about the event.
+
+When the information is organized and stored in a certain way - chronologically and at regular intervals - we have the time series of historical data. 
+
+Forecasting involves examining historical data to make an informed guess about what is to come in the near or the distant future.
+
+]
+
+---
+
+
+# A time series, its density, and a forecast
+
+.right-column[
+```{r time-series, out.width = "90%"}
+knitr::include_graphics("figures/lecture1/time-series.png")
+```
+]
+
+---
+
+
+# Most of the time we don't get it right
+
+.right-column[
+The difference between the realized outcome and the point forecast for that period is the forecast error: $$e_{t+h|t} = y_{t+h} - \hat{y}_{t+h|t}$$
+
+We may forecast with an error because:
+- we don't know the future
+- we don't know the model
+- we don't know the parameters
+]
+
+---
+
+
+# We try minimizing the risk of getting it wrong
+
+.right-column[
+The *optimal* point forecast is the best guess, one that minimizes the risk of getting it wrong.
+
+We measure risk using a loss function, $l(e_{t+h|t})$. The following must hold for the loss function:
+- $l(e_{t+h|t}) = 0$ for all $e_{t+h|t}=0$
+- $l(e_{t+h|t}) \ge 0$ for all $e_{t+h|t} \ne 0$
+
+And (assuming symmetric loss function) for all $t \ne s$:
+- $l(e_{t+h|t}) \ge l(e_{s+h|s})$ for all $|l(e_{t+h|t})| \ge |l(e_{s+h|s})|$
+
+]
+
+---
+
+
+# Quadratic loss function
+
+.right-column[
+```{r loss, out.width = "90%"}
+knitr::include_graphics("figures/lecture1/loss.png")
+```
+]
+
+---
+
+
+# Loss minimization
+
+.right-column[
+```{r loss-animation, out.width = "90%"}
+knitr::include_graphics("figures/lecture1/quadratic-loss.gif")
+```
 ]
 
 ---
@@ -123,25 +245,24 @@ Methods of forecasting can be grouped into two categories:
 # Forecasting with time series models
 
 .right-column[	
-Economic forecasting lends itself naturally to time series analysis. Indeed, time series econometrics is a by-product, to some extent, of the quest for accurate forecasts.
+Economic forecasting lends itself naturally to time series analysis. In a way, time series econometrics has evolved as a by-product of the economists' quest for accurate forecasts.
 
-In econometric time series analysis, the implied assumption is that the past tends to repeat itself. So, if we well study the past, we should be able to forecast an event with some degree of accuracy. 
+In econometric time series analysis, the implied assumption is that the past tends to repeat itself. So, if we well study the past, we should be able to predict the future, at least with some degree of accuracy. 
 
-But there still is a surprise element concerning the forecast - something that has never happened in past, and is only specific to the future. Because of this, there is no such thing as precise forecast. Best we can hope for is that we get close to it (on average).
+But, of course, there is no such thing as perfect forecast. Best we can hope for is that we get close to it (on average).
 ]
 
 ---
 
 
 
-# Readings
+# Additional Readings
 
 .pull-left[
 ![](Art/todolist.png)
 ]
 
 .pull-right[
-Ubilava, [Chapter 1](https://davidubilava.com/forecasting/docs/introduction-to-forecasting.html)
 
 Gonzalez-Rivera, Chapter 1
 

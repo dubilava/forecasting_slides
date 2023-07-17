@@ -181,7 +181,7 @@ Forecasting involves examining historical data to make an informed guess about w
 # A time series, its density, and a forecast
 
 .right-column[
-```{r time-series, out.width = "90%"}
+```{r time-series}
 knitr::include_graphics("figures/lecture1/time-series.png")
 ```
 ]
@@ -223,7 +223,7 @@ And (assuming symmetric loss function) for all $t \ne s$:
 # Quadratic loss function
 
 .right-column[
-```{r loss, out.width = "90%"}
+```{r loss}
 knitr::include_graphics("figures/lecture1/loss.png")
 ```
 ]
@@ -234,7 +234,7 @@ knitr::include_graphics("figures/lecture1/loss.png")
 # Loss minimization
 
 .right-column[
-```{r loss-animation, out.width = "90%"}
+```{r loss-animation}
 knitr::include_graphics("figures/lecture1/quadratic-loss.gif")
 ```
 ]

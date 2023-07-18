@@ -42,7 +42,7 @@ The roots of forecasting extend to the early days of human history. In their des
 
 .right-column[
 Primarily because weather was the single most important factor that impacted the livelihood of people, and indeed the fate of civilizations.
- - The Babylonians based their weather forecasts on the appearance of clouds. 
+ - The Babylonians based weather forecasts on the appearance of clouds. 
  - The ancient Egyptians measured the levels of the Nile River’s waters to predict an approaching famine due to droughts or destructive floods.
 
 ]
@@ -64,7 +64,7 @@ The telegraph made these tools useful - it became possible for the weather forec
 # Evolution of the economic forecasting
 
 .right-column[
-The history of economic forecasting is shorter. 
+The history of economic forecasting does not extend as far into the roots of humankind as does the weather forecasting. 
 - Irving Fisher was one of the first academic economists who contributed to the study of forecasting through his "Equation of Exchange," which he used as the
 foundation to forecast prices.
 - Charles Bullock and Warren Persons ran a Harvard-affiliated quasi-academic center for business cycle research with main purpose to generate economic forecasts
@@ -80,10 +80,9 @@ based on historical precedents.
 .right-column[
 The failure to predict the Great Depression adversely impacted the early economic forecasters' reputation and, indeed, fortunes.
 
-As with the telegraph back in the 19th century, the evolution of the computing power in the second half of the 20th century facilitated the resurrection of economic forecasting.
+The evolution of computers in the second half of the 20th century facilitated the resurrection of economic forecasting.
 
-The evolution of the Internet and the ease of storage and distribution of high-frequency
-granular data further aided the advancement of the study of forecasting.
+Toward the end of the 20th century, the Internet and the ease of storage and distribution of high-frequency granular data further aided the advancement of the study of forecasting.
 
 ]
 

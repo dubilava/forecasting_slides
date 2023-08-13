@@ -219,6 +219,21 @@ And (assuming symmetric loss function) for all $t \ne s$:
 ---
 
 
+# Symmetric loss functions
+
+.right-column[
+Two commonly used symmetric loss functions are *absolute* and *quadratic* loss functions:
+$$\begin{aligned}
+		& l{(e_{t+h|t})} = |e_{t+h|t}|\;~~\text{(absolute loss function)} \\
+		& l{(e_{t+h|t})} = (e_{t+h|t})^2\;~~\text{(quadratic loss function)}
+		\end{aligned}$$
+
+The quadratic loss function is popular, partly because we typically select models based on 'in-sample' quadratic loss (i.e. by minimizing the sum of squared residuals).
+]
+
+---
+
+
 # Quadratic loss function
 
 .right-column[
@@ -230,12 +245,36 @@ knitr::include_graphics("figures/lecture1/loss.png")
 ---
 
 
-# Loss minimization
+# Loss minimization: graphical animation
 
 .right-column[
 ```{r loss-animation}
 knitr::include_graphics("figures/lecture1/quadratic-loss.gif")
 ```
+]
+
+---
+
+
+# Loss minimization: mathematical derivation
+
+.right-column[
+Optimal forecast is the forecast that minimizes the expected loss:
+		$$\min_{\hat{y}_{t+h|t}} \mathbb{E}\left[l\left(e_{t+h|t}\right)\right] = \min_{\hat{y}_{t+h|t}} \mathbb{E}\left[l\left(y_{t+h}-\hat{y}_{t+h|t}\right)\right]$$
+
+Under the assumption of the quadratic loss function:
+$$\mathbb{E}\left[l(e_{t+h|t})\right] = \mathbb{E}(y_{t+h}^2)-2\mathbb{E}(y_{t+h})\hat{y}_{t+h|t} + \hat{y}_{t+h|t}^2$$
+]
+
+---
+
+
+# Under the quadratic loss, optimal forecast is the mean
+
+.right-column[
+By solving the optimization problem it follows that $$\hat{y}_{t+h|t} = \mathbb{E}(y_{t+h})$$
+
+Thus, under the quadratic loss, and assuming that forecast is normally distributed, the optimal forecast is the mean of the random variable.
 ]
 
 ---

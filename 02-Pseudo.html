@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Forecasting for Economics and Business</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="David Ubilava" />
+    <script src="libs/header-attrs-2.22/header-attrs.js"></script>
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/metropolis.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/metropolis-fonts.css" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+.title[
+# Forecasting for Economics and Business
+]
+.subtitle[
+## Lecture 2: Generating and Evaluating Forecasts
+]
+.author[
+### David Ubilava
+]
+.date[
+### University of Sydney
+]
+
+---
+
+
+
+
+
+
+
+
+
+
+# Forecast is a random variable
+
+.pull-left[
+![](Art/forecast.png)
+]
+
+.pull-right[
+A forecast is a random variable which has some distribution and, thus, moments.
+
+A simplest form of a forecast is *point forecast*.
+
+A more complex but much more informative form of a forecast is *density forecast*.
+
+A relatively less complex form of a forecast is *interval forecast*, which is the lower and upper percentiles of the forecast distribution.
+]
+
+---
+
+
+# Forecast is a random variable
+
+.right-column[
+Consider a forecast, made in period `\(t\)` for a future period `\(t+h\)`, where `\(h\)` is forecast horizon.
+
+A complete `\(h\)`-step-ahead forecast, `\(y_{t+h|t}\)`, can be fully summarized by the (conditional) distribution `\(F(y_{t+h}|\Omega_t)\)` or the density `\(f(y_{t+h}|\Omega_t)\)`.
+
+Both `\(F(y_{t+h}|\Omega_t)\)` and `\(f(y_{t+h}|\Omega_t)\)` summarize all the knowns and unknowns about the potential values of `\(y\)` at time `\(t+h\)`, given the available knowledge at time `\(t\)`.
+]
+
+---
+
+
+# Generating forecasts
+
+.right-column[
+Forecast accuracy should only be determined by considering how well a model performs on data not used in estimation.
+
+But to assess forecast accuracy we need access to the data, typically from future time periods, that was not used in estimation.
+
+This leads to the so-called 'pseudo forecasting' routine. 
+]
+
+---
+
+
+# Pseudo forecasting routine
+
+.right-column[
+The pseudo forecasting routine involves slitting the available data into two segments referred to as 'in-sample' and 'out-of-sample'
+
+- The in-sample segment of a series is also known as the 'estimation set' or the 'training set.'
+- The out-of-sample segment of a series is also known as the 'hold-out set' or the 'test set.'
+]
+
+---
+
+
+# Pseudo forecasting routine
+
+.right-column[
+Thus, we make the so-called 'genuine' forecasts using only the information from the estimation set, and assess the accuracy of these forecasts in an out-of-sample setting.
+
+Because forecasting is often performed in a time series context, the estimation set typically predates the hold-out set. In non-dynamic settings such chronological ordering may not be necessary, however.
+]
+
+---
+
+
+# Forecasting schemes
+
+.right-column[
+Three forecasting schemes are available for a forecaster: *recursive*, *rolling*, and *fixed*.
+- The recursive forecasting environment uses a sequence of expanding windows to update model estimates and the information set.
+- The rolling forecasting environment uses a sequence of rolling windows of the same size to update model estimates and the information set.
+- The fixed forecasting environment uses one fixed window for model estimates, and only updates the information set.
+]
+
+---
+
+
+# Out-of-sample evaluation
+
+.right-column[
+To evaluate forecasts of a time series, `\(\{y_t\}\)`, with a total of `\(T\)` observations, we divide the sample into two parts, the in-sample set with a total of `\(R\)` observations, such that `\(R &lt; T\)` (typically, `\(R \approx 0.75T\)`), and the out-of-sample set. 
+
+If we are interested in one-step-ahead forecast assessment, this way we will produce a sequence of forecasts: `\(\{y_{R+1|R},y_{R+2|{R+1}},\ldots,y_{T|{T-1}}\}\)` for `\(\{Y_{R+1},Y_{R+2},\ldots,Y_{T}\}\)`.
+
+Forecast errors, `\(e_{R+j} = y_{R+j} - y_{R+j|{R+j-1}}\)`, then can be computed for `\(j = 1,\ldots,T-R\)`.
+]
+
+---
+
+
+# Measures of forecast accuracy
+
+.right-column[
+The most commonly applied accuracy measures are the mean absolute forecast error (MAFE) and the root mean squared forecast error (RMSFE):
+`$$\begin{aligned}
+\text{MAFE}  = &amp; \frac{1}{P}\sum_{i=1}^{P}|e_i|\\
+\text{RMSFE} = &amp; \sqrt{\frac{1}{P}\sum_{i=1}^{P}e_i^2}
+\end{aligned}$$`
+where `\(P\)` is the total number of out-of-sample forecasts.
+]
+
+---
+
+
+# Measures of forecast accuracy
+
+.right-column[
+We must note that a model which fits the data well, may not necessarily forecast well. 
+
+While perfect fit can always be achieved using a model with 'enough' parameters, such over-fitting can be seen akin to failing to identify the systematic pattern in the data.
+]
+
+---
+
+
+# Properties of a forecast error
+
+.right-column[
+Forecast errors of a 'good' forecasting method will have the following properties:
+- zero mean; otherwise, the forecasts are biased.
+- no correlation with the forecasts; otherwise, there is information left that should be used in computing forecasts.
+- no serial correlation among one-step-ahead forecast errors. Note that `\(k\)`-step-ahead forecasts, for `\(k&gt;1\)`, can be, and usually are, serially correlated.
+
+These properties, in effect, are testable hypotheses. 
+]
+
+---
+
+
+# Forecast error diagnostics
+
+.right-column[
+## Unbiasedness
+
+Testing `\(E(e_{t+h|t})=0\)`. Set up a regression: `$$e_{t+h|t} = \alpha+\upsilon_{t+h} \hspace{.5in} t = R,\ldots,T-h,$$`
+where `\(R\)` is the estimation window size, `\(T\)` is the sample size, and `\(h\)` is the forecast horizon length. The null of zero-mean forecast error is equivalent of testing `\(H_0: \alpha = 0\)` in the OLS setting. For `\(h\)`-step-ahead forecast errors, when `\(h&gt;1\)`, autocorrelation consistent standard errors should be used.
+]
+
+---
+
+
+# Forecast error diagnostics
+
+.right-column[
+## Efficiency
+
+Testing `\(Cov(e_{t+h|t},y_{t+h|t})=0\)`. Set up a regression: `$$e_{t+h|t} = \alpha + \beta y_{t+h|t} + \upsilon_{t+h} \hspace{.5in} t = R,\ldots,T-h.$$` The null of forecast error independence of the information set is equivalent of testing `\(H_0: \beta = 0\)` in the OLS setting. For `\(h\)`-step-ahead forecast errors, when `\(h&gt;1\)`, autocorrelation consistent standard errors should be used.
+]
+
+---
+
+
+# Forecast error diagnostics
+
+.right-column[
+## No Autocorrelation
+
+Testing `\(Cov(e_{t+1|t},e_{t|t-1})=0\)`. Set up a regression: `$$e_{t+1|t} = \alpha + \gamma e_{t|t-1} + \upsilon_{t+1} \hspace{.5in} t = R+1,\ldots,T-1.$$` The null of no forecast error autocorrelation is equivalent of testing `\(H_0: \gamma = 0\)` in the OLS setting.
+]
+
+---
+
+
+
+# Readings
+
+.pull-left[
+![](Art/todolist.png)
+]
+
+.pull-right[
+Ubilava, [Chapter 3](https://davidubilava.com/forecasting/docs/features-of-time-series-data.html)
+
+Gonzalez-Rivera, Chapter 4
+
+Hyndman &amp; Athanasopoulos, [1.7](https://otexts.com/fpp3/perspective.html),  [5.4](https://otexts.com/fpp3/diagnostics.html), [5.8](https://otexts.com/fpp3/accuracy.html)
+]
+
+
+
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"countIncrementalSlides": false,
+"ratio": "16:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();</script>
+<style>
+.logo {
+  background-image: url(forecasting-logo.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+  position: absolute;
+  bottom: .5em;
+  left: 2em;
+  width: 91px;
+  height: 105px;
+  z-index: 0;
+}
+</style>
+
+<script>
+document
+  .querySelectorAll(
+    '.remark-slide-content' +
+    ':not(.title-slide)' +
+    // add additional classes to exclude here, e.g.
+    // ':not(.inverse)' +
+    ':not(.hide-logo)'
+  )
+  .forEach(el => {
+    el.innerHTML += '<div class="logo"></div>';
+  });
+</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

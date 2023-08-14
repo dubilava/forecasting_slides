@@ -109,16 +109,27 @@ Because forecasting is often performed in a time series context, the estimation 
 # Forecasting schemes
 
 .right-column[
-Three forecasting schemes are available for a forecaster: *recursive*, *rolling*, and *fixed*.
-- The recursive forecasting environment uses a sequence of expanding windows to update model estimates and the information set.
-- The rolling forecasting environment uses a sequence of rolling windows of the same size to update model estimates and the information set.
-- The fixed forecasting environment uses one fixed window for model estimates, and only updates the information set.
+As we carry on the pseudo-forecasting routine, we update the information set by including the more recent observations. In so doing, we may choose to keep or discard the more distant observations, which leads to two possible ways of selecting and updating information sets.
+- The *recursive* window routine uses a sequence of expanding windows to update model estimates and the information set.
+- The *rolling* window routine uses a sequence of windows of the same size to update model estimates and the information set.
+]
+
+---
+
+# Recursive vs. Rolling
+
+.right-column[
+The two pseudo-forecasting routines are technically very similar. But they can generate considerably differing sets of forecasts. 
+
+The recursive scheme uses increasingly more data to generate successive forecasts. If the data-generating process does not change over time this may be a preferred scheme as it allows us to estimate the model parameters more precisely. 
+
+But if the data-generating process changes over time, then the use of all available data may as well harm our forecasts—they will be biased toward the historical past that is no longer relevant. In such instances, the rolling scheme may be a preferred alternative. 
 ]
 
 ---
 
 
-# Out-of-sample evaluation
+# Forecast evaluation
 
 .right-column[
 To evaluate forecasts of a time series, `\(\{y_t\}\)`, with a total of `\(T\)` observations, we divide the sample into two parts, the in-sample set with a total of `\(R\)` observations, such that `\(R &lt; T\)` (typically, `\(R \approx 0.75T\)`), and the out-of-sample set. 
@@ -148,9 +159,84 @@ where `\(P\)` is the total number of out-of-sample forecasts.
 # Measures of forecast accuracy
 
 .right-column[
-We must note that a model which fits the data well, may not necessarily forecast well. 
+The MAFE assumes absolute loss, while the RMSFE assumes quadratic loss. 
 
-While perfect fit can always be achieved using a model with 'enough' parameters, such over-fitting can be seen akin to failing to identify the systematic pattern in the data.
+The lower is the measure of the forecast accuracy, the better is the model or the method used in generating forecasts. 
+
+Unlike some of the better-known in-sample goodness-of-fit measures (e.g., R-squared), these accuracy measures, on their own, have little meaning. They gain the meaning when we compare two (or more) models or methods of forecasting. 
+]
+
+---
+
+
+# Measures of forecast adequacy
+
+.right-column[
+MAFE and RMSFE (and other similar measures of forecast accuracy) are *relative* measures designed to compare forecasts. These are the mean values (or monotonic transformations thereof) of some loss functions. 
+
+But there also exist *absolute* measures designed to evaluate each forecast separately. These are measures of forecast *unbiasedness* and *efficiency*, together forming the measure of forecast adequacy (or *rationality*).
+]
+
+---
+
+
+# Forecast unbiasedness
+
+.right-column[
+A forecast is unbiased if the forecast error is zero, on average. 
+
+This condition mimics that of the residuals of a model. But the residuals are, by construction, guaranteed to be mean--zero. This is not the case with  forecast errors.
+]
+
+---
+
+
+# Forecast unbiasedness
+
+.right-column[
+Consider a positively trending time series. And suppose, due to ignorance or incompetence, we did not account for the trend. Instead, we assumed that an appropriate model was the simple mean of the observed series. 
+
+The forecasts from this model will likely underestimate the realized future values of the time series. That is, the forecasts will be biased.
+]
+
+---
+
+
+# Forecast unbiasedness
+
+.right-column[
+&lt;img src="figures/lecture2/trending.png" width="2773" /&gt;
+]
+
+---
+
+
+# Forecast unbiasedness
+
+.right-column[
+&lt;img src="figures/lecture2/errors_trending.png" width="2773" /&gt;
+]
+
+---
+
+
+# Forecast unbiasedness
+
+.right-column[
+It is obvious the mean of these forecast errors is some positive value, which is considerably different from zero. This suggests an issue in the model used to generate forecasts.
+
+Of course, we are well aware of the issue - in generating the forecasts, we have ignored the presence of a trend in the time series.
+]
+
+---
+
+
+# Forecast unbiasedness
+
+.right-column[
+The bias, in this instance, contributes to the lack of accuracy of the applied model. The RMSFE, based on these 20 forecast errors, is `\(0.80\)`. Had there been no bias, the RMSFE, based on the bias-corrected 20 forecast errors, would have been `\(0.59\)`. 
+
+Biased forecasts usually (albeit not necessarily) are less accurate than their unbiased counterparts.
 ]
 
 ---

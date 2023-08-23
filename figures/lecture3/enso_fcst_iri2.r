@@ -1,107 +1,9 @@
-library(zoo)
-# library(reshape2)
-library(ggplot2)
 library(data.table)
-library(stringr)
-# library(timelineS)
+library(ggplot2)
 library(lmtest)
 library(sandwich)
 
-
-# ##---
-# 
-# df <- data.frame(event=c("First","Second","Third"),date=as.Date(c("2017-03-11","2017-03-15","2017-03-19")))
-# 
-# png("timeline.png",width=2400,height=1100,res=300)
-# par(mar=c(5,2,1,2))
-# timelineS(df,scale="day",buffer.days=4,scale.format="%d",labels=c("CPC-IRI Update / Official ENSO \nForecast (Second Thursday)","IRI Seasonal \nClimate Forecast","IRI Technical ENSO Update / IRI-CPC \nModel-Based ENSO Forecast / \n ENSO Predictions Plume"),label.cex=1,label.direction="up",label.length=c(0.1,1.0,0.3),label.position=c(3,3,3),label.color=c("white","red","blue"),point.color=c("white","red","blue"),xlab="Day of the Month")
-# dev.off()
-# 
-# ##---
-
-# ## this is to plot a histogram of the announcement times during 2013/08-2019/03
-# times <- read.csv("times.csv",header=T)
-# colnames(times) <- c("date","time","period")
-# times$date <- as.Date(times$date,format="%d/%m/%Y")
-# times$time <- as.POSIXct(times$time,format="%H:%M:%S")
-# 
-# times$time <- as.numeric(times$time - trunc(times$time,"days"))
-# 
-# hmin <- as.numeric(0)
-# hmax <- as.numeric(24)
-# fmin <- as.numeric(9.5)
-# fmax <- as.numeric(14.33)
-# 
-# ggtime <- ggplot(data=times,aes(x=time)) +
-#   geom_histogram(binwidth=1,color="white",fill="steelblue",alpha=.8) +
-#   geom_segment(aes(x = fmin, y = -.2, xend = fmax, yend = -.2),color="indianred",size=2) +
-#   coord_cartesian(xlim=c(2,21)) +
-#   scale_x_continuous(labels=function(x)paste0(x,":00"),name="Time of the day",breaks = c(0,6,12,18,24)) +
-#   scale_y_continuous(name="Frequency")+
-#   theme_classic()+
-#   theme(legend.position = "top", legend.title = element_blank(), legend.text = element_text(size=12), axis.text = element_text(size=12),axis.title = element_text(size=14),legend.spacing.x = unit(0.5, 'cm'))
-# 
-# ggsave("../Tex/Figures/daytime.png",ggtime,width=6.5,height=3.75)
-
-# gg0 <- ggplot(data=times,aes(x=time)) +
-#   geom_histogram(binwidth=1,color="white",fill="#00BFC4") +
-#   geom_segment(aes(x = fmin, y = -.2, xend = fmax, yend = -.2),color="#F8766D",size=2) +
-#   coord_cartesian(xlim=c(2,21)) +
-#   scale_x_continuous(labels=function(x)paste0(x,":00"),name="Time of the day",breaks = c(0,6,12,18,24)) +
-#   scale_y_continuous(name="Frequency")+
-#   theme_classic() +
-#   theme(legend.title=element_blank(),legend.text=element_text(size=10),legend.text.align=0,axis.text=element_text(size=16),axis.title=element_text(size=16),legend.background=element_rect(fill="transparent"),panel.grid.major=element_blank(),panel.grid.minor=element_blank())
-# 
-# png("daytime.png",width=2400,height=1400,res=300)
-# ggdraw() +
-#   draw_plot(gg0,x=0,y=0,width=1,height=1)
-# dev.off()
-
-##---
-# 
-# df <- data.frame(event=c("First","Third"),date=as.Date(c("2017-03-11","2017-03-18")))
-# 
-# # png("timeline.png",width=2400,height=1100,res=300)
-# par(mar=c(5,2,1,2))
-# timelineS(df,scale="day",buffer.days=4,scale.format="%d",labels=c("CPC Update / Official ENSO \nForecast (Second Thursday)","IRI Technical Update / \nModel-Based ENSO Forecast / \n ENSO Predictions Plume"),label.cex=1,label.direction="up",label.length=c(0.1),label.position=c(3),label.color=c("white"),point.color=c("white"),xlab="Day of the Month")
-# # dev.off()
-
-##---
-
-
-##-- dates to work with
-
-y.beg <- 2002
-m.beg <- 01
-y.end <- 2019 
-m.end <- 03
-
-d.beg <- as.Date(paste0(y.beg,"-",m.beg,"-","01"))
-d.end <- as.Date(paste0(y.end,"-",m.end,"-","31"))
-
-##--
-
-# get the SST anomalies from the web (internet connection needed)
-sst.raw <- as.data.table(read.table("http://www.cpc.ncep.noaa.gov/data/indices/sstoi.indices",header=T))
-sst.sub <- sst.raw[,.(year=YR,mo=MON,ssta=ANOM.3)]
-sst.sub[,date := as.Date(paste0(year,"-",str_pad(mo,2,pad="0"),"-01"))]
-sst.sub <- sst.sub[date>=d.beg & date <= d.end]
-
-l=2
-sst.sub[,paste0("ssta.l",1:l) := data.table::shift(ssta,1:l)]
-
-sst.sub$e <- c(rep(NA,l),lm(ssta~ssta.l1+ssta.l2,data=sst.sub)$residuals)
-sst.sub[,s := abs(e)]
-
-
-dt <- fread("enso_fcst_iri_corrected.csv")
-
-dt <- dt[,.(date=as.Date(V12,format="%d/%m/%Y"),month_observed=V16,sst_observed=V17,season_observed=V14,oni_observed=V15,season_forecast=V13,oni_f1=as.numeric(V3)/100,oni_f2=as.numeric(V4)/100,oni_f3=as.numeric(V5)/100,oni_f4=as.numeric(V6)/100,oni_f5=as.numeric(V7)/100,oni_f6=as.numeric(V8)/100,oni_f7=as.numeric(V9)/100,oni_f8=as.numeric(V10)/100,oni_f9=as.numeric(V11)/100,model=V1)]
-
-iri_dt <- dt[,lapply(.SD,function(x)replace(x,which(x==-9.99),NA))]
-
-
-##---
+load("iri_rep.RData")
 
 sub_dt <- iri_dt[,.(date,ssn=season_observed,ssn_f=season_forecast,oni=oni_observed,oni_f=oni_f1,model)]
 
@@ -119,19 +21,25 @@ dt <- dt[complete.cases(dt)]
 
 dt[,`:=`(oni_e=oni_y-oni_f)]
 dt[,`:=`(oni_a=abs(oni_e),oni_s=(oni_e^2))]
-dt[,`:=`(mafe=mean(oni_a),rmsfe=sqrt(mean(oni_s))),by=.(model)]
+dt[,`:=`(mafe=round(mean(oni_a),3),rmsfe=round(sqrt(mean(oni_s)),3)),by=.(model)]
 
 dt <- dt[date>="2003-01-01" & date<="2018-12-31"]
 
-ggplot()+
-  geom_boxplot(data=dt,aes(x=date,y=oni_f,group=date),color="coral",fill="cornsilk",outlier.size=1)+
-  geom_line(data=dt[model==unique(model)[1]],aes(x=date,y=oni_y),size=1,color="dimgray")+
+gg1 <- ggplot()+
+  geom_boxplot(data=dt,aes(x=date,y=oni_f,group=date),color="coral",fill="cornsilk",outlier.size=.8)+
+  geom_line(data=dt[model==unique(model)[1]],aes(x=date,y=oni_y),linewidth=.8,color="dimgray")+
   labs(x="Year",y="ONI")+
   theme_minimal()
+
+ggsave("historical-enso.png",gg1,width=1920*.5,height=1080*.5,units="px",dpi=150)
 
 
 accuracy_dt <- unique(dt[,.(model,mafe,rmsfe)])
 accuracy_dt <- accuracy_dt[order(rmsfe)]
+
+accuracy_dt[,`:=`(num=rmsfe^(-2))]
+accuracy_dt[,`:=`(denom=sum(num))]
+accuracy_dt[,`:=`(w=num/denom)]
 
 dm1 <- merge(dt[model=="ECMWF",.(date,e1=oni_s)],dt[model=="JMA",.(date,e2=oni_s)],by="date")
 dm1[,`:=`(d=e1-e2)]
@@ -139,8 +47,11 @@ dm1[,`:=`(d=e1-e2)]
 reg1 <- lm(d~1,data=dm1)
 coeftest(reg1,vcov.=vcovHAC(reg1))
 
+dt$model <- factor(dt$model,levels=unique(accuracy_dt$model))
+
 dt_wide <- dcast(dt,date~model,value.var="oni_e")
 dt_wide[,`:=`(Combined=rowMeans(.SD)),by=date]
+dt_wide$Combined_w <- as.matrix(dt_wide[,2:(length(models)+1)])%*%accuracy_dt$w
 
 dm2 <- merge(dt[model=="ECMWF",.(date,e1=oni_s)],dt_wide[,.(date,e2=Combined)],by="date")
 dm2[,`:=`(d=e1-e2)]
@@ -148,9 +59,16 @@ dm2[,`:=`(d=e1-e2)]
 reg2 <- lm(d~1,data=dm2)
 coeftest(reg2,vcov.=vcovHAC(reg2))
 
+
+dm3 <- merge(dt[model=="ECMWF",.(date,e1=oni_s)],dt_wide[,.(date,e2=Combined_w)],by="date")
+dm3[,`:=`(d=e1-e2)]
+
+reg3 <- lm(d~1,data=dm3)
+coeftest(reg3,vcov.=vcovHAC(reg3))
+
 ##---
 
-save(iri_dt,file="iri_rep.RData")
+
 
 dat.mod <- dat[,.(model=V1,date)]
 

@@ -47,7 +47,7 @@ We often have several forecasts, each generated from a specific model or using a
 
 The challenge, then, is to identify the most accurate among these.
 
-One way to do so is using in-sample goodness of fit measures (e.g., AIC or SIC). 
+One way of doing it is by using in-sample goodness of fit measures (e.g., AIC or SIC). 
 ]
 
 ---
@@ -55,23 +55,62 @@ One way to do so is using in-sample goodness of fit measures (e.g., AIC or SIC).
 # We may select the best using out-of-sample measures
 
 .right-column[
-Another way, which may be viewed as being more sensible, at least from the standpoint of a forecaster, is by evaluating forecasts in out-of-sample setting.
+Another way of doing it, which may be viewed as being more sensible, at least from a forecaster's perspective, is by evaluating forecasts in an out-of-sample environment.
 
-Recall that models with the best in-sample fit don't necessarily produce the best out-of-sample forecasts. While a better in-sample fit can be obtained by incorporating additional parameters in the model, the more complex models can lead to sub-optimal forecasts as they extrapolate the estimated parameter uncertainty into the forecasts.
+Recall that models with the best in-sample fit are not guaranteed to necessarily produce the most accurate forecasts. 
+]
+
+---
+
+# A snapshot of multi-step-ahead El Nino forecasts
+
+.pull-right[
+
+![](figures/lecture3/model-predictions-of-enso.png)
+
+]
+
+---
+
+# Historical one-step-ahead El Nino forecasts
+
+.right-column[
+
+![](figures/lecture3/historical-enso.png)
+
 ]
 
 ---
 
 
-# Comparing forecasts in an out-of-sample setting
+
+# Ranking based on out-of-sample forecast accuracy
 
 .right-column[
-Thus far we have applied the following algorithm to identify 'the best' among the competing forecasts:
+Thus far we have implied the following "algorithm" for selecting the most accurate among the available forecasts:
 
 - Decide on a loss function (e.g., quadratic loss).
 - Obtain forecasts, the forecast errors, and the corresponding sample expected loss (e.g., root mean squared forecast error) for each model or method in consideration.
 - Rank the models according to their sample expected loss values.
 - Select the model with the lowest sample expected loss.
+]
+
+---
+
+# Ranking of the models of El Nino forecasts
+
+.right-column[
+
+| Model     | MAFE  | RMSFE |
+|-----------|:-----:|:-----:|
+| ECMWF     | 0.193 | 0.249 |
+| JMA       | 0.271 | 0.326 |
+| CPC MRKOV | 0.297 | 0.362 |
+| KMA SNU   | 0.314 | 0.376 |
+| CPC CA    | 0.300 | 0.377 |
+| CSU CLIPR | 0.311 | 0.392 |
+| LDEO      | 0.310 | 0.395 |
+| AUS/POAMA | 0.321 | 0.417 |
 ]
 
 ---
@@ -83,14 +122,12 @@ Thus far we have applied the following algorithm to identify 'the best' among th
 But the loss function is a function of a random variable, and in practice we deal with sample information, so sampling variation needs to be taken into the account.
 
 Statistical methods of evaluation are, therefore, desirable.
-
-Here we will cover two tests for the hypothesis that two forecasts are equivalent, in the sense that the associated loss difference is not statistically significantly different from zero.
 ]
 
 ---
 
 
-# Loss differential
+# Forecast errors from two competing models
 
 .right-column[
 Consider a time series of length `\(T\)`. 
@@ -104,40 +141,10 @@ Suppose `\(h\)`-step-ahead forecasts for periods `\(R+h\)` through `\(T\)` have 
 # Loss differential
 
 .right-column[
-The null hypothesis of equal predictive ability can be given in terms of the unconditional expectation of the loss difference: `$$H_0: \mathbb{E}\left[d(e_{t+h})\right] = 0,$$` where, assuming quadratic loss, for example: `$$d(e_{t+h}) = e_{i,t+h}^2-e_{j,t+h}^2.$$`
+The null hypothesis of equal predictive ability can be given in terms of the unconditional expectation of the loss differential: `$$H_0: \mathbb{E}\left[d(e_{t+h})\right] = 0,$$` where, assuming quadratic loss, `$$d(e_{t+h}) = e_{i,t+h}^2-e_{j,t+h}^2.$$`
 ]
 
 ---
-
-
-# Morgan-Granger-Newbold test
-
-.right-column[
-The Morgan-Granger-Newbold (MGN) test is based on auxiliary variables: `\(u_{a,t+h} = e_{i,t+h}-e_{j,t+h}\)` and `\(u_{b,t+h} = e_{i,t+h}+e_{j,t+h}\)`. It then follows that: `$$\mathbb{E}(u_1,u_2) = MSFE(i)-MSFE(j).$$` Thus, the hypothesis of interest is equivalent to testing whether the two auxiliary variables are correlated.
-]
-
----
-
-
-# Morgan-Granger-Newbold test
-
-.right-column[
-The MGN test statistic is t-distributed with `\(P=1\)` degrees of freedom, where `\(P\)` is the total number of forecasts: `$$MGN=\frac{r}{\sqrt{(P-1)^{-1}(1-r^2)}}\sim t_{P-1},$$` where `$$r=\frac{\sum_{t=R}^{T-h}{u_{a,t+h}u_{b,t+h}}}{\sqrt{\sum_{t=R}^{T-h}{u_{a,t+h}^2}\sum_{t=R}^{T-h}{u_{b,t+h}^2}}}$$`
-]
-
----
-
-
-# Morgan-Granger-Newbold test
-
-.right-column[
-The MGN test relies on the assumptions that forecast errors of the two forecasts to be compared, are unbiased, normally distributed, and uncorrelated (with each other). 
-
-These are rather strict requirements that are, often, violated in empirical applications.
-]
-
----
-
 
 # Diebold-Mariano test
 
@@ -171,17 +178,29 @@ Because `\(d(e_{t+h})\)` may be serially correlated, an autocorrelation consiste
 
 ---
 
+# Predictive accuracy of El Nino forecasts
+
+.right-column[
+Are the forecasts from ECMWF statistically significantly more accurate than those from JMA (the next best model)?
+
+As it turns out, the DM statistic is `\(-2.930\)`. Which means, we reject the null hypothesis of equal predictive accuracy.
+
+So, yes, ECMWF forecasts are more accurate than those of JMA.
+]
+
+---
+
 
 # Combining forecasts
 
 .right-column[
 By choosing the most accurate of the forecasts, we discard all others.
 
-But other forecasts may not be completely useless. They could potentially contain useful information above and beyond of what the most accurate forecast may offer.
+But other forecasts may not be completely useless. They could potentially contain information above and beyond of that of the most accurate forecast.
 
 Thus, merely selecting the best model may be a sub-optimal strategy.
 
-An optimal strategy may be to use some information from all forecasts, i.e., *forecast combination*.
+An optimal strategy may be using some information from all forecasts, i.e., *forecast combination*.
 ]
 
 ---
@@ -246,7 +265,7 @@ Taking the derivative of the variance of a combined forecast error, and equating
 Substitute `\(w^*\)` in place of `\(w\)` in the formula for variance to obtain: `$$Var\left[e_{c,t+1}(w^*)\right] = \sigma_c^2(w^*) = \frac{\sigma_i^2\sigma_j^2(1-\rho^2)}{\sigma_i^2+\sigma_j^2-2\rho\sigma_i\sigma_j}$$`
 
 
-It can be shown that `\(\sigma_c^2(w^*) \leq \min\{\sigma_i^2,\sigma_j^2\}\)`. That is to say that by combining forecasts we are not making things worse (so long as we use *optimal* weights).
+As it turns out: `\(\sigma_c^2(w^*) \leq \min\{\sigma_i^2,\sigma_j^2\}\)`. That is, by combining forecasts we are not making things worse (so long as we use *optimal* weights).
 ]
 
 ---
@@ -284,6 +303,7 @@ Thus, the weights attached to forecasts are inversely proportional to the varian
 
 .right-column[
 Suppose the individual forecasts are equally accurate and the forecast errors are uncorrelated, then the sample estimator of `\(w^*\)` reduces to `\(0.5\)`, resulting in the equal-weighted forecast combination: `$$y_{c,t+h|t} = 0.5y_{i,t+h|t} + 0.5y_{j,t+h|t}$$`
+
 ]
 
 ---
@@ -300,10 +320,34 @@ The sample estimator of `\(w^*\)` is: `$$\hat{w}^* = \frac{\hat{\sigma}_i^2-\hat
 ---
 
 
+# Predictive accuracy of combined El Nino forecasts
+
+.right-column[
+Are the combined forecasts statistically significantly more accurate than those from ECMWF (the best model)?
+
+When applying "equal weights", the DM statistic is `\(1.543\)`. Which means, we fail to reject the null hypothesis of equal predictive accuracy.
+
+When applying "inversely proportional weights", the DM statistic is `\(2.062\)`. Which means, we reject the null hypothesis of equal predictive accuracy in favour of the combined forecast.
+]
+
+---
+
+
 # The optimal weight in a regression setting
 
 .right-column[
-The optimal weight has a straightforward interpretation in a regression setting. Consider the combined forecast equation as: `$$y_{t+1} = (1-w)y_{i,t+h|t} + w y_{j,t+h|t} + \varepsilon_{t+1},$$` where `\(\varepsilon_{t+1}\equiv e_{c,t+1}\)`. We can re-arrange the equation so that: `$$e_{i,t+1} = w (y_{j,t+h|t}-y_{i,t+h|t}) + \varepsilon_{t+1},$$` where `\(w\)` is obtained by estimating a linear regression with an intercept restricted to zero.
+The optimal weight has a direct interpretation in a regression setting. 
+
+Consider the combined forecast equation as: `$$y_{t+h} = (1-w)y_{i,t+h|t} + w y_{j,t+h|t} + \varepsilon_{t+h},$$` where `\(\varepsilon_{t+h}\equiv e_{c,t+h}\)`. 
+]
+
+---
+
+
+# The optimal weight in a regression setting
+
+.right-column[
+We can re-arrange the equation so that: `$$e_{i,t+h} = w (y_{j,t+h|t}-y_{i,t+h|t}) + \varepsilon_{t+h},$$` or that: `$$e_{i,t+h} = w\left(e_{i,t+h}-e_{j,t+h}\right)+\varepsilon_{t+h},\;~~t=R,\ldots,R+P-1$$` where `\(w\)` is obtained by estimating a linear regression with an intercept restricted to zero.
 ]
 
 ---
@@ -311,7 +355,7 @@ The optimal weight has a straightforward interpretation in a regression setting.
 # The optimal weight in a regression setting
 
 .right-column[
-Alternatively, we can estimate a variant of the combined forecast equation: `$$y_{t+1} = \alpha+\beta_i y_{i,t+h|t} + \beta_j y_{j,t+h|t} + \varepsilon_{t+1},$$` which relaxes the assumption of forecast unbiasedness, as well as of weights adding up to one or, indeed, of non-negative weights.
+Alternatively, we can estimate a variant of the combined forecast equation: `$$y_{t+h} = \alpha+\beta_i y_{i,t+h|t} + \beta_j y_{j,t+h|t} + \varepsilon_{t+h},$$` which relaxes the assumption of forecast unbiasedness, as well as of weights adding up to one or, indeed, of non-negative weights.
 ]
 
 ---
@@ -328,19 +372,10 @@ It is said that `\(y_{i,t+h|t}\)` encompasses `\(y_{j,t+h|t}\)`, when given that
 ---
 
 
-# Forecast encompassing
-
-.right-column[
-This is equivalent of testing the null hypothesis of `\(w=0\)` in the combined forecast error equation, which, after rearranging terms, yields the following regression: `$$e_{i,t+1} = w\left(e_{i,t+1}-e_{j,t+1}\right)+\varepsilon_{t+1},\;~~t=R,\ldots,R+P-1$$` where `\(\varepsilon_{t+1}\equiv e_{c,t+1}\)`, and where `\(R\)` is the size of the (first) estimation window, and `\(P\)` is the number of out-of-sample forecasts generated.
-]
-
----
-
-
 # Forecast encompassing in a regression setting
 
 .right-column[
-We can test for the forecast encompassing by regressing the realized value on individual forecasts: `$$y_{t+1} = \alpha + \beta_1 y_{i,t+h|t} + \beta_2 y_{j,t+h|t} + \varepsilon_{t+1},$$` and testing the null hypothesis that `\(\beta_2=0\)`, given that `\(\beta_1=1\)`. 
+We can test for the forecast encompassing by regressing the realized value on individual forecasts: `$$y_{t+h} = \alpha + \beta_1 y_{i,t+h|t} + \beta_2 y_{j,t+h|t} + \varepsilon_{t+h},$$` and testing the null hypothesis that `\(\beta_2=0\)`, given that `\(\beta_1=1\)`. 
 ]
 
 ---

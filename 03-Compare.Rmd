@@ -28,7 +28,7 @@ library(lmtest)
 library(sandwich)
 ```
 
-# We may select the best using in-sample measures
+# Comparing forecasts using in-sample measures
 
 .pull-left[
 ![](Art/evaluation.png)
@@ -44,7 +44,7 @@ One way of doing it is by using in-sample goodness of fit measures (e.g., AIC or
 
 ---
 
-# We may select the best using out-of-sample measures
+# Comparing forecasts using out-of-sample measures
 
 .right-column[
 Another way of doing it, which may be viewed as being more sensible, at least from a forecaster's perspective, is by evaluating forecasts in an out-of-sample environment.
@@ -64,7 +64,7 @@ Recall that models with the best in-sample fit are not guaranteed to necessarily
 
 ---
 
-# Historical one-step-ahead El Nino forecasts
+# Historical data of one-step-ahead El Nino forecasts
 
 .right-column[
 
@@ -76,10 +76,10 @@ Recall that models with the best in-sample fit are not guaranteed to necessarily
 
 
 
-# Ranking based on out-of-sample forecast accuracy
+# Selecting based on a forecast accuracy measure
 
 .right-column[
-Thus far we have implied the following "algorithm" for selecting the most accurate among the available forecasts:
+Thus far we have implied the following "algorithm" for selecting the most accurate among available forecasts:
 
 - Decide on a loss function (e.g., quadratic loss).
 - Obtain forecasts, the forecast errors, and the corresponding sample expected loss (e.g., root mean squared forecast error) for each model or method in consideration.
@@ -112,7 +112,7 @@ cat(tabl)
 ---
 
 
-# Statistically significantly different
+# Are they statistically significantly different?
 
 .right-column[
 But the loss function is a function of a random variable, and in practice we deal with sample information, so sampling variation needs to be taken into the account.
@@ -147,13 +147,13 @@ The null hypothesis of equal predictive ability can be given in terms of the unc
 .right-column[
 The Diebold-Mariano (DM) test relaxes the aforementioned requirements on the forecast errors. 
 
-The DM test statistic is: $$DM=\frac{\bar{d}}{\sqrt{\sigma_d^2/P}} \sim N(0,1),$$ where $\bar{d}=P^{-1}\sum_{t=1}^{P}d(e_{t+h})$. 
+The DM test statistic is: $$DM=\frac{\bar{d}}{\sqrt{\sigma_d^2/P}} \sim N(0,1),$$ where $\bar{d}=P^{-1}\sum_{t=1}^{P}d(e_{t+h})$, and where $P$ is the total number of forecasts. 
 ]
 		
 ---
 
 
-# Diebold-Mariano test
+# Modified Diebold-Mariano test
 
 .right-column[
 A modified version of the DM statistic, due to Harvey, Leybourne, and Newbold (1998), addresses the finite sample properties of the test, so that: $$\sqrt{\frac{P+1-2h+P^{-1}h(h-1)}{P}}DM\sim t_{P-1},$$ where $t_{P-1}$ is a Student t distribution with $P-1$ degrees of freedom.
@@ -162,7 +162,7 @@ A modified version of the DM statistic, due to Harvey, Leybourne, and Newbold (1
 ---
 
 
-# Testing in a regression setting
+# A regression-based Diebold-Mariano test
 
 .right-column[
 In practice, the test of equal predictive ability can be applied within the framework of a regression model: $$d(e_{t+h}) = \delta + \upsilon_{t+h} \hspace{.5in} t = R,\ldots,T-h.$$
@@ -202,7 +202,7 @@ An optimal strategy may be using some information from all forecasts, i.e., *for
 ---
 
 
-# Why combine?
+# Why might we combine?
 	
 .right-column[
 Several factors support the idea of forecast combination:
@@ -215,7 +215,7 @@ Several factors support the idea of forecast combination:
 ---
 
 
-# How it works?
+# How can we combine?
 
 .right-column[
 Consider two forecasting methods (or models), $i$ and $j$, each respectively yielding $h$-step-ahead forecasts $y_{i,t+h|t}$ and $y_{j,t+h|t}$, and the associated forecast errors $e_{i,t+h} = y_{t+h}-y_{i,t+h|t}$ and $e_{j,t+h} = y_{t+h}-y_{j,t+h|t}$.
@@ -226,7 +226,7 @@ A combined forecast, $y_{c,t+h|t}$, is expressed as: $$y_{c,t+h|t} = (1-w)y_{i,t
 ---
 
 
-# A combined forecast error mean
+# Mean of a combined forecast error
 
 .right-column[
 A combined forecast error is the weighted average of the two individual forecast errors: $$e_{c,t+h} = (1-w)e_{i,t+h} + w e_{j,t+h}$$
@@ -237,7 +237,7 @@ The mean of a combined forecast error (under the assumption of forecast error un
 ---
 
 
-# A combined forecast error variance
+# Variance of a combined forecast error
 
 .right-column[
 The variance of a combined forecast error is: $$Var\left(e_{c,t+h}\right) = (1-w)^2 \sigma_i^2 + w^2  \sigma_j^2 + 2w(1-w)\rho\sigma_i\sigma_j,$$ where $\sigma_i$ and $\sigma_j$ are the standard deviations of the forecast errors from models $i$ and $j$, and $\rho$ is a correlation between these two forecast errors.
@@ -255,7 +255,7 @@ Taking the derivative of the variance of a combined forecast error, and equating
 ---
 
 
-# At least as efficient as individual forecasts
+# At least as efficient as the most efficient forecast
 
 .right-column[
 Substitute $w^*$ in place of $w$ in the formula for variance to obtain: $$Var\left[e_{c,t+1}(w^*)\right] = \sigma_c^2(w^*) = \frac{\sigma_i^2\sigma_j^2(1-\rho^2)}{\sigma_i^2+\sigma_j^2-2\rho\sigma_i\sigma_j}$$
@@ -267,11 +267,11 @@ As it turns out: $\sigma_c^2(w^*) \leq \min\{\sigma_i^2,\sigma_j^2\}$. That is, 
 ---
 
 
-# Combination Weights&mdash;Special Cases
-
-## Case 1: $\sigma_i = \sigma_j = \sigma$.
+# Combining equally accurate forecasts
 
 .right-column[
+*Assumption*: $\sigma_i = \sigma_j = \sigma$.
+
 Suppose the individual forecasts are equally accurate, then the combined forecast error variance reduces to: $$\sigma_c^2(w^*) = \frac{\sigma^2(1+\rho)}{2} \leq \sigma^2$$
 
 The equation shows there are diversification gains even when the forecasts are equally accurate (unless the forecasts are perfectly correlated, in which case there are no gains from combination).
@@ -280,11 +280,11 @@ The equation shows there are diversification gains even when the forecasts are e
 ---
 
 
-# Combination Weights&mdash;Special Cases
-
-## Case 2: $\rho=0$.
+# Combining uncorrelated forecasts
 
 .right-column[
+*Assumption*: $\rho=0$.
+
 Suppose the forecast errors are uncorrelated, then the sample estimator of $w^*$ is given by: $$w^* = \frac{\sigma_i^2}{\sigma_i^2+\sigma_j^2} = \frac{\sigma_j^{-2}}{\sigma_i^{-2}+\sigma_j^{-2}}$$
 
 Thus, the weights attached to forecasts are inversely proportional to the variance of these forecasts.
@@ -293,24 +293,13 @@ Thus, the weights attached to forecasts are inversely proportional to the varian
 ---
 
 
-# Combination Weights&mdash;Special Cases
-
-## Case 3: $\sigma_i = \sigma_j = \sigma$ and $\rho=0$.
+# Combination equally accurate uncorrelated forecasts
 
 .right-column[
+*Assumption*: $\sigma_i = \sigma_j = \sigma$ and $\rho=0$.
+
 Suppose the individual forecasts are equally accurate and the forecast errors are uncorrelated, then the sample estimator of $w^*$ reduces to $0.5$, resulting in the equal-weighted forecast combination: $$y_{c,t+h|t} = 0.5y_{i,t+h|t} + 0.5y_{j,t+h|t}$$
 
-]
-
----
-
-
-# The sample optimal weight
-
-.right-column[
-In practice $\sigma_i$, $\sigma_j$, and $\rho$ are unknown.
-
-The sample estimator of $w^*$ is: $$\hat{w}^* = \frac{\hat{\sigma}_i^2-\hat{\sigma}_{ij}}{\hat{\sigma}_i^2+\hat{\sigma}_j^2-2\hat{\sigma}_{ij}},$$ where $\hat{\sigma}_i^2 = \frac{1}{P-1}\sum_{t=R}^{R+P-1}{e_{i,t+1}^2}$ and $\hat{\sigma}_j^2 = \frac{1}{P-1}\sum_{t=R}^{R+P-1}{e_{j,t+1}^2}$ are sample forecast error variances, and $\hat{\sigma}_{ij}=\frac{1}{P-1}\sum_{t=R}^{R+P-1}{e_{i,t+1}e_{j,t+1}}$ is a sample forecast error covariance, where $P$ denotes the number of out-of-sample forecasts. 
 ]
 
 ---
@@ -323,7 +312,7 @@ Are the combined forecasts statistically significantly more accurate than those 
 
 When applying "equal weights", the DM statistic is $1.543$. Which means, we fail to reject the null hypothesis of equal predictive accuracy.
 
-When applying "inversely proportional weights", the DM statistic is $2.062$. Which means, we reject the null hypothesis of equal predictive accuracy in favour of the combined forecast.
+When applying "inversely proportional weights", the DM statistic is $2.062$. Which means, we reject the null hypothesis of equal predictive accuracy in favor of the combined forecast.
 ]
 
 ---

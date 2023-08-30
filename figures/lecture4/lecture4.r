@@ -227,7 +227,7 @@ ggsave("figures/lecture4/wn.png",gg_comb,width=6.5,height=6.5*9/16,dpi="retina",
 # unrate_dt <- unrate_dt[,.(date,y=value)]
 # save(unrate_dt,file="data/c2/unrate.RData")
 
-load("data/c2/unrate.RData")
+load("figures/lecture4/unrate.RData")
 
 
 sub_dt <- unrate_dt[date<="2019-12-31"]
@@ -238,8 +238,9 @@ gg_ur <- ggplot(sub_dt,aes(x=date,y=y))+
   labs(x="Year",y="Unemployment rate (%)")+
   theme_eg()
 
-ggsave("figures/c2/unrate.png",gg_ur,width=6.5,height=3.75,dpi="retina",device="png")
-ggsave("figures/c2/unrate.eps",gg_ur,width=6.5,height=3.75,dpi="retina",device=cairo_ps)
+gg_ur
+
+ggsave("figures/lecture4/ur.png",gg_ur,width=6.5,height=6.5*9/16,dpi="retina",device="png")
 
 
 # 2.5 - correlations (unrate) ----
@@ -248,18 +249,21 @@ sub_dt[,`:=`(y1=shift(y,1),y12=shift(y,12))]
 # plot the time series
 gg_ur1 <- ggplot(sub_dt,aes(x=y1,y=y))+
   geom_point(shape=21,size=1,color="black",fill="gray",na.rm=T)+
-  labs(title="(a) lag 1 autocorrelation",x=expression(u[t-1]),y=expression(u[t]))+
-  theme_eg()
+  labs(title="(a) lag 1 autocorrelation",x="Lag 1 unemployment rate (%)",y="Unemployment rate (%)")+
+  theme_eg()+
+  theme(axis.title=element_text(size=10))
 
 gg_ur12 <- ggplot(sub_dt,aes(x=y12,y=y))+
   geom_point(shape=21,size=1,color="black",fill="gray",na.rm=T)+
-  labs(title="(a) lag 12 autocorrelation",x=expression(u[t-12]),y=expression(u[t]))+
-  theme_eg()
+  labs(title="(b) lag 12 autocorrelation",x="Lag 12 unemployment rate (%)",y="Unemployment rate (%)")+
+  theme_eg()+
+  theme(axis.title=element_text(size=10))
 
 gg_comb <- plot_grid(gg_ur1,gg_ur12,align="hv",ncol=2)
 
-ggsave("figures/c2/unratecor.png",gg_comb,width=6.5,height=3.75,dpi="retina",device="png")
-ggsave("figures/c2/unratecor.eps",gg_comb,width=6.5,height=3.75,dpi="retina",device=cairo_ps)
+gg_comb
+
+ggsave("figures/lecture4/ac.png",gg_comb,width=6.5,height=6.5*9/16,dpi="retina",device="png")
 
 
 # 2.6 - autocorrelation (wn) ----
@@ -269,17 +273,38 @@ maxlag <- 30
 acf_dt <- data.table(k=c(1:maxlag),rho=c(acf(wn_dt$x,lag.max=maxlag,plot=F)[1:maxlag]$acf))
 
 # plot the autocorrelogram
-gg_acf <- ggplot(acf_dt,aes(x=k,y=rho))+
+gg_acfwn <- ggplot(acf_dt,aes(x=k,y=rho))+
   geom_hline(yintercept=c(-1.96/sqrt(nrow(wn_dt)),1.96/sqrt(nrow(wn_dt))),linewidth=.8,linetype=5,col="dimgray")+
   geom_segment(aes(xend=k,yend=0),linewidth=0.8,col="gray")+
   geom_point(shape=21,size=2.5,stroke=.8,color="black",fill="gray")+
   scale_x_continuous(breaks=seq(5,maxlag,5),labels=seq(5,maxlag,5))+
+  scale_y_continuous(breaks=seq(-.2,1,.2),labels=sprintf("%.1f",round(seq(-.2,1,.2),1)))+
   labs(x="k",y=expression(hat(rho)[k]))+
-  coord_cartesian(ylim=c(-.25,1),xlim=c(1.5,maxlag-0.5))+
+  coord_cartesian(ylim=c(-.2,1),xlim=c(1.5,maxlag-0.5))+
   theme_eg()
 
-ggsave("figures/c2/autocor_wn.png",gg_acf,width=6.5,height=3.75,dpi="retina",device="png")
-ggsave("figures/c2/autocor_wn.eps",gg_acf,width=6.5,height=3.75,dpi="retina",device=cairo_ps)
+gg_acfwn
+
+ggsave("figures/lecture4/ac_wn.png",gg_acfwn,width=6.5,height=6.5*9/16,dpi="retina",device="png")
+
+
+acf_dt <- data.table(k=c(1:maxlag),rho=c(acf(sub_dt$y,lag.max=maxlag,plot=F)[1:maxlag]$acf))
+
+# plot the autocorrelogram
+gg_acfur <- ggplot(acf_dt,aes(x=k,y=rho))+
+  geom_hline(yintercept=c(1.96/sqrt(nrow(sub_dt))),linewidth=.8,linetype=5,col="dimgray")+
+  geom_segment(aes(xend=k,yend=0),linewidth=0.8,col="gray")+
+  geom_point(shape=21,size=2.5,stroke=.8,color="black",fill="gray")+
+  scale_x_continuous(breaks=seq(5,maxlag,5),labels=seq(5,maxlag,5))+
+  scale_y_continuous(breaks=seq(-.2,1,.2),labels=sprintf("%.1f",round(seq(-.2,1,.2),1)))+
+  labs(x="k",y=expression(hat(rho)[k]))+
+  coord_cartesian(ylim=c(0,1),xlim=c(1.5,maxlag-0.5))+
+  theme_eg()
+
+gg_acfur
+
+ggsave("figures/lecture4/ac_ur.png",gg_acfur,width=6.5,height=6.5*9/16,dpi="retina",device="png")
+
 
 
 # 2.7 - bitcoin series ----
@@ -307,7 +332,7 @@ ggsave("figures/c2/autocor_wn.eps",gg_acf,width=6.5,height=3.75,dpi="retina",dev
 # btc_dt <- data.table(btc_tb)
 # save(btc_dt,file="data/c2/btc.RData")
 
-load("data/c2/btc.RData")
+load("figures/lecture4/btc.RData")
 
 # keep only date and closing price (expressed in thousand dollars)
 btc_dt <- btc_dt[,.(date=as.Date(substr(timestamp,1,10)),BTC=close/1000)]
@@ -318,8 +343,8 @@ gg_btc <- ggplot(btc_dt,aes(x=date,y=BTC))+
   labs(x="Year",y="Bitcoin price ('000 USD)")+
   theme_eg()
 
-ggsave("figures/c2/bitcoin.png",gg_btc,width=6.5,height=3.75,dpi="retina",device="png")
-ggsave("figures/c2/bitcoin.eps",gg_btc,width=6.5,height=3.75,dpi="retina",device=cairo_ps)
+ggsave("figures/lecture4/btc.png",gg_btc,width=6.5,height=6.5*9/16,dpi="retina",device="png")
+
 
 
 # 2.8 - autocorrelation (btc) ----
@@ -328,17 +353,18 @@ maxlag <- 30
 btcacf_dt <- data.table(k=c(1:maxlag),rho=c(acf(btc_dt$BTC,lag.max=maxlag,plot=F)[1:maxlag]$acf))
 
 # plot the autocorrelogram
-gg_btcacf <- ggplot(btcacf_dt,aes(x=k,y=rho))+
+gg_acfbtc <- ggplot(btcacf_dt,aes(x=k,y=rho))+
   geom_hline(yintercept=c(-1.96/sqrt(nrow(btc_dt)),1.96/sqrt(nrow(btc_dt))),linewidth=.8,linetype=5,col="dimgray")+
   geom_segment(aes(xend=k,yend=0),linewidth=0.8,col="gray")+
   geom_point(shape=21,size=2.5,stroke=.8,color="black",fill="gray")+
   scale_x_continuous(breaks=seq(5,maxlag,5),labels=seq(5,maxlag,5))+
+  scale_y_continuous(breaks=seq(-.2,1,.2),labels=sprintf("%.1f",round(seq(-.2,1,.2),1)))+
   labs(x="k",y=expression(hat(rho)[k]))+
-  coord_cartesian(ylim=c(-.25,1),xlim=c(1.5,maxlag-0.5))+
+  coord_cartesian(ylim=c(0,1),xlim=c(1.5,maxlag-0.5))+
   theme_eg()
 
-ggsave("figures/c2/autocor_btc.png",gg_btcacf,width=6.5,height=3.75,dpi="retina",device="png")
-ggsave("figures/c2/autocor_btc.eps",gg_btcacf,width=6.5,height=3.75,dpi="retina",device=cairo_ps)
+ggsave("figures/lecture4/ac_btc.png",gg_acfbtc,width=6.5,height=6.5*9/16,dpi="retina",device="png")
+
 
 
 # 2.9 - autocorrelation mediation----
@@ -367,17 +393,18 @@ ggsave("figures/c2/dag_autocor.eps",gg_dag,width=6.5,height=2.0,dpi="retina",dev
 btcpacf_dt <- data.table(k=c(1:maxlag),rho=c(pacf(btc_dt$BTC,lag.max=maxlag,plot=F)[1:maxlag]$acf))
 
 # plot the autocorrelogram
-gg_btcpacf <- ggplot(btcpacf_dt,aes(x=k,y=rho))+
+gg_pacfbtc <- ggplot(btcpacf_dt,aes(x=k,y=rho))+
   geom_hline(yintercept=c(-1.96/sqrt(nrow(btc_dt)),1.96/sqrt(nrow(btc_dt))),linewidth=.8,linetype=5,col="dimgray")+
   geom_segment(aes(xend=k,yend=0),linewidth=0.8,col="gray")+
   geom_point(shape=21,size=2.5,stroke=.8,color="black",fill="gray")+
   scale_x_continuous(breaks=seq(5,maxlag,5),labels=seq(5,maxlag,5))+
+  scale_y_continuous(breaks=seq(-.2,1,.2),labels=sprintf("%.1f",round(seq(-.2,1,.2),1)))+
   labs(x="k",y=expression(hat(pi)[k]))+
-  coord_cartesian(ylim=c(-.25,1),xlim=c(1.5,maxlag-0.5))+
+  coord_cartesian(ylim=c(-.1,1),xlim=c(1.5,maxlag-0.5))+
   theme_eg()
 
-ggsave("figures/c2/pautocor_btc.png",gg_btcpacf,width=6.5,height=3.75,dpi="retina",device="png")
-ggsave("figures/c2/pautocor_btc.eps",gg_btcpacf,width=6.5,height=3.75,dpi="retina",device=cairo_ps)
+ggsave("figures/lecture4/pac_btc.png",gg_pacfbtc,width=6.5,height=6.5*9/16,dpi="retina",device="png")
+
 
 
 # 2.11 - first differenced ----
@@ -393,8 +420,7 @@ gg_ts <- ggplot(btc_dt,aes(x=date,y=dBTC))+
   coord_cartesian(ylim=c(-8,8))+
   theme_eg()
 
-ggsave("figures/c2/bitcoin_change.png",gg_ts,width=6.5,height=3.75,dpi="retina",device="png")
-ggsave("figures/c2/bitcoin_change.eps",gg_ts,width=6.5,height=3.75,dpi="retina",device=cairo_ps)
+ggsave("figures/lecture4/btc_change.png",gg_ts,width=6.5,height=6.5*9/16,dpi="retina",device="png")
 
 # 2.12 - rate of change ----
 
@@ -405,8 +431,7 @@ gg_ts <- ggplot(btc_dt,aes(x=date,y=rBTC))+
   coord_cartesian(ylim=c(-25,25))+
   theme_eg()
 
-ggsave("figures/c2/bitcoin_return.png",gg_ts,width=6.5,height=3.75,dpi="retina",device="png")
-ggsave("figures/c2/bitcoin_return.eps",gg_ts,width=6.5,height=3.75,dpi="retina",device=cairo_ps)
+ggsave("figures/lecture4/btc_return.png",gg_ts,width=6.5,height=6.5*9/16,dpi="retina",device="png")
 
 
 

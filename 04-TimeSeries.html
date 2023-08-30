@@ -4,7 +4,7 @@
     <title>Forecasting for Economics and Business</title>
     <meta charset="utf-8" />
     <meta name="author" content="David Ubilava" />
-    <script src="libs/header-attrs-2.23/header-attrs.js"></script>
+    <script src="libs/header-attrs-2.22/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/metropolis.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/metropolis-fonts.css" rel="stylesheet" />
@@ -205,7 +205,7 @@ Ergodicity has the effect of the law of large numbers in time series analysis, i
 ---
 
 
-# White noise process
+# White noise
 
 .right-column[
 A simplest kind of the time series is the realisation of a stochastic process that is comprised of independent and identically distributed random variables with zero mean and constant variance: `\(Y_t \sim iid~N\left(0,\sigma^2\right)\)`. This is referred to as a *white noise* process. 
@@ -222,7 +222,7 @@ A stochastic process is a white noise process if:
 ---
 
 
-# White noise process
+# White noise: An illustration
 
 .right-column[
 
@@ -233,46 +233,63 @@ A stochastic process is a white noise process if:
 ---
 
 
-# Stationarity
+# White noise is a stationary process
 
 .right-column[
-Because in a white noise sequence observations are drawn from the same distribution, it is a *stationary* process. Indeed, a special type of stationary process insofar as it has time-invariant mean, variance, and covariance. 
+Because each observation is drawn from the same distribution, white noise is a stationary process. 
 
-For a stochastic process to be stationary, neither its mean needs to be equal to zero, it only needs to be constant over time, nor its covariances need to be equal to zero, they only need to be constant over time, though they may vary with `\(k\)`. 
+It is a special type of the stationary process insofar as its mean, variance, and covariances are all time-invariant. 
+
+Such process is referred to as covariance-stationarity or *weakly* stationary. 
+
+A time series is a realization of the weakly stationary process if its mean and variance are independent of `\(t\)`, and the autocovariances are independent of `\(t\)` for all `\(k\)`.
 ]
 
 ---
 
 
-# Stationarity
+# Temporal dependence
 
 .right-column[
-Thus, a time series is a realization of the stationary process (specifically of the weakly stationary process) if the mean and variance are independent of `\(t\)`, and the autocovariances are independent of `\(t\)` for all `\(k\)`.
+It's hardly the norm for a time series to be not serially correlated. Most economic (and not only) time series are characterized by temporal dependence, which is observed most prominently among observations that are at a temporal proximity from one another.
+
+Having observed the November 2022 U.S. unemployment rate of `\(3.5\)` percent, it is unlikely for the December 2022 rate to be much different (lo and behold, it was `\(3.3\)`). This is because the macroeconomic fundamentals that lead to the observed levels of unemployment do not just change overnight, or over a period of several weeks. 
+]
+
+---
+
+# Temporal dependence
+
+.right-column[
+Depending on a time series, this correlation can be strong or weak.
+
+In general, because of the sequential nature of the stochastic process, we are likely to observe, or at least expect to observe, some dependence among the temporally adjacent random variables. 
+
+That is, `\(Y_t\)` and `\(Y_{t-k}\)` can be correlated for a reasonably small integer `\(k\)`. Such correlation, referred to as the *autocorrelation*, or more specifically, the `\(k^{th}\)` order autocorrelation (or the lag `\(k\)` autocorrelation), is given by: `$$\rho_k=Cor(Y_{t},Y_{t-k}) = \frac{Cov(Y_{t},Y_{t-k})}{\sqrt{Var(Y_{t})}\sqrt{Var(Y_{t-k})}},\;~~k=1,2,\ldots$$` 
 ]
 
 ---
 
 
-
-
-
-# Sometimes we need to transform data
+# Variance
 
 .right-column[
-Usual forms of transformation involve first-differencing, taking natural logarithm (log-transforming), or first differencing the log-transformed series (log-differencing), which are done to work with a suitable variable for the desired econometric analysis. 
+Recall, stationarity implies that the random variables comprising the stochastic process have the same distribution. 
 
-The first-difference operator is denoted by `\(\Delta\)`, so that `\(\Delta y_t = y_t-y_{t-1}\)`. First-differencing helps remove a trend from the time series.
+So, the variances of any two random variables in the stochastic process, `\(Y_{t}\)` and `\(Y_{t-k}\)` in this instance, are equal to each other. We denote variance by `\(\gamma_0\)`. So, `$$Var(Y_{t})=Var(Y_{t-k})=\gamma_0.$$`
 ]
 
 ---
 
 
-# Transformations can resolve issues
+# Autocovariance
 
 .right-column[
-If an economic time series is characterized by an apparent exponential growth, by taking natural logarithms the time series 'flatten' and the fluctuations become proportional, which is one of the requirements for stationarity. The other requirement is constant mean (or no trend) which is achieved by first-differencing the log-transformed series. 
+Stationarity also implies similar joint densities of the sets of temporally separated random variables. 
 
-Thus, if a time series `\(\{y_t\}\)` appear to be trending exponentially, the transformed series `\(\{\Delta\ln y_t\}\)` should be stationary.
+So, the covariance between the two random variables comprising the same stochastic process, the *autocovariance*, depends on a temporal distance between these two variables but not on time. 
+
+We will denote the lag `\(k\)` autocovariance - i.e., the covariance between  `\(Y_{t}\)` and `\(Y_{t-k}\)` - by `\(\gamma_k\)`. So, `$$Cov(Y_{t},Y_{t-k})=Cov(Y_{t+k},Y_{t})=\gamma_k.$$`
 ]
 
 ---
@@ -281,24 +298,24 @@ Thus, if a time series `\(\{y_t\}\)` appear to be trending exponentially, the tr
 # Autocorrelation
 
 .right-column[
-White noise process assumes no correlation between `\(Y_t\)` and `\(Y_{t-k}\)` for any `\(k\neq0\)`. However, it is more of a norm than an exception, for a time series to be correlated, which is often the case in economic data.
-
-Indeed, we often observe dependence among the temporally adjacent time series. In other words, `\(Y_t\)` and `\(Y_{t-k}\)` tend to be correlated for reasonably small values of `\(k\)`. 
-
-Such correlations are referred to as *autocorrelations*, and are given by: `$$\rho_k \equiv Corr(Y_t,Y_{t-k}) = \frac{Cov(Y_t,Y_{t-k})}{Var(Y_t)},\;~~k=1,2,\ldots$$` 
+The lag `\(k\)` autocorrelation then can be expressed as: `$$\rho_k= \frac{\gamma_k}{\gamma_0},$$` where the denominator is the product of two standard deviations that are equal to each other, and thus constitute the variance of the random variable comprising the stochastic process.
 ]
 
 ---
 
 
-# Autocorrelation
+# U.S. unemployment rate: Time series
 
 .right-column[
-We can illustrate the time series autocorrelations using *autocorrelogram*, which plots the sequence of autocorrelation coefficients against the lags at which these coefficients are obtained. 
+![](figures/lecture4/ur.png)
+]
 
-Under the null of independence, the estimated autocorrelations, `\(\hat{\rho}_k\)`, are asymptotically standard normally distributed, `\(\sqrt{T}\hat{\rho}_k\xrightarrow{d}N(0,1)\)`, and thus: `\(\hat{\rho}_k \sim N(0,T^{-1})\)`
+---
 
-The approximate `\((1-\alpha)\)`% confidence interval is bounded by `\(-z_{\alpha/2}T^{-1/2}\;\text{and}\;z_{\alpha/2}T^{-1/2}\)`
+# U.S. unemployment rate: Autocorrelations
+
+.right-column[
+![](figures/lecture4/ac.png)
 ]
 
 ---
@@ -307,12 +324,197 @@ The approximate `\((1-\alpha)\)`% confidence interval is bounded by `\(-z_{\alph
 # Autocorrelogram
 
 .right-column[
+Autocorrelogram consolidates autocorrelation coefficients by plotting them in an ascending order of the lags at which these coefficients are obtained. 
 
+We can use this to illustrate how strongly a variable is related with its near and more distant past self. For example, when none of the autocorrelation coefficients are (statistically) different from zero, we have the case of a white noise process (assuming the mean of the series is zero).
 ]
 
 ---
 
 
+# Autocorrelogram: White noise
+
+.right-column[
+![](figures/lecture4/ac_wn.png)
+]
+
+---
+
+# Random walk process
+
+.right-column[
+Alternatively, when all the autocorrelation coefficients are positive and very close to one, and they hardly decay as the lag length grows, we have a case of a nonstationary process.
+
+Specifically, such a time series likely represent the random walk process.
+
+Stock prices, and more recently cryptocurrency prices, are best characterized by a random walk process. 
+]
+
+---
+
+
+
+# Bitcoin prices
+
+.right-column[
+![](figures/lecture4/btc.png)
+]
+
+---
+
+
+# Autocorrelogram: Bitcoin prices
+
+.right-column[
+![](figures/lecture4/ac_btc.png)
+]
+
+---
+
+
+# Partial autocorrelation
+
+.right-column[
+Does the presence of a correlations between current observation and the relatively distant past observations mean that the prices in those previous periods can help explain the price in the current period? 
+
+An autocorrelogram cannot answer this question. For example, we may observe the lag 2 autocorrelation for two reasons: 
+  * because there is an actual linkage between the current price and the price two periods ago, or 
+  * because of the transitivity of the first order autocorrelations between the successive observations.
+]
+
+---
+
+# Partial autocorrelation
+
+.right-column[
+If `\(Y_t\)` is correlated with `\(Y_{t-1}\)` and, therefore, `\(Y_{t-1}\)` is correlated with `\(Y_{t-2}\)`, we can observe a correlation between `\(Y_t\)` and `\(Y_{t-2}\)` regardless whether there is linkage between the two. 
+
+We need to control for `\(Y_{t-1}\)`, which in this instance plays the role of a potential mediator between `\(Y_t\)` and `\(Y_{t-2}\)`. 
+
+So, we need to find out whether there is any remaining linkage between `\(Y_t\)` and `\(Y_{t-2}\)` once we account for the existing linkages between `\(Y_t\)` and `\(Y_{t-1}\)`, and `\(Y_{t-1}\)` and `\(Y_{t-2}\)`.
+]
+
+---
+
+
+# Partial autocorrelation
+
+.right-column[
+The foregoing alludes to the concept of *partial* autocorrelation, which is a correlation between `\(Y_t\)` and `\(Y_{t-k}\)` net of any correlations between `\(Y_t\)` and `\(Y_{t-k+j}\)`, for all `\(j=1,\ldots,k-1\)`. 
+
+Similar to autocorrelations, we can use an autocorrelogram to present partial autocorrelations.
+]
+
+---
+
+
+# Partial autocorrelogram: Bitcoin prices
+
+.right-column[
+![](figures/lecture4/pac_btc.png)
+]
+
+---
+
+
+
+# Sometimes we need to transform data
+
+.right-column[
+Transformation usually involves taking logarithms (if possible), first-differencing, or first-differencing the already log-transformed series. 
+
+Such transformations are done not only to address some underlying data issues (e.g., nonstationarity), but also to work with a suitable variable for the desired econometric analysis (e.g., we might be interested in forecasting the rate of price inflation rates). 
+]
+
+---
+
+# Change in Bitcoin prices
+
+.right-column[
+To examine the effect of transformation, let's revisit the Bitcoin prices. As we saw, the series is nonstationary in levels. Could we resolve the issue by first-differencing the series?
+
+The first-difference operator is denoted by `\(\Delta\)`, so that `\(\Delta y_t = y_t-y_{t-1}\)`. First-differencing helps removing a trend from the time series.
+]
+
+---
+
+# Change in Bitcoin prices
+
+.right-column[
+![](figures/lecture4/btc_change.png)
+]
+
+---
+
+
+# Bitcoin returns
+
+.right-column[
+What if we were to first-difference the log-transformed series? Such transformation, in the context of prices, has a concrete meaning. 
+
+When we log-transform a series, the difference in observations from two  periods is no longer measured in absolute terms, rather it is measured in relative terms. When we then first-difference the log-transformed series, we obtain a measure of the rate of change of the original series. 
+
+When the original series is prices, the rate of change is the return.
+]
+
+---
+
+# Bitcoin returns
+
+.right-column[
+![](figures/lecture4/btc_return.png)
+]
+
+---
+
+
+# First-differencing to achieve stationarity
+
+.right-column[
+We usually refer to variables as integrated of order `\(d\)`, which we denote by `\(I(d)\)`. The order of integration tells us the number of times the series need to be first-differenced to make it stationary.
+
+So, when the series is `\(I(0)\)` no such transformation is required. A stationary time series is integrated of order zero. When the series is `\(I(1)\)`, a first-differencing will result in a stationary series. 
+
+Many time series, and certainly the vast majority economic time series, are at most `\(I(2)\)`, usually `\(I(1)\)` or `\(I(0)\)`.
+]
+
+---
+
+
+# To difference or not to difference?
+
+.right-column[
+We can get an idea whether a time series are stationary (or not) by observing the data and, especially, their autocorrelations. 
+
+But there are better, more formal ways of testing whether the series is integrated. 
+]
+
+---
+
+# Testing for unit roots
+
+.right-column[
+The test, proposed by Dickey and Fuller (1979), involves regressing the first-differenced values of the series on the lagged values of the series. That is: `$$y_t = \alpha + \phi y_{t-1}+\varepsilon_t$$`
+
+The null hypothesis of a unit root, or indeed, of nonstationarity, is equivalent to `\(H_0:\phi=0\)`. And the one-sided alternative is that `\(H_1:\phi &lt; 0\)`. 
+]
+
+---
+
+
+# Testing for unit roots
+
+.right-column[
+Thus, testing whether the time series has a unit root, that is whether the time series is integrated, is a straightforward task. 
+
+We need to regress `\(\Delta y_t\)` on `\(y_{t-1}\)`, obtain the t statistic, and compare it to the relevant critical values. 
+
+The only remaining caveat is that the distribution of the t statistic is not standard, instead it has what is known as the Dickey-Fuller distribution. 
+
+In practice all this means once we obtain the t statistic we compare it to the critical values from the Dickey-Fuller distribution.
+]
+
+---
 
 
 # Readings
@@ -322,8 +524,6 @@ The approximate `\((1-\alpha)\)`% confidence interval is bounded by `\(-z_{\alph
 ]
 
 .pull-right[
-Ubilava, [Chapter 2](https://davidubilava.com/forecasting/docs/features-of-time-series-data.html)
-
 Gonzalez-Rivera, Chapter 3
 
 Hyndman &amp; Athanasopoulos, [2.8](https://otexts.com/fpp3/acf.html), [2.9](https://otexts.com/fpp3/wn.html), [3.1](https://otexts.com/fpp3/transformations.html)

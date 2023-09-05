@@ -1,0 +1,629 @@
+---
+title: "Forecasting for Economics and Business"
+subtitle: "Lecture 5: Forecasting Trending Series"
+author: "David Ubilava"
+date: "University of Sydney"
+output:
+  xaringan::moon_reader:
+    css: [default, metropolis, metropolis-fonts, style.css]
+    lib_dir: libs
+    includes:
+      after_body: insert-logo.html
+    nature:
+      highlightStyle: github
+      countIncrementalSlides: false
+      ratio: '16:9'
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo=FALSE,fig.width=16,fig.height=9)
+```
+
+
+
+```{r echo=FALSE, include=FALSE, message=FALSE}
+library(data.table)
+library(ggplot2)
+library(fastDummies)
+```
+
+# Time series components
+
+.pull-left[
+![](Art/trends.png)
+]
+
+.pull-right[
+Most time series, more often than not, follow specific patterns. 
+
+One such pattern is when over time the average level of a time series steadily increases or decreases. 
+
+Such a time series is said to be trending, upward or downward. 
+]
+
+---
+
+
+
+# Trending series
+
+.right-column[
+Trends are among the most commonly observed and, indeed, talked-about features of time series. A positive trend, in particular, is often present in many time series. 
+
+Observed over an extended period of time, gross domestic product, agricultural yields, prices of most commodities, and more recently, global temperatures, all increase, on average.
+]
+
+---
+
+
+# Flavours of trends
+
+.right-column[
+Trends do not need to be unidirectional, or monotonic. It is possible for the sign of a trend to change over time. 
+- The sales of cigarettes per adult in the U.S. were increasing through much of the 20th century, but then the trend reversed. 
+
+It is also possible for the rate of the change to alter. 
+- The life expectancy at birth in Japan has increased at a decreasing rate, meaning that the positive trend has become flatter over time. 
+- Likewise, the slope of the downward trend in the U.S. 10-year real interest rates, observed since the early 1980s, has flattened as the interest rates approached zero.
+]
+
+---
+
+# Flavours of trends
+
+.right-column[
+
+![](figures/lecture5/trends_combined.png)
+
+]
+
+---
+
+
+# Undelying causes
+
+.right-column[
+A trend in a time series typically manifest a stock of some process. 
+- Agricultural yields increase because the technology and our understanding of best cropping practices improve with time. 
+- Global temperatures increase because the emitted greenhouse gasses create a blanket of sorts in the atmosphere which traps the heat within, thus warming the earth.
+- Commodity prices&mdash;which are points of intersection of the demand and supply curves observed over an extended period of time&mdash;trend upward, e.g., as a result of outward shifts in demand (changing dietary preferences) and a relatively steady supply.
+]
+
+---
+
+
+# Stochastic trend
+
+.right-column[
+Trending series is a realization of a nonstationary stochastic process. 
+
+Random walk is a nonstationary process that has a *stochastic trend*.
+
+It is given by: $$y_t=y_{t-1}+\varepsilon_t,\;~~\varepsilon_t\sim iid\left(0,\sigma^2\right)$$
+]
+
+---
+
+
+# Stochastic trend
+
+.right-column[
+By backward iteration we can show that: $$y_t=y_{0}+\sum_{i=1}^{t}\varepsilon_i,$$ where $y_0$ is the realization of $y$ in period $0$, which we do not observe. To keep things simple&mdash;and this doesn't alter the conclusion we are about to make&mdash;we can assume $y_0=0$ (more generally, we can think of $y_0$ as some constant). 
+]
+
+---
+
+# Stochastic trend
+
+.right-column[
+So, at any point in time, a realization of the random walk process can be given as the sum of the iid random variables. It then follows that:
+$$\begin{aligned}
+		& \mathbb{E}\left(y_t\right)=\mathbb{E}\left(\varepsilon_1+\ldots+\varepsilon_t\right) = 0\\
+    & Var\left(y_t\right) = Var\left(\sum_{i=1}^{t}\varepsilon_i\right)=t\sigma^2\\
+    & Cov\left(y_t,y_{t-k}\right) = Cov\left(\sum_{i=1}^{t}\varepsilon_i,\sum_{i=1}^{t-k}\varepsilon_i\right)=(t-k)\sigma^2
+  \end{aligned}$$
+
+]
+
+---
+
+
+# Forecasting random walk
+
+.right-column[
+Suppose we would like to obtain an $h$-step-ahead optimal point forecast of a time series that follows random walk, that is, $y_{t+h|t}$ (note that random walk is a parameter-free model).
+
+But we know that the only difference between $y_t$ and $y_{t+h}$ is the sum of mean-zero stochastic shocks: $\sum_{i=t+1}^{t+h}\varepsilon_i$. So, $$y_{t+h|t}=\mathbb{E}\left(y_{t+h}|\Omega_t\right)=\mathbb{E}\left(y_t+\sum_{i=t+1}^{t+h}\varepsilon_i\right)=y_t.$$
+
+
+]
+
+---
+
+# Forecasting random walk
+
+.right-column[
+So, the optimal point forecast, at any horizon, is the most recent realization of the random walk process.
+
+The forecast error, for a given $h$, is $\sum_{i=t+1}^{t+h}\varepsilon_i$.
+
+It then follows that the forecast error variance (and, thus, the interval forecast) changes with the horizon. Specifically,
+$$Var\left(y_{t+h}|\Omega_t\right)=Var\left(\sum_{i=t+1}^{t+h}\varepsilon_i\right)=h\sigma^2$$
+
+
+]
+
+---
+
+# Bitcoin price forecasts from the random walk model
+
+.right-column[
+
+![](figures/lecture5/btc_forecast.png)
+]
+
+---
+
+
+# Deterministic trend
+
+.right-column[
+To keep things simple, suppose the stochastic process is comprised of independent and identically distributed normal random variables with shifting mean. That is, $$Y_t\sim iid~\text{N}\left(\mu_t,\sigma^2\right)\;~~\forall~t.$$ 
+
+Thus, for $t=1,2,\ldots$, the sequence of the means are $\left\{\mu_1,\mu_2,\ldots\right\}$.  
+]
+
+---
+
+
+# Linear trend
+
+.right-column[
+This sequence may take any pattern, which we can approximate by imposing some functional form on to it. 
+
+The simplest of the functional forms is linear. We can model a linearly trending time series as follows: $$y_t = \delta_0+\delta_1 t + \varepsilon_t,\;~~t=1,2,\ldots,T,$$ where $T$ is the total number of observations in the time series, and, suppose, $\varepsilon_t\sim iid~\text{N}\left(0,\sigma_{\varepsilon}^2\right)$.
+]
+
+---
+
+
+# Linear trend
+
+.right-column[
+The error term, as given, is a Gaussian white noise process, which is a stationary process. 
+
+And $\delta_0$ is just a constant, which is time-invariant.
+
+Thus, the only source of nonstationarity is the trend component given by $\delta_1 t$. 
+]
+
+---
+
+# Linear trend
+
+.right-column[
+Indeed, the expectation of the time series is: $$\mathbb{E}\left(y_t\right) = \delta_0+\delta_1 t,$$ which changes with $t$ (so long as $\delta_1 \ne 0$). 
+
+That is, the time series is expected to change by $\delta_1$ with each increment of time.
+
+We can easily show that, for example, $$\mathbb{E}\left(y_{t+1}-y_t\right) = \mathbb{E}\left(y_{t+1}\right)-\mathbb{E}\left(y_t\right)=\delta_1$$
+]
+
+---
+
+
+# Deterministic trend
+
+.right-column[
+Such trend is referred to as a *deterministic trend*. 
+
+Generally, a deterministic trend assumes that the realizations of a stochastic process are a fixed function of time plus the error component. 
+
+Under such assumption, the expectation of a time series is a function of constants. 
+
+In our foregoing example, these are $\delta_0$ and $\delta_1$, and time, $t$.
+]
+
+---
+
+
+# Detrending the deterministically trending series
+
+.right-column[
+If we subtract the deterministic component, which is $\delta_0 + \delta_1 t$, from both sides of equation, we will have: $$\tilde{y}_t = \varepsilon_t,\;~~t=1,2,\ldots,$$ where $\tilde{y}_t=y_t-\delta_0-\delta_1 t$. 
+
+Here, $\tilde{y}_t$ is referred to as the *detrended* series (technically, the detrended and mean-centred series, as we also subtracted $\delta_0$). 
+]
+
+---
+
+
+# Trend-stationarity
+
+.right-column[
+Thus, assuming the original time series has a deterministic trend&mdash;a linear trend, for example&mdash;the appropriately detrended time series will resemble the realizations of a stationary stochastic process.
+
+In such an instance, the original series is a realization of what is referred to as a *trend-stationary* process.
+]
+
+---
+
+
+# Fitting trends
+
+.right-column[
+Modeling a time series with a deterministic trend is a straightforward exercise... so long as we know that the trend is deterministic, and have a good idea about its functional form. 
+
+While hardly trivial, sometimes it is easy to argue a presence of a deterministic trend.]
+
+---
+
+
+# Fitting trends
+
+.right-column[
+Consider cereal grain yields, for example. The likely key drivers of the average yield over time are (gradual) changes in technology and climate (both broadly defined). 
+
+The main source of year-to-year variation in yields is the weather. 
+
+Thus, year-to-year deviations in yields relative to the average yield are largely driven by year-to-year deviations in weather given the technology and climate. 
+
+To that end, cereal grain yields likely is a realization of a trend-stationary process. And, modeling it as a deterministically trending series would seem to be a reasonable approach.
+]
+
+---
+
+
+# Fitting trends
+
+.right-column[
+If we were to fit a linear trend to the time series of U.S. maize yields ranging from 1961 to 2020, the estimated coefficients for the intercept and slope, respectively, would be $61.87$ and $1.85$ (both statistically significantly different from zero).
+
+Thus, our expectation of U.S. maize yield in 1960 would have been $61.87$, and with each successive period, this expectation would increase by $1.85$. 
+
+There are a total of 60 periods in the sample. So, for example, the expectation of U.S. maize yield in 2020 would be $61.87 + 1.85 \times 60 = 172.87$. 
+]
+
+---
+
+# Linear trend explains the long-run pattern
+
+.right-column[
+
+![](figures/lecture5/corn_fitted.png)
+]
+
+---
+
+
+# Fitting trends
+
+.right-column[
+A couple of things become apparent from this figure. 
+- First, the linear tend, as anticipated, well approximates the average change of the time series over time. 
+- Second, the deviations from the trend&mdash;the residuals of the fitted regression&mdash;might not be symmetrically distributed: It appears that the negative deviations are larger in magnitude than the positive deviations. 
+]
+
+---
+
+
+# Residuals from the fitted linear trend model
+
+.right-column[
+
+![](figures/lecture5/residuals.png)
+]
+
+---
+
+
+# Fitting trends
+
+.right-column[
+That the residuals of the fitted regression are not normally distributed is not an issue. 
+
+At least, it is not an issue for estimating the parameters of the model. It does create an issue in generating interval forecasts, which we will discuss in the due course. 
+
+And specifically, it doesn't indicate that the model is not specified correctly.  
+]
+
+---
+
+
+# Fitting trends
+
+.right-column[
+A correctly specified model may yield residuals that are not normally distributed. 
+
+However, a correctly specified model should yield residuals that are not serially correlated. 
+
+The serial correlation of the residuals typically suggests that the model is misspecified. Specifically, it suggest that the applied model doesn't adequately capture all available information in the data. 
+]
+
+---
+
+# Residuals from the fitted linear trend model
+
+.right-column[
+
+![](figures/lecture5/autocorrelogram.png)
+]
+
+---
+
+
+
+# Forecasting linear trend
+
+.right-column[
+Suppose we assume a time series follow a linear trend model: $$y_t = \alpha + \beta t + \varepsilon_t,$$ where we also assume $\varepsilon_t\sim iid~\text{N}(0,\sigma^2)$.
+
+Any future realization of the random variable is also assumed to follow a linear trend model: $$y_{t+h} = \alpha + \beta (t+h) + \varepsilon_{t+h}.$$ 
+]
+
+---
+
+
+# Point forecast
+
+.right-column[
+Point forecast of $y_{t+h}$ is a conditional expectation at a given horizon: $$\hat{y}_{t+h|t} = \mathbb{E}(y_{t+h}|\Omega_t;\hat{\theta}) = \hat{\alpha} + \hat{\beta} (t+h).$$ 
+
+We are going to ignore the parameter uncertainty. That is, we are going to assume that $\hat{y}_{t+h|t}\equiv y_{t+h|t}$
+
+Forecast error, then, will be: $$e_{t+h} = y_{t+h} - y_{t+h|t} = \varepsilon_{t+h}$$ 
+]
+
+---
+
+
+# Interval forecast
+
+.right-column[
+Forecast variance is a conditional expectation of the forecast error: $$\sigma_{t+h|t}^2 = E(e_{t+h|t}^2) =  E(\varepsilon_{t+h}^2) = \sigma^2,\;~~\forall\;h$$
+Note, the variance is the same for any forecast horizon.
+
+From this, we can obtain lower and upper intervals of the forecast, given by: $$\hat{y}_{t+h|t}\pm 1.96\sigma_{t+h|t}$$
+
+]
+
+---
+
+
+# Forecasting U.S. Mortgage Rates
+
+.right-column[
+
+![](figures/lecture5/mortgage_forecast.png)
+
+]
+
+---
+
+
+# Pitfalls of linear trend forecasting
+
+.right-column[
+A few features of trend forecasts to note:
+- they tend to understate uncertainty (at long horizons).
+- short-term trend forecasts can perform poorly; long-term trend forecasts typically perform poorly.
+- sometimes it may be beneficial to forecast growth rates, and reconstruct level forecasts from growth.
+]
+
+---
+
+
+
+# Different functional forms of a deterministic trend
+
+.right-column[
+A linear trend is one of many types of deterministic trends. It assumes that the time series change only in one direction (i.e., increase or decrease) and, that the rate of change is constant. 
+
+Such a setting may very well suit some time series, as we saw in the case of U.S. maize yields, but can be overly restrictive on other occasions. 
+
+Linear trend, indeed, is a special case of some other, less parsimonious types of trends.
+]
+
+---
+
+
+# Different functional forms of a deterministic trend
+
+.right-column[
+Other trend specifications are *polynomial* (e.g. quadratic, cubic, etc.), *exponential*, and *shifting* (or *switching*) trend models. 
+
+The expectations of polynomial and exponential trends are respectively given by:
+$$\begin{aligned}
+	\mathbb{E}\left(y_t\right) &= \delta_0 + \delta_1 t + \delta_2 t^2 + \ldots + \delta_p t^p, \\
+	\mathbb{E}\left(y_t\right) &= e^{\alpha_0 + \alpha_1 t}\;~~\mbox{or}\;~~\mathbb{E}\left(\ln{y_t}\right) = \alpha_0 + \alpha_1 t.
+	\end{aligned}$$
+]
+
+---
+
+
+# Polynomial trend
+
+.right-column[
+A polynomial trend model can be viewed as an extension of a linear trend model. It shares the general characteristics of a linear trend model and adds some of its own. 
+
+Specifically, a polynomial trend model is capable of capturing dramatic changes in time series, such as turning points, for example. 
+
+Polynomial trends are about as easy to model as the linear trend. Caution is needed with higher order polynomials, as they may fit the data exceedingly well, but generate remarkably inaccurate forecasts.
+]
+
+---
+
+
+# Exponential trend
+
+.right-column[
+An exponential trend model, from the standpoint of modeling and forecasting, is largely equivalent to a linear trend model fitted to the natural logarithm of a series. 
+
+For a time series $\{y_t: t=1,\ldots,T\}$, the natural logarithm is: $w_t = \ln{y_t}$. 
+
+Some of the benefits of such a transformation are: 
+- the easier interpretation and comparison between different time series (e.g., GDP growth across different countries); 
+- homogenized (over time) variability of a time series; and 
+- the possibly improved forecasting accuracy of the original series. 
+]
+
+---
+
+
+# Exponential trend
+
+.right-column[
+One can fit a liner trend to $w_t$. The fitted trend can be reverse-transformed to fit the original series: $$\hat{y}_{t} = e^{\hat{w}_{t}+\hat{\sigma}_{\varepsilon}^2/2}$$
+The second term in the exponential function comes from the implied assumption that the error term in the log-transformed model is normally distributed.
+]
+
+---
+
+
+# Using R-squared for model selection
+
+.right-column[
+Recall the most frequently used (and often abused) R-squared: $$R^2 = 1-\frac{\sum_{t=1}^{T}\hat{e}_t^2}{\sum_{t=1}^{T}(y_t - \bar{y})^2}$$
+
+Adjusted R-squared accounts for the loss in degrees of freedom: $$\bar{R}^2 = 1-\frac{\sum_{t=1}^{T}\hat{e}_t^2}{\sum_{t=1}^{T}(y_t - \bar{y})^2}\left(\frac{T-1}{T-k}\right),$$ where $k$ denotes the number of estimated parameters.
+]
+
+---
+
+
+# Using information criteria for model selection
+
+.right-column[
+The adjustment made to the R-squared might not be 'enough' so select a 'good' forecasting model, however.
+
+Information criteria penalize for the loss in degrees of freedom more 'harshly' than the adjusted R-squared:
+$$\begin{aligned}
+AIC & = \ln{\left(\sum_{t=1}^{T}{\hat{e}_t^2}\right)} + 2\frac{k}{T} \\
+SIC & = \ln{\left(\sum_{t=1}^{T}{\hat{e}_t^2}\right)} + \ln{T}\frac{k}{T}
+\end{aligned}$$
+]
+
+---
+
+
+# Model Selection
+
+.right-column[
+Things to remember about the information criteria:
+- Less is better.
+- Relative (not absolute) values of the criteria matter.
+- SIC selects a more parsimonious model than AIC.
+- The measures are used to compare fit, so long as the dependent variable is the same across the models.
+]
+
+---
+
+
+
+# Spurious relationships
+
+.right-column[
+While many time series tend to be trending (usually upward), the underlying causes for this may or may not be common. 
+
+In any case, a care is needed to avoid "spurious" findings when analyzing relationships between trending series.
+]
+
+---
+
+
+# Spurious relationship: Deterministic trends
+
+.right-column[
+To illustrate a spurious relationship, consider two trending variables: $$y_t = \gamma t + \nu_t,\;~~\nu\sim iid~\text{N}(0,\sigma_{\nu}^2),$$ and $$x_t = \delta t + \upsilon_t,\;~~\upsilon\sim iid~\text{N}(0,\sigma_{\upsilon}^2),$$ where $Cov(\nu_t,\upsilon_t) = 0$. 
+
+To keep things simple, suppose $\sigma_{\nu}^2=\sigma_{\upsilon}^2=1$. And, also, suppose $y$ and $x$ are trending in the same direction, i.e., $\gamma$ and $\delta$ are some positive scalars, say, $0.3$ and $0.5$, respectively.
+]
+
+---
+
+
+# Spurious relationship: Deterministic trends
+
+.right-column[
+
+![](figures/lecture5/spurious_d.png)
+
+]
+
+---
+
+# Spurious relationship: Deterministic trends
+
+.right-column[
+These two series are not related, we know. But if we were to regress $y$ on $x$, we are likely to find the (statistically significant) relationship between the two. This would be a spurious relationship stemming from the presence of (deterministic) trends in the two series.
+
+One can think of a trend as an omitted variable. If so, then the 'fix' to the issue is to include a trend as another variable in the regression.
+
+Indeed, if we regress $y$ on $x$ and $t$, where $t=1,\ldots,T$, the previously detected spurious relationship between the two series will vanish.
+]
+
+---
+
+
+# Spurious relationship: Stochastic trends
+
+.right-column[
+A time series may also follow a *stochastic trend*. A random walk process, $y_t=y_{t-1}+\zeta_t$, represents a stochastic trend. 
+
+The issue of a spurious relationship is relevant to stochastic trend processes as well. 
+
+Consider the aforementioned random walk process, and another random walk process, $x_t=x_{t-1}+\xi_t$. 
+
+Suppose $\zeta\sim N(0,1)$ and $\xi\sim N(0,1)$, and $Cov(\zeta_t,\xi_t)=0$.
+]
+
+---
+
+
+# Spurious relationship: Stochastic trends
+
+.right-column[
+
+![](figures/lecture5/spurious_s.png)
+
+]
+
+---
+
+
+# Spurious relationship: Stochastic trends
+
+.right-column[
+The two variables are not related. But if we regress one on another, we are likely to reject the null more frequently than we should.
+
+The previous 'fix', which involved adding a trend in the regression, doesn't quite work here.
+
+Luckily, we have just the right 'fix' to the issue. It involves first-differencing both series and regressing $\Delta y_t$ on $\Delta x_t$. In effect, we are removing stochastic trends prior to running a regression.
+]
+
+---
+
+
+
+
+
+
+
+
+
+# Readings
+
+.pull-left[
+![](Art/todolist.png)
+]
+
+.pull-right[
+Ubilava, [Chapter 4](https://davidubilava.com/forecasting/docs/trends.html) and [Chapter 5](https://davidubilava.com/forecasting/docs/seasonality.html)
+
+Gonzalez-Rivera, Chapter 10
+
+Hyndman & Athanasopoulos, [3.2](https://otexts.com/fpp3/components.html), [13.1](https://otexts.com/fpp3/weekly.html)
+]
+

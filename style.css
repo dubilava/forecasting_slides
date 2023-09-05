@@ -152,10 +152,10 @@ a:active {
 .left-column {
   padding-top: 0;
   float: left;
-  width: 10%;
+  width: 15%;
 }
 .right-column {
   padding-top: 0;
   float: right;
-  width: 85%;
+  width: 80%;
 }

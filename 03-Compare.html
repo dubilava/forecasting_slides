@@ -4,7 +4,7 @@
     <title>Forecasting for Economics and Business</title>
     <meta charset="utf-8" />
     <meta name="author" content="David Ubilava" />
-    <script src="libs/header-attrs-2.22/header-attrs.js"></script>
+    <script src="libs/header-attrs-2.23/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/metropolis.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/metropolis-fonts.css" rel="stylesheet" />
@@ -47,10 +47,50 @@ We often have several forecasts, each generated from a specific model or using a
 
 The challenge, then, is to identify the most accurate among these.
 
-One way of doing it is by using in-sample goodness of fit measures (e.g., AIC or SIC). 
+One way of doing it is by using in-sample goodness of fit measures. 
 ]
 
 ---
+
+# In-sample goodness of fit measures
+
+.right-column[
+Recall the most frequently used (and often abused) R-squared: `$$R^2 = 1-\frac{\sum_{t=1}^{T}\hat{e}_t^2}{\sum_{t=1}^{T}(y_t - \bar{y})^2}$$`
+
+Adjusted R-squared accounts for the loss in degrees of freedom: `$$\bar{R}^2 = 1-\frac{\sum_{t=1}^{T}\hat{e}_t^2}{\sum_{t=1}^{T}(y_t - \bar{y})^2}\left(\frac{T-1}{T-k}\right),$$` where `\(k\)` denotes the number of estimated parameters.
+]
+
+---
+
+
+# In-sample goodness of fit measures
+
+.right-column[
+The adjustment made to the R-squared might not be 'enough' so select a 'good' forecasting model, however.
+
+Information criteria penalize for the loss in degrees of freedom more 'harshly' than the adjusted R-squared:
+`$$\begin{aligned}
+AIC &amp; = \ln{\left(\sum_{t=1}^{T}{\hat{e}_t^2}\right)} + 2\frac{k}{T} \\
+SIC &amp; = \ln{\left(\sum_{t=1}^{T}{\hat{e}_t^2}\right)} + \ln{T}\frac{k}{T}
+\end{aligned}$$`
+]
+
+---
+
+
+# In-sample goodness of fit measures
+
+.right-column[
+Things to remember about the information criteria:
+- Less is better.
+- Relative (not absolute) values of the criteria matter.
+- SIC selects a more parsimonious model than AIC.
+- The measures are used to compare fit, so long as the dependent variable is the same across the models.
+]
+
+---
+
+
 
 # Comparing forecasts using out-of-sample measures
 

@@ -4,7 +4,7 @@
     <title>Forecasting for Economics and Business</title>
     <meta charset="utf-8" />
     <meta name="author" content="David Ubilava" />
-    <script src="libs/header-attrs-2.22/header-attrs.js"></script>
+    <script src="libs/header-attrs-2.23/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/metropolis.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/metropolis-fonts.css" rel="stylesheet" />
@@ -37,18 +37,18 @@ class: center, middle, inverse, title-slide
 
 
 
-# Time series components
+# Trending series
 
 .pull-left[
 ![](Art/trends.png)
 ]
 
 .pull-right[
-Most time series, more often than not, follow specific patterns. 
+Most time series, more often than not, follow some specific patterns. 
 
-One such pattern is when over time the average level of a time series steadily increases or decreases. 
+One such pattern is when over time the average level of a time series increases or decreases. 
 
-Such a time series is said to be trending, upward or downward. 
+Such a time series is said to be trending (upward or downward). 
 ]
 
 ---
@@ -90,7 +90,7 @@ It is also possible for the rate of the change to alter.
 ---
 
 
-# Undelying causes
+# Why series trend
 
 .right-column[
 A trend in a time series typically manifest a stock of some process. 
@@ -102,7 +102,7 @@ A trend in a time series typically manifest a stock of some process.
 ---
 
 
-# Stochastic trend
+# Stochastic trend: Random walk process
 
 .right-column[
 Trending series is a realization of a nonstationary stochastic process. 
@@ -115,7 +115,7 @@ It is given by: `$$y_t=y_{t-1}+\varepsilon_t,\;~~\varepsilon_t\sim iid\left(0,\s
 ---
 
 
-# Stochastic trend
+# Stochastic trend: Random walk process
 
 .right-column[
 By backward iteration we can show that: `$$y_t=y_{0}+\sum_{i=1}^{t}\varepsilon_i,$$` where `\(y_0\)` is the realization of `\(y\)` in period `\(0\)`, which we do not observe. To keep things simple&amp;mdash;and this doesn't alter the conclusion we are about to make&amp;mdash;we can assume `\(y_0=0\)` (more generally, we can think of `\(y_0\)` as some constant). 
@@ -123,7 +123,7 @@ By backward iteration we can show that: `$$y_t=y_{0}+\sum_{i=1}^{t}\varepsilon_i
 
 ---
 
-# Stochastic trend
+# Random walk has time-varying variance and covariances
 
 .right-column[
 So, at any point in time, a realization of the random walk process can be given as the sum of the iid random variables. It then follows that:
@@ -138,34 +138,34 @@ So, at any point in time, a realization of the random walk process can be given 
 ---
 
 
-# Forecasting random walk
+# Point forecast from a random walk model
 
 .right-column[
 Suppose we would like to obtain an `\(h\)`-step-ahead optimal point forecast of a time series that follows random walk, that is, `\(y_{t+h|t}\)` (note that random walk is a parameter-free model).
 
 But we know that the only difference between `\(y_t\)` and `\(y_{t+h}\)` is the sum of mean-zero stochastic shocks: `\(\sum_{i=t+1}^{t+h}\varepsilon_i\)`. So, `$$y_{t+h|t}=\mathbb{E}\left(y_{t+h}|\Omega_t\right)=\mathbb{E}\left(y_t+\sum_{i=t+1}^{t+h}\varepsilon_i\right)=y_t.$$`
 
-
+So, the optimal point forecast, at any horizon, is the most recent realization of the random walk process.
 ]
 
 ---
 
-# Forecasting random walk
+# Interval forecast from a random walk model
 
 .right-column[
-So, the optimal point forecast, at any horizon, is the most recent realization of the random walk process.
-
 The forecast error, for a given `\(h\)`, is `\(\sum_{i=t+1}^{t+h}\varepsilon_i\)`.
 
-It then follows that the forecast error variance (and, thus, the interval forecast) changes with the horizon. Specifically,
-`$$Var\left(y_{t+h}|\Omega_t\right)=Var\left(\sum_{i=t+1}^{t+h}\varepsilon_i\right)=h\sigma^2$$`
+It then follows that the forecast error variance changes with the horizon. Specifically,
+`$$\sigma_{t+h|t}^2=Var\left(y_{t+h}|\Omega_t\right)=Var\left(\sum_{i=t+1}^{t+h}\varepsilon_i\right)=\sigma^2h$$`
+
+From this, we can obtain lower and upper intervals of the forecast, given by: `$$y_{t+h|t}\pm 1.96\sigma_{t+h|t}\sqrt{h}$$`
 
 
 ]
 
 ---
 
-# Bitcoin price forecasts from the random walk model
+# Forecasting Bitcoin prices (assuming random walk)
 
 .right-column[
 
@@ -178,6 +178,8 @@ It then follows that the forecast error variance (and, thus, the interval foreca
 # Deterministic trend
 
 .right-column[
+Another trend type is *deterministic*.
+
 To keep things simple, suppose the stochastic process is comprised of independent and identically distributed normal random variables with shifting mean. That is, `$$Y_t\sim iid~\text{N}\left(\mu_t,\sigma^2\right)\;~~\forall~t.$$` 
 
 Thus, for `\(t=1,2,\ldots\)`, the sequence of the means are `\(\left\{\mu_1,\mu_2,\ldots\right\}\)`.  
@@ -186,7 +188,7 @@ Thus, for `\(t=1,2,\ldots\)`, the sequence of the means are `\(\left\{\mu_1,\mu_
 ---
 
 
-# Linear trend
+# Linear trend model
 
 .right-column[
 This sequence may take any pattern, which we can approximate by imposing some functional form on to it. 
@@ -197,7 +199,7 @@ The simplest of the functional forms is linear. We can model a linearly trending
 ---
 
 
-# Linear trend
+# Linear trend model
 
 .right-column[
 The error term, as given, is a Gaussian white noise process, which is a stationary process. 
@@ -209,7 +211,7 @@ Thus, the only source of nonstationarity is the trend component given by `\(\del
 
 ---
 
-# Linear trend
+# Linear trend model
 
 .right-column[
 Indeed, the expectation of the time series is: `$$\mathbb{E}\left(y_t\right) = \delta_0+\delta_1 t,$$` which changes with `\(t\)` (so long as `\(\delta_1 \ne 0\)`). 
@@ -222,11 +224,9 @@ We can easily show that, for example, `$$\mathbb{E}\left(y_{t+1}-y_t\right) = \m
 ---
 
 
-# Deterministic trend
+# Linear trend model
 
 .right-column[
-Such trend is referred to as a *deterministic trend*. 
-
 Generally, a deterministic trend assumes that the realizations of a stochastic process are a fixed function of time plus the error component. 
 
 Under such assumption, the expectation of a time series is a function of constants. 
@@ -237,7 +237,7 @@ In our foregoing example, these are `\(\delta_0\)` and `\(\delta_1\)`, and time,
 ---
 
 
-# Detrending the deterministically trending series
+# Detrending a deterministically trending series
 
 .right-column[
 If we subtract the deterministic component, which is `\(\delta_0 + \delta_1 t\)`, from both sides of equation, we will have: `$$\tilde{y}_t = \varepsilon_t,\;~~t=1,2,\ldots,$$` where `\(\tilde{y}_t=y_t-\delta_0-\delta_1 t\)`. 
@@ -309,19 +309,9 @@ There are a total of 60 periods in the sample. So, for example, the expectation 
 # Fitting trends
 
 .right-column[
-A couple of things become apparent from this figure. 
+A couple of things become apparent from the figure. 
 - First, the linear tend, as anticipated, well approximates the average change of the time series over time. 
 - Second, the deviations from the trend&amp;mdash;the residuals of the fitted regression&amp;mdash;might not be symmetrically distributed: It appears that the negative deviations are larger in magnitude than the positive deviations. 
-]
-
----
-
-
-# Residuals from the fitted linear trend model
-
-.right-column[
-
-![](figures/lecture5/residuals.png)
 ]
 
 ---
@@ -332,7 +322,7 @@ A couple of things become apparent from this figure.
 .right-column[
 That the residuals of the fitted regression are not normally distributed is not an issue. 
 
-At least, it is not an issue for estimating the parameters of the model. It does create an issue in generating interval forecasts, which we will discuss in the due course. 
+At least, it is not an issue for estimating the parameters of the model. 
 
 And specifically, it doesn't indicate that the model is not specified correctly.  
 ]
@@ -345,14 +335,27 @@ And specifically, it doesn't indicate that the model is not specified correctly.
 .right-column[
 A correctly specified model may yield residuals that are not normally distributed. 
 
-However, a correctly specified model should yield residuals that are not serially correlated. 
+However, a correctly specified model should not yield residuals that are serially correlated. 
 
 The serial correlation of the residuals typically suggests that the model is misspecified. Specifically, it suggest that the applied model doesn't adequately capture all available information in the data. 
 ]
 
 ---
 
-# Residuals from the fitted linear trend model
+
+# Residuals from the linear trend model
+
+.right-column[
+
+![](figures/lecture5/residuals.png)
+]
+
+---
+
+
+
+
+# The autocorrelogram of the residuals
 
 .right-column[
 
@@ -368,30 +371,30 @@ The serial correlation of the residuals typically suggests that the model is mis
 .right-column[
 Suppose we assume a time series follow a linear trend model: `$$y_t = \alpha + \beta t + \varepsilon_t,$$` where we also assume `\(\varepsilon_t\sim iid~\text{N}(0,\sigma^2)\)`.
 
-Any future realization of the random variable is also assumed to follow a linear trend model: `$$y_{t+h} = \alpha + \beta (t+h) + \varepsilon_{t+h}.$$` 
+Under the same assumption, any future realization of the process will also follow a linear trend model. That is, `$$y_{t+h} = \alpha + \beta (t+h) + \varepsilon_{t+h}.$$` 
 ]
 
 ---
 
 
-# Point forecast
+# Point forecast from a linear trend model
 
 .right-column[
 Point forecast of `\(y_{t+h}\)` is a conditional expectation at a given horizon: `$$\hat{y}_{t+h|t} = \mathbb{E}(y_{t+h}|\Omega_t;\hat{\theta}) = \hat{\alpha} + \hat{\beta} (t+h).$$` 
 
 We are going to ignore the parameter uncertainty. That is, we are going to assume that `\(\hat{y}_{t+h|t}\equiv y_{t+h|t}\)`
-
-Forecast error, then, will be: `$$e_{t+h} = y_{t+h} - y_{t+h|t} = \varepsilon_{t+h}$$` 
 ]
 
 ---
 
 
-# Interval forecast
+# Interval forecast from a linear trend model
 
 .right-column[
-Forecast variance is a conditional expectation of the forecast error: `$$\sigma_{t+h|t}^2 = E(e_{t+h|t}^2) =  E(\varepsilon_{t+h}^2) = \sigma^2,\;~~\forall\;h$$`
-Note, the variance is the same for any forecast horizon.
+Forecast error, then, will be: `$$e_{t+h} = y_{t+h} - y_{t+h|t} = \varepsilon_{t+h}$$` 
+
+Forecast variance is: `$$\sigma_{t+h|t}^2 = Var\left(y_{t+h}|\Omega_t\right)=Var\left(\varepsilon_{t+h}\right) = \sigma^2,\;~~\forall\;h$$`
+Note, the forecast variance does not change with the horizon.
 
 From this, we can obtain lower and upper intervals of the forecast, given by: `$$\hat{y}_{t+h|t}\pm 1.96\sigma_{t+h|t}$$`
 
@@ -416,7 +419,7 @@ From this, we can obtain lower and upper intervals of the forecast, given by: `$
 .right-column[
 A few features of trend forecasts to note:
 - they tend to understate uncertainty (at long horizons).
-- short-term trend forecasts can perform poorly; long-term trend forecasts typically perform poorly.
+- short-term trend forecasts can perform poorly.
 - sometimes it may be beneficial to forecast growth rates, and reconstruct level forecasts from growth.
 ]
 
@@ -491,86 +494,16 @@ The second term in the exponential function comes from the implied assumption th
 ---
 
 
-# Using R-squared for model selection
-
-.right-column[
-Recall the most frequently used (and often abused) R-squared: `$$R^2 = 1-\frac{\sum_{t=1}^{T}\hat{e}_t^2}{\sum_{t=1}^{T}(y_t - \bar{y})^2}$$`
-
-Adjusted R-squared accounts for the loss in degrees of freedom: `$$\bar{R}^2 = 1-\frac{\sum_{t=1}^{T}\hat{e}_t^2}{\sum_{t=1}^{T}(y_t - \bar{y})^2}\left(\frac{T-1}{T-k}\right),$$` where `\(k\)` denotes the number of estimated parameters.
-]
-
----
-
-
-# Using information criteria for model selection
-
-.right-column[
-The adjustment made to the R-squared might not be 'enough' so select a 'good' forecasting model, however.
-
-Information criteria penalize for the loss in degrees of freedom more 'harshly' than the adjusted R-squared:
-`$$\begin{aligned}
-AIC &amp; = \ln{\left(\sum_{t=1}^{T}{\hat{e}_t^2}\right)} + 2\frac{k}{T} \\
-SIC &amp; = \ln{\left(\sum_{t=1}^{T}{\hat{e}_t^2}\right)} + \ln{T}\frac{k}{T}
-\end{aligned}$$`
-]
-
----
-
-
-# Model Selection
-
-.right-column[
-Things to remember about the information criteria:
-- Less is better.
-- Relative (not absolute) values of the criteria matter.
-- SIC selects a more parsimonious model than AIC.
-- The measures are used to compare fit, so long as the dependent variable is the same across the models.
-]
-
----
-
-
-
 # Spurious relationships
 
 .right-column[
 While many time series tend to be trending (usually upward), the underlying causes for this may or may not be common. 
 
 In any case, a care is needed to avoid "spurious" findings when analyzing relationships between trending series.
-]
 
----
+If we are careless, we may conclude that there is a relationship between the series when, in fact, there is none.
 
-
-# Spurious relationship: Deterministic trends
-
-.right-column[
-To illustrate a spurious relationship, consider two trending variables: `$$y_t = \gamma t + \nu_t,\;~~\nu\sim iid~\text{N}(0,\sigma_{\nu}^2),$$` and `$$x_t = \delta t + \upsilon_t,\;~~\upsilon\sim iid~\text{N}(0,\sigma_{\upsilon}^2),$$` where `\(Cov(\nu_t,\upsilon_t) = 0\)`. 
-
-To keep things simple, suppose `\(\sigma_{\nu}^2=\sigma_{\upsilon}^2=1\)`. And, also, suppose `\(y\)` and `\(x\)` are trending in the same direction, i.e., `\(\gamma\)` and `\(\delta\)` are some positive scalars, say, `\(0.3\)` and `\(0.5\)`, respectively.
-]
-
----
-
-
-# Spurious relationship: Deterministic trends
-
-.right-column[
-
-![](figures/lecture5/spurious_d.png)
-
-]
-
----
-
-# Spurious relationship: Deterministic trends
-
-.right-column[
-These two series are not related, we know. But if we were to regress `\(y\)` on `\(x\)`, we are likely to find the (statistically significant) relationship between the two. This would be a spurious relationship stemming from the presence of (deterministic) trends in the two series.
-
-One can think of a trend as an omitted variable. If so, then the 'fix' to the issue is to include a trend as another variable in the regression.
-
-Indeed, if we regress `\(y\)` on `\(x\)` and `\(t\)`, where `\(t=1,\ldots,T\)`, the previously detected spurious relationship between the two series will vanish.
+We may encounter the issue of spurious relationship in both stochastic and deterministic trend types.
 ]
 
 ---
@@ -579,11 +512,7 @@ Indeed, if we regress `\(y\)` on `\(x\)` and `\(t\)`, where `\(t=1,\ldots,T\)`, 
 # Spurious relationship: Stochastic trends
 
 .right-column[
-A time series may also follow a *stochastic trend*. A random walk process, `\(y_t=y_{t-1}+\zeta_t\)`, represents a stochastic trend. 
-
-The issue of a spurious relationship is relevant to stochastic trend processes as well. 
-
-Consider the aforementioned random walk process, and another random walk process, `\(x_t=x_{t-1}+\xi_t\)`. 
+Consider two unrelated random walk processes: `$$y_t=y_{t-1}+\zeta_t$$` and  `$$x_t=x_{t-1}+\xi_t$$`. 
 
 Suppose `\(\zeta\sim N(0,1)\)` and `\(\xi\sim N(0,1)\)`, and `\(Cov(\zeta_t,\xi_t)=0\)`.
 ]
@@ -607,19 +536,56 @@ Suppose `\(\zeta\sim N(0,1)\)` and `\(\xi\sim N(0,1)\)`, and `\(Cov(\zeta_t,\xi_
 .right-column[
 The two variables are not related. But if we regress one on another, we are likely to reject the null more frequently than we should.
 
-The previous 'fix', which involved adding a trend in the regression, doesn't quite work here.
-
-Luckily, we have just the right 'fix' to the issue. It involves first-differencing both series and regressing `\(\Delta y_t\)` on `\(\Delta x_t\)`. In effect, we are removing stochastic trends prior to running a regression.
+Luckily, we can 'fix' the issue. We can do so by first-differencing both series and regressing `\(\Delta y_t\)` on `\(\Delta x_t\)`. In so doing, we are removing a stochastic trend from each series prior to running a regression.
 ]
 
 ---
 
 
 
+# Spurious relationship: Deterministic trends
+
+.right-column[
+Consider two trending variables: `$$y_t = \gamma t + \nu_t,\;~~\nu\sim iid~\text{N}(0,\sigma_{\nu}^2),$$` and `$$x_t = \delta t + \upsilon_t,\;~~\upsilon\sim iid~\text{N}(0,\sigma_{\upsilon}^2),$$` where `\(Cov(\nu_t,\upsilon_t) = 0\)`. 
+
+To keep things simple, suppose `\(\sigma_{\nu}^2=\sigma_{\upsilon}^2=1\)`. And, also, suppose `\(y\)` and `\(x\)` are trending in the same direction, i.e., `\(\gamma\)` and `\(\delta\)` are some positive scalars, say, `\(0.3\)` and `\(0.5\)`, respectively.
+]
+
+---
 
 
+# Spurious relationship: Deterministic trends
+
+.right-column[
+
+![](figures/lecture5/spurious_d.png)
+
+]
+
+---
+
+# Spurious relationship: Deterministic trends
+
+.right-column[
+These two series are not related, we know. 
+
+But if we were to regress `\(y\)` on `\(x\)`, we are likely to find the (statistically significant) relationship between the two. This would be a spurious relationship stemming from the presence of (deterministic) trends in the two series.
+]
+
+---
 
 
+# Spurious relationship: Deterministic trends
+
+.right-column[
+We can think of a trend as an omitted variable, in this instance. 
+
+If so, then there is an easy 'fix' to the issue: Include a trend as an additional variable in the regression.
+
+Indeed, if we regress `\(y\)` on `\(x\)` and `\(t\)`, where `\(t=1,\ldots,T\)`, the previously detected statistically significant (but spurious) relationship between the two series will vanish.
+]
+
+---
 
 
 # Readings
@@ -629,8 +595,6 @@ Luckily, we have just the right 'fix' to the issue. It involves first-differenci
 ]
 
 .pull-right[
-Ubilava, [Chapter 4](https://davidubilava.com/forecasting/docs/trends.html) and [Chapter 5](https://davidubilava.com/forecasting/docs/seasonality.html)
-
 Gonzalez-Rivera, Chapter 10
 
 Hyndman &amp; Athanasopoulos, [3.2](https://otexts.com/fpp3/components.html), [13.1](https://otexts.com/fpp3/weekly.html)

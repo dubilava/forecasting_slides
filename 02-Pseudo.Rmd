@@ -173,7 +173,7 @@ where $P$ is the total number of out-of-sample forecasts.
 # Measures of forecast accuracy
 
 .right-column[
-The MAFE assumes absolute loss, while the RMSFE assumes quadratic loss. 
+The MAFE assumes absolute loss; the RMSFE assumes quadratic loss. 
 
 The lower is the measure of the forecast accuracy, the better is the model or the method used in generating forecasts. 
 
@@ -186,9 +186,11 @@ Unlike some of the better-known in-sample goodness-of-fit measures (e.g., R-squa
 # Measures of forecast adequacy
 
 .right-column[
-MAFE and RMSFE (and other similar measures of forecast accuracy) are *relative* measures designed to compare forecasts. These are the mean values (or monotonic transformations thereof) of some loss functions. 
+MAFE and RMSFE (or other similar measures) are *relative* measures designed to compare forecasts. These are the mean values (or monotonic transformations thereof) of some loss functions. 
 
-But there also exist *absolute* measures designed to evaluate each forecast separately. These are measures of forecast *unbiasedness* and *efficiency*, together forming the measure of forecast adequacy (or *rationality*).
+There also exist *absolute* measures designed to evaluate each forecast separately.
+
+These are measures of forecast *unbiasedness* and *efficiency*, together forming the measure of forecast *adequacy* (or *rationality*).
 ]
 
 ---

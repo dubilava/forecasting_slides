@@ -400,11 +400,33 @@ From this, we can obtain lower and upper intervals of the forecast, given by: `$
 ---
 
 
-# Forecasting U.S. Mortgage Rates
+# U.S. Mortgage Rates: Multi-step-ahead forecasts
 
 .right-column[
 
 ![](figures/lecture5/mortgage_forecast.png)
+
+]
+
+---
+
+
+# U.S. Mortgage Rates: One-step-ahead forecasts
+
+.right-column[
+
+![](figures/lecture5/mortgage1_forecast.png)
+
+]
+
+---
+
+
+# U.S. Mortgage Rates: Forecast errors
+
+.right-column[
+
+![](figures/lecture5/ac_mortgage.png)
 
 ]
 
@@ -491,46 +513,6 @@ The second term in the exponential function comes from the implied assumption th
 ---
 
 
-# Using R-squared for model selection
-
-.right-column[
-Recall the most frequently used (and often abused) R-squared: `$$R^2 = 1-\frac{\sum_{t=1}^{T}\hat{e}_t^2}{\sum_{t=1}^{T}(y_t - \bar{y})^2}$$`
-
-Adjusted R-squared accounts for the loss in degrees of freedom: `$$\bar{R}^2 = 1-\frac{\sum_{t=1}^{T}\hat{e}_t^2}{\sum_{t=1}^{T}(y_t - \bar{y})^2}\left(\frac{T-1}{T-k}\right),$$` where `\(k\)` denotes the number of estimated parameters.
-]
-
----
-
-
-# Using information criteria for model selection
-
-.right-column[
-The adjustment made to the R-squared might not be 'enough' so select a 'good' forecasting model, however.
-
-Information criteria penalize for the loss in degrees of freedom more 'harshly' than the adjusted R-squared:
-`$$\begin{aligned}
-AIC &amp; = \ln{\left(\sum_{t=1}^{T}{\hat{e}_t^2}\right)} + 2\frac{k}{T} \\
-SIC &amp; = \ln{\left(\sum_{t=1}^{T}{\hat{e}_t^2}\right)} + \ln{T}\frac{k}{T}
-\end{aligned}$$`
-]
-
----
-
-
-# Model Selection
-
-.right-column[
-Things to remember about the information criteria:
-- Less is better.
-- Relative (not absolute) values of the criteria matter.
-- SIC selects a more parsimonious model than AIC.
-- The measures are used to compare fit, so long as the dependent variable is the same across the models.
-]
-
----
-
-
-
 # Spurious relationships
 
 .right-column[
@@ -570,7 +552,7 @@ These two series are not related, we know. But if we were to regress `\(y\)` on 
 
 One can think of a trend as an omitted variable. If so, then the 'fix' to the issue is to include a trend as another variable in the regression.
 
-Indeed, if we regress `\(y\)` on `\(x\)` and `\(t\)`, where `\(t=1,\ldots,T\)`, the previously detected spurious relationship between the two series will vanish.
+Indeed, if we regress `\(y\)` on `\(x\)` and `\(t\)`, where `\(t=1,\ldots,T\)`, the previously detected spurious relationship will vanish.
 ]
 
 ---
@@ -629,8 +611,6 @@ Luckily, we have just the right 'fix' to the issue. It involves first-differenci
 ]
 
 .pull-right[
-Ubilava, [Chapter 4](https://davidubilava.com/forecasting/docs/trends.html) and [Chapter 5](https://davidubilava.com/forecasting/docs/seasonality.html)
-
 Gonzalez-Rivera, Chapter 10
 
 Hyndman &amp; Athanasopoulos, [3.2](https://otexts.com/fpp3/components.html), [13.1](https://otexts.com/fpp3/weekly.html)

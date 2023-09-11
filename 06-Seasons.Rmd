@@ -1,0 +1,195 @@
+---
+title: "Forecasting for Economics and Business"
+subtitle: "Lecture 6: Forecasting Seasonal Series"
+author: "David Ubilava"
+date: "University of Sydney"
+output:
+  xaringan::moon_reader:
+    css: [default, metropolis, metropolis-fonts, style.css]
+    lib_dir: libs
+    includes:
+      after_body: insert-logo.html
+    nature:
+      highlightStyle: github
+      countIncrementalSlides: false
+      ratio: '16:9'
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, fig.width = 11, fig.height = 7)
+```
+
+
+
+```{r echo=FALSE, include=FALSE, message=FALSE}
+library(data.table)
+library(ggplot2)
+library(fastDummies)
+```
+
+# Sources of seasonality
+
+.pull-left[
+![](Art/trends.png)
+]
+
+.pull-right[
+Seasonality is a fluctuating pattern *within a year* that arise from links of technologies, preferences, and institutions to the calendar.
+
+Typically applied to monthly or quarterly data, it may very well be applied to weekly or daily data. 
+
+Agricultural prices, energy sales, airfare are some of the examples of time series with an apparent seasonal pattern.
+]
+
+---
+
+
+
+
+# Seasonality
+
+.right-column[
+A way to deal with the seasonality in data is to remove it prior to use of the series (seasonally adjusted time series). Indeed, some economic time series are only/also available in a seasonally-adjusted form.
+
+Otherwise, and more interestingly, we can directly account for seasonality in a regression setting by incorporating the seasonal component into the model. 
+]
+
+---
+
+
+# Modeling seasonality using dummy variables
+
+.right-column[
+A seasonal model is given by: $$y_t = \sum_{i=1}^{s}\gamma_i d_{it} + \varepsilon_t,$$
+where $s$ denotes the frequency of the data, and $d_{it}$ takes the value of 1 repeatedly after every $s$ periods, and such that $\sum_{i} d_{it} = 1$, $\forall t$.
+]
+
+---
+
+
+# Modeling seasonality using dummy variables
+
+.pull-left[
+Note, there is no intercept in this specification.
+]
+
+.pull-right[
+The same as before only this time in matrix notation (easier to visualize): 
+$$\begin{bmatrix}
+y_{1}\\
+y_{2}\\
+\vdots \\
+y_{T}
+\end{bmatrix} = 
+\begin{bmatrix}
+1 & 0 & \cdots & 0 \\
+0 & 1 & \cdots & 0 \\
+\vdots & \vdots & \ddots &\vdots \\
+0 & 0 & \cdots & 1
+\end{bmatrix}
+\begin{bmatrix}
+\gamma_{1}\\
+\gamma_{2}\\
+\vdots \\
+\gamma_{s}
+\end{bmatrix}+
+\begin{bmatrix}
+\varepsilon_{1}\\
+\varepsilon_{2}\\
+\vdots \\
+\varepsilon_{T}
+\end{bmatrix}$$
+]
+
+---
+
+
+# Modeling seasonality using dummy variables
+
+.right-column[
+Alternatively, we can rewrite the seasonal model as follows: $$y_t = \alpha + \sum_{i=1}^{s-1}\delta_i d_{it} + \varepsilon_t,$$ in which case $\alpha$ is an intercept of an omitted season, and $\delta_i$ represents a deviation from it during the $i^{th}$ season.
+
+The two models are equivalent. Assuming the dummy variable associated with the season $s$, $d_{s}$, was dropped, $\alpha=\gamma_s$, and $\alpha+\delta_i=\gamma_i\;~\forall~i\ne s$.
+
+]
+
+---
+
+
+# Modeling seasonality using harmonic variables
+
+.right-column[
+When dealing with weekly or daily data, the dummy variable approach of modeling seasonality may not be practical, nor efficient. 
+
+A way to model seasonality without giving up too many degrees of freedom is by using the so-called seasonal harmonic variables, which are terms from a Fourier series.
+
+]
+
+---
+
+
+# Modeling seasonality using harmonic variables
+
+.right-column[
+
+Suppose, we are working with weekly time series. There are 52.143 weeks in the year. A model with Fourier terms will have the following form: $$y_t = \alpha+\sum_{k=1}^{K}\left[\beta_{1k}\sin\left(\frac{2\pi kt}{52.143}\right)+\beta_{2k}\cos\left(\frac{2\pi kt}{52.143}\right)\right]+\varepsilon_t,$$ where the value of $K$ can be determined using an information criterion (e.g., AIC or SIC). 
+
+]
+
+---
+
+
+# Fitting seasonality to U.S. vehicle miles traveled
+
+
+
+
+# Forecasting seasonality
+
+.right-column[
+Any future realization of a random variable that is assumed to follow a seasonal model is: $$y_{t+h} = \alpha + \sum_{i=1}^{s-1}\delta_i d_{i,t+h} + \varepsilon_{t+h}.$$ 
+]
+
+---
+
+
+# Point forecast
+
+.right-column[
+Point forecast of $y_{t+h}$ is given by: $$y_{t+h|t} = E(y_{t+h}|\Omega_t) = \alpha + \sum_{i=1}^{s-1}\delta_i d_{i,t+h}$$ Here, again, we assume the estimated parameters of the model are equal to its true parameters.
+
+The forecast error is given by: $$e_{t+h|t} = y_{t+h} - y_{t+h|t} = \varepsilon_{t+h}$$
+]
+
+---
+
+# Interval forecast
+
+.right-column[
+The forecast variance is given by: $$\sigma_{t+h|t}^2 = E(e_{t+h|t}^2) =  E(\varepsilon_{t+h}^2) = \sigma^2_{\varepsilon},\;~~\forall\;h$$
+
+Assuming normal distribution the interval forecast is given by:
+$$\hat{y}_{t+h|t}\pm 1.96\sigma_{t+h|t}$$
+]
+
+---
+
+
+
+
+
+# Readings
+
+.pull-left[
+![](Art/todolist.png)
+]
+
+.pull-right[
+Ubilava, [Chapter 4](https://davidubilava.com/forecasting/docs/trends.html) and [Chapter 5](https://davidubilava.com/forecasting/docs/seasonality.html)
+
+Gonzalez-Rivera, Chapter 10
+
+Hyndman & Athanasopoulos, [3.2](https://otexts.com/fpp3/components.html), [13.1](https://otexts.com/fpp3/weekly.html)
+]
+

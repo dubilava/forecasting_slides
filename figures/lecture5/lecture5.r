@@ -10,6 +10,13 @@ library(crypto2)
 library(fredr)
 fredr_set_key("7a1db535f59c2ac4382b9c22a15b5f06")
 library(stringr)
+library(readabs)
+Sys.setenv(R_READABS_PATH = "figures/lecture5")
+library(lmtest)
+library(sandwich)
+
+
+all_wpi <- read_abs("6345.0")
 
 # # camcorder stuff
 # camcorder::gg_record(
@@ -58,7 +65,7 @@ gg_corn <- ggplot(corn_dt[Year>1960 & Year<=2020],aes(x=Year,y=Value))+
   theme(plot.title=element_text(size=rel(1.1),colour="dimgray"))
 
 
-life_dt <- fread("figures/lecture5//life-expectancy-at-birth-including-the-un-projections.csv")
+life_dt <- fread("figures/lecture5/life-expectancy-at-birth-including-the-un-projections.csv")
 
 gg_life <- ggplot(life_dt[Country=="Japan" & Year>1950 & Year<=2020],aes(x=Year,y=Estimate))+
   geom_line(linewidth=.8,na.rm=T,color="dimgray")+
@@ -68,18 +75,22 @@ gg_life <- ggplot(life_dt[Country=="Japan" & Year>1950 & Year<=2020],aes(x=Year,
   theme(plot.title=element_text(size=rel(1.1),colour="dimgray"))
 
 
-interest_dt <- fread("figures/lecture5//real_interest_rates_10y.csv")
+mortgate_dt <- data.table(fredr(series_id="MORTGAGE30US",observation_start=as.Date("1990-01-01"),observation_end=as.Date("2022-12-31"),frequency="m",units="lin"))
 
-gg_interest <- ggplot(interest_dt[DATE<="2020-12-31"],aes(x=DATE,y=REAINTRATREARAT10Y))+
+# interest_dt <- fread("figures/lecture5/real_interest_rates_10y.csv")
+
+gg_mortgage <- ggplot(mortgate_dt,aes(x=date,y=value))+
   geom_line(linewidth=.8,na.rm=T,color="dimgray")+
-  scale_x_date(breaks=c(as.Date("1980-01-01"),as.Date("2000-01-01"),as.Date("2020-01-01")),date_labels="%Y")+
-  labs(title="Interest rate (USA)",x="Year",y="Interest rate (%)")+
-  coord_cartesian(ylim=c(-1.5,8.5),xlim=c(as.Date("1980-01-01"),as.Date("2021-12-31")))+
+  scale_y_continuous(breaks=c(2,4,6,8,10,12))+
+  labs(title="Mortgage average (USA)",x="Year",y="Interest rate (%)")+
+  coord_cartesian(ylim=c(2,12),xlim=c(as.Date("1990-01-01"),as.Date("2022-12-31")))+
   theme_eg()+
   theme(plot.title=element_text(size=rel(1.1),colour="dimgray"))
 
 
-gg_combined <- plot_grid(gg_life,gg_interest,ncol=2,align="hv",hjust=0,vjust=1)
+gg_combined <- plot_grid(gg_life,gg_mortgage,ncol=2,align="hv",hjust=0,vjust=1)
+
+gg_combined
 
 
 ggsave("figures/lecture5/trends_combined.png",gg_combined,width=6.5,height=6.5*9/16,dpi="retina",device="png")
@@ -189,7 +200,7 @@ btc_dt[,`:=`(btc_lo=btc_rw-1.96*sqrt(h)*ifelse(date<h1,NA,sd(diff(btc_dt[date<h1
 # plot the time series
 gg_btc <- ggplot(btc_dt,aes(x=date))+
   geom_ribbon(aes(ymin=btc_lo,ymax=btc_hi),fill="coral",alpha=.2)+
-  geom_line(aes(y=btc_y),linewidth=.6,color="black",na.rm=T)+
+  geom_line(aes(y=btc_y),linewidth=.6,color="dimgray",na.rm=T)+
   geom_line(aes(y=btc_f),linewidth=.6,color="gray",na.rm=T)+
   geom_line(aes(y=btc_lo),linetype=2,linewidth=.4,color="coral",na.rm=T)+
   geom_line(aes(y=btc_hi),linetype=2,linewidth=.4,color="coral",na.rm=T)+
@@ -205,6 +216,8 @@ ggsave("figures/lecture5/btc_forecast.png",gg_btc,width=6.5,height=6.5*9/16,dpi=
 
 load("figures/lecture5/interest_rates.RData")
 
+interest_rates <- mortgate_dt[,.(date,y=value)]
+
 interest_rates[,`:=`(w=log(y),t=1:nrow(interest_rates))]
 interest_rates[,`:=`(haty=fitted(lm(y~t)))]
 interest_rates[,`:=`(hatw=fitted(lm(w~t)))]
@@ -212,7 +225,7 @@ interest_rates[,`:=`(hatz=exp(hatw+summary(lm(w~t))$sigma^2/2))]
 
 ggplot(interest_rates,aes(x=date,y=y))+
   geom_line(color="dimgray",linewidth=.8)+
-  geom_line(aes(y=haty),color="black",size=.8,linetype=5)+
+  geom_line(aes(y=haty),color="black",linewidth=.8,linetype=5)+
   labs(x="Year",y="Interest Rate (%)")+
   theme_eg()+
   theme(axis.title = element_text(size=22),axis.text = element_text(size=18))
@@ -228,15 +241,75 @@ interest_rates[,`:=`(l=f-1.96*summary(est)$sigma,u=f+1.96*summary(est)$sigma)]
 
 gg_mortgage <- ggplot(interest_rates,aes(x=date,y=y))+
   geom_ribbon(aes(ymin=l,ymax=u),fill="coral",alpha=.2)+
-  geom_line(color="black",linewidth=.6)+
+  geom_line(color="dimgray",linewidth=.6)+
   geom_line(data=interest_rates[date>h1],color="gray",linewidth=.6)+
   geom_line(aes(y=f),color="coral",linewidth=.6,linetype=5,na.rm=T)+
   geom_line(aes(y=l),color="coral",linewidth=.4,linetype=2,na.rm=T)+
   geom_line(aes(y=u),color="coral",linewidth=.4,linetype=2,na.rm=T)+
-  labs(x="Year",y="Interest Rate (%)")+
+  scale_y_continuous(breaks=c(2,4,6,8,10,12))+
+  labs(x="Year",y="Interest rate (%)")+
+  coord_cartesian(ylim=c(1,13),xlim=c(as.Date("1990-01-01"),as.Date("2022-12-31")))+
   theme_eg()
 
 ggsave("figures/lecture5/mortgage_forecast.png",gg_mortgage,width=6.5,height=6.5*9/16,dpi="retina",device="png")
+
+
+h2 <- max(interest_rates$date)
+
+oos <- interest_rates[date>h1]$date
+
+interest_rates[,`:=`(f_t=as.numeric(NA),f_r=as.numeric(NA),f_tl=as.numeric(NA),f_tu=as.numeric(NA))]
+
+for(i in oos){
+  
+  # linear trend
+  est <- lm(y~t,data=interest_rates[date<i])
+  interest_rates[date==i,f_t:=est$coefficients[1]+est$coefficients[2]*interest_rates[date==i]$t]
+  
+  interest_rates[date==i,f_r:=interest_rates[date==max(interest_rates[date<i]$date)]$y]
+  
+  interest_rates[date==i,`:=`(f_tl=f_t-1.96*summary(est)$sigma,f_tu=f_t+1.96*summary(est)$sigma)]
+  
+}
+
+
+gg_mortgage1 <- ggplot(interest_rates,aes(x=date,y=y))+
+  geom_ribbon(aes(ymin=f_tl,ymax=f_tu),fill="coral",alpha=.2)+
+  geom_line(color="dimgray",linewidth=.6)+
+  geom_line(data=interest_rates[date>h1],color="gray",linewidth=.6)+
+  geom_line(aes(y=f_t),color="coral",linewidth=.6,linetype=5,na.rm=T)+
+  geom_line(aes(y=f_tl),color="coral",linewidth=.4,linetype=2,na.rm=T)+
+  geom_line(aes(y=f_tu),color="coral",linewidth=.4,linetype=2,na.rm=T)+
+  scale_y_continuous(breaks=c(2,4,6,8,10,12))+
+  labs(x="Year",y="Interest rate (%)")+
+  coord_cartesian(ylim=c(1,13),xlim=c(as.Date("1990-01-01"),as.Date("2022-12-31")))+
+  theme_eg()
+
+ggsave("figures/lecture5/mortgage1_forecast.png",gg_mortgage1,width=6.5,height=6.5*9/16,dpi="retina",device="png")
+
+interest_rates[,`:=`(e_t=y-f_t)]
+
+mz_reg <- lm(e_t~f_t,data=interest_rates)
+coeftest(mz_reg,vcov.=vcovHAC(mz_reg))
+
+# obtain autocorrelations
+maxlag <- 36
+acf_dt <- data.table(k=c(1:maxlag),rho=c(acf(interest_rates[date%in%oos]$e_t,lag.max=maxlag,plot=F)[1:maxlag]$acf))
+
+# plot the autocorrelogram
+gg_acf <- ggplot(acf_dt,aes(x=k,y=rho))+
+  geom_hline(yintercept=c(-1.96/sqrt(nrow(interest_rates[date%in%oos])),1.96/sqrt(nrow(interest_rates[date%in%oos]))),linewidth=.8,linetype=5,col="dimgray")+
+  geom_segment(aes(xend=k,yend=0),linewidth=0.8,col="gray")+
+  geom_point(shape=21,size=2.5,stroke=.8,color="black",fill="gray")+
+  scale_x_continuous(breaks=seq(5,maxlag,5),labels=seq(5,maxlag,5))+
+  scale_y_continuous(breaks=seq(-.2,1,.2),labels=sprintf("%.1f",round(seq(-.2,1,.2),1)))+
+  labs(x="k",y=expression(hat(rho)[k]))+
+  coord_cartesian(ylim=c(-.2,1),xlim=c(1.5,maxlag-0.5))+
+  theme_eg()
+
+gg_acf
+
+ggsave("figures/lecture5/ac_mortgage.png",gg_acf,width=6.5,height=6.5*9/16,dpi="retina",device="png")
 
 
 

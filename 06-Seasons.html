@@ -40,7 +40,7 @@ class: center, middle, inverse, title-slide
 # Sources of seasonality
 
 .pull-left[
-![](Art/trends.png)
+![](Art/seasonality.png)
 ]
 
 .pull-right[
@@ -54,15 +54,23 @@ Agricultural prices, energy sales, airfare are some of the examples of time seri
 ---
 
 
-
-
-# Seasonality
+# Seasonal adjustment
 
 .right-column[
-A way to deal with the seasonality in data is to remove it prior to use of the series (seasonally adjusted time series). Indeed, some economic time series are only/also available in a seasonally-adjusted form.
+A way to deal with the seasonality in data is to remove it prior to use of the series (seasonally adjusted time series). 
 
-Otherwise, and more interestingly, we can directly account for seasonality in a regression setting by incorporating the seasonal component into the model. 
+Indeed, some economic time series are only/also available in a seasonally-adjusted form.
 ]
+
+---
+
+
+# Seasonally adjusted unemployment rates
+
+.right-column[
+![](figures/lecture6/unemployment_rates.png)
+]
+
 
 ---
 
@@ -70,7 +78,9 @@ Otherwise, and more interestingly, we can directly account for seasonality in a 
 # Modeling seasonality using dummy variables
 
 .right-column[
-A seasonal model is given by: `$$y_t = \sum_{i=1}^{s}\gamma_i d_{it} + \varepsilon_t,$$`
+Alternatively, and often preferably, we can just model seasonality.
+
+A seasonal model is given by: `$$y_t = \sum_{i=1}^{s}\gamma_i d_{it} + \varepsilon_t,\;~~\varepsilon_t\sim iid~\text{N}(0,\sigma^2)$$`
 where `\(s\)` denotes the frequency of the data, and `\(d_{it}\)` takes the value of 1 repeatedly after every `\(s\)` periods, and such that `\(\sum_{i} d_{it} = 1\)`, `\(\forall t\)`.
 ]
 
@@ -79,12 +89,8 @@ where `\(s\)` denotes the frequency of the data, and `\(d_{it}\)` takes the valu
 
 # Modeling seasonality using dummy variables
 
-.pull-left[
-Note, there is no intercept in this specification.
-]
-
-.pull-right[
-The same as before only this time in matrix notation (easier to visualize): 
+.right-column[
+The same as before only this time in matrix notation (easier to visualize what goes on): 
 `$$\begin{bmatrix}
 y_{1}\\
 y_{2}\\
@@ -109,6 +115,8 @@ y_{T}
 \vdots \\
 \varepsilon_{T}
 \end{bmatrix}$$`
+
+(Note, there is no intercept in this specification)
 ]
 
 ---
@@ -126,10 +134,71 @@ The two models are equivalent. Assuming the dummy variable associated with the s
 ---
 
 
-# Modeling seasonality using harmonic variables
+# U.S. natural gas consumption: Observed series
 
 .right-column[
-When dealing with weekly or daily data, the dummy variable approach of modeling seasonality may not be practical, nor efficient. 
+![](figures/lecture6/natgas.png)
+]
+
+
+---
+
+
+# U.S. natural gas consumption: Fitted series
+
+.right-column[
+![](figures/lecture6/natgasfit.png)
+]
+
+
+---
+
+
+# Forecasting seasonality
+
+.right-column[
+Any future realization of a random variable that is assumed to have a deterministic seasonal component is: `$$y_{t+h} = \sum_{i=1}^{s}\gamma_i d_{i,t+h} + \varepsilon_{t+h}.$$` 
+]
+
+---
+
+
+# Point forecast
+
+.right-column[
+Point forecast of `\(y_{t+h}\)` is given by: `$$y_{t+h|t} = \mathbb{E}\left(y_{t+h}|\Omega_t\right) = \sum_{i=1}^{s}\hat{\gamma}_i d_{i,t+h}.$$` Here, again, we will assume the estimated parameters of the model are equal to its true parameters.
+]
+
+---
+
+# Interval forecast
+
+.right-column[
+The forecast error is: `$$e_{t+h} = y_{t+h} - y_{t+h|t} = \varepsilon_{t+h},\;~~\forall\;h$$`
+The forecast variance is: `$$\sigma_{t+h}^2 = \mathbb{E}(e_{t+h|t}^2) =\mathbb{E}(\varepsilon_{t+h}^2) = \sigma^2,\;~~\forall\;h$$`
+
+The interval forecast is:
+`$$\hat{y}_{t+h|t}\pm 1.96\sigma_{t+h}$$`
+]
+
+---
+
+
+# U.S. natural gas consumption: Multistep forecasts
+
+.right-column[
+![](figures/lecture6/natgasfor.png)
+]
+
+
+---
+
+
+
+# Seasonal harmonic variables
+
+.right-column[
+When dealing with weekly or daily data, the dummy variable approach of modeling seasonality would be nether practical nor efficient. 
 
 A way to model seasonality without giving up too many degrees of freedom is by using the so-called seasonal harmonic variables, which are terms from a Fourier series.
 
@@ -142,47 +211,17 @@ A way to model seasonality without giving up too many degrees of freedom is by u
 
 .right-column[
 
-Suppose, we are working with weekly time series. There are 52.143 weeks in the year. A model with Fourier terms will have the following form: `$$y_t = \alpha+\sum_{k=1}^{K}\left[\beta_{1k}\sin\left(\frac{2\pi kt}{52.143}\right)+\beta_{2k}\cos\left(\frac{2\pi kt}{52.143}\right)\right]+\varepsilon_t,$$` where the value of `\(K\)` can be determined using an information criterion (e.g., AIC or SIC). 
+The framework can be applied to quarterly or monthly data too. 
+
+For example, a model with Fourier terms applied to monthly series will have the following form: `$$y_t = \alpha+\sum_{k=1}^{K}\left[\beta_{1k}\sin\left(\frac{2\pi kt}{12}\right)+\beta_{2k}\cos\left(\frac{2\pi kt}{12}\right)\right]+\varepsilon_t,$$` where the value of `\(K\)` can be determined using an information criterion (e.g., AIC or SIC). 
 
 ]
 
 ---
 
 
-# Fitting seasonality to U.S. vehicle miles traveled
 
 
-
-
-# Forecasting seasonality
-
-.right-column[
-Any future realization of a random variable that is assumed to follow a seasonal model is: `$$y_{t+h} = \alpha + \sum_{i=1}^{s-1}\delta_i d_{i,t+h} + \varepsilon_{t+h}.$$` 
-]
-
----
-
-
-# Point forecast
-
-.right-column[
-Point forecast of `\(y_{t+h}\)` is given by: `$$y_{t+h|t} = E(y_{t+h}|\Omega_t) = \alpha + \sum_{i=1}^{s-1}\delta_i d_{i,t+h}$$` Here, again, we assume the estimated parameters of the model are equal to its true parameters.
-
-The forecast error is given by: `$$e_{t+h|t} = y_{t+h} - y_{t+h|t} = \varepsilon_{t+h}$$`
-]
-
----
-
-# Interval forecast
-
-.right-column[
-The forecast variance is given by: `$$\sigma_{t+h|t}^2 = E(e_{t+h|t}^2) =  E(\varepsilon_{t+h}^2) = \sigma^2_{\varepsilon},\;~~\forall\;h$$`
-
-Assuming normal distribution the interval forecast is given by:
-`$$\hat{y}_{t+h|t}\pm 1.96\sigma_{t+h|t}$$`
-]
-
----
 
 
 
@@ -195,8 +234,6 @@ Assuming normal distribution the interval forecast is given by:
 ]
 
 .pull-right[
-Ubilava, [Chapter 4](https://davidubilava.com/forecasting/docs/trends.html) and [Chapter 5](https://davidubilava.com/forecasting/docs/seasonality.html)
-
 Gonzalez-Rivera, Chapter 10
 
 Hyndman &amp; Athanasopoulos, [3.2](https://otexts.com/fpp3/components.html), [13.1](https://otexts.com/fpp3/weekly.html)

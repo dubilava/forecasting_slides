@@ -45,7 +45,7 @@ Agricultural prices, energy sales, airfare are some of the examples of time seri
 ---
 
 
-# Seasonal adjustment
+# Some series are seasonally adjusted
 
 .right-column[
 A way to deal with the seasonality in data is to remove it prior to use of the series (seasonally adjusted time series). 
@@ -78,7 +78,7 @@ where $s$ denotes the frequency of the data, and $d_{it}$ takes the value of 1 r
 ---
 
 
-# Modeling seasonality using dummy variables
+# A matrix of dummy variables as regressors
 
 .right-column[
 The same as before only this time in matrix notation (easier to visualize what goes on): 
@@ -113,7 +113,7 @@ y_{T}
 ---
 
 
-# Modeling seasonality using dummy variables
+# Beware of the dummy variable trap
 
 .right-column[
 Alternatively, we can rewrite the seasonal model as follows: $$y_t = \alpha + \sum_{i=1}^{s-1}\delta_i d_{it} + \varepsilon_t,$$ in which case $\alpha$ is an intercept of an omitted season, and $\delta_i$ represents a deviation from it during the $i^{th}$ season.
@@ -145,7 +145,7 @@ The two models are equivalent. Assuming the dummy variable associated with the s
 ---
 
 
-# Forecasting seasonality
+# Forecasting seasonal patterns
 
 .right-column[
 Any future realization of a random variable that is assumed to have a deterministic seasonal component is: $$y_{t+h} = \sum_{i=1}^{s}\gamma_i d_{i,t+h} + \varepsilon_{t+h}.$$ 
@@ -181,7 +181,6 @@ $$\hat{y}_{t+h|t}\pm 1.96\sigma_{t+h}$$
 ![](figures/lecture6/natgasfor.png)
 ]
 
-
 ---
 
 
@@ -211,9 +210,72 @@ For example, a model with Fourier terms applied to monthly series will have the 
 ---
 
 
+# Selecting the optimal number of Fourier terms
+
+.right-column[
+```{r fourier-terms, echo=FALSE, message=FALSE, warnings=FALSE, results='asis'}
+tabl <- "
+| k | AIC    | SIC    |
+|---|:------:|:------:|
+|1  | 15.009 | 15.096 |
+|2  | 13.969 | 14.114 |
+|3  | 13.873 | 14.075 |
+|4  | 13.886 | 14.147 |
+|5  | 13.794 | 14.112 |
+|6  | 13.837 | 14.213 |
+"
+cat(tabl)
+```
+]
+
+---
 
 
 
+# U.S. natural gas consumption: Multistep forecasts
+
+.right-column[
+![](figures/lecture6/natgashar.png)
+]
+
+
+---
+
+
+# Trending seasonal series
+
+.right-column[
+Many seasonal time series are also trending.
+
+It is quite easy to address this. We simply need to introduce a deterministic trend into the regression. For example, $$y_t = \alpha + \beta t + \sum_{i=1}^{s-1}\delta_i d_{it} + \varepsilon_t.$$
+
+Any $h$-step-ahead forecast can be obtained in a usual manner.
+
+]
+
+---
+
+
+# U.S. natural gas consumption: One-step forecasts
+
+.right-column[
+
+![](figures/lecture6/natgas1_forecast.png)
+
+]
+
+---
+
+
+# U.S. natural gas consumption: Forecast errors
+
+.right-column[
+
+![](figures/lecture6/natgas1_error.png)
+
+]
+
+---
 
 
 
@@ -225,8 +287,6 @@ For example, a model with Fourier terms applied to monthly series will have the 
 ]
 
 .pull-right[
-Gonzalez-Rivera, Chapter 10
-
-Hyndman & Athanasopoulos, [3.2](https://otexts.com/fpp3/components.html), [13.1](https://otexts.com/fpp3/weekly.html)
+Hyndman & Athanasopoulos,  [7.4](https://otexts.com/fpp3/weekly.html),  [10.5](https://otexts.com/fpp3/weekly.html),  [13.1](https://otexts.com/fpp3/weekly.html)
 ]
 

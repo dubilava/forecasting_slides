@@ -606,6 +606,6 @@ Indeed, if we regress $y$ on $x$ and $t$, where $t=1,\ldots,T$, the previously d
 .pull-right[
 Gonzalez-Rivera, Chapter 10
 
-Hyndman & Athanasopoulos, [3.2](https://otexts.com/fpp3/components.html), [13.1](https://otexts.com/fpp3/weekly.html)
+Hyndman & Athanasopoulos, [3.2](https://otexts.com/fpp3/components.html), [10.4](https://otexts.com/fpp3/weekly.html)
 ]
 

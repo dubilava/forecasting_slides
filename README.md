@@ -11,3 +11,5 @@ Below are the links to the lecture slides for the unit on economic forecasting.
 [Lecture 5: Forecasting Trending Series](https://davidubilava.com/forecasting_slides/05-Trends.html)
 
 [Lecture 6: Forecasting Seasonal Series](https://davidubilava.com/forecasting_slides/06-Seasons.html)
+
+[Lecture 7: Forecasting Temporally Dependent Series&mdash;Autoregression](https://davidubilava.com/forecasting_slides/07-Autoregression.html)

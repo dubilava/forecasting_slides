@@ -4,7 +4,7 @@
     <title>Forecasting for Economics and Business</title>
     <meta charset="utf-8" />
     <meta name="author" content="David Ubilava" />
-    <script src="libs/header-attrs-2.23/header-attrs.js"></script>
+    <script src="libs/header-attrs-2.22/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/metropolis.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/metropolis-fonts.css" rel="stylesheet" />
@@ -18,7 +18,7 @@ class: center, middle, inverse, title-slide
 # Forecasting for Economics and Business
 ]
 .subtitle[
-## Lecture 7: Autoregression
+## Lecture 7: Forecasting Temporally Dependent Series—Autoregression
 ]
 .author[
 ### David Ubilava
@@ -142,7 +142,7 @@ Then, as `\(k \to \infty\)`: `$$y_t = \frac{\alpha}{1-\beta_1} + \sum_{i=0}^{\in
 # Mean and variance of AR(1)
 
 .right-column[
-*Unconditional mean*: `$$\mu = E\left(y_t\right) = E\left(\frac{\alpha}{1-\beta_1} + \sum_{i=0}^{\infty}\beta_1^i\varepsilon_{t-i}\right) = \frac{\alpha}{1-\beta_1}$$`
+*Unconditional mean*: `$$\mu = \mathbb{E}\left(y_t\right) = \mathbb{E}\left(\frac{\alpha}{1-\beta_1} + \sum_{i=0}^{\infty}\beta_1^i\varepsilon_{t-i}\right) = \frac{\alpha}{1-\beta_1}$$`
 
 *Unconditional variance*: `$$\gamma_0 = Var\left(y_t\right) = Var\left(\frac{\alpha}{1-\beta_1} + \sum_{i=0}^{\infty}\beta_1^i\varepsilon_{t-i}\right) = \frac{\sigma_{\varepsilon}^2}{1-\beta_1^2}$$`
 ]
@@ -153,11 +153,11 @@ Then, as `\(k \to \infty\)`: `$$y_t = \frac{\alpha}{1-\beta_1} + \sum_{i=0}^{\in
 # Autocovariance of AR(1)
 
 .right-column[
-*Autocovariance*: `$$\gamma_k = Cov(y_t,y_{t-k}) = E[(y_t - \mu)(y_{t-k} - \mu)] = E(y_t y_{t-k}) - \mu^2$$`
+*Autocovariance*: `$$\gamma_k = Cov(y_t,y_{t-k}) = E[(y_t - \mu)(y_{t-k} - \mu)] = \mathbb{E}(y_t y_{t-k}) - \mu^2$$`
 
-Multiply both sides of `\(AR(1)\)` with `\(y_{t-k}\)` and take the expectation: `$$E(y_t y_{t-k}) = \alpha \mu + \beta_1 E(y_{t-1}y_{t-k})$$`
+Multiply both sides of `\(AR(1)\)` with `\(y_{t-k}\)` and take the expectation: `$$\mathbb{E}(y_t y_{t-k}) = \alpha \mu + \beta_1 \mathbb{E}(y_{t-1}y_{t-k})$$`
 
-Substitute in expressions of `\(E(y_t y_{t-k})\)` and `\(E(y_{t-1} y_{t-k})\)`, which is equivalent to `\(E(y_{t} y_{t-k+1})\)`, to obtain: `$$\gamma_k = \beta_1\gamma_{k-1}$$`
+Substitute in expressions of `\(\mathbb{E}(y_t y_{t-k})\)` and `\(\mathbb{E}(y_{t-1} y_{t-k})\)`, which is equivalent to `\(\mathbb{E}(y_{t} y_{t-k+1})\)`, to obtain: `$$\gamma_k = \beta_1\gamma_{k-1}$$`
 ]
 
 ---
@@ -199,8 +199,7 @@ The autocorrelation, `\(\rho\)`, and partial autocorrelation, `\(\pi\)`, functio
 Most things about AR(1) can be generalized to any AR(p). 
 
 AR(p) can be viewed as a bit more complex version of an AR(1). 
-- For example, requirements on the parameters to ensure that an AR(p) is a covariance-stationary process become tedious as the order of autoregression increases 
-  * (luckily, we don't need to worry too much about it).
+- For example, requirements on the parameters to ensure that an AR(p) is a covariance-stationary process become tedious as the order of autoregression increases (luckily, we don't need to worry too much about it).
 ]
 
 ---
@@ -239,35 +238,6 @@ Generally, the autocorrelation and partial autocorrelation functions of the cova
 ---
 
 
-# Augmented Dickey-Fuller (DF) test
-
-.right-column[
-A test of stationarity is equivalent to a unit root test.
-
-Consider an AR(p) process: `$$y_t = \alpha+\beta_1 y_{t-1}+\ldots+\beta_p y_{t-p}+\varepsilon_t.$$`
-
-We would want to know if `\(\beta_1+\ldots+\beta_p=1\)`. But we cannot directly test it. 
-]
-
----
-
-
-# Augmented Dickey-Fuller (DF) test
-
-.right-column[
-Instead, we can rewrite the model as: `$$\Delta y_t = \alpha+\phi y_{t-1}+\varphi\Delta y_{t-1}+\ldots+\varphi\Delta y_{t-p+1}+\varepsilon_t,$$` where `\(\phi=\beta_1+\ldots+\beta_p-1\)`. 
-
-So, testing that `\(\phi=0\)`, which is the Augmented Dickey&amp;ndash;Fuller (ADF) test is equivalent to testing the null hypothesis of nonstationarity. 
-
-In effect, by adding `\(\Delta y_{t-j}\)`, `\(j=1,\ldots,p-1\)`, we ensure that `\(\varepsilon_t\)` is white noise. The critical values of the ADF test statistic are the same as those of the DF test statistic.
-]
-
----
-
-
-
-
-
 
 
 # Order selection in autoregression
@@ -301,10 +271,10 @@ So we need to regress `\(y_t\)` on `\(y_{t-1}\)` and `\(y_{t-2}\)` to estimate t
 ---
 
 
-# One-step-ahead point forecast
+# Onestep point forecast
 
 .right-column[
-One-step-ahead point forecast (ignoring parameter uncertainty): `$$y_{t+1|t} = E(y_{t+1}|\Omega_t) = \alpha + \beta_1 y_{t} + \cdots  + \beta_p y_{t-p+1}$$`
+One-step-ahead point forecast (assuming quadratic loss) is a conditional mean of the random variable in the next period: `$$y_{t+1|t} = \mathbb{E}(y_{t+1}|\Omega_t) = \alpha + \beta_1 y_{t} + \cdots  + \beta_p y_{t-p+1}$$`
 
 One-step-ahead forecast error: `$$e_{t+1|t} = y_{t+1} - y_{t+1|t} = \varepsilon_{t+1}$$`
 ]
@@ -312,10 +282,10 @@ One-step-ahead forecast error: `$$e_{t+1|t} = y_{t+1} - y_{t+1|t} = \varepsilon_
 ---
 
 
-# One-step-ahead interval forecast
+# Onestep interval forecast
 
 .right-column[
-One-step-ahead forecast variance: `$$\sigma_{t+1|t}^2 = E(e_{t+1|t}^2) = E(\varepsilon_{t+1}^2) = \sigma_{\varepsilon}^2$$`
+One-step-ahead forecast variance: `$$\sigma_{t+1|t}^2 = \mathbb{E}(e_{t+1|t}^2) = \mathbb{E}(\varepsilon_{t+1}^2) = \sigma_{\varepsilon}^2$$`
 
 One-step-ahead (95%) interval forecast: `$$y_{t+1|t} \pm 1.96\sigma_{\varepsilon}$$`
 ]
@@ -323,33 +293,38 @@ One-step-ahead (95%) interval forecast: `$$y_{t+1|t} \pm 1.96\sigma_{\varepsilon
 ---
 
 
-# One-spep forecasts of the unemployment rates
+# Onestep forecasts of the unemployment rates
 
 .right-column[
-![](figures/lecture7/unrate_ose.png)
+![](figures/lecture7/unrate_osa.png)
 ]
 
 
 ---
 
 
-# Multi-step-ahead point forecast
+# Multistep point forecast
 
 .right-column[
-h-step-ahead point forecast: `$$y_{t+h|t} = E(y_{t+h}|\Omega_t) = \alpha + \beta_1 y_{t+h-1|t} + \cdots + \beta_p y_{t+h-p|t},$$` where each `\(y_{t+h-j|t}\)`, `\(j&lt;h\)`, is sequentially generated. That is, to generate a forecast for horizon `\(h\)`, forecasts for horizons `\(1\)` through `\(h-1\)` need to be generated first. This is known as the *iterative* method of multi-step-ahead forecasting. 
+h-step-ahead point forecast: `$$y_{t+h|t} = \mathbb{E}(y_{t+h}|\Omega_t) = \alpha + \beta_1 y_{t+h-1|t} + \cdots + \beta_p y_{t+h-p|t},$$` where each `\(y_{t+h-j|t}\)`, `\(j&lt;h\)`, is sequentially generated. That is, to generate a forecast for horizon `\(h\)`, forecasts for horizons `\(1\)` through `\(h-1\)` need to be generated first. This is known as the *iterative* method of multi-step-ahead forecasting. 
 
 h-step-ahead forecast error: `$$e_{t+h|t} = \varepsilon_{t+h} + \beta_1 e_{t+h-1|t} + \cdots + \beta_p e_{t+h-p|t}$$`
+
 ]
 
 ---
 
 
-# Multi-step-ahead interval forecast
+# Multistep interval forecast
 
 .right-column[
 h-step-ahead forecast variance: 
-`$$\sigma_{t+h|t}^2 = \sigma_{\varepsilon}^2 + \sum_{i=1}^{p}\beta_i^2 Var(e_{t+h-i|t}) + 2\sum_{i \neq j}\beta_i\beta_j Cov(e_{t+h-i|t},e_{t+h-j|t})$$`
-These variance and covariances are some functions of the in-sample error variance and model parameters.
+$$
+`\begin{align}
+\sigma_{t+h|t}^2 &amp;= \sigma_{\varepsilon}^2 + \sum_{i=1}^{p}\beta_i^2 Var(e_{t+h-i|t}) \\ 
+&amp;+ 2\sum_{i \neq j}\beta_i\beta_j Cov(e_{t+h-i|t},e_{t+h-j|t})
+\end{align}`
+$$
 
 h-step-ahead (95%) interval forecast: `$$y_{t+h|t} \pm 1.96\sigma_{t+h|t}$$`
 ]
@@ -358,10 +333,10 @@ h-step-ahead (95%) interval forecast: `$$y_{t+h|t} \pm 1.96\sigma_{t+h|t}$$`
 
 
 
-# One-spep forecasts of the unemployment rates
+# Iterated multistep forecasts of the unemployment rates
 
 .right-column[
-![](figures/lecture7/unrate_mse.png)
+![](figures/lecture7/unrate_ite.png)
 ]
 
 
@@ -376,7 +351,7 @@ We can, also, directly obtain multi-step-ahead forecasts. To illustrate, conside
 
 One-step-ahead point forecast is readily given by: `$$y_{t+1|t}=\alpha+\beta_1 y_{t}.$$`
 
-Using the *iterative* method, two-step-ahead point forecast is: `$$y_{t+2|t}=\alpha+\beta_1 y_{t+1|t}.$$`
+Two-step-ahead point forecast, from the iterative method, is: `$$y_{t+2|t}=\alpha+\beta_1 y_{t+1|t}.$$`
 ]
 
 ---
@@ -385,10 +360,10 @@ Using the *iterative* method, two-step-ahead point forecast is: `$$y_{t+2|t}=\al
 # Direct multi-step-ahead forecasts
 
 .right-column[
-Alternatively, we can substitute `\(y_{t-1}=\alpha+\beta_1 y_{t-2}+\varepsilon_{t-1}\)` into the original equation to obtain:
-`$$y_t=\alpha(1+\beta_1)+\beta_1^2y_{t-2} + \varepsilon_t + \beta_1\varepsilon_{t-1} = \tilde{\alpha} + \tilde{\beta}_1 y_{t-2} + u_t,$$` where `\(\tilde{\alpha}=\alpha(1+\beta_1)\)` and `\(\tilde{\beta}_1=\beta_1^2\)`, and `\(u_t=\varepsilon_t + \beta_1\varepsilon_{t-1}.\)`
+If we substitute `\(y_{t+1|t}=\alpha+\beta_1 y_{t}\)` into the iterated two-step-ahead forecast equation, we obtain:
+`$$y_{t+2|t}=\alpha+\beta_1 \left(\alpha+\beta_1 y_{t}\right) = \tilde{\alpha} + \tilde{\beta}_1 y_{t},$$` where `\(\tilde{\alpha}=\alpha(1+\beta_1)\)` and `\(\tilde{\beta}_1=\beta_1^2.\)`
 
-Thus, a way to obtain two-step-ahead forecast is if we regress `\(y_t\)` on `\(y_{t-2}\)`, and then directly forecast `\(y_{t+2}\)` from `\(y_{t}\)`. 
+Thus, a way to obtain two-step-ahead forecast is to regress `\(y_t\)` on `\(y_{t-2}\)` and then directly forecast `\(y_{t+2}\)` from `\(y_{t}\)`. 
 
 This is the *direct* method of multi-step-ahead forecasting, which can be extended to higher order autoregression, and any forecast horizon.
 ]
@@ -399,10 +374,20 @@ This is the *direct* method of multi-step-ahead forecasting, which can be extend
 # Direct multi-step-ahead interval forecast
 
 .right-column[
-In the direct method of multistep forecasting, error terms are serially correlated (by construction). For example, note that in the direct two-step-ahead forecast from a re-specified AR(1) model, `\(u_t = \varepsilon_t+\beta_1\varepsilon_{t-1}\)`. It then follows that: `$$\sigma^2_u = E\left[(\varepsilon_t+\beta_1\varepsilon_{t-1})^2\right] = \sigma^2_{\varepsilon}(1+\beta_1^2).$$` 
+In the direct method of multistep forecasting, error terms are serially correlated (by construction). For example, note that in the direct two-step-ahead forecast from a re-specified AR(1) model, `\(u_t = \varepsilon_t+\beta_1\varepsilon_{t-1}\)`. It then follows that: `$$\sigma^2_u = \mathbb{E}\left[(\varepsilon_t+\beta_1\varepsilon_{t-1})^2\right] = \sigma^2_{\varepsilon}(1+\beta_1^2).$$` 
 
 Thus, when applying the direct method of forecasting, interval forecasts for a given horizon are obtained 'directly,' based on the standard deviation of the residuals.
 ]
+
+---
+
+
+# Direct multistep forecasts of the unemployment rates
+
+.right-column[
+![](figures/lecture7/unrate_dir.png)
+]
+
 
 ---
 
@@ -412,7 +397,7 @@ Thus, when applying the direct method of forecasting, interval forecasts for a g
 .right-column[
 In summary, an `\(h\)`-step-ahead forecast from an AR(p) model, using:
 
-- the iterative method: `$$y_{t+h|t,i} = \alpha + \sum_{j=1}^{p}\beta_j y_{t+h-j|t,i},$$` where `\(y_{t+h-j|t,i}=y_{t+h-j}\)` when `\(h-j\le 0.\)`
+- the iterative method is: `$$y_{t+h|t,i} = \alpha + \sum_{j=1}^{p}\beta_j y_{t+h-j|t,i},$$` where `\(y_{t+h-j|t,i}=y_{t+h-j}\)` when `\(h-j\le 0.\)`
 - the direct method is: `$$y_{t+h|t,d} = \tilde{\alpha} + \sum_{j=1}^{p}\tilde{\beta}_j y_{t+1-j}.$$`
 ]
 
@@ -424,9 +409,9 @@ In summary, an `\(h\)`-step-ahead forecast from an AR(p) model, using:
 .right-column[
 The relative performance of the two forecasts, `\(y_{t+h|t,i}\)` and `\(y_{t+h|t,d}\)`, in terms of bias and efficiency depends on the bias and efficiency of the estimators of each method. 
 
-In the case of correctly specified models, both estimators are consistent, but the one-step-ahead model (which leads to the iterative method) is more efficient. Thus, in large samples, the iterative forecast can be expected to perform better than the direct forecast.
+If the model is correctly specified, both estimators are consistent, but the one-step-ahead model (which leads to the iterative method) is more efficient. Thus, in large samples, the iterative forecast can be expected to perform better than the direct forecast.
 
-In the case of mis-specified models, the ranking may very well change.
+In the model is mis-specified&amp;mdash;hardly an unusual scenario&amp;mdash;the ranking of the relative performance may very well change.
 ]
 
 ---

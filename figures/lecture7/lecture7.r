@@ -99,7 +99,16 @@ gg_acf <- ggplot(acf_dt,aes(x=k,y=rho))+
 
 gg_acf
 
-ggsave("figures/lecture7/unrate_ac.png",gg_acf,width=6.5,height=6.5*9/16,dpi="retina",device="png")
+
+geom_hline(yintercept=0,linewidth=.4,color="gray")+
+  geom_hline(yintercept=c(-1.96/sqrt(n),1.96/sqrt(n)),linewidth=.8,linetype=5,col="gray")+
+  geom_segment(aes(xend=k,yend=0),linewidth=1,col="dimgray")+
+  geom_point(shape=21,size=1,stroke=.5,color="white",fill="dimgray")+
+  scale_x_continuous(breaks=seq(2,maxlag,2),labels=seq(2,maxlag,2))+
+  scale_y_continuous(breaks=seq(-.6,1,.2),labels=sprintf("%.1f",round(seq(-.6,1,.2),1)))+
+  labs(x="k",y=expression(hat(rho)[k]))+
+  coord_cartesian(ylim=c(-.6,1),xlim=c(1,maxlag))+
+  theme_eg()
 
 
 pacf_dt <- data.table(k=c(1:maxlag),rho=c(pacf(unrate_dt$y,lag.max=maxlag,plot=F)[1:maxlag]$acf))

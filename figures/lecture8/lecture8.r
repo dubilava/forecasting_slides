@@ -373,10 +373,6 @@ ggsave("figures/lecture8/ma2c.png",gg_all3,width=6.5,height=6.5*9/16,dpi="retina
 
 
 
-
-
-
-
 load("figures/lecture8/btc.RData")
 
 # keep only date and closing price (expressed in thousand dollars)
@@ -464,8 +460,6 @@ dt$SIC[6] <- log(sum(ma6$resid^2,na.rm=T))+log(length(ma6$resid))*length(ma6$coe
 dt$SIC[7] <- log(sum(ma7$resid^2,na.rm=T))+log(length(ma7$resid))*length(ma7$coef)/length(ma7$resid)
 dt$SIC[8] <- log(sum(ma8$resid^2,na.rm=T))+log(length(ma8$resid))*length(ma8$coef)/length(ma8$resid)
 dt$SIC[9] <- log(sum(ma9$resid^2,na.rm=T))+log(length(ma9$resid))*length(ma9$coef)/length(ma9$resid)
-
-
 
 
 

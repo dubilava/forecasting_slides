@@ -28,7 +28,7 @@ library(cowplot)
 library(forecast)
 ```
 
-# Wold Decomposition
+# Wold decomposition
 
 .pull-left[
 ![](Art/movingaverage.png)
@@ -37,7 +37,7 @@ library(forecast)
 .pull-right[
 It is possible to decompose any covariance stationary autoregression into a weighted sum of its error terms (plus a constant).
 
-For example, using recursive substitution we can represent an $AR(1)$ process as:
+Recall, for example, that using recursive substitution we can represent an $AR(1)$ process as:
 $$y_t = \alpha + \beta y_{t-1} + \varepsilon_t = \frac{\alpha}{1-\beta} + \sum_{i=0}^{\infty}\beta^i\varepsilon_{t-i}$$
 This is known as the *Wold decomposition*.
 ]
@@ -45,7 +45,7 @@ This is known as the *Wold decomposition*.
 ---
 
 
-# Wold Decomposition
+# Moving average process
 
 .right-column[
 Specifically, the *Wold Decomposition Theorem* states that if $\{Y_t\}$ is a covariance stationary process, and $\{\varepsilon_t\}$ is a white noise process, then there exists a unique linear representation as: $$Y_t = \mu + \sum_{i=0}^{\infty}\theta_i\varepsilon_{t-i}$$
@@ -98,7 +98,7 @@ The next three slides will present these simulated time series along with the as
 ---
 
 
-# First-order moving average
+# Features of the first-order moving average process
 
 .right-column[
 Several features of interest are apparent:
@@ -110,18 +110,17 @@ Several features of interest are apparent:
 ---
 
 
-# First-order moving average
+# Mean and variance of the first-order moving average
 
 .right-column[
 The unconditional mean of the series is equal to its deterministic component, $\mu$. That is: $$E(y_t) = E(\mu + \varepsilon_t + \theta\varepsilon_{t-1}) = \mu$$
 The unconditional variance is proportional to $\theta$. $$Var(y_t) = E(y_t - \mu)^2 = E(\varepsilon_t + \theta\varepsilon_{t-1})^2 = (1+\theta^2)\sigma^2_{\varepsilon}$$
-<!-- - From the above, the mean and variance of the process are time-invariant. -->
 ]
 
 ---
 
 
-# First-order moving average
+# Covariances of the first-order moving average
 
 .right-column[
 The first-order autocovariance: 
@@ -130,26 +129,28 @@ $$\begin{align}
 &= E\left[(\varepsilon_t + \theta\varepsilon_{t-1})(\varepsilon_{t-1} + \theta\varepsilon_{t-2})\right] = \theta\sigma^2_{\varepsilon}
 \end{align}$$
 
+The higher-order covariances are zero.
+
 The time-invariant autocovariance, in conjunction with time-invariant mean and variance measures, suggest that MA(1) is a covariance stationary process.
 ]
 
 ---
 
 
-# First-order moving average
+# Autocorrelation of the first-order moving average
 
 .right-column[
 Note that the two cases, $\theta=0.5$ and $\theta=2$ produce identical autocorrelation functions (and that $\theta=0.5$ is the inverse of $\theta=2$). 
 
 That's because the first-order autocorrelation: $$\rho_1 = \frac{\gamma_1}{\gamma_0} = \frac{\theta}{1+\theta^2}$$
 
-SO, for any $\theta$: $\rho_1\left(\theta\right)=\rho_1\left(1/\theta\right)$
+So, for any $\theta$: $\rho_1\left(\theta\right)=\rho_1\left(1/\theta\right)$
 ]
 
 ---
 
 
-# First-order moving average
+# Invertability of the moving average process
 
 .right-column[
 That is, two different MA processes can produce the same autocorrelation. But only that with the moving average parameter less than unity is *invertible*.
@@ -163,7 +164,7 @@ Invertability of a moving average process is a useful feature as it allows us to
 # Second-order moving average
 
 .right-column[
-The foregoing analysis of a MA(1) process can be generalized to any MA(q) process. Let's focus on MA(2): $$y_t = \mu + \varepsilon_t+\theta_1\varepsilon_{t-1}+\theta_2\varepsilon_{t-2}$$
+Everything that we said about a MA(1) process can be generalized to any MA(q) process. Let's focus on MA(2): $$y_t = \mu + \varepsilon_t+\theta_1\varepsilon_{t-1}+\theta_2\varepsilon_{t-2}$$
 
 Suppose, as before, $\mu = 5$, and $\sigma_{\varepsilon}=0.5$, and let's simulate time series by setting $\{\theta_1,\theta_2\}$ to $\{0.5,0.5\}$, $\{-1,0.5\}$, and $\{2,-0.5\}$, respectively.
 
@@ -198,7 +199,7 @@ Suppose, as before, $\mu = 5$, and $\sigma_{\varepsilon}=0.5$, and let's simulat
 
 ---
 
-# Second-order moving average
+# Mean and variance of the second-order moving average
 
 .right-column[
 The unconditional mean and variance are: $$E(y_t) = E(\mu + \varepsilon_t+\theta_1\varepsilon_{t-1}+\theta_2\varepsilon_{t-2}) = \mu$$ and $$Var(y_t) = E(y_t-\mu)^2 = (1+\theta_1^2+\theta_2^2)\sigma_{\varepsilon}^2$$
@@ -207,21 +208,27 @@ The unconditional mean and variance are: $$E(y_t) = E(\mu + \varepsilon_t+\theta
 ---
 
 
-# Second-order moving average
+# Covariances of the second-order moving average
 
 .right-column[
-The autocovariance at the first lag is: $$\gamma_1 = E[(y_t-\mu)(y_{t-1}-\mu)] = (\theta_1+\theta_1\theta_2)\sigma_{\varepsilon}^2$$ and the corresponding autocorrelation is: $$\rho_1 = \frac{\gamma_1}{\gamma_0} = \frac{\theta_1+\theta_1\theta_2}{1+\theta_1^2+\theta_2^2}$$
+The autocovariance at the first lag is: $$\gamma_1 = E[(y_t-\mu)(y_{t-1}-\mu)] = (\theta_1+\theta_1\theta_2)\sigma_{\varepsilon}^2$$ 
+
+The autocovariance at the second lag is: $$\gamma_2 = E[(y_t-\mu)(y_{t-2}-\mu)] = \theta_2\sigma_{\varepsilon}^2$$
+
+The autocovariance and autocorrelation at higher lags are zero.
 ]
 
 ---
 
 
-# Second-order moving average
+# Autocorrelations of the second-order moving average
 
 .right-column[
-The autocovariance at the second lag is: $$\gamma_2 = E[(y_t-\mu)(y_{t-2}-\mu)] = \theta_2\sigma_{\varepsilon}^2$$ and the corresponding autocorrelation is: $$\rho_2 = \frac{\gamma_2}{\gamma_0} = \frac{\theta_2}{1+\theta_1^2+\theta_2^2}$$
+The autocorrelation at the first lag is: $$\rho_1 = \frac{\gamma_1}{\gamma_0} = \frac{\theta_1+\theta_1\theta_2}{1+\theta_1^2+\theta_2^2}$$
 
-The autocovariance and autocorrelation at higher lags are zero.
+The autocorrelation at the second lag is: $$\rho_2 = \frac{\gamma_2}{\gamma_0} = \frac{\theta_2}{1+\theta_1^2+\theta_2^2}$$
+
+The autocorrelations at higher lags are zero.
 
 In general, for any $MA(q)$, $\rho_k=0,\;\;\forall\; k>q$.
 ]
@@ -314,7 +321,7 @@ knitr::kable(out,digits=3,align="c", table.attr='class="myTable"',row.names = T,
 
 .right-column[
 Point forecasts:
-- $h=1$: $y_{t+1|t} = E(y_{t+1}|\Omega_t) = \mu + \theta_1 \varepsilon_{t}$
+- $h=1$: $y_{t+1|t} = E(y_{t+1}|\Omega_t) = \mu + \theta \varepsilon_{t}$
 - $h=2$: $y_{t+2|t} = E(y_{t+2}|\Omega_t) = \mu$
 - $h>2$: $y_{t+h|t} = E(y_{t+h}|\Omega_t) = \mu$
 ]
@@ -327,8 +334,8 @@ Point forecasts:
 .right-column[
 Forecast errors:
 - $h=1$: $e_{t+1|t} = y_{t+1}-y_{t+1|t} = \varepsilon_{t+1}$
-- $h=2$: $e_{t+2|t} = y_{t+2}-y_{t+2|t} = \varepsilon_{t+2}+\theta_1 \varepsilon_{t+1}$
-- $h>2$: $e_{t+h|t} = y_{t+h}-y_{t+h|t} = \varepsilon_{t+h}+\theta_1 \varepsilon_{t+h-1}$
+- $h=2$: $e_{t+2|t} = y_{t+2}-y_{t+2|t} = \varepsilon_{t+2}+\theta \varepsilon_{t+1}$
+- $h>2$: $e_{t+h|t} = y_{t+h}-y_{t+h|t} = \varepsilon_{t+h}+\theta \varepsilon_{t+h-1}$
 ]
 
 ---
@@ -339,8 +346,8 @@ Forecast errors:
 .right-column[
 Forecast variances:
 - $h=1$: $\sigma_{t+1|t}^2 = E(e_{t+1|t}^2) = \sigma_{\varepsilon}^2$
-- $h=2$: $\sigma_{t+2|t}^2 = E(e_{t+2|t}^2) = \sigma_{\varepsilon}^2(1+\theta_1^2)$
-- $h>2$: $\sigma_{t+h|t}^2 = E(e_{t+h|t}^2) = \sigma_{\varepsilon}^2(1+\theta_1^2)$
+- $h=2$: $\sigma_{t+2|t}^2 = E(e_{t+2|t}^2) = \sigma_{\varepsilon}^2(1+\theta^2)$
+- $h>2$: $\sigma_{t+h|t}^2 = E(e_{t+h|t}^2) = \sigma_{\varepsilon}^2(1+\theta^2)$
 ]
 
 ---
@@ -350,9 +357,9 @@ Forecast variances:
 
 .right-column[
 Interval forecasts (95%):
-- $h=1$: $\left[\mu+\theta_1\varepsilon_t-1.96\sigma_{\varepsilon};\mu+\theta_1\varepsilon_t+1.96\sigma_{\varepsilon}\right]$
-- $h=2$: $\left[\mu-1.96\sigma_{\varepsilon}\sqrt{1+\theta_1^2};\mu+1.96\sigma_{\varepsilon}\sqrt{1+\theta_1^2}\right]$
-- $h>2$: $\left[\mu-1.96\sigma_{\varepsilon}\sqrt{1+\theta_1^2};\mu+1.96\sigma_{\varepsilon}\sqrt{1+\theta_1^2}\right]$
+- $h=1$: $\left[\mu+\theta\varepsilon_t-1.96\sigma_{\varepsilon};\mu+\theta\varepsilon_t+1.96\sigma_{\varepsilon}\right]$
+- $h=2$: $\left[\mu-1.96\sigma_{\varepsilon}\sqrt{1+\theta^2};\mu+1.96\sigma_{\varepsilon}\sqrt{1+\theta^2}\right]$
+- $h>2$: $\left[\mu-1.96\sigma_{\varepsilon}\sqrt{1+\theta^2};\mu+1.96\sigma_{\varepsilon}\sqrt{1+\theta^2}\right]$
 
 ]
 
@@ -378,12 +385,12 @@ $\vdots$
 
 .right-column[
 Forecast errors:
-- $h=1$: $e_{t+1|t} = y_{t+1}-y_{t+1|t} = \varepsilon_{t+1}$
-- $h=2$: $e_{t+2|t} = y_{t+2}-y_{t+2|t} = \varepsilon_{t+2}+\theta_1 \varepsilon_{t+1}$
+- $h=1$: $e_{t+1|t} = \varepsilon_{t+1}$
+- $h=2$: $e_{t+2|t} = \varepsilon_{t+2}+\theta_1 \varepsilon_{t+1}$
 
 $\vdots$
 
-- $h \ge q$: $e_{t+h|t} = y_{t+h}-y_{t+h|t} = \varepsilon_{t+h}+\theta_1 \varepsilon_{t+h-1}+\ldots+\theta_q \varepsilon_{t+h-q}$
+- $h \ge q$: $e_{t+h|t} = \varepsilon_{t+h}+\theta_1 \varepsilon_{t+h-1}+\ldots+\theta_q \varepsilon_{t+h-q}$
 ]
 
 ---
@@ -425,6 +432,41 @@ $\vdots$
 
 .right-column[
 ![](figures/lecture8/btc_forecast.png)
+]
+
+---
+
+
+# Comparing forecasts of MA(7) with RW
+
+.right-column[
+Are forecasts from MA(7), our preferred model, more accurate than those from the random walk model?
+
+Let's generate a sequence of one-step-ahead forecasts from 4 July 2021 onward (using a recursive window approach).
+]
+
+---
+
+
+# Densities of the forecast errors
+
+.right-column[
+![](figures/lecture8/btc_errors.png)
+]
+
+---
+
+
+# Comparing forecasts of MA(7) with RW
+
+.right-column[
+As it turns out, the RMSFE from MA(7) is $3.46$ and the RMSFE from RW is $4.88$.
+
+So, the answer is *yes*, on average.
+
+The DM statistic is $7.49$. 
+
+So, forecasts from MA(7) are statistically significantly more accurate than those from RW.
 ]
 
 ---

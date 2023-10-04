@@ -492,6 +492,59 @@ gg_btcfor <- ggplot(btc_dt[date>=start_date & date<=end_date],aes(x=date))+
 
 ggsave("figures/lecture8/btc_forecast.png",gg_btcfor,width=6.5,height=6.5*9/16,dpi="retina",device="png")
 
-                                                                  
+
+
+# out of sample forecasting
+
+n <- nrow(btc_dt)
+R <- round(0.5*n)
+P <- n-R
+
+btc_dt[,`:=`(rw=as.numeric(NA),ma=as.numeric(NA))]
+
+for(i in 1:P){
+  
+  cutoff_date <- as.Date(btc_dt[R+i-1]$date)
+  
+  r <- btc_dt[date<=cutoff_date]$rBTC
+  ma7 <- arima(r,order=c(0,0,7))
+  
+  ma7f <- c(forecast(ma7,h=1)$mean)
+  
+  rw1f <- c(btc_dt[date==cutoff_date]$rBTC)
+  
+  btc_dt[R+i]$rw <- rw1f
+  btc_dt[R+i]$ma <- ma7f
+  
+}
+
+btc_dt[,`:=`(rw_e=rBTC-rw,ma_e=rBTC-ma)]
+btc_dt[,d:=rw_e^2-ma_e^2]
+
+error_lg <- melt(btc_dt[,.(date,rw_e,ma_e)],id.vars="date")
+error_lg <- error_lg[complete.cases(error_lg)]
+
+gg_den <- ggplot(error_lg,aes(x=value,color=variable,linetype=variable))+
+  stat_density(linewidth=1,geom="line",position="identity")+
+  scale_color_manual(values=c("dimgray","coral"),labels=c("random walk","moving average"))+
+  scale_linetype_manual(values=c(5,1),labels=c("random walk","moving average"))+
+  labs(x="Forecast errors",y="Density")+
+  coord_cartesian(xlim=c(-22,22),ylim=c(0,.2))+
+  theme_eg()+
+  theme(legend.position="top",legend.key.width=unit(.5,"in"),legend.key=element_blank())
+
+ggsave("figures/lecture8/btc_errors.png",gg_den,width=6.5,height=6.5*9/16,dpi="retina",device="png")
+  
+
+sqrt(mean(btc_dt$rw_e^2,na.rm=T))
+sqrt(mean(btc_dt$ma_e^2,na.rm=T))
+
+
+library(lmtest)
+library(sandwich)
+
+dm <- lm(d~1,btc_dt)
+                        
+coeftest(dm,vcov.=vcovHAC(dm))                                          
                                                                            
 

@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Forecasting for Economics and Business</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="David Ubilava" />
+    <script src="libs/header-attrs-2.22/header-attrs.js"></script>
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/metropolis.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/metropolis-fonts.css" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+.title[
+# Forecasting for Economics and Business
+]
+.subtitle[
+## Lecture 10: Forecasting Inter-related Series
+]
+.author[
+### David Ubilava
+]
+.date[
+### University of Sydney
+]
+
+---
+
+
+
+
+
+
+
+
+# Economic variables are inter-related
+
+.pull-left[
+![](Art/multivariate.png)
+]
+
+.pull-right[
+Economic variables are often (and usually) inter-related; for example,
+
+- changes in income affect consumption; 
+- changes in interest rates affect investment.
+
+The dynamic linkages between two (or more) economic variables can be modeled as a *system of equations*, better known as a vector autoregression, or simply VAR.
+]
+
+---
+
+# Vector autoregression
+
+.right-column[
+To begin, consider a bivariate first-order VAR. 
+
+Let `\(\{X_{1t}\}\)` and `\(\{X_{2t}\}\)` be the stationary stochastic processes. A bivariate VAR(1), is then given by:
+`$$\begin{aligned}
+x_{1t} &amp;= \alpha_1 + \pi_{111}x_{1t-1} + \pi_{121}x_{2t-1} + \varepsilon_{1t} \\
+x_{2t} &amp;= \alpha_2 + \pi_{211}x_{1t-1} + \pi_{221}x_{2t-1} + \varepsilon_{2t}
+\end{aligned}$$`
+
+where `\(\varepsilon_{1t} \sim iid(0,\sigma_1^2)\)` and `\(\varepsilon_{2t} \sim iid(0,\sigma_2^2)\)`, and the two can be correlated, i.e., `\(Cov(\varepsilon_{1t},\varepsilon_{2t}) \neq 0\)`.
+]
+
+---
+
+# Vector autoregression
+
+.right-column[
+An `\(n\)`-dimensional VAR of order `\(p\)`, VAR(p), presented in matrix notation: `$$\mathbf{x}_t = \mathbf{\alpha} + \Pi_1 \mathbf{x}_{t-1} + \ldots + \Pi_p \mathbf{x}_{t-p} + \mathbf{\varepsilon}_t,$$` where `\(\mathbf{x}_t = (x_{1t},\ldots,x_{nt})'\)` is a vector of `\(n\)` (potentially) related variables; `\(\mathbf{\varepsilon}_t = (\varepsilon_{1t},\ldots,\varepsilon_{nt})'\)` is a vector of error terms, such that `\(\mathbb{E}\left(\mathbf{\varepsilon}_t\right) = \mathbf{0}\)`, `\(\mathbb{E}\left(\mathbf{\varepsilon}_t^{}\mathbf{\varepsilon}_t^{\prime}\right) = \Sigma_{\mathbf{\varepsilon}}\)`, and `\(\mathbb{E}\left(\mathbf{\varepsilon}_{t}^{}\mathbf{\varepsilon}_{s \neq t}^{\prime}\right) = 0\)`.
+]
+		
+---
+
+# A parameter matrix of a vector autoregression
+
+.right-column[
+`\(\Pi_1,\ldots,\Pi_p\)` are `\(n\)`-dimensional parameter matrices such that: 
+`$$\Pi_j = 
+	    \left[ 
+		\begin{array}{cccc} 
+		\pi_{11j} &amp; \pi_{12j} &amp; \cdots &amp;  \pi_{1nj} \\ 
+		\pi_{21j} &amp; \pi_{22j} &amp; \cdots &amp;  \pi_{2nj} \\  
+		\vdots &amp; \vdots &amp; \ddots &amp;  \vdots \\  
+		\pi_{n1j} &amp; \pi_{n2j} &amp; \cdots &amp;  \pi_{nnj} 
+		\end{array} 
+		\right],\;~~j=1,\ldots,p$$`
+]
+		
+---
+
+
+# Features of vector autoregression
+
+.right-column[
+General features of a (reduced-form) vector autoregression are that:
+- only the lagged (i.e., no contemporaneous) values of the dependent variables are on the right-hand-side of the equations.
+  * Although, trends and seasonal variables can also be included.
+- Each equation has the same set of right-hand-side variables.
+  * However, it is possible to impose different lag structure across the equations, especially when `\(p\)` is relatively large. This is because the number of parameters increases very quickly with the number of lags or the number of variables in the system.
+- The autregressive order, `\(p\)`, is the largest lag across all equations.
+]
+
+---
+
+# Modeling vector autoregression
+
+.right-column[
+The autoregressive order, `\(p\)`, can be determined using system-wide information criteria:
+
+`$$\begin{aligned}
+&amp; AIC = \ln\left|\Sigma_{\mathbf{\varepsilon}}\right| + \frac{2}{T}(pn^2+n) \\
+&amp; SIC = \ln\left|\Sigma_{\mathbf{\varepsilon}}\right| + \frac{\ln{T}}{T}(pn^2+n)
+\end{aligned}$$`
+
+where `\(\left|\Sigma_{\mathbf{\varepsilon}}\right|\)` is the determinant of the residual covariance matrix; `\(n\)` is the number of equations, and `\(T\)` is the total number of observations.
+]
+
+---
+
+# Estimating vector autoregression
+
+.right-column[
+When each equation of VAR has the same regressors, the OLS can be applied to each equation individually to estimate the regression parameters - i.e., the estimation can be carried out on the equation-by-equation basis.
+
+When processes are covariance-stationarity, conventional t-tests and F-tests are applicable for hypotheses testing.
+]
+
+---
+
+
+
+# Testing in-sample Granger causality
+
+.right-column[
+Consider a bivariate VAR(p): 
+`$$\begin{aligned}
+x_{1t} &amp;= \alpha_1 + \pi_{111} x_{1t-1} + \cdots + \pi_{11p} x_{1t-p} \\
+&amp;+ \pi_{121} x_{2t-1} + \cdots + \pi_{12p} x_{2t-p} +\varepsilon_{1t}  \\
+x_{2t} &amp;= \alpha_1 + \pi_{211} x_{1t-1} + \cdots + \pi_{21p} x_{1t-p} \\
+&amp;+ \pi_{221} x_{2t-1} + \cdots + \pi_{22p} x_{2t-p} +\varepsilon_{2t} 
+\end{aligned}$$`
+
+- `\(\{X_2\}\)` does not Granger cause `\(\{X_1\}\)` if `\(\pi_{121}=\cdots=\pi_{12p}=0\)`
+- `\(\{X_1\}\)` does not Granger cause `\(\{X_2\}\)` if `\(\pi_{211}=\cdots=\pi_{21p}=0\)`
+]
+
+---
+
+
+
+
+
+# One-step-ahead forecasts
+
+.right-column[
+Consider realizations of dependent variables from a bivariate VAR(1): 
+`$$\begin{aligned}
+x_{1t+1} &amp;= \alpha_1 + \pi_{11} x_{1t} + \pi_{12} x_{2t} + \varepsilon_{1t+1} \\
+x_{2t+1} &amp;= \alpha_2 + \pi_{21} x_{1t} + \pi_{22} x_{2t} + \varepsilon_{2t+1}
+\end{aligned}$$`
+
+Point forecasts are:
+`$$\begin{aligned}
+x_{1t+1|t} &amp;= E(x_{1t+1}|\Omega_t) = \alpha_1 + \pi_{11} x_{1t} + \pi_{12} x_{2t} \\
+x_{2t+1|t} &amp;= E(x_{2t+1}|\Omega_t) = \alpha_2 + \pi_{21} x_{1t} + \pi_{22} x_{2t}
+\end{aligned}$$`
+]
+
+---
+
+# One-step-ahead forecasts
+
+.right-column[
+Forecast errors are: 
+`$$\begin{aligned}
+e_{1t+1} &amp;= x_{1t+1} - x_{1t+1|t} = \varepsilon_{1t+1} \\
+e_{2t+1} &amp;= x_{2t+1} - x_{2t+1|t} = \varepsilon_{2t+1}
+\end{aligned}$$`
+
+Forecast variances are:
+`$$\begin{aligned}
+\sigma_{1t+1}^2 &amp;= E(x_{1t+1} - x_{1t+1|t}|\Omega_t)^2 = E(\varepsilon_{1t+1}^2) = \sigma_{1}^2 \\
+\sigma_{2t+1}^2 &amp;= E(x_{2t+1} - x_{2t+1|t}|\Omega_t)^2 = E(\varepsilon_{2t+1}^2) = \sigma_{2}^2
+\end{aligned}$$`
+]
+
+---
+
+# Multi-step-ahead forecasts
+
+.right-column[
+Realizations of dependent variables in period `\(t+h\)`: 
+`$$\begin{aligned}
+x_{1t+h} &amp;= \alpha_1 + \pi_{11} x_{1t+h-1} + \pi_{12} x_{2t+h-1} + \varepsilon_{1t+h} \\
+x_{2t+h} &amp;= \alpha_2 + \pi_{21} x_{1t+h-1} + \pi_{22} x_{2t+h-1} + \varepsilon_{2t+h}
+\end{aligned}$$`
+
+Point forecasts are:
+`$$\begin{aligned}
+x_{1t+h|t} &amp;= E(x_{1t+1}|\Omega_t) = \alpha_1 + \pi_{11} x_{1t+h-1|t} + \pi_{12} x_{2t+h-1|t} \\
+x_{2t+h|t} &amp;= E(x_{2t+1}|\Omega_t) = \alpha_2 + \pi_{21} x_{1t+h-1|t} + \pi_{22} x_{2t+h-1|t}
+\end{aligned}$$`
+]
+
+---
+
+# Multi-step-ahead forecasts
+
+.right-column[
+Forecast errors are: 
+`$$\begin{aligned}
+e_{1t+h} &amp;= x_{1t+h} - x_{1t+h|t} = \pi_{11} e_{1t+h-1} + \pi_{12} e_{2t+h-1} + \varepsilon_{1t+h} \\
+e_{2t+h} &amp;= x_{2t+h} - x_{2t+h|t} = \pi_{21} e_{1t+h-1} + \pi_{22} e_{2t+h-1} + \varepsilon_{2t+h}
+\end{aligned}$$`
+
+Forecast variances are the functions of error variances and covariances, and the model parameters.
+]
+
+---
+
+
+
+# Out-of-Sample Granger Causality
+
+.right-column[
+The previously discussed (in sample) tests of causality in Granger sense are frequently performed in practice, but the 'true spirit' of such test is to assess the ability of a variable to help predict another variable in an out-of-sample setting.
+]
+
+---
+
+
+# Out-of-Sample Granger Causality
+
+.right-column[
+Consider restricted and unrestricted information sets:
+`$$\begin{aligned}
+&amp;\Omega_{t}^{(r)} \equiv \Omega_{t}(X_1) = \{x_{1,t},x_{1,t-1},\ldots\} \\
+&amp;\Omega_{t}^{(u)} \equiv \Omega_{t}(X_1,X_2) = \{x_{1,t},x_{1,t-1},\ldots,x_{2,t},x_{2,t-1},\ldots\}
+\end{aligned}$$`
+
+Following Granger's definition of causality: `\(\{X_2\}\)` is said to cause `\(\{X_1\}\)` if `\(\sigma_{x_1}^2\left(\Omega_{t}^{(u)}\right) &lt; \sigma_{x_1}^2\left(\Omega_{t}^{(r)}\right)\)`, meaning that we can better predict `\(X_1\)` using all available information on `\(X_1\)` and `\(X_2\)`, rather than that on `\(X_1\)` only.
+]
+
+---
+
+# Out-of-Sample Granger Causality
+
+.right-column[
+Let the forecasts based on each of the information sets be:
+`$$\begin{aligned}
+	&amp;x_{1t+h|t}^{(r)} = E\left(x_{1t+h}|\Omega_{t}^{(r)}\right) \\
+	&amp;x_{1t+h|t}^{(u)} = E\left(x_{1t+h}|\Omega_{t}^{(u)}\right)
+\end{aligned}$$`
+]
+
+---
+
+
+# Out-of-Sample Granger Causality
+
+.right-column[
+For these forecasts, the corresponding forecast errors are:
+`$$\begin{aligned}
+	&amp; e_{1t+h}^{(r)} = x_{1t+h} - x_{1t+h|t}^{(r)}\\
+	&amp; e_{1t+h}^{(u)} = x_{1t+h} - x_{1t+h|t}^{(u)}
+\end{aligned}$$`
+
+The out-of-sample forecast errors are then evaluated by comparing the loss functions based on these forecasts errors.
+]
+
+---
+
+# Out-of-Sample Granger Causality
+
+.right-column[
+For example, assuming quadratic loss, and `\(P\)` out-of-sample forecasts:
+`$$\begin{aligned}
+RMSFE^{(r)} &amp;= \sqrt{\frac{1}{P}\sum_{s=1}^{P}\left(e_{1R+s|R-1+s}^{(r)}\right)^2} \\
+RMSFE^{(u)} &amp;= \sqrt{\frac{1}{P}\sum_{s=1}^{P}\left(e_{1R+s|R-1+s}^{(u)}\right)^2}
+\end{aligned}$$`
+where `\(R\)` is the size of the (first) estimation window.
+
+`\(\{X_2\}\)` causes `\(\{X_1\}\)` *in Granger sense* if `\(RMSFE^{(u)} &lt; RMSFE^{(r)}\)`.
+]
+
+---
+
+
+
+# Readings
+
+.pull-left[
+![](Art/todolist.png)
+]
+
+.pull-right[
+Gonzalez-Rivera, Chapter 11
+
+Hyndman &amp; Athanasopoulos, [12.3](https://otexts.com/fpp3/VAR.html)
+]
+
+
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"countIncrementalSlides": false,
+"ratio": "16:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();</script>
+<style>
+.logo {
+  background-image: url(forecasting-logo.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+  position: absolute;
+  bottom: .5em;
+  left: 2em;
+  width: 91px;
+  height: 105px;
+  z-index: 0;
+}
+</style>
+
+<script>
+document
+  .querySelectorAll(
+    '.remark-slide-content' +
+    ':not(.title-slide)' +
+    // add additional classes to exclude here, e.g.
+    // ':not(.inverse)' +
+    ':not(.hide-logo)'
+  )
+  .forEach(el => {
+    el.innerHTML += '<div class="logo"></div>';
+  });
+</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

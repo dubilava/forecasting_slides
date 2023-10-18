@@ -69,23 +69,33 @@ eps <- setar2$residuals
 
 boot_mat <- matrix(nrow=R+P,ncol=B)
 
+gg_b <- ggplot(dt)+
+  geom_line(aes(x=t,y=y),linewidth=1,color="gray",na.rm=T)+
+  labs(x="t",y=expression(y[t]))+
+  coord_cartesian(ylim=c(-6,8))+
+  theme_minimal()
+
 for(b in 1:B){
   set.seed(b)
   dt[,`:=`(yb=y,eb=sample(eps,R+P,replace=T))]
   for(i in 1:P){
     dt$yb[R+i] <- setar2$coefficients["(Intercept)"]+(setar2$coefficients["y1:I(1 - D)"]*dt$yb[R+i-1]+setar2$coefficients["y2:I(1 - D)"]*dt$yb[R+i-2])*(1-ifelse(dt$yb[R+i-1]>=trs,1,0))+(setar2$coefficients["y1:I(D)"]*dt$yb[R+i-1]+setar2$coefficients["y2:I(D)"]*dt$yb[R+i-2])*ifelse(dt$yb[R+i-1]>=trs,1,0)+dt$eb[R+i]
   }
+  dt$yb[1:R] <- NA
+  if(b<=10){
+    gg_b <- gg_b+
+      geom_line(data=dt[t>R],aes(x=t,y=yb),linetype=1,linewidth=.8,color="coral",alpha=.5,na.rm=T)
+    print(gg_b)
+    Sys.sleep(1)
+  }
   boot_mat[,b] <- dt$yb
 }
 
 # store bootstrap point and interval forecasts
-dt[,`:=`(y_f=y,f=apply(boot_mat,1,mean),l=apply(boot_mat,1,quantile,.05),u=apply(boot_mat,1,quantile,.95))]
+dt[,`:=`(y_f=y,f=apply(boot_mat,1,mean,na.rm=T),l=apply(boot_mat,1,quantile,.05,na.rm=T),u=apply(boot_mat,1,quantile,.95,na.rm=T))]
 
-# clean up the data (for illustration)
 dt$y_f[1:R] <- NA
-dt$f[1:R] <- NA
-dt$l[1:R] <- NA
-dt$u[1:R] <- NA
+
 
 # illustrate bootstrap point and interval forecasts 
 gg_boot <- ggplot(dt,aes(x=t))+
@@ -96,6 +106,7 @@ gg_boot <- ggplot(dt,aes(x=t))+
   geom_line(aes(y=u),linetype=2,linewidth=.5,color="coral",na.rm=T)+
   geom_line(aes(y=f),linetype=5,linewidth=1,color="coral",na.rm=T)+
   labs(x="t",y=expression(y[t]))+
+  coord_cartesian(ylim=c(-6,8))+
   theme_minimal()
 
 gg_boot

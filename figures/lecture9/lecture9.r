@@ -200,3 +200,11 @@ gg_den <- ggplot(dt,aes(x=x))+
 
 ggsave("figures/lecture9/inflation_den.png",gg_den,width=6.5,height=6.5*9/16,dpi="retina",device="png")
 
+
+
+
+
+
+
+
+

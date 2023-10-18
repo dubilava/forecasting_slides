@@ -18,3 +18,5 @@ Below are the links to the lecture slides for the unit on economic forecasting.
 
 [Lecture 9: Forecasting Regime-Dependent Series](https://davidubilava.com/forecasting_slides/09-Nonlinear.html)
 
+[Lecture 10: Forecasting Inter-related Series](https://davidubilava.com/forecasting_slides/10-Multivariate.html)
+

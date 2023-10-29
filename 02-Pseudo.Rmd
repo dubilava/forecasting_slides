@@ -364,7 +364,7 @@ The null hypothesis $H_0:\left(\alpha_0=0,\alpha_1=1\right)$ is that for the joi
 
 More generally, the forecast error is: 
 $$e_{t+h}=\alpha_0+\beta_1\hat{y}_{t+h|t}+\upsilon_t,$$
-where $\beta_1=(1-\alpha_1)$. 
+where $\beta_1=(\alpha_1-1)$. 
 
 When $\alpha_0=\beta_1=0$, the forecast error is mean-zero and uncorrelated with the forecast.
 ]

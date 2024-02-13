@@ -31,8 +31,8 @@ knitr::opts_chunk$set(echo = FALSE)
 
 .pull-right[
 The roots of forecasting extend to the early days of human history. In their desire to predict the future, people have attempted to make forecasts of their own, or have used services of others. 
-- Fortunetellers were been forecast 'experts' of some sort, basing their predictions on magic. They are less common in this age. 
-- Astrologers, who rely on astronomical phenomena to foresee the future, maintain their relevance to this date. 
+- Fortunetellers were forecast 'experts' of some sort, basing their predictions on magic. They are less common in the current age. 
+- Astrologers rely on astronomical phenomena to foresee the future. They maintain their relevance to this date. 
 ]
 
 ---
@@ -41,7 +41,9 @@ The roots of forecasting extend to the early days of human history. In their des
 # Early forecasts mainly revolved around weather
 
 .right-column[
-Primarily because weather was the single most important factor that impacted the livelihood of people, and indeed the fate of civilizations.
+We forecast things that matter to us. There are many such things, one of which is weather. 
+
+Historically, weather was the single most important factor that impacted the livelihood of people, and indeed the fate of civilizations.
  - The Babylonians based weather forecasts on the appearance of clouds. 
  - The ancient Egyptians measured the levels of the Nile River’s waters to predict an approaching famine due to droughts or destructive floods.
 
@@ -132,21 +134,34 @@ do. But when one attempts to "beat the house" using the knowledge accumulated by
 
 # Some events are easier to forecast than others
 
-.right-column[	
+.left-half[
 Events that are primarily guided by physical processes or relationships are easier to forecast. 
-- A storm forecast can be highly accurate.
+- A storm forecast, these days, can be highly accurate.
 
-Events that involve people and their behavioral peculiarities are much less predictable. People, of course, are front and center in business and economic relationships.  
+But even then, because what we forecast are random variables, there is always a chance that a potentially good forecast is off the mark.
+]
+
+.right-half[	
+[![](figures/lecture1/ensofarmers.jpg)](https://www.abc.net.au/news/rural/2024-01-22/farmers-frustrated-after-incorrect-bom-el-nino-forecast/103351428?utm_campaign=abc_news_web&utm_content=link&utm_medium=content_shared&utm_source=abc_news_web)
+]
+
+---
+
+
+# Sometimes we cannot forecast because we don't know
+
+.right-column[	
+Much less predictable are events that involve people and their behavioral peculiarities. People, of course, are front and center in business and economic relationships.  
 - Irving Fisher notoriously made the claim in early October 1929 that "*stock prices have reached [...] a permanently high plateau.*" The Wall Street Crash and Great Depression followed shortly after.
 ]
 
 ---
 
 
-# Sometimes we cannot guess because we know
+# But sometimes - because we know all too well
 
 .right-column[	
-The issue lies in our ability to influence the future because we could forecast it reasonably well.
+If, through our action, we can influence the future, the information that prompted the action makes the forecast obsolete.
 
 Suppose we found out that stock prices of a publicly traded company would increase tomorrow. This creates a temporal arbitrage opportunity. We can buy the stock today when its price is still low, and sell it tomorrow after its price has increased.
 
@@ -157,25 +172,11 @@ However, as we (and many other people) act on this information at once, we creat
 ---
 
 
-# Information is key in forecasting
-
-.right-column[
-Forecasters all rely (or, at least, pretend to rely) on *information*.
-
-Information summarizes everything that we know about the event.
-
-When the information is organized and stored in a certain way - chronologically and at regular intervals - we have the time series of historical data. 
-
-Forecasting involves examining historical data to make an informed guess about what is to come in the near or the distant future.
-
-]
-
----
-
-
 # Most of the time we don't get it exactly right
 
 .right-column[
+Sometimes we do, of course, but only by fluke.
+
 Our forecast may not be spot-on because:
 - our idea about how things work (the model) may be far from the truth.
 - we don't know the parameters of the model, instead we rely on the estimates of the parameters, which can be inaccurate.
@@ -185,20 +186,23 @@ Our forecast may not be spot-on because:
 ---
 
 
+<<<<<<< HEAD
 # Forecasters are best known for bad forecasts
+=======
+# Forecasters are best known for not getting it right
+>>>>>>> 86028935b84e1a8f0828ef62b2817774428f335d
 
 .right-column[
-We saw some historical anecdotes earlier. Below is a recent one.
-
+![](figures/lecture1/inflation.png)
 ]
 
 ---
 
 
-# We try minimizing the risk of getting it wrong
+# The goal is to minimize the risk of getting it wrong
 
 .right-column[
-The *optimal* point forecast is the best guess, one that minimizes the risk of getting it wrong.
+The *optimal* (point) forecast is the best guess, one that minimizes the risk of getting it wrong.
 
 We measure risk using a loss function, $l(e_{t+h|t})$. The following must hold for the loss function:
 - $l(e_{t+h|t}) = 0$ for all $e_{t+h|t}=0$
@@ -215,13 +219,13 @@ And (assuming symmetric loss function) for all $t \ne s$:
 # Symmetric loss functions
 
 .right-column[
-Two commonly used symmetric loss functions are *absolute* and *quadratic* loss functions:
+Two commonly used symmetric loss functions are *absolute* and *quadratic* loss functions, respectively given by:
 $$\begin{aligned}
-		& l{(e_{t+h|t})} = |e_{t+h|t}|\;~~\text{(absolute loss function)} \\
-		& l{(e_{t+h|t})} = (e_{t+h|t})^2\;~~\text{(quadratic loss function)}
+		& l{(e_{t+h|t})} = |e_{t+h|t}| \\
+		& l{(e_{t+h|t})} = (e_{t+h|t})^2
 		\end{aligned}$$
 
-The quadratic loss function is popular, partly because we typically select models based on 'in-sample' quadratic loss (i.e. by minimizing the sum of squared residuals).
+The quadratic loss function is popular, partly because it mimics the way we typically estimate the parameters of the model in an 'in-sample' setting (i.e. by minimizing the sum of squared residuals).
 ]
 
 ---
@@ -273,19 +277,33 @@ Thus, under the quadratic loss, and assuming that forecast is normally distribut
 ---
 
 
-# Forecasting with time series models
+# Information is key in forecasting
 
-.right-column[	
-Economic forecasting lends itself naturally to time series analysis. In a way, time series econometrics has evolved as a by-product of the economists' quest for accurate forecasts.
+.right-column[
+Forecasters all rely (or, at least, pretend to rely) on *information*.
 
-In econometric time series analysis, the implied assumption is that the past tends to repeat itself. So, if we well study the past, we should be able to predict the future, at least with some degree of accuracy. 
+Information is everything that we know about the event.
 
-But, of course, there is no such thing as perfect forecast. Best we can hope for is that we get close to it (on average).
+When the information is organized and stored in a certain way - chronologically and at regular intervals - we have the time series of historical data. 
+
 ]
 
 ---
 
 
+# Forecasting with time series models
+
+.right-column[	
+Forecasting involves examining historical data to make an informed guess about what is to come in the near or the distant future.
+
+Forecasting thus lends itself naturally to time series analysis. 
+
+In econometric time series analysis, the implied assumption is that the past tends to repeat itself. So, if we well study the past, we should be able to predict the future, at least with some degree of accuracy. 
+
+To the extent that there is no such thing as perfect forecast, best we can hope for is that we get close to it (on average).
+]
+
+---
 
 # Additional Readings
 

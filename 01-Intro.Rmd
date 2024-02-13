@@ -116,17 +116,15 @@ By contrast, making a claim about whether the sun will rise tomorrow is hardly a
 ---
 
 
-# Not all guesses are forecasts
+# A guess is not always a forecast
 	
 .right-column[	
-A guess that relies on some knowledge or understanding of the underlying
-causes of an event is a forecast. 
+A guess that relies on some knowledge or understanding of the underlying causes of an event is a forecast. 
 - When commercial banks make a guess whether the central bank will increase or decrease the cash rates, they forecast.
 
 Otherwise, a guess may as well be a gamble. 
 - Everyone is welcome in a casino so long as gambling is what they
-do. But when one attempts to "beat the house" using the knowledge accumulated
-by counting cards, the gamble becomes an educated guess and the gambler becomes *persona non grata*.
+do. But when one attempts to "beat the house" using the knowledge accumulated by counting cards, the gamble becomes an educated guess and the gambler becomes *persona non grata*.
 ]
 
 ---
@@ -187,7 +185,7 @@ Our forecast may not be spot-on because:
 ---
 
 
-# Forecasters are best remembered for failed forecasts
+# Forecasters are best known for bad forecasts
 
 .right-column[
 We saw some historical anecdotes earlier. Below is a recent one.

@@ -186,11 +186,7 @@ Our forecast may not be spot-on because:
 ---
 
 
-<<<<<<< HEAD
-# Forecasters are best known for bad forecasts
-=======
 # Forecasters are best known for not getting it right
->>>>>>> 86028935b84e1a8f0828ef62b2817774428f335d
 
 .right-column[
 ![](figures/lecture1/inflation.png)

@@ -47,13 +47,13 @@ for(i in 1:length(dev)){
   el <- round(mean(dt$loss_quadratic),2)
   
   gg <- ggplot(data=dt)+
-    geom_line(aes(x=e1+dev[i],y=loss_quadratic),color="dimgray",linewidth=1)+
-    geom_point(aes(x=e1+dev[i],y=loss_quadratic),color="dimgray",fill="white",stroke=.5,shape=21,size=1.5)+
-    geom_point(aes(x=e,y=0),color="dimgray",fill="lightgray",stroke=.5,shape=21,size=2)+
-    geom_segment(aes(x=dev[i]-.2,xend=dev[i]+.1,y=el,yend=el),color="coral",linewidth=.8,lineend="round")+
-    geom_point(aes(x=dev[i],y=loss_quadratic),color="coral",fill="lightgray",stroke=.5,shape=21,size=2)+
-    annotate(geom="text",x=dev[i]+.15,y=el,label=sprintf('%.2f',el),hjust=0,vjust=0,color="coral",size=5)+
-    coord_cartesian(xlim=c(-3,3),ylim=c(0,16))+
+    geom_line(aes(x=e1,y=loss_quadratic),color="black",linewidth=1)+
+    geom_point(aes(x=e1,y=loss_quadratic),color="black",fill="white",stroke=.5,shape=21,size=1.5)+
+    geom_point(aes(x=e1,y=0),color="dimgray",fill="lightgray",stroke=.5,shape=21,size=2)+
+    geom_segment(aes(x=-.1,xend=.1,y=el,yend=el),color="black",linewidth=.8,lineend="round")+
+    geom_point(aes(x=0,y=loss_quadratic),color="black",fill="lightgray",stroke=.5,shape=21,size=2)+
+    annotate(geom="text",x=.15,y=el,label=sprintf('%.2f',el),hjust=0,vjust=0,color="black",size=5)+
+    coord_cartesian(xlim=c(-2.5-dev[i],2.5-dev[i]),ylim=c(0,16))+
     labs(x=expression(e),y=expression(e^2))+
     theme_eg()
   

@@ -198,11 +198,43 @@ Our forecast may not be spot-on because:
 
 ---
 
-
 # Forecasters are best known for not getting it right
 
 .right-column[
 ![](figures/lecture1/inflation.png)
+]
+
+---
+
+
+# Information is key in forecasting
+
+.right-column[
+Forecasters rely (or, at least, they all pretend to rely) on *information*.
+
+Information is everything that we know about the event.
+
+At any given time, we know what happened in the past but not what will happen in the future.
+
+So, information is bounded temporally. We know stuff up to some point in time but not beyond that. 
+
+Over time we learn more stuff. Simply because what used to be the unobserved future became the observed past.
+
+]
+
+---
+
+
+# Forecasting with time series models
+
+.right-column[	
+When we organize and store the information in a certain way - chronologically and at regular intervals - we obtain a time series of the historical data. 
+
+Forecasting typically involves analyzing historical time series data to make an informed guess about what is to come in the near or the distant future.
+
+The implied assumption is that the past tends to repeat itself. So, if we well study the past, we should be able to predict the future. 
+
+To the extent that there is no way of getting it exactly right, best we can hope for is that we minimize the risk of getting it wrong.
 ]
 
 ---
@@ -240,7 +272,7 @@ The quadratic loss function is popular, partly because it mimics the way we typi
 ---
 
 
-# Quadratic loss function
+# Quadratic loss: graphical illustration
 
 .right-column[
 &lt;img src="figures/lecture1/loss.png" width="1280" /&gt;
@@ -271,7 +303,7 @@ Under the assumption of the quadratic loss function:
 ---
 
 
-# Under the quadratic loss, optimal forecast is the mean
+# Loss minimization: mathematical derivation
 
 .right-column[
 By solving the optimization problem it follows that `$$\hat{y}_{t+h|t} = \mathbb{E}(y_{t+h})$$`
@@ -282,33 +314,6 @@ Thus, under the quadratic loss, and assuming that forecast is normally distribut
 ---
 
 
-# Information is key in forecasting
-
-.right-column[
-Forecasters all rely (or, at least, pretend to rely) on *information*.
-
-Information is everything that we know about the event.
-
-When the information is organized and stored in a certain way - chronologically and at regular intervals - we have the time series of historical data. 
-
-]
-
----
-
-
-# Forecasting with time series models
-
-.right-column[	
-Forecasting involves examining historical data to make an informed guess about what is to come in the near or the distant future.
-
-Forecasting thus lends itself naturally to time series analysis. 
-
-In econometric time series analysis, the implied assumption is that the past tends to repeat itself. So, if we well study the past, we should be able to predict the future, at least with some degree of accuracy. 
-
-To the extent that there is no such thing as perfect forecast, best we can hope for is that we get close to it (on average).
-]
-
----
 
 # Additional Readings
 

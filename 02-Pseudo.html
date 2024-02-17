@@ -38,46 +38,20 @@ class: center, middle, inverse, title-slide
 
 
 
-# Forecast is a random variable
+# Generating forecasts
 
 .pull-left[
 ![](Art/forecast.png)
 ]
 
 .pull-right[
-Consider a forecast made in period `\(t\)` for period `\(t+h\)`. So, a `\(h\)`-step-ahead forecast.
-
-The complete forecast is fully summarized by its (conditional) distribution `\(F(y_{t+h}|\Omega_t)\)` or the density `\(f(y_{t+h}|\Omega_t)\)`, where `\(\Omega_t\)` is the information set.
-
-Both `\(F(y_{t+h}|\Omega_t)\)` and `\(f(y_{t+h}|\Omega_t)\)` combine the knowns and unknowns about the potential values of `\(y\)` in period `\(t+h\)`, given the knowledge in period `\(t\)`.
-]
-
----
-
-
-# Forms of a forecast
-
-.right-column[
-A *density forecast* is a very informative form of a forecast, but it is also rather complex, particularly when we try to convey the message.
-
-The simplest and (therefore) most frequently presented form of a forecast is a *point forecast*, which is just a single (most likely) value of the forecast.
-
-A relatively more informative (than the point forecast) but still not too complex form of a forecast is *interval forecast*, which is the lower and upper percentiles of the forecast distribution.
-]
-
----
-
-
-# Generating forecasts
-
-.right-column[
 When we make forecasts, we would want to have some idea of how accurate they are. 
 
 We can get an idea about forecast accuracy by comparing the forecasts with the actual future realizations of the variable of interest.
 
-But to assess forecast accuracy we need access the data from the future - a task that is neither feasible nor practical. 
+But to assess forecast accuracy we need the data from the future - a seemingly unfeasible task. 
 
-Instead, we can resort to the so-called "pseudo-forecasting" routine.
+So, we can resort to the so-called "pseudo-forecasting" routine.
 ]
 
 ---
@@ -88,8 +62,8 @@ Instead, we can resort to the so-called "pseudo-forecasting" routine.
 .right-column[
 The pseudo forecasting routine involves splitting the available data into two segments referred to as 'in-sample' and 'out-of-sample'
 
-- The in-sample segment of a series is also known as the 'estimation set' or the 'training set.'
-- The out-of-sample segment of a series is also known as the 'hold-out set' or the 'test set.'
+- We use the in-sample segment of a series to decide on the model and estimate its parameters.
+- We use the out-of-sample segment of a series to compare the forecasts, generated based on the data from the in-sample segment, to the realizations of the variable.
 ]
 
 ---
@@ -120,7 +94,7 @@ As we carry out the pseudo-forecasting routine, we update the information set by
 # Recursive windows
 
 .right-column[
-&lt;img src="figures/lecture2/recursive.png" width="2773" /&gt;
+![](figures/lecture2/recursive.gif)&lt;!-- --&gt;
 ]
 
 ---
@@ -129,7 +103,7 @@ As we carry out the pseudo-forecasting routine, we update the information set by
 # Rolling windows
 
 .right-column[
-&lt;img src="figures/lecture2/rolling.png" width="2773" /&gt;
+![](figures/lecture2/rolling.gif)&lt;!-- --&gt;
 ]
 
 ---

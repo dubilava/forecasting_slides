@@ -19,13 +19,12 @@ theme_eg <- function(base_size=12,base_family="Segoe Print",border=F){
     panel.grid.major.x=element_blank(),
     panel.grid.minor=element_blank(),
     plot.background=element_rect(fill="white",color=NA),
-    plot.title=element_text(family=base_family,size=rel(1.2),colour="dimgray"),
-    plot.subtitle=element_text(family=base_family,face="bold",size=rel(1.2),colour="dimgray"),
-    plot.caption=element_text(colour="darkgray"),
+    plot.title=element_text(family=base_family,size=rel(1.3),colour="dimgray"),
+    plot.subtitle=element_text(family=base_family,size=rel(1.2),colour="dimgray"),
+    plot.caption=element_text(colour="darkgray",size=rel(0.8)),
     plot.margin=margin(.25,.25,.25,.25,"lines"),
-    axis.title=element_text(family=base_family,face="bold",size=rel(1.2),colour="dimgray"),
-    # axis.title.x=element_text(),
-    axis.text=element_text(family=base_family,size=rel(1.1),colour="dimgray",margin=margin(t=1,r=1,b=1,l=1)),
+    axis.title=element_text(family=base_family,size=rel(1.2),colour="dimgray"),
+    axis.text=element_text(family=base_family,size=rel(1.1),colour="dimgray"),
     axis.line=element_line(colour="dimgray"),
     axis.line.y=element_blank(),
     axis.ticks=element_blank(),
@@ -134,11 +133,13 @@ forecast_dt <- checkfor_dt[series=="cpi_annual_inflation"] # underlying_annual_i
 
 forecast_dt[,forecast_horizon:=as.numeric(date-forecast_date)]
 
-ggplot(forecast_dt[date>="2019-01-01" & forecast_horizon>0]) +
-  geom_line(data=actual_dt[date>="2019-01-01"],aes(x=date,y=value),color="dimgray",linewidth=1)+
-  geom_line(aes(x=date,y=value,group=forecast_date,color=forecast_horizon),linewidth=.8) +
+gg_rba <- ggplot(forecast_dt[date>="2019-01-01" & forecast_horizon>0]) +
+  geom_line(data=actual_dt[date>="2019-01-01"],aes(x=date,y=value),color="black",linewidth=.8)+
+  geom_line(aes(x=date,y=value,group=forecast_date,color=forecast_horizon),linewidth=.6) +
   scale_color_viridis(option="B",begin=.2,end=.8)+
-  labs(subtitle="Annual inflation: actual and forecasts",caption="Source: RBA; obtained via readrba package developed and maintained by Matt Cowgill")+
+  labs(subtitle="Annual inflation (%): actual and forecasts",y="",x="Year",caption="Source: RBA; obtained via readrba R package developed and maintained by Matt Cowgill")+
   theme_eg()+
-  theme(plot.caption = element_text(hjust=0))
+  theme(plot.title.position="plot",plot.caption.position="plot",plot.caption=element_text(hjust=0))
+
+ggsave("figures/lecture1/rba_inflation.png",gg_rba,width=1920*.5,height=1080*.5,units="px",dpi=150)
 

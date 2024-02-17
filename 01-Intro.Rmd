@@ -185,14 +185,11 @@ Our forecast may not be spot-on because:
 
 ---
 
-<<<<<<< HEAD
 
-=======
->>>>>>> 2aee040181d9043d2c799e294bd606cedbc129ea
 # Forecasters are best known for not getting it right
 
 .right-column[
-![](figures/lecture1/inflation.png)
+![](figures/lecture1/rba_inflation.png)
 ]
 
 ---
@@ -216,7 +213,7 @@ Over time we learn more stuff. Simply because what used to be the unobserved fut
 ---
 
 
-# Forecasting with time series models
+# Forecasting lends itself to time series analysis
 
 .right-column[	
 When we organize and store the information in a certain way - chronologically and at regular intervals - we obtain a time series of the historical data. 
@@ -234,9 +231,20 @@ To the extent that there is no way of getting it exactly right, best we can hope
 # The goal is to minimize the risk of getting it wrong
 
 .right-column[
-The *optimal* (point) forecast is the best guess, one that minimizes the risk of getting it wrong.
+Consider a *point forecast*, $\hat{y}_{t+h|t}$, made in period $t$ for period $t+h$ using available data up to and including $t$. This a $h$-step-ahead point forecast. 
 
-We measure risk using a loss function, $l(e_{t+h|t})$. The following must hold for the loss function:
+The *optimal* point forecast is the best of all possible point forecasts we can make. One minimizes the risk of getting the forecast wrong.
+]
+
+---
+
+
+# The goal is to minimize the risk of getting it wrong
+
+.right-column[
+We measure risk using a loss function, $l(e_{t+h|t})$, where $e_{t+h|t}=y_{t+h}-\hat{y}_{t+h|t}$ is the forecast error. 
+
+The following must hold for the loss function:
 - $l(e_{t+h|t}) = 0$ for all $e_{t+h|t}=0$
 - $l(e_{t+h|t}) \ge 0$ for all $e_{t+h|t} \ne 0$
 
@@ -309,8 +317,22 @@ Thus, under the quadratic loss, and assuming that forecast is normally distribut
 ---
 
 
+# What forecast is and how it can be presented
 
-# Additional Readings
+.right-column[
+Point forecast is the simplest and (therefore) most popular way to present a forecast. It is a single (the most likely) value of a forecast.
+
+Forecast is not one value, however. It's a distribution of possible values. 
+
+*Density forecast*, $f(y_{t+h}|\Omega_t)$, where $\Omega_t$ denotes the information set, is the most complete (and somewhat more complex) way to present a forecast. It combines everything that we know or do not know in period $t$ about the event in period $t+h$.
+
+*Interval forecast*, which is the lower and upper percentiles of the forecast distribution, offers a bit more detail than the point forecast but is still not too complex to present or comprehend.
+]
+
+---
+
+
+# Key takeaways
 
 .pull-left[
 ![](Art/todolist.png)
@@ -318,12 +340,10 @@ Thus, under the quadratic loss, and assuming that forecast is normally distribut
 
 .pull-right[
 
-Gonzalez-Rivera, Chapter 1
-
-Hyndman & Athanasopoulos, [1.1](https://otexts.com/fpp3/what-can-be-forecast.html), [1.2](https://otexts.com/fpp3/planning.html), [1.3](https://otexts.com/fpp3/determining-what-to-forecast.html), [1.4](https://otexts.com/fpp3/data-methods.html), [1.5](https://otexts.com/fpp3/case-studies.html), [1.6](https://otexts.com/fpp3/basic-steps.html)
+- We can forecast nearly anything. But not all forecasts are useful. And some forecasts may not even be more accurate than a random guess.
+- Forecast is a distribution, but we often use a single value, point forecast, as our best guess about the future realization of the event.
+- Because a forecaster is bound to make an error, there is no such thing as perfect forecast. The goal is to minimize the risk of getting it wrong.
 ]
-
-
 
 
 

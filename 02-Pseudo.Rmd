@@ -37,11 +37,11 @@ library(ggplot2)
 .pull-right[
 When we make forecasts, we would want to have some idea of how accurate they are. 
 
-We can get an idea about forecast accuracy by comparing the forecasts with the actual future realizations of the variable of interest.
+We can get an idea about forecast accuracy by comparing the forecast for some future period, $\hat{y}_{t+h|t}$, with the actual future realization, $y_{t+h}$.
 
 But to assess forecast accuracy we need the data from the future - a seemingly unfeasible task. 
 
-So, we can resort to the so-called "pseudo-forecasting" routine.
+So, we can resort to the so-called *pseudo-forecasting* routine.
 ]
 
 ---
@@ -62,9 +62,9 @@ The pseudo forecasting routine involves splitting the available data into two se
 # Pseudo forecasting routine
 
 .right-column[
-Thus, we make the so-called 'genuine' forecasts using only the information from the estimation set, and assess the accuracy of these forecasts in a hold-out set.
+Thus, we make the so-called "genuine" forecasts using only the information from the past and present, and we assess the accuracy of these forecasts using the information from the future.
 
-Because forecasting is often performed in a time series context, the estimation set typically predates the hold-out set. In non-dynamic settings such chronological ordering usually is not needed.
+Such chronological ordering is usually relevant, because forecasting is often performed in a time series context. In non-dynamic settings, e.g., if we use one subset of data to predict the other subset of data, such chronological ordering may not be needed.
 ]
 
 ---
@@ -74,8 +74,8 @@ Because forecasting is often performed in a time series context, the estimation 
 
 .right-column[
 As we carry out the pseudo-forecasting routine, we update the information set by including the more recent observations. In so doing, we may choose to keep or discard the more distant observations, which leads to two possible ways of selecting and updating information sets.
-- The *recursive* window approach uses a sequence of expanding windows to update model estimates and the information set.
-- The *rolling* window approach uses a sequence of windows of the same size to update model estimates and the information set.
+- The **recursive** windows approach uses a sequence of expanding windows to update model estimates and the information set.
+- The **rolling** windows approach uses a sequence of windows of the same size to update model estimates and the information set.
 ]
 
 ---
@@ -107,7 +107,7 @@ knitr::include_graphics("figures/lecture2/rolling.gif")
 # Recursive vs. rolling windows
 
 .right-column[
-The two pseudo-forecasting routines are technically very similar. But they can generate considerably differing sets of forecasts. 
+These two pseudo-forecasting routines are technically very similar. But they can generate considerably differing sets of forecasts. 
 
 The recursive scheme uses increasingly more data to generate successive forecasts. If the data-generating process does not change over time this may be a preferred scheme as it allows us to estimate the model parameters more precisely. 
 
@@ -117,14 +117,16 @@ But if the data-generating process changes over time, then the use of all availa
 ---
 
 
-# Generating forecasts and obtaining forecast errors
+# Obtaining forecast errors
 
 .right-column[
-To evaluate forecasts of a time series, $\{y_t\}$, with a total of $T$ observations, we divide the sample into two parts, the in-sample set with a total of $R$ observations, such that $R < T$ (typically, $R \approx 0.75T$), and the out-of-sample set with the remaining $T-R$ observations. 
+Suppose we have a time series $\{y_t\}$ consisting of $T$ observations, i.e., $t=1,\ldots,T$. 
 
-If we are interested in the one-step-ahead forecast evaluation, this way we will produce a sequence of forecasts: $\{y_{R+1|R},y_{R+2|{R+1}},\ldots,y_{T|{T-1}}\}$.
+To set up a pseudo-forecasting routine, we divide the sample into two parts, the in-sample set with a total of $R$ observations, such that $R < T$, and the out-of-sample set with the remaining $T-R$ observations. 
 
-Having observed $\{y_{R+1},y_{R+2},\ldots,y_{T}\}$ we can, then, obtain forecast errors, $e_{R+j} = y_{R+j} - y_{R+j|{R+j-1}}$, for $j = 1,\ldots,T-R$.
+If we wanted to evaluate one-step-ahead forecasts, this routine would generate a sequence of forecasts: $\{\hat{y}_{R+1|R},\hat{y}_{R+2|{R+1}},\ldots,\hat{y}_{T|{T-1}}\}$.
+
+Having observed $\{y_{R+1},y_{R+2},\ldots,y_{T}\}$ we can, then, obtain forecast errors, $\hat{e}_{R+j|{R+j-1}} = y_{R+j}-\hat{y}_{R+j|{R+j-1}}$, for all $j = 1,\ldots,T-R$.
 ]
 
 ---
@@ -135,8 +137,8 @@ Having observed $\{y_{R+1},y_{R+2},\ldots,y_{T}\}$ we can, then, obtain forecast
 .right-column[
 The most commonly applied accuracy measures are the mean absolute forecast error (MAFE) and the root mean squared forecast error (RMSFE):
 $$\begin{aligned}
-\text{MAFE}  = & \frac{1}{P}\sum_{i=1}^{P}|e_i|\\
-\text{RMSFE} = & \sqrt{\frac{1}{P}\sum_{i=1}^{P}e_i^2}
+\text{MAFE}  = & \frac{1}{P}\sum_{i=1}^{P}|\hat{e}_i|\\
+\text{RMSFE} = & \sqrt{\frac{1}{P}\sum_{i=1}^{P}\hat{e}_i^2}
 \end{aligned}$$
 where $P$ is the total number of out-of-sample forecasts.
 ]
@@ -144,7 +146,7 @@ where $P$ is the total number of out-of-sample forecasts.
 ---
 
 
-# Measures of forecast accuracy
+# Key features of the forecast accuracy measures
 
 .right-column[
 The MAFE assumes absolute loss; the RMSFE assumes quadratic loss. 
@@ -162,7 +164,7 @@ Unlike some of the better-known in-sample goodness-of-fit measures (e.g., R-squa
 .right-column[
 MAFE and RMSFE (or other similar measures) are *relative* measures designed to compare forecasts. These are the mean values (or monotonic transformations thereof) of some loss functions. 
 
-There also exist *absolute* measures designed to evaluate each forecast separately.
+There also exist *absolute* measures designed to evaluate each forecast individually, i.e., irrespective to any other forecasts.
 
 These are measures of forecast *unbiasedness* and *efficiency*, together forming the measure of forecast *adequacy* (or *rationality*).
 ]
@@ -177,7 +179,7 @@ A forecast is unbiased if the forecast error is zero, on average.
 
 This condition mimics that of the residuals of a model. But the residuals are, by construction, guaranteed to be mean-zero. This is not the case with forecast errors.
 
-But we do want forecast errors to be mean-zero. Otherwise, we probably have an issue with the model or the method that we chose for generating the forecasts.
+We want forecast errors to be mean-zero. Otherwise, we probably have an issue with the model or the method that we chose for generating the forecasts.
 ]
 
 ---
@@ -190,7 +192,7 @@ Consider a positively trending time series. And suppose, due to ignorance or inc
 
 The forecasts from this model will likely underestimate the realized future values of the time series. That is, the forecasts will be biased.
 
-The following graph illustrates this assuming the rolling window approach.
+The following graphs illustrate this (using the rolling windows approach).
 ]
 
 ---
@@ -211,7 +213,7 @@ knitr::include_graphics("figures/lecture2/trending.png")
 
 .right-column[
 ```{r errors-trending}
-knitr::include_graphics("figures/lecture2/errors_trending.png")
+knitr::include_graphics("figures/lecture2/trending_errors.png")
 ```
 ]
 
@@ -232,7 +234,9 @@ Of course, we are well aware of the issue - in generating the forecasts, we have
 # Biased forecast usually are less accurate
 
 .right-column[
-The bias, in this instance, contributes to the lack of accuracy of the applied model. The RMSFE, based on these 20 forecast errors, is $0.80$. Had there been no bias, the RMSFE, based on the bias-corrected 20 forecast errors, would have been $0.59$. 
+The bias, in this instance, contributes to the lack of accuracy of the applied model. The RMSFE, based on these 20 forecast errors, is $0.80$. 
+
+Had there been no bias, the RMSFE, based on the bias-corrected 20 forecast errors, would have been $0.59$. 
 
 Biased forecasts usually (albeit not necessarily) are less accurate than their unbiased counterparts.
 ]
@@ -265,7 +269,7 @@ Think of a market equilibrium price, for example. When, for some random reason, 
 # Misspecified model can yield forecast inefficiency
 
 .right-column[
-Suppose we neglected the presence of a mean-reverting process, and assumed instead that the random walk best characterizes the time series dynamics. 
+Suppose we neglected the presence of a mean-reverting process, and assumed instead that the random walk best characterizes the time series dynamics. That is, we assumed that our best guess about the next realization of the variable is the most recent observed realization of the variable.
 
 The outcome of this assumption will be that the generated forecasts will overestimate the realizations in the (extreme) positive range of the time series, and underestimate them in the (extreme) negative range of the time series. 
 ]
@@ -287,7 +291,7 @@ knitr::include_graphics("figures/lecture2/meanreverting.png")
 
 .right-column[
 ```{r errors-meanreverting}
-knitr::include_graphics("figures/lecture2/errors_meanreverting.png")
+knitr::include_graphics("figures/lecture2/meanreverting_errors.png")
 ```
 ]
 
@@ -297,9 +301,9 @@ knitr::include_graphics("figures/lecture2/errors_meanreverting.png")
 # Inefficient forecast errors
 
 .right-column[
-As it was the case with the biased forecasts, the presence of inefficient forecasts also points to our lack understanding of the model used to generate forecasts. 
+As it were the case with the biased forecasts, the presence of inefficient forecasts also points to our lack understanding of the model used to generate forecasts. 
 
-We are, of course, well-aware of this deficiency in our modeling effort - we completely ignored that the forecast in a given period depends on whether the most recent observed realization of the variable is greater or less than its long-run mean. 
+We are, of course, well-aware of this deficiency in our modeling effort - we completely ignored that the forecast in a given period depends on whether the most recent observed realization is above or below its long-run mean. 
 ]
 
 ---
@@ -308,7 +312,7 @@ We are, of course, well-aware of this deficiency in our modeling effort - we com
 # Inefficient forecast usually are less accurate
 
 .right-column[
-The inefficiency contributes to the lack of accuracy as well. 
+The inefficiency contributes to the lack of accuracy. 
 
 The RMSFE, based on the forecasts from the misspecified model, is $1.25$. The RMSFE, based on the forecasts from the correctly specified model, would have been $1.11$.
 
@@ -362,7 +366,7 @@ The left panel of the following graph presents this series.
 
 .right-column[
 ```{r mincer-zarnowitz}
-knitr::include_graphics("figures/lecture2/oil_combined.png")
+knitr::include_graphics("figures/lecture2/mincer-zarnowitz.png")
 ```
 ]
 
@@ -416,8 +420,7 @@ Moreover, (2) given (1) would result in the regression line overlapping with the
 ---
 
 
-
-# Readings
+# Key takeaways
 
 .pull-left[
 ![](Art/todolist.png)
@@ -425,11 +428,8 @@ Moreover, (2) given (1) would result in the regression line overlapping with the
 
 .pull-right[
 
-Gonzalez-Rivera, Chapter 4 and Chapter 9 Section 1
-
-Hyndman & Athanasopoulos, [1.7](https://otexts.com/fpp3/perspective.html),  [5.8](https://otexts.com/fpp3/accuracy.html)
+- We can evaluate forecasts by using the first portion of the available time series to generate the forecasts and then comparing them to the second portion of the time series.
+- We examine the adequacy of the forecasts by checking whether the forecast errors are, on average, zero and the forecast errors are uncorrelated with the forecasts.
+- We assess relative accuracy of the forecasts by comparing their measures of forecast accuracy.
 ]
-
-
-
 

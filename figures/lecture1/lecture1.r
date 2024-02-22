@@ -68,7 +68,7 @@ gg_hist <- ggplot(dt,aes(x=x))+
 # combine the two graphs
 gg_comb <- plot_grid(gg_ts,gg_hist,align="hv",ncol=2,rel_widths = c(3,1))
 
-ggsave("figures/lecture1/time-series.png",gg_comb,width=1920*.5,height=1080*.5,units="px",dpi=150)
+ggsave("figures/lecture1/time-series.png",gg_comb,width=6.5,height=6.5*9/16,dpi="retina")
 
 
 # 1.3 - quadratic loss ----
@@ -114,7 +114,7 @@ gg_loss <- ggplot()+
 # combine the two graphs
 gg_comb <- plot_grid(gg_errors,gg_loss,align="hv",ncol=2,rel_widths = c(2,2))
 
-ggsave("figures/lecture1/loss.png",gg_comb,width=1920*.5,height=1080*.5,units="px",dpi=150)
+ggsave("figures/lecture1/loss.png",gg_comb,width=6.5,height=6.5*9/16,dpi="retina")
 
 
 
@@ -141,5 +141,5 @@ gg_rba <- ggplot(forecast_dt[date>="2019-01-01" & forecast_horizon>0]) +
   theme_eg()+
   theme(plot.title.position="plot",plot.caption.position="plot",plot.caption=element_text(hjust=0))
 
-ggsave("figures/lecture1/rba_inflation.png",gg_rba,width=1920*.5,height=1080*.5,units="px",dpi=150)
+ggsave("figures/lecture1/rba_inflation.png",gg_rba,width=6.5,height=6.5*9/16,dpi="retina")
 

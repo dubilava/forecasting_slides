@@ -143,3 +143,6 @@ gg_rba <- ggplot(forecast_dt[date>="2019-01-01" & forecast_horizon>0]) +
 
 ggsave("figures/lecture1/rba_inflation.png",gg_rba,width=6.5,height=6.5*9/16,dpi="retina")
 
+
+
+

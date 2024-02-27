@@ -99,8 +99,6 @@ gg_errordots <- ggplot(y_dt,aes(x=e_rol))+
 # combine the two graphs
 gg_comb <- plot_grid(gg_errors,gg_errordots,align="hv",ncol=2,rel_widths = c(3,1))
 
-gg_comb
-
 ggsave("figures/lecture2/trending_errors.png",gg_comb,width=6.5,height=6.5*9/16,dpi="retina")
 
 
@@ -110,7 +108,7 @@ ggsave("figures/lecture2/trending_errors.png",gg_comb,width=6.5,height=6.5*9/16,
 n <- 40
 # s=s+1
 set.seed(18)
-y <- rnorm(n,0,1)
+y <- rnorm(n,.2,.8)
 trs <- 1
 for(i in 2:n){
   # if(abs(y[i-1])>=trs){
@@ -134,7 +132,7 @@ gg_ts <- ggplot(y_dt,aes(x=x,y=y))+
   geom_line(linewidth=.8,na.rm=T,color="dimgray")+
   geom_point(data=y_dt[x%in%c(R+1:n)],aes(x=x,y=inefficient),size=2.5,stroke=.8,shape=21,color="dimgray",fill="lightgray")+
   labs(title="",x="t",y=expression(y[t]))+
-  coord_cartesian(x=c(1,n+1),y=c(-2.5,2.5),clip="off")+
+  coord_cartesian(x=c(1,n+1),y=c(-2,2),clip="off")+
   theme_eg()
 
 gg_ts
@@ -154,7 +152,7 @@ gg_errors <- ggplot(y_dt,aes(x=x,y=e_inefficient))+
   geom_point(size=2.5,stroke=.8,shape=21,color=ifelse(y_dt$inefficient>=0,"dimgray","dimgray"),fill=ifelse(y_dt$inefficient>=0,"dimgray","white"),na.rm=T)+
   scale_x_continuous(breaks=seq((R+5),n,5))+
   labs(title="",x="t",y=expression(e[t]))+
-  coord_cartesian(x=c(R+.5,n+.5),y=c(-2.5,2.5))+
+  coord_cartesian(x=c(R+.5,n+.5),y=c(-2,2))+
   theme_eg()
 
 
@@ -162,10 +160,10 @@ y_dt[,`:=`(pos=factor(ifelse(inefficient>=0,1,0)))]
 
 # graph the dot-density of the series
 gg_errordots <- ggplot(y_dt,aes(x=e_inefficient,color=pos,fill=pos))+
-  geom_dotplot(binwidth=.18,binpositions = "all",stackgroups=T,stroke=1.5,stackratio=1.1,na.rm=T)+
+  geom_dotplot(binwidth=.14,binpositions = "all",stackgroups=T,stroke=1.5,stackratio=1.1,na.rm=T)+
   scale_color_manual(values=c("dimgray","dimgray"))+
   scale_fill_manual(values=c("white","dimgray"))+
-  xlim(-2.5,2.5)+
+  xlim(-2,2)+
   coord_flip()+
   theme_eg()+
   theme(axis.title=element_blank(),axis.text=element_blank(),axis.line=element_blank())
@@ -209,7 +207,7 @@ sub_dt <- dt[Date>="2001-01-01"]
 gg_ts <- ggplot(sub_dt,aes(x=Date,y=y))+
   geom_line(linewidth=.6,color="dimgray")+
   scale_x_continuous(breaks=c(as.Date("2000-01-01"),as.Date("2010-01-01"),as.Date("2020-01-01")),labels=c("2000","2010","2020"))+
-  labs(title="(a) Crude oil, WTI",x="Year",y="Price ($/bbl)")+
+  labs(x="Year",y="Price ($/bbl)")+
   coord_cartesian(xlim=c(as.Date("2001-01-01"),as.Date("2023-01-01")),ylim=c(0,140))+
   theme_eg()#+
 # theme(plot.margin=margin(0.75,0,.15,0,"cm"))
@@ -224,7 +222,7 @@ gg_mz <- ggplot(sub_dt,aes(x=f,y=y))+
   geom_hline(yintercept=mean(sub_dt$y,na.rm=T),color="black",linewidth=.4,linetype=2)+
   geom_abline(slope=1,intercept=0,color="black",linewidth=.4,linetype=2)+
   geom_smooth(method="lm",formula=y~x,se=F,color="dimgray",linewidth=.8,linetype=5)+
-  labs(title="(b) Mincer-Zarnowitz",x="Forecast",y="")+
+  labs(x="Forecast",y="")+
   coord_cartesian(xlim=c(0,140),ylim=c(0,140))+
   theme_eg()+
   theme(axis.line=element_blank(),panel.grid.major.x=element_line(colour="dimgray"))

@@ -4,7 +4,7 @@
     <title>Forecasting for Economics and Business</title>
     <meta charset="utf-8" />
     <meta name="author" content="David Ubilava" />
-    <script src="libs/header-attrs-2.25/header-attrs.js"></script>
+    <script src="libs/header-attrs-2.22/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/metropolis.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/metropolis-fonts.css" rel="stylesheet" />
@@ -38,7 +38,7 @@ class: center, middle, inverse, title-slide
 
 
 
-# Generating forecasts
+# Pseudo forecasting routine
 
 .pull-left[
 ![](Art/forecast.png)
@@ -57,7 +57,7 @@ So, we can resort to the so-called *pseudo-forecasting* routine.
 ---
 
 
-# Pseudo forecasting routine
+# In-sample and out-of-sample data segments
 
 .right-column[
 The pseudo forecasting routine involves splitting the available data into two segments referred to as 'in-sample' and 'out-of-sample'
@@ -69,7 +69,7 @@ The pseudo forecasting routine involves splitting the available data into two se
 ---
 
 
-# Pseudo forecasting routine
+# Genuine pseudo-forecasts
 
 .right-column[
 Thus, we make the so-called "genuine" forecasts using only the information from the past and present, and we assess the accuracy of these forecasts using the information from the future.
@@ -126,13 +126,13 @@ But if the data-generating process changes over time, then the use of all availa
 # Obtaining forecast errors
 
 .right-column[
-Suppose we have a time series `\(\{y_t\}\)` consisting of `\(T\)` observations, i.e., `\(t=1,\ldots,T\)`. 
+Suppose we have a time series of a variable `\(y\)` indexed by `\(t\)`, that is, `\(\{y_t\!:\;t=1,2,\ldots,T\}\)`, where `\(T\)` is the length of the time series. 
 
-To set up a pseudo-forecasting routine, we divide the sample into two parts, the in-sample set with a total of `\(R\)` observations, such that `\(R &lt; T\)`, and the out-of-sample set with the remaining `\(T-R\)` observations. 
+To set up a pseudo-forecasting routine, we divide the sample into two parts, the in-sample set containing `\(R\)` observations, such that `\(R &lt; T\)`, and the out-of-sample set with the remaining `\(T-R\)` observations. 
 
-If we wanted to evaluate one-step-ahead forecasts, this routine would generate a sequence of forecasts: `\(\{\hat{y}_{R+1|R},\hat{y}_{R+2|{R+1}},\ldots,\hat{y}_{T|{T-1}}\}\)`.
+So, for one-step-ahead forecasts, this would result in a sequence of forecasts: `\(\{\hat{y}_{s+1|s}\!:\; s=R,\ldots,T-1\}\)`.
 
-Having observed `\(\{y_{R+1},y_{R+2},\ldots,y_{T}\}\)` we can, then, obtain forecast errors, `\(\hat{e}_{R+j|{R+j-1}} = y_{R+j}-\hat{y}_{R+j|{R+j-1}}\)`, for all `\(j = 1,\ldots,T-R\)`.
+Having observed `\(\{y_{s+1}\!:\; s=R,\ldots,T-1\}\)` we can, then, obtain forecast errors, `\(\hat{e}_{s+1|s} = y_{s+1}-\hat{y}_{s+1|s}\)`, for all `\(s = R,\ldots,T-1\)`.
 ]
 
 ---
@@ -143,10 +143,10 @@ Having observed `\(\{y_{R+1},y_{R+2},\ldots,y_{T}\}\)` we can, then, obtain fore
 .right-column[
 The most commonly applied accuracy measures are the mean absolute forecast error (MAFE) and the root mean squared forecast error (RMSFE):
 `$$\begin{aligned}
-\text{MAFE}  = &amp; \frac{1}{P}\sum_{i=1}^{P}|\hat{e}_i|\\
-\text{RMSFE} = &amp; \sqrt{\frac{1}{P}\sum_{i=1}^{P}\hat{e}_i^2}
+\text{MAFE}  = &amp; \frac{1}{T-h-R+1}\sum_{s=R}^{T-h}|\hat{e}_{s+h|s}|\\
+\text{RMSFE} = &amp; \sqrt{\frac{1}{T-h-R+1}\sum_{s=R}^{T-h}\hat{e}_{s+h|s}^2}
 \end{aligned}$$`
-where `\(P\)` is the total number of out-of-sample forecasts.
+where `\(h\)` is the forecast horizon.
 ]
 
 ---
@@ -271,9 +271,9 @@ Think of a market equilibrium price, for example. When, for some random reason, 
 # Misspecified model can yield forecast inefficiency
 
 .right-column[
-Suppose we neglected the presence of a mean-reverting process, and assumed instead that the random walk best characterizes the time series dynamics. That is, we assumed that our best guess about the next realization of the variable is the most recent observed realization of the variable.
+Suppose we neglected the presence of a mean-reverting process, and assumed that the random walk best characterizes the time series dynamics. That is, we assumed that our best guess about the next realization of the variable is its most recent observed realization.
 
-The outcome of this assumption will be that the generated forecasts will overestimate the realizations in the (extreme) positive range of the time series, and underestimate them in the (extreme) negative range of the time series. 
+This assumption will result in forecasts that overestimate the realizations in the (extreme) positive range of the time series, and underestimate them in the (extreme) negative range of the time series. 
 ]
 
 ---

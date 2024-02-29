@@ -339,7 +339,7 @@ where `\(h\)` is the length of the forecast horizon, and `\(R+h,\ldots,T\)` is t
 The null hypothesis `\(H_0:\left(\alpha_0=0,\alpha_1=1\right)\)` is that for the joint test of unbiasedness and efficiency. Under this null hypothesis, `\(\upsilon_t\)` represents the forecast error. 
 
 More generally, the forecast error is: 
-`$$e_{t+h}=\alpha_0+\beta_1\hat{y}_{t+h|t}+\upsilon_t,$$`
+`$$\hat{e}_{t+h|t}=\alpha_0+\beta_1\hat{y}_{t+h|t}+\upsilon_t,$$`
 where `\(\beta_1=(\alpha_1-1)\)`. 
 
 When `\(\alpha_0=\beta_1=0\)`, the forecast error is mean-zero and uncorrelated with the forecast.
@@ -371,7 +371,7 @@ The left panel of the following graph presents this series.
 # Test of unbiasedness
 
 .right-column[
-We test unbiasedness of the one-step-ahead forecast by setting up a regression: `$$e_{t+1} = \beta_0+\nu_{t+1},$$` where, in this instance, `\(e_{t+1}=y_{t+1}-y_{t-11}\)`. The test of unbiasedness is equivalent to that of `\(H_0: \beta_0 = 0\)`. 
+We test unbiasedness of the one-step-ahead forecast by setting up a regression: `$$\hat{e}_{t+1|t} = \beta_0+\nu_{t+1},$$` where, in this instance, `\(e_{t+1}=y_{t+1}-y_{t-11}\)`. The test of unbiasedness is equivalent to that of `\(H_0: \beta_0 = 0\)`. 
 
 As it turns out, the test statistic is `\(0.895\)`, and thus we fail to reject the null hypothesis of unbiasedness.
 ]

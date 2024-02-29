@@ -4,7 +4,7 @@
     <title>Forecasting for Economics and Business</title>
     <meta charset="utf-8" />
     <meta name="author" content="David Ubilava" />
-    <script src="libs/header-attrs-2.23/header-attrs.js"></script>
+    <script src="libs/header-attrs-2.22/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/metropolis.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/metropolis-fonts.css" rel="stylesheet" />
@@ -172,7 +172,7 @@ Statistical methods of evaluation are, therefore, desirable.
 .right-column[
 Consider a time series of length `\(T\)`. 
 
-Suppose `\(h\)`-step-ahead forecasts for periods `\(R+h\)` through `\(T\)` have been generated from two competing models denoted by `\(i\)` and `\(j\)` and yielding `\(y_{i,t+h|t}\)` and `\(y_{j,t+h|t}\)`, for all `\(t=R,\ldots,T-h\)`, with corresponding forecast errors: `\(e_{i,t+h}\)` and `\(e_{j,t+h}\)`.
+Suppose `\(h\)`-step-ahead forecasts for periods `\(R+h\)` through `\(T\)` have been generated from two competing models denoted by `\(i\)` and `\(j\)` and yielding `\(\hat{y}_{i,t+h|t}\)` and `\(\hat{y}_{j,t+h|t}\)`, for all `\(t=R,\ldots,T-h\)`, with corresponding forecast errors: `\(\hat{e}_{i,t+h|t}\)` and `\(\hat{e}_{j,t+h|t}\)`.
 ]
 
 ---
@@ -181,7 +181,7 @@ Suppose `\(h\)`-step-ahead forecasts for periods `\(R+h\)` through `\(T\)` have 
 # Loss differential
 
 .right-column[
-The null hypothesis of equal predictive ability can be given in terms of the unconditional expectation of the loss differential: `$$H_0: \mathbb{E}\left[d(e_{t+h})\right] = 0,$$` where, assuming quadratic loss, `$$d(e_{t+h}) = e_{i,t+h}^2-e_{j,t+h}^2.$$`
+The null hypothesis of equal predictive ability can be given in terms of the unconditional expectation of the loss differential: `$$H_0: \mathbb{E}\left[d(\hat{e}_{t+h|t})\right] = 0,$$` where, assuming quadratic loss, `$$d(\hat{e}_{t+h|t}) = \hat{e}_{i,t+h|t}^2-\hat{e}_{j,t+h|t}^2.$$`
 ]
 
 ---
@@ -191,7 +191,7 @@ The null hypothesis of equal predictive ability can be given in terms of the unc
 .right-column[
 The Diebold-Mariano (DM) test relaxes the aforementioned requirements on the forecast errors. 
 
-The DM test statistic is: `$$DM=\frac{\bar{d}}{\sqrt{\sigma_d^2/P}} \sim N(0,1),$$` where `\(\bar{d}=P^{-1}\sum_{t=1}^{P}d(e_{t+h})\)`, and where `\(P\)` is the total number of forecasts. 
+The DM test statistic is: `$$DM=\frac{\bar{d}}{\sqrt{\sigma_d^2/P}} \sim N(0,1),$$` where `\(\bar{d}=P^{-1}\sum_{t=1}^{P}d(\hat{e}_{t+h|t})\)`, and where `\(P=T-h-R+1\)` is the total number of forecasts. 
 ]
 		
 ---
@@ -209,11 +209,11 @@ A modified version of the DM statistic, due to Harvey, Leybourne, and Newbold (1
 # A regression-based Diebold-Mariano test
 
 .right-column[
-In practice, the test of equal predictive ability can be applied within the framework of a regression model: `$$d(e_{t+h}) = \delta + \upsilon_{t+h} \hspace{.5in} t = R,\ldots,T-h.$$`
+In practice, the test of equal predictive ability can be applied within the framework of a regression model: `$$d(\hat{e}_{t+h|t}) = \delta + \upsilon_{t+h} \hspace{.5in} t = R,\ldots,T-h.$$`
 
 The null of equal predictive ability is equivalent of testing `\(H_0: \delta = 0\)`.
 
-Because `\(d(e_{t+h})\)` may be serially correlated, an autocorrelation consistent standard errors should be used for inference.
+Because `\(d(\hat{e}_{t+h|t})\)` may be serially correlated, an autocorrelation consistent standard errors should be used for inference.
 ]
 
 ---
@@ -236,7 +236,7 @@ So, yes, ECMWF forecasts are more accurate than those of JMA.
 .right-column[
 By choosing the most accurate of the forecasts, we discard all others.
 
-But other forecasts may not be completely useless. They could potentially contain information above and beyond of that of the most accurate forecast.
+But other forecasts may not be completely useless. They could potentially contain information that is absent in the most accurate forecast.
 
 Thus, merely selecting the best model may be a sub-optimal strategy.
 
@@ -262,9 +262,9 @@ Several factors support the idea of forecast combination:
 # How can we combine?
 
 .right-column[
-Consider two forecasting methods (or models), `\(i\)` and `\(j\)`, each respectively yielding `\(h\)`-step-ahead forecasts `\(y_{i,t+h|t}\)` and `\(y_{j,t+h|t}\)`, and the associated forecast errors `\(e_{i,t+h} = y_{t+h}-y_{i,t+h|t}\)` and `\(e_{j,t+h} = y_{t+h}-y_{j,t+h|t}\)`.
+Consider two forecasting methods (or models), `\(i\)` and `\(j\)`, each respectively yielding `\(h\)`-step-ahead forecasts `\(\hat{y}_{i,t+h|t}\)` and `\(\hat{y}_{j,t+h|t}\)`, and the associated forecast errors `\(\hat{e}_{i,t+h|t} = y_{t+h}-\hat{y}_{i,t+h|t}\)` and `\(\hat{e}_{j,t+h|t} = y_{t+h}-\hat{y}_{j,t+h|t}\)`.
 
-A combined forecast, `\(y_{c,t+h|t}\)`, is expressed as: `$$y_{c,t+h|t} = (1-w)y_{i,t+h|t} + w y_{j,t+h|t},$$` where `\(0 \leq w \leq 1\)` is a weight. Thus, a combined forecast is the weighted average of the two individual forecasts.
+A combined forecast, `\(\hat{y}_{c,t+h|t}\)`, is expressed as: `$$\hat{y}_{c,t+h|t} = (1-w)\hat{y}_{i,t+h|t} + w\hat{y}_{j,t+h|t},$$` where `\(0 \leq w \leq 1\)` is a weight. Thus, a combined forecast is the weighted average of the two individual forecasts.
 ]
 
 ---
@@ -273,9 +273,9 @@ A combined forecast, `\(y_{c,t+h|t}\)`, is expressed as: `$$y_{c,t+h|t} = (1-w)y
 # Mean of a combined forecast error
 
 .right-column[
-A combined forecast error is the weighted average of the two individual forecast errors: `$$e_{c,t+h} = (1-w)e_{i,t+h} + w e_{j,t+h}$$`
+Likewise, a combined forecast error is the weighted average of the two individual forecast errors: `$$\hat{e}_{c,t+h|t} = (1-w)\hat{e}_{i,t+h|t} + w\hat{e}_{j,t+h|t}$$`
 
-The mean of a combined forecast error (under the assumption of forecast error unbiasedness) is zero: `$$\mathbb{E}\left(e_{c,t+h}\right) = \mathbb{E}\left[(1-w)e_{i,t+h} + w e_{j,t+h}\right] = 0$$`
+The mean of a combined forecast error (under the assumption of forecast error unbiasedness) is zero: `$$\mathbb{E}\left(e_{c,t+h}\right) = \mathbb{E}\left[(1-w)\hat{e}_{i,t+h|t} + w\hat{e}_{j,t+h|t}\right] = 0$$`
 ]
 
 ---
@@ -284,7 +284,7 @@ The mean of a combined forecast error (under the assumption of forecast error un
 # Variance of a combined forecast error
 
 .right-column[
-The variance of a combined forecast error is: `$$Var\left(e_{c,t+h}\right) = (1-w)^2 \sigma_i^2 + w^2  \sigma_j^2 + 2w(1-w)\rho\sigma_i\sigma_j,$$` where `\(\sigma_i\)` and `\(\sigma_j\)` are the standard deviations of the forecast errors from models `\(i\)` and `\(j\)`, and `\(\rho\)` is a correlation between these two forecast errors.
+The variance of a combined forecast error is: `$$\mathbb{V}\left(\hat{e}_{c,t+h|t}\right) = (1-w)^2 \sigma_i^2 + w^2  \sigma_j^2 + 2w(1-w)\rho\sigma_i\sigma_j,$$` where `\(\sigma_i\)` and `\(\sigma_j\)` are the standard deviations of the forecast errors from models `\(i\)` and `\(j\)`, and `\(\rho\)` is a correlation between these two forecast errors.
 ]
 
 ---
@@ -293,7 +293,7 @@ The variance of a combined forecast error is: `$$Var\left(e_{c,t+h}\right) = (1-
 # The optimal weight
 
 .right-column[
-Taking the derivative of the variance of a combined forecast error, and equating it to zero yields an optimal weight (which minimizes the combined forecast error variance): `$$w^* = \frac{\sigma_i^2-\rho\sigma_i\sigma_j}{\sigma_i^2+\sigma_j^2-2\rho\sigma_i\sigma_j}$$`
+We can obtin an optimal weight, i.e., a weight that minimizes the variance of the combined forecast error, by taking the derivative of the variance of a combined forecast error, and equating it to zero. Solving this first order condition for `\(w\)` yields the optimal weight: `$$w^* = \frac{\sigma_i^2-\rho\sigma_i\sigma_j}{\sigma_i^2+\sigma_j^2-2\rho\sigma_i\sigma_j}$$`
 ]
 
 ---
@@ -302,7 +302,7 @@ Taking the derivative of the variance of a combined forecast error, and equating
 # At least as efficient as the most efficient forecast
 
 .right-column[
-Substitute `\(w^*\)` in place of `\(w\)` in the formula for variance to obtain: `$$Var\left[e_{c,t+1}(w^*)\right] = \sigma_c^2(w^*) = \frac{\sigma_i^2\sigma_j^2(1-\rho^2)}{\sigma_i^2+\sigma_j^2-2\rho\sigma_i\sigma_j}$$`
+Substitute `\(w^*\)` in place of `\(w\)` in the formula for variance to obtain: `$$\mathbb{V}\left[\hat{e}_{c,t+1|t}(w^*)\right] = \sigma_c^2(w^*) = \frac{\sigma_i^2\sigma_j^2(1-\rho^2)}{\sigma_i^2+\sigma_j^2-2\rho\sigma_i\sigma_j}$$`
 
 
 As it turns out: `\(\sigma_c^2(w^*) \leq \min\{\sigma_i^2,\sigma_j^2\}\)`. That is, by combining forecasts we are not making things worse (so long as we use *optimal* weights).
@@ -337,12 +337,12 @@ Thus, the weights attached to forecasts are inversely proportional to the varian
 ---
 
 
-# Combination equally accurate uncorrelated forecasts
+# Combining equally accurate uncorrelated forecasts
 
 .right-column[
 *Assumption*: `\(\sigma_i = \sigma_j = \sigma\)` and `\(\rho=0\)`.
 
-Suppose the individual forecasts are equally accurate and the forecast errors are uncorrelated, then the sample estimator of `\(w^*\)` reduces to `\(0.5\)`, resulting in the equal-weighted forecast combination: `$$y_{c,t+h|t} = 0.5y_{i,t+h|t} + 0.5y_{j,t+h|t}$$`
+Suppose the individual forecasts are equally accurate and the forecast errors are uncorrelated, then the sample estimator of `\(w^*\)` reduces to `\(0.5\)`, resulting in the equal-weighted forecast combination: `$$\hat{y}_{c,t+h|t} = 0.5\hat{y}_{i,t+h|t} + 0.5\hat{y}_{j,t+h|t}$$`
 
 ]
 
@@ -367,7 +367,7 @@ When applying "inversely proportional weights", the DM statistic is `\(2.062\)`.
 .right-column[
 The optimal weight has a direct interpretation in a regression setting. 
 
-Consider the combined forecast equation as: `$$y_{t+h} = (1-w)y_{i,t+h|t} + w y_{j,t+h|t} + \varepsilon_{t+h},$$` where `\(\varepsilon_{t+h}\equiv e_{c,t+h}\)`. 
+Consider the combined forecast equation as: `$$y_{t+h} = (1-w)\hat{y}_{i,t+h|t} + w\hat{y}_{j,t+h|t} + \varepsilon_{t+h},$$` where `\(\varepsilon_{t+h}\equiv\hat{e}_{c,t+h|t}\)`. 
 ]
 
 ---
@@ -376,7 +376,7 @@ Consider the combined forecast equation as: `$$y_{t+h} = (1-w)y_{i,t+h|t} + w y_
 # The optimal weight in a regression setting
 
 .right-column[
-We can re-arrange the equation so that: `$$e_{i,t+h} = w (y_{j,t+h|t}-y_{i,t+h|t}) + \varepsilon_{t+h},$$` or that: `$$e_{i,t+h} = w\left(e_{i,t+h}-e_{j,t+h}\right)+\varepsilon_{t+h},\;~~t=R,\ldots,R+P-1$$` where `\(w\)` is obtained by estimating a linear regression with an intercept restricted to zero.
+We can re-arrange the equation so that: `$$\hat{e}_{i,t+h|t} = w (\hat{y}_{j,t+h|t}-\hat{y}_{i,t+h|t}) + \varepsilon_{t+h},$$` or that: `$$\hat{e}_{i,t+h|t} = w\left(\hat{e}_{i,t+h|t}-\hat{e}_{j,t+h|t}\right)+\varepsilon_{t+h},\;~~t=R,\ldots,T-h$$` where `\(w\)` is obtained by estimating a linear regression with an intercept restricted to zero.
 ]
 
 ---
@@ -384,7 +384,7 @@ We can re-arrange the equation so that: `$$e_{i,t+h} = w (y_{j,t+h|t}-y_{i,t+h|t
 # The optimal weight in a regression setting
 
 .right-column[
-Alternatively, we can estimate a variant of the combined forecast equation: `$$y_{t+h} = \alpha+\beta_i y_{i,t+h|t} + \beta_j y_{j,t+h|t} + \varepsilon_{t+h},$$` which relaxes the assumption of forecast unbiasedness, as well as of weights adding up to one or, indeed, of non-negative weights.
+We can also estimate a variant of the combined forecast equation: `$$y_{t+h} = \alpha+\beta_i\hat{y}_{i,t+h|t} + \beta_j\hat{y}_{j,t+h|t} + \varepsilon_{t+h},$$` which relaxes the assumption of forecast unbiasedness, as well as of weights adding up to one or, indeed, of non-negative weights.
 ]
 
 ---
@@ -395,7 +395,7 @@ Alternatively, we can estimate a variant of the combined forecast equation: `$$y
 .right-column[
 A special case of forecast combination is when `\(w=0\)`. Such an outcome (of the optimal weights) is known as forecast encompassing.
 
-It is said that `\(y_{i,t+h|t}\)` encompasses `\(y_{j,t+h|t}\)`, when given that the former is available, the latter provides no additional useful information.
+It is said that `\(\hat{y}_{i,t+h|t}\)` encompasses `\(\hat{y}_{j,t+h|t}\)`, when given that the former is available, the latter provides no additional useful information.
 ]
 
 ---
@@ -404,20 +404,22 @@ It is said that `\(y_{i,t+h|t}\)` encompasses `\(y_{j,t+h|t}\)`, when given that
 # Forecast encompassing in a regression setting
 
 .right-column[
-We can test for the forecast encompassing by regressing the realized value on individual forecasts: `$$y_{t+h} = \alpha + \beta_1 y_{i,t+h|t} + \beta_2 y_{j,t+h|t} + \varepsilon_{t+h},$$` and testing the null hypothesis that `\(\beta_2=0\)`, given that `\(\beta_1=1\)`. 
+We can test for the forecast encompassing by regressing the realized value on individual forecasts: `$$y_{t+h} = \alpha + \beta_1\hat{y}_{i,t+h|t} + \beta_2\hat{y}_{j,t+h|t} + \varepsilon_{t+h},$$` and testing the null hypothesis that `\(\beta_2=0\)`, given that `\(\beta_1=1\)`. 
 ]
 
 ---
 
 
-# Readings
+# Key takeaways
 
 .pull-left[
 ![](Art/todolist.png)
 ]
 
 .pull-right[
-Gonzalez-Rivera, Chapter 9 Sections 2 and 3
+- All forecasts are wrong, but some are less wrong than others. We can compare and select the more accurate of the available forecasts using the Diebold-Mariano test.
+- Less accurate forecasts may still be useful. We can combine several forecasts to achieve improved accuracy.
+- Not all forecasts can be useful. Forecast encompassing test allows us to "weed out" the "useless" forecasts.
 ]
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>

@@ -1,6 +1,6 @@
 ---
 title: "Forecasting for Economics and Business"
-subtitle: "Lecture 3: Combining and Comparing Forecasts"
+subtitle: "Lecture 3: Comparing and Combining Forecasts"
 author: "David Ubilava"
 date: "University of Sydney"
 output:
@@ -37,9 +37,9 @@ library(sandwich)
 .pull-right[
 We often have several forecasts, each generated from a specific model or using a specific method.
 
-The challenge, then, is to identify the most accurate among these.
+The obvious aim, at that point, is to select the model or method that generates the most accurate forecasts.
 
-One way of doing it is by using in-sample goodness of fit measures. 
+One way of doing it is by selecting the model that best fits the data; that is, using in-sample goodness of fit measures. 
 ]
 
 ---
@@ -98,7 +98,7 @@ Recall that models with the best in-sample fit are not guaranteed to necessarily
 
 .pull-right[
 
-![](figures/lecture3/model-predictions-of-enso.png)
+[![](figures/lecture3/model-predictions-of-enso.png)](https://iri.columbia.edu/our-expertise/climate/forecasts/enso/2023-August-quick-look/?enso_tab=enso-sst_table)
 
 ]
 

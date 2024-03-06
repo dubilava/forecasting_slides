@@ -52,7 +52,7 @@ One way of doing it is by selecting the model that best fits the data; that is, 
 
 ---
 
-# In-sample goodness of fit measures
+# R-squared and adjusted R-squared
 
 .right-column[
 Recall the most frequently used (and often abused) R-squared: `$$R^2 = 1-\frac{\sum_{t=1}^{T}\hat{e}_t^2}{\sum_{t=1}^{T}(y_t - \bar{y})^2}$$`
@@ -63,7 +63,7 @@ Adjusted R-squared accounts for the loss in degrees of freedom: `$$\bar{R}^2 = 1
 ---
 
 
-# In-sample goodness of fit measures
+# Information criteria
 
 .right-column[
 The adjustment made to the R-squared might not be 'enough' so select a 'good' forecasting model, however.
@@ -78,7 +78,7 @@ SIC &amp; = \ln{\left(\sum_{t=1}^{T}{\hat{e}_t^2}\right)} + \ln{T}\frac{k}{T}
 ---
 
 
-# In-sample goodness of fit measures
+# Information criteria are relative measures
 
 .right-column[
 Things to remember about the information criteria:

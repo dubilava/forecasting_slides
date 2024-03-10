@@ -1,6 +1,6 @@
 ---
 title: "Forecasting for Economics and Business"
-subtitle: "Lecture 3: Combining and Comparing Forecasts"
+subtitle: "Lecture 3: Comparing and Combining Forecasts"
 author: "David Ubilava"
 date: "University of Sydney"
 output:
@@ -37,14 +37,14 @@ library(sandwich)
 .pull-right[
 We often have several forecasts, each generated from a specific model or using a specific method.
 
-The challenge, then, is to identify the most accurate among these.
+The obvious aim, at that point, is to select the model or method that generates the most accurate forecasts.
 
-One way of doing it is by using in-sample goodness of fit measures. 
+One way of doing it is by selecting the model that best fits the data; that is, using in-sample goodness of fit measures. 
 ]
 
 ---
 
-# In-sample goodness of fit measures
+# R-squared and adjusted R-squared
 
 .right-column[
 Recall the most frequently used (and often abused) R-squared: $$R^2 = 1-\frac{\sum_{t=1}^{T}\hat{e}_t^2}{\sum_{t=1}^{T}(y_t - \bar{y})^2}$$
@@ -55,7 +55,7 @@ Adjusted R-squared accounts for the loss in degrees of freedom: $$\bar{R}^2 = 1-
 ---
 
 
-# In-sample goodness of fit measures
+# Information criteria
 
 .right-column[
 The adjustment made to the R-squared might not be 'enough' so select a 'good' forecasting model, however.
@@ -70,7 +70,7 @@ SIC & = \ln{\left(\sum_{t=1}^{T}{\hat{e}_t^2}\right)} + \ln{T}\frac{k}{T}
 ---
 
 
-# In-sample goodness of fit measures
+# Information criteria are relative measures
 
 .right-column[
 Things to remember about the information criteria:
@@ -98,7 +98,7 @@ Recall that models with the best in-sample fit are not guaranteed to necessarily
 
 .pull-right[
 
-![](figures/lecture3/model-predictions-of-enso.png)
+[![](figures/lecture3/model-predictions-of-enso.png)](https://iri.columbia.edu/our-expertise/climate/forecasts/enso/2023-August-quick-look/?enso_tab=enso-sst_table)
 
 ]
 

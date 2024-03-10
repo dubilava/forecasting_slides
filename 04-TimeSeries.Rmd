@@ -40,7 +40,7 @@ Time series is a realization of chronologically stored sequence of random variab
 
 This sequence of random variables is referred to as the *stochastic process*. 
 
-We don't observe the stochastic process. We only observe the times series, that is, one realization of each random variable in the stochastic process.
+We don't observe the stochastic process. We only observe the times series. That is, we only observe one realization of each random variable comprising the stochastic process.
 
 ]
 
@@ -52,7 +52,7 @@ We don't observe the stochastic process. We only observe the times series, that 
 
 We use subscript $1$ to denote the first element of the time series, subscript $2$ to denote the second element of the time series, and so on, until the last observed element of the time series, for which we use subscript $T$.
 
-So, this time series is given by $\{y_1,y_2,\ldots,y_T\}$. 
+So, a time series, $y_t,\;~t=1,\ldots,T$, is given by: $\{y_1,y_2,\ldots,y_T\}$. 
 
 More generally, a time series is a finite sample from an underlying doubly-infinite sequence: $\{\ldots,y_{-1},y_{0},y_1,\ldots,y_{T-1},y_{T},y_{T+1},\ldots\}$.
 
@@ -99,7 +99,7 @@ The November 2022 the U.S. unemployment rate was $3.4$ percent.
 
 In a parallel universe - e.g., if we could re-run the sequence of macroeconomic events that led to this realization - the unemployment rate may have been higher or lower. 
 
-But we don't get to re-write histories. The unemployment rate of 3.4 percent is the only value that will ever be known for this period. 
+But we don't get to re-write histories. The unemployment rate of $3.4$ percent is the only value that will ever be known for this period. 
 
 The same is true for all the preceding and succeeding periods. In other words, out of infinite possible time series runs that we could have observed, we only observe one such run.
 ]
@@ -114,7 +114,7 @@ The random variables that comprise the stochastic process may or may not have th
 
 When they have the same distributions, the stochastic process is *stationary*. Otherwise, the stochastic process is *nonstationary*. 
 
-Intuitively, a stochastic process is (strictly) stationary if a time shift does not change its statistical properties. 
+Intuitively, a stochastic process is (strictly) stationary if its statistical properties do not change with time. 
 
 More formally, stationary implies that the joint density of $Y_r,\ldots,Y_{r+k}$ is the same as that of $Y_s,\ldots,Y_{s+k}$, for any integers $r \ne s$ and $k$. 
 ]
@@ -125,9 +125,9 @@ More formally, stationary implies that the joint density of $Y_r,\ldots,Y_{r+k}$
 # Stationarity
 
 .right-column[
-Stationarity is an important feature, and the assumption, on which the time series econometrics heavily relies. Broadly defined, stationarity implies statistical stability of the series. 
+Stationarity is an important feature and the assumption on which the time series econometrics heavily relies. Broadly defined, stationarity implies statistical stability of the series. 
 
-Some time series are stationary as is. Others are not. Indeed, most economic time series are nonstationary.
+Some time series are stationary as given. Others are not. Indeed, most economic time series are nonstationary.
 ]
 
 ---
@@ -199,12 +199,12 @@ Ergodicity has the effect of the law of large numbers in time series analysis, i
 # White noise
 
 .right-column[
-A simplest kind of the time series is the realisation of a stochastic process that is comprised of independent and identically distributed random variables with zero mean and constant variance: $Y_t \sim iid~N\left(0,\sigma^2\right)$. This is referred to as a *white noise* process. 
+A simplest kind of the time series is the realisation of a stochastic process that is comprised of independent and identically distributed random variables with zero mean and constant variance: $Y_t \sim iid~\text{N}\!\left(0,\sigma^2\right)$. This is referred to as a *white noise* process. 
 
 A stochastic process is a white noise process if: 
 $$\begin{aligned}
 		& \mathbb{E}(Y_t) = 0,\;~\forall~t\\
-    & Var(Y_t) = \sigma^2,\;~\forall~t\\
+    & \mathbb{V}(Y_t) = \sigma^2,\;~\forall~t\\
     & Cov(Y_t,Y_{t-k}) = 0,\;~\forall~k \ne 0
 	\end{aligned}$$
 
@@ -244,7 +244,7 @@ A time series is a realization of the weakly stationary process if its mean and 
 .right-column[
 It's hardly the norm for a time series to be not serially correlated. Most economic (and not only) time series are characterized by temporal dependence, which is observed most prominently among observations that are at a temporal proximity from one another.
 
-Having observed the November 2022 U.S. unemployment rate of $3.5$ percent, it is unlikely for the December 2022 rate to be much different (lo and behold, it was $3.3$). This is because the macroeconomic fundamentals that lead to the observed levels of unemployment do not just change overnight, or over a period of several weeks. 
+Having observed the November 2022 U.S. unemployment rate of $3.4$ percent, it is unlikely for the December 2022 rate to be much different (lo and behold, it was $3.3$). This is because the macroeconomic fundamentals that lead to the observed levels of unemployment do not just change overnight, or over a period of several weeks. 
 ]
 
 ---
@@ -256,7 +256,7 @@ Depending on a time series, this correlation can be strong or weak.
 
 In general, because of the sequential nature of the stochastic process, we are likely to observe, or at least expect to observe, some dependence among the temporally adjacent random variables. 
 
-That is, $Y_t$ and $Y_{t-k}$ can be correlated for a reasonably small integer $k$. Such correlation, referred to as the *autocorrelation*, or more specifically, the $k^{th}$ order autocorrelation (or the lag $k$ autocorrelation), is given by: $$\rho_k=Cor(Y_{t},Y_{t-k}) = \frac{Cov(Y_{t},Y_{t-k})}{\sqrt{Var(Y_{t})}\sqrt{Var(Y_{t-k})}},\;~~k=1,2,\ldots$$ 
+That is, $Y_t$ and $Y_{t-k}$ can be correlated for a reasonably small integer $k$. Such correlation, referred to as the *autocorrelation*, or more specifically, the $k^{th}$ order autocorrelation (or the lag $k$ autocorrelation), is given by: $$\rho_k=Cor(Y_{t},Y_{t-k}) = \frac{Cov(Y_{t},Y_{t-k})}{\sqrt{\mathbb{V}(Y_{t})}\sqrt{\mathbb{V}(Y_{t-k})}},\;~~k=1,2,\ldots$$ 
 ]
 
 ---
@@ -267,7 +267,7 @@ That is, $Y_t$ and $Y_{t-k}$ can be correlated for a reasonably small integer $k
 .right-column[
 Recall, stationarity implies that the random variables comprising the stochastic process have the same distribution. 
 
-So, the variances of any two random variables in the stochastic process, $Y_{t}$ and $Y_{t-k}$ in this instance, are equal to each other. We denote variance by $\gamma_0$. So, $$Var(Y_{t})=Var(Y_{t-k})=\gamma_0.$$
+So, the variances of any two random variables in the stochastic process, $Y_{t}$ and $Y_{t-k}$ in this instance, are equal to each other. We denote variance by $\gamma_0$. So, $$\mathbb{V}(Y_{t})=\mathbb{V}(Y_{t-k})=\gamma_0.$$
 ]
 
 ---
@@ -508,16 +508,16 @@ In practice all this means once we obtain the t statistic we compare it to the c
 ---
 
 
-# Readings
+# Key takeaways
 
 .pull-left[
 ![](Art/todolist.png)
 ]
 
 .pull-right[
-Gonzalez-Rivera, Chapter 3
-
-Hyndman & Athanasopoulos, [2.8](https://otexts.com/fpp3/acf.html), [2.9](https://otexts.com/fpp3/wn.html), [3.1](https://otexts.com/fpp3/transformations.html)
+- A time series is a realization of a stochastic process, which is a sequence of random variables. A stochastic process may or may not be stationary.
+- We can formally test the stationarity hypothesis in a time series. 
+- Most time series typically exhibit some form of temporal dependence. We can get an idea about the strength and extent of temporal dependence by observing autocorrelations and partial autocorrelations at different lags. 
 ]
 
 

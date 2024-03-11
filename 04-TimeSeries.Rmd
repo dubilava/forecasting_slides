@@ -63,7 +63,7 @@ More generally, a time series is a finite sample from an underlying doubly-infin
 
 # Observed time series
 
-.right-column[
+.right-figure[
 
 ![](figures/lecture4/tseries.png)
 
@@ -84,7 +84,7 @@ We tend to have limited access to the past. For example, we don't have the actua
 
 # What we see is just one realization
 
-.right-column[
+.right-figure[
 
 ![](figures/lecture4/stationary.png)
 
@@ -150,7 +150,7 @@ When we observe a time series, we can not be too sure whether these are realizat
 
 # We obsere the time series, not the stochastic process
 
-.right-column[
+.right-figure[
 
 ![](figures/lecture4/nonstationary.png)
 
@@ -215,7 +215,7 @@ $$\begin{aligned}
 
 # White noise: An illustration
 
-.right-column[
+.right-figure[
 
 ![](figures/lecture4/wn.png)
 
@@ -297,7 +297,7 @@ The lag $k$ autocorrelation then can be expressed as: $$\rho_k= \frac{\gamma_k}{
 
 # U.S. unemployment rate: Time series
 
-.right-column[
+.right-figure[
 ![](figures/lecture4/ur.png)
 ]
 
@@ -305,7 +305,7 @@ The lag $k$ autocorrelation then can be expressed as: $$\rho_k= \frac{\gamma_k}{
 
 # U.S. unemployment rate: Autocorrelations
 
-.right-column[
+.right-figure[
 ![](figures/lecture4/ac.png)
 ]
 
@@ -325,7 +325,7 @@ We can use this to illustrate how strongly a variable is related with its near a
 
 # Autocorrelogram: White noise
 
-.right-column[
+.right-figure[
 ![](figures/lecture4/ac_wn.png)
 ]
 
@@ -347,7 +347,7 @@ Stock prices, and more recently cryptocurrency prices, are best characterized by
 
 # Bitcoin prices
 
-.right-column[
+.right-figure[
 ![](figures/lecture4/btc.png)
 ]
 
@@ -356,7 +356,7 @@ Stock prices, and more recently cryptocurrency prices, are best characterized by
 
 # Autocorrelogram: Bitcoin prices
 
-.right-column[
+.right-figure[
 ![](figures/lecture4/ac_btc.png)
 ]
 
@@ -401,7 +401,7 @@ Similar to autocorrelations, we can use an autocorrelogram to present partial au
 
 # Partial autocorrelogram: Bitcoin prices
 
-.right-column[
+.right-figure[
 ![](figures/lecture4/pac_btc.png)
 ]
 
@@ -431,7 +431,7 @@ The first-difference operator is denoted by $\Delta$, so that $\Delta y_t = y_t-
 
 # Change in Bitcoin prices
 
-.right-column[
+.right-figure[
 ![](figures/lecture4/btc_change.png)
 ]
 
@@ -452,7 +452,7 @@ When the original series is prices, the rate of change is the return.
 
 # Bitcoin returns
 
-.right-column[
+.right-figure[
 ![](figures/lecture4/btc_return.png)
 ]
 

@@ -159,6 +159,11 @@ a:active {
   float: right;
   width: 85%;
 }
+.right-figure {
+  padding-top: 0;
+  float: right;
+  width: 80%;
+}
 
 .left-half {
   padding-top: 0;

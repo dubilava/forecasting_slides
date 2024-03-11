@@ -49,6 +49,8 @@ theme_eg <- function(base_size=12,base_family="Segoe Print",border=F){
 
 load("figures/lecture3/iri_rep.RData")
 
+
+
 sub_dt <- iri_dt[,.(date,ssn=season_observed,ssn_f=season_forecast,oni=oni_observed,oni_f=oni_f1,model)]
 
 sub_dt <- sub_dt[complete.cases(sub_dt)]
@@ -62,6 +64,10 @@ sub_dt[,`:=`(ssn_fl=shift(ssn_f,3),oni_fl=shift(oni_f,3)),by=.(model)]
 
 dt <- sub_dt[,.(date=as.Date(paste0(substr(date-45,1,7),"-01")),ssn,oni_y=oni,oni_f=oni_fl,model)]
 dt <- dt[complete.cases(dt)]
+
+csv_dt <- dt[,.(model,date,season=ssn,y=oni_y,yhat=oni_f)]
+
+fwrite(csv_dt,file="figures/lecture3/ensomodels.csv")
 
 dt[,`:=`(oni_e=oni_y-oni_f)]
 dt[,`:=`(oni_a=abs(oni_e),oni_s=(oni_e^2))]

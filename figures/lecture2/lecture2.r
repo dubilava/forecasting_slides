@@ -23,11 +23,12 @@ theme_eg <- function(base_size=12,base_family="Segoe Print",border=F){
     plot.background=element_rect(fill="white",color=NA),
     plot.title=element_text(family=base_family,size=rel(1.3),colour="dimgray"),
     plot.subtitle=element_text(family=base_family,size=rel(1.2),colour="dimgray",hjust=0),
-    plot.caption=element_text(colour="darkgray",size=rel(0.8)),
+    plot.caption=element_text(colour="darkgray",size=rel(0.8),hjust=0),
     plot.margin=margin(.25,.25,.25,.25,"lines"),
     plot.title.position="plot",
     plot.caption.position="plot",
     axis.title=element_text(family=base_family,size=rel(1.2),colour="dimgray"),
+    axis.title.x=element_text(hjust=1),
     axis.text=element_text(family=base_family,size=rel(1.1),colour="dimgray"),
     axis.line=element_line(colour="dimgray"),
     axis.line.y=element_blank(),
@@ -66,8 +67,8 @@ for(i in 1:P){
 gg_trending <- ggplot(y_dt,aes(x=x,y=y))+
   geom_line(linewidth=.8,na.rm=T,color="dimgray")+
   geom_point(data=y_dt[x%in%c(R+1:n)],aes(x=x,y=rolling),size=2.5,stroke=.8,shape=21,color="dimgray",fill="lightgray")+
-  labs(title="",y=expression(y[t]),x="t")+
-  coord_cartesian(x=c(1,n+1),y=c(0,4),clip="off")+
+  labs(y="",x="t",subtitle=expression(y[t]))+
+  coord_cartesian(x=c(1,n+1),y=c(0,4))+
   theme_eg()
 
 ggsave("figures/lecture2/trending.png",gg_trending,width=6.5,height=6.5*9/16,dpi="retina")
@@ -84,7 +85,7 @@ gg_errors <- ggplot(y_dt,aes(x=x,y=e_rol))+
   geom_line(linewidth=.8,na.rm=T,color="dimgray",linetype=5)+
   geom_point(size=2.5,stroke=.8,shape=21,color="dimgray",fill="lightgray",na.rm=T)+
   scale_x_continuous(breaks=seq((R+5),n,5))+
-  labs(title="",x="t",y=expression(e[t]))+
+  labs(y="",x="t",subtitle=expression(e[t]))+
   coord_cartesian(x=c(R+.5,n+.5),y=c(-2,2))+
   theme_eg()
 
@@ -94,7 +95,7 @@ gg_errordots <- ggplot(y_dt,aes(x=e_rol))+
   xlim(-2,2)+
   coord_flip()+
   theme_eg()+
-  theme(axis.title=element_blank(),axis.text=element_blank(),axis.line=element_blank())
+  theme(axis.title=element_blank(),axis.title.x=element_blank(),axis.text=element_blank(),axis.line=element_blank())
 
 # combine the two graphs
 gg_comb <- plot_grid(gg_errors,gg_errordots,align="hv",ncol=2,rel_widths = c(3,1))
@@ -131,11 +132,9 @@ for(i in 1:P){
 gg_ts <- ggplot(y_dt,aes(x=x,y=y))+
   geom_line(linewidth=.8,na.rm=T,color="dimgray")+
   geom_point(data=y_dt[x%in%c(R+1:n)],aes(x=x,y=inefficient),size=2.5,stroke=.8,shape=21,color="dimgray",fill="lightgray")+
-  labs(title="",x="t",y=expression(y[t]))+
+  labs(y="",x="t",subtitle=expression(y[t]))+
   coord_cartesian(x=c(1,n+1),y=c(-2,2),clip="off")+
   theme_eg()
-
-gg_ts
 
 ggsave("figures/lecture2/meanreverting.png",gg_ts,width=6.5,height=6.5*9/16,dpi="retina")
 
@@ -151,7 +150,7 @@ gg_errors <- ggplot(y_dt,aes(x=x,y=e_inefficient))+
   geom_line(linewidth=.8,na.rm=T,color="dimgray",linetype=5)+
   geom_point(size=2.5,stroke=.8,shape=21,color=ifelse(y_dt$inefficient>=0,"dimgray","dimgray"),fill=ifelse(y_dt$inefficient>=0,"dimgray","white"),na.rm=T)+
   scale_x_continuous(breaks=seq((R+5),n,5))+
-  labs(title="",x="t",y=expression(e[t]))+
+  labs(y="",x="t",subtitle=expression(e[t]))+
   coord_cartesian(x=c(R+.5,n+.5),y=c(-2,2))+
   theme_eg()
 
@@ -166,12 +165,10 @@ gg_errordots <- ggplot(y_dt,aes(x=e_inefficient,color=pos,fill=pos))+
   xlim(-2,2)+
   coord_flip()+
   theme_eg()+
-  theme(axis.title=element_blank(),axis.text=element_blank(),axis.line=element_blank())
+  theme(axis.title=element_blank(),axis.title.x=element_blank(),axis.text=element_blank(),axis.line=element_blank())
 
 # combine the two graphs
 gg_comb <- plot_grid(gg_errors,gg_errordots,align="hv",ncol=2,rel_widths = c(3,1))
-
-gg_comb
 
 ggsave("figures/lecture2/meanreverting_errors.png",gg_comb,width=6.5,height=6.5*9/16,dpi="retina")
 
@@ -207,7 +204,7 @@ sub_dt <- dt[Date>="2001-01-01"]
 gg_ts <- ggplot(sub_dt,aes(x=Date,y=y))+
   geom_line(linewidth=.6,color="dimgray")+
   scale_x_continuous(breaks=c(as.Date("2000-01-01"),as.Date("2010-01-01"),as.Date("2020-01-01")),labels=c("2000","2010","2020"))+
-  labs(x="Year",y="Price ($/bbl)")+
+  labs(y="",x="Year",subtitle="Observed price ($/bbl)")+
   coord_cartesian(xlim=c(as.Date("2001-01-01"),as.Date("2023-01-01")),ylim=c(0,140))+
   theme_eg()#+
 # theme(plot.margin=margin(0.75,0,.15,0,"cm"))
@@ -222,7 +219,7 @@ gg_mz <- ggplot(sub_dt,aes(x=f,y=y))+
   geom_hline(yintercept=mean(sub_dt$y,na.rm=T),color="black",linewidth=.4,linetype=2)+
   geom_abline(slope=1,intercept=0,color="black",linewidth=.4,linetype=2)+
   geom_smooth(method="lm",formula=y~x,se=F,color="dimgray",linewidth=.8,linetype=5)+
-  labs(x="Forecast",y="")+
+  labs(y="",x="Forecast price ($/bbl)",subtitle="Observed price ($/bbl)")+
   coord_cartesian(xlim=c(0,140),ylim=c(0,140))+
   theme_eg()+
   theme(axis.line=element_blank(),panel.grid.major.x=element_line(colour="dimgray"))
@@ -231,8 +228,6 @@ gg_mz <- ggplot(sub_dt,aes(x=f,y=y))+
 # ggsave("figures/oil_mz.eps",gg_mz,width=5.25,height=5.25,dpi="retina",device=cairo_ps)
 
 gg_combined <- plot_grid(gg_ts,gg_mz,ncol=2,align="hv",hjust=0,vjust=1)
-
-gg_combined
 
 ggsave("figures/lecture2/mincer-zarnowitz.png",gg_combined,width=6.5,height=6.5*9/16,dpi="retina")
 

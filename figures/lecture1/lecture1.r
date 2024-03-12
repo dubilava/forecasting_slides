@@ -20,10 +20,13 @@ theme_eg <- function(base_size=12,base_family="Segoe Print",border=F){
     panel.grid.minor=element_blank(),
     plot.background=element_rect(fill="white",color=NA),
     plot.title=element_text(family=base_family,size=rel(1.3),colour="dimgray"),
-    plot.subtitle=element_text(family=base_family,size=rel(1.2),colour="dimgray"),
-    plot.caption=element_text(colour="darkgray",size=rel(0.8)),
+    plot.subtitle=element_text(family=base_family,size=rel(1.2),colour="dimgray",hjust=0),
+    plot.caption=element_text(colour="darkgray",size=rel(0.8),hjust=0),
     plot.margin=margin(.25,.25,.25,.25,"lines"),
+    plot.title.position="plot",
+    plot.caption.position="plot",
     axis.title=element_text(family=base_family,size=rel(1.2),colour="dimgray"),
+    axis.title.x=element_text(hjust=1),
     axis.text=element_text(family=base_family,size=rel(1.1),colour="dimgray"),
     axis.line=element_line(colour="dimgray"),
     axis.line.y=element_blank(),
@@ -54,7 +57,7 @@ gg_ts <- ggplot(dt,aes(x=t,y=x))+
   geom_line(color="dimgray",linetype=1,linewidth=.8)+
   geom_point(color="dimgray",fill="lightgray",stroke=1,shape=21,size=3)+
   ylim(0,7)+
-  labs(x=expression(t),y=expression(x[t]))+
+  labs(y="",x=expression(t),subtitle=expression(x[t]))+
   theme_eg()
 
 # graph the dot-density of the series
@@ -63,7 +66,7 @@ gg_hist <- ggplot(dt,aes(x=x))+
   xlim(0,7)+
   coord_flip()+
   theme_eg()+
-  theme(axis.title=element_blank(),axis.title.y=element_blank(),axis.text=element_blank(),axis.line=element_blank())
+  theme(axis.title=element_blank(),axis.title.y=element_blank(),axis.title.x=element_blank(),axis.text=element_blank(),axis.line=element_blank())
 
 # combine the two graphs
 gg_comb <- plot_grid(gg_ts,gg_hist,align="hv",ncol=2,rel_widths = c(3,1))
@@ -90,7 +93,7 @@ gg_errors <- ggplot(dt,aes(x=t,y=e))+
   geom_line(color="dimgray",linetype=5,linewidth=.8)+
   geom_point(color="dimgray",fill="lightgray",stroke=1,shape=21,size=2.5)+
   ylim(-3.5,3.5)+
-  labs(x=expression(t),y=expression(e[t]))+
+  labs(y="",x=expression(t),subtitle=expression(e[t]))+
   theme_eg()
 
 map_dt <- data.table(x=c(max(dt$e),max(dt$e)),xend=c(max(dt$e),0),y=c(0,dt[e==max(dt$e)]$l),yend=c(dt[e==max(dt$e)]$l,dt[e==max(dt$e)]$l))
@@ -109,10 +112,10 @@ gg_loss <- ggplot()+
   ylim(0,11)+
   coord_flip()+
   theme_eg()+
-  theme(axis.title=element_blank(),axis.text=element_blank(),axis.line=element_blank())
+  theme(axis.title=element_blank(),axis.title.x=element_blank(),axis.text=element_blank(),axis.line=element_blank())
 
 # combine the two graphs
-gg_comb <- plot_grid(gg_errors,gg_loss,align="hv",ncol=2,rel_widths = c(2,2))
+gg_comb <- plot_grid(gg_errors,gg_loss,align="hv",ncol=2,rel_widths=c(2,2))
 
 ggsave("figures/lecture1/loss.png",gg_comb,width=6.5,height=6.5*9/16,dpi="retina")
 
@@ -134,12 +137,11 @@ forecast_dt <- checkfor_dt[series=="cpi_annual_inflation"] # underlying_annual_i
 forecast_dt[,forecast_horizon:=as.numeric(date-forecast_date)]
 
 gg_rba <- ggplot(forecast_dt[date>="2019-01-01" & forecast_horizon>0]) +
-  geom_line(data=actual_dt[date>="2019-01-01"],aes(x=date,y=value),color="black",linewidth=.8)+
   geom_line(aes(x=date,y=value,group=forecast_date,color=forecast_horizon),linewidth=.6) +
-  scale_color_viridis(option="B",begin=.2,end=.8)+
+  geom_line(data=actual_dt[date>="2019-01-01"],aes(x=date,y=value),color="black",linewidth=.8)+
+  scale_color_gradient(low="dimgray",high="lightgray")+
   labs(subtitle="Annual inflation (%): actual and forecasts",y="",x="Year",caption="Source: RBA; obtained via readrba R package developed and maintained by Matt Cowgill")+
-  theme_eg()+
-  theme(plot.title.position="plot",plot.caption.position="plot",plot.caption=element_text(hjust=0))
+  theme_eg()
 
 ggsave("figures/lecture1/rba_inflation.png",gg_rba,width=6.5,height=6.5*9/16,dpi="retina")
 

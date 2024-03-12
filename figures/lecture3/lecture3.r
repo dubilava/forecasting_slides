@@ -2,6 +2,7 @@
 library(data.table)
 library(ggplot2)
 library(ggthemes)
+library(geomtextpath)
 library(extrafont)
 loadfonts(device="win",quiet=T)
 # font_import()
@@ -26,11 +27,12 @@ theme_eg <- function(base_size=12,base_family="Segoe Print",border=F){
     plot.background=element_rect(fill="white",color=NA),
     plot.title=element_text(family=base_family,size=rel(1.3),colour="dimgray"),
     plot.subtitle=element_text(family=base_family,size=rel(1.2),colour="dimgray",hjust=0),
-    plot.caption=element_text(colour="darkgray",size=rel(0.8)),
+    plot.caption=element_text(colour="darkgray",size=rel(0.8),hjust=0),
     plot.margin=margin(.25,.25,.25,.25,"lines"),
     plot.title.position="plot",
     plot.caption.position="plot",
     axis.title=element_text(family=base_family,size=rel(1.2),colour="dimgray"),
+    axis.title.x=element_text(hjust=1),
     axis.text=element_text(family=base_family,size=rel(1.1),colour="dimgray"),
     axis.line=element_line(colour="dimgray"),
     axis.line.y=element_blank(),
@@ -50,6 +52,8 @@ theme_eg <- function(base_size=12,base_family="Segoe Print",border=F){
 load("figures/lecture3/iri_rep.RData")
 
 
+
+# 3.1 - enso forecasts ----
 
 sub_dt <- iri_dt[,.(date,ssn=season_observed,ssn_f=season_forecast,oni=oni_observed,oni_f=oni_f1,model)]
 
@@ -78,10 +82,13 @@ dt <- dt[date>="2003-01-01" & date<="2018-12-31"]
 gg1 <- ggplot()+
   geom_boxplot(data=dt,aes(x=date,y=oni_f,group=date),color="dimgray",fill="lightgray",linewidth=.3,outlier.size=.1,shape=1)+
   geom_line(data=dt[model==unique(model)[1]],aes(x=date,y=oni_y),linewidth=.6,color="black")+
-  labs(subtitle="Oceanic Nino Index (°C)",y="",x="Year",caption="Source: The International Research Institute for Climate and Society, Columbia University Climate School")+
+  labs(subtitle="Oceanic Nino Index (°C)",y="",x="Year",caption="Source: The International Research Institute for Climate and Society, Columbia University")+
   coord_cartesian(ylim=c(-2,3))+
   theme_eg()+
   theme(plot.title.position="plot",plot.caption.position="plot",plot.caption=element_text(hjust=0))
+
+gg1
+
 
 ggsave("figures/lecture3/historical-enso.png",gg1,width=6.5,height=6.5*9/16,dpi="retina")
 
@@ -119,6 +126,93 @@ reg3 <- lm(d~1,data=dm3)
 coeftest(reg3,vcov.=vcovHAC(reg3))
 
 ##---
+
+
+
+
+
+# 3.3 - forecast combination ----
+
+# generate forecast errors
+n <- 10
+
+set.seed(12)
+x <- rnorm(n,0,1.5)
+for(i in 2:n) x[i] <- .2*x[i-1]+x[i]
+dt <- data.table(x=round(x),t=1:n)
+
+# graph the time series
+gg_ts <- ggplot(dt,aes(x=t,y=x))+
+  geom_line(color="dimgray",linetype=1,linewidth=.8)+
+  geom_point(color="dimgray",fill="lightgray",stroke=1,shape=21,size=3)+
+  ylim(0,7)+
+  labs(y="",x=expression(t),subtitle=expression(x[t]))+
+  theme_eg()
+
+gg_ts
+
+
+
+
+r_vec <- seq(-1,1,.01)
+s2_vec <- c(1,1.4,1.8)
+
+dt <- CJ(r_vec,s2_vec)
+colnames(dt) <- c("r","s2")
+
+dt[,s1:=1] # change this if and as needed
+
+dt <- dt[,.(r=r_vec,s1,s2)]
+
+w <- function(s1,s2,r){
+  x <- (s1^2-r*s1*s2)/(s1^2+s2^2-2*r*s1*s2)
+  # x <- ifelse(x<0,0,x)
+  # x <- ifelse(x>1,1,x)
+  return(x)
+}
+  
+s <- function(s1,s2,r,w){
+  x <- (1-w)^2*s1^2+w^2*s2^2+2*(1-w)*w*r*s1*s2
+  return(x)
+}
+
+
+dt[,`:=`(w_r=w(s1,s2,r))]
+dt[,`:=`(s_r=s(s1,s2,r,w_r))]
+
+
+
+l1 <- expression(paste(sigma[2]^2/sigma[1]^2,"=1"))
+l2 <- expression(paste(sigma[2]^2/sigma[1]^2,"=2"))
+l3 <- expression(paste(sigma[2]^2/sigma[1]^2,"=3"))
+
+dt[,lab:=ifelse(s2==s2_vec[1],as.character(l1),ifelse(s2==s2_vec[2],as.character(l2),as.character(l3)))]
+
+
+gg_w <- ggplot(dt,aes(x=r,y=w_r,color=factor(s2),linetype=factor(s2),group=factor(s2)))+
+  geom_textline(aes(label=format(s2,nsmall=1)),na.rm=T,linewidth=.8,parse=T)+
+  scale_color_manual(values=c("black","dimgray","gray"))+
+  scale_linetype_manual(values=c(1,2,5))+
+  labs(y="",x=expression(rho),subtitle=expression(omega^"*"))+
+  theme_eg()
+
+gg_w
+
+ggsave("figures/lecture3/rho_weight.png",gg_w,width=6.5,height=6.5*9/16,dpi="retina")
+
+
+gg_s <- ggplot(dt,aes(x=r,y=s_r,color=factor(s2),linetype=factor(s2),group=factor(s2)))+
+  geom_textline(aes(label=format(s2,nsmall=1)),na.rm=T,linewidth=.8,parse=T)+
+  scale_color_manual(values=c("black","dimgray","gray"))+
+  scale_linetype_manual(values=c(1,2,5))+
+  labs(y="",x=expression(rho),subtitle=expression(paste(sigma[c]^2,"(",omega^"*",")")))+
+  theme_eg()
+
+gg_s
+
+ggsave("figures/lecture3/rho_variance.png",gg_s,width=6.5,height=6.5*9/16,dpi="retina")
+
+
 
 
 

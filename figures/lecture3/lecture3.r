@@ -133,29 +133,8 @@ coeftest(reg3,vcov.=vcovHAC(reg3))
 
 # 3.3 - forecast combination ----
 
-# generate forecast errors
-n <- 10
-
-set.seed(12)
-x <- rnorm(n,0,1.5)
-for(i in 2:n) x[i] <- .2*x[i-1]+x[i]
-dt <- data.table(x=round(x),t=1:n)
-
-# graph the time series
-gg_ts <- ggplot(dt,aes(x=t,y=x))+
-  geom_line(color="dimgray",linetype=1,linewidth=.8)+
-  geom_point(color="dimgray",fill="lightgray",stroke=1,shape=21,size=3)+
-  ylim(0,7)+
-  labs(y="",x=expression(t),subtitle=expression(x[t]))+
-  theme_eg()
-
-gg_ts
-
-
-
-
 r_vec <- seq(-1,1,.01)
-s2_vec <- c(1,1.4,1.8)
+s2_vec <- c(1,1.25,2)
 
 dt <- CJ(r_vec,s2_vec)
 colnames(dt) <- c("r","s2")
@@ -180,20 +159,18 @@ s <- function(s1,s2,r,w){
 dt[,`:=`(w_r=w(s1,s2,r))]
 dt[,`:=`(s_r=s(s1,s2,r,w_r))]
 
+# l1 <- expression(paste(sigma[2]^2/sigma[1]^2,"=1"))
+# l2 <- expression(paste(sigma[2]^2/sigma[1]^2,"=2"))
+# l3 <- expression(paste(sigma[2]^2/sigma[1]^2,"=3"))
+# 
+dt[,lab:=as.character(format(s2,nsmall=2))]
 
-
-l1 <- expression(paste(sigma[2]^2/sigma[1]^2,"=1"))
-l2 <- expression(paste(sigma[2]^2/sigma[1]^2,"=2"))
-l3 <- expression(paste(sigma[2]^2/sigma[1]^2,"=3"))
-
-dt[,lab:=ifelse(s2==s2_vec[1],as.character(l1),ifelse(s2==s2_vec[2],as.character(l2),as.character(l3)))]
-
-
-gg_w <- ggplot(dt,aes(x=r,y=w_r,color=factor(s2),linetype=factor(s2),group=factor(s2)))+
-  geom_textline(aes(label=format(s2,nsmall=1)),na.rm=T,linewidth=.8,parse=T)+
+gg_w <- ggplot(dt,aes(x=r,y=w_r,color=lab,linetype=lab,group=lab))+
+  geom_textline(aes(label=lab),na.rm=T,linewidth=.8)+
   scale_color_manual(values=c("black","dimgray","gray"))+
   scale_linetype_manual(values=c(1,2,5))+
   labs(y="",x=expression(rho),subtitle=expression(omega^"*"))+
+  coord_cartesian(ylim=c(-1.0,1.0))+
   theme_eg()
 
 gg_w
@@ -201,11 +178,12 @@ gg_w
 ggsave("figures/lecture3/rho_weight.png",gg_w,width=6.5,height=6.5*9/16,dpi="retina")
 
 
-gg_s <- ggplot(dt,aes(x=r,y=s_r,color=factor(s2),linetype=factor(s2),group=factor(s2)))+
-  geom_textline(aes(label=format(s2,nsmall=1)),na.rm=T,linewidth=.8,parse=T)+
+gg_s <- ggplot(dt,aes(x=r,y=s_r,color=lab,linetype=lab,group=lab))+
+  geom_textline(aes(label=lab),na.rm=T,linewidth=.8,parse=T)+
   scale_color_manual(values=c("black","dimgray","gray"))+
   scale_linetype_manual(values=c(1,2,5))+
   labs(y="",x=expression(rho),subtitle=expression(paste(sigma[c]^2,"(",omega^"*",")")))+
+  coord_cartesian(ylim=c(0,1.0))+
   theme_eg()
 
 gg_s

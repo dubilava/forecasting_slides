@@ -4,7 +4,7 @@
     <title>Forecasting for Economics and Business</title>
     <meta charset="utf-8" />
     <meta name="author" content="David Ubilava" />
-    <script src="libs/header-attrs-2.25/header-attrs.js"></script>
+    <script src="libs/header-attrs-2.22/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/metropolis.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/metropolis-fonts.css" rel="stylesheet" />
@@ -293,13 +293,36 @@ The variance of a combined forecast error is: `$$\mathbb{V}\left(\hat{e}_{c,t+h|
 # The optimal weight
 
 .right-column[
-We can obtin an optimal weight, i.e., a weight that minimizes the variance of the combined forecast error, by taking the derivative of the variance of a combined forecast error, and equating it to zero. Solving this first order condition for `\(w\)` yields the optimal weight: `$$w^* = \frac{\sigma_i^2-\rho\sigma_i\sigma_j}{\sigma_i^2+\sigma_j^2-2\rho\sigma_i\sigma_j}$$`
+We can obtain an optimal weight, i.e., a weight that minimizes the variance of the combined forecast error, by taking the derivative of the variance of a combined forecast error, and equating it to zero. Solving this first order condition for `\(w\)` yields the optimal weight: `$$w^* = \frac{\sigma_i^2-\rho\sigma_i\sigma_j}{\sigma_i^2+\sigma_j^2-2\rho\sigma_i\sigma_j}$$`
+]
+
+---
+
+# The optimal weight for different `\(\rho\)` and `\(\sigma_j/\sigma_i\)`
+
+.right-figure[
+![](figures/lecture3/rho_weight.png)
 ]
 
 ---
 
 
-# At least as efficient as the most efficient forecast
+# The optimal weight for different `\(\rho\)` and `\(\sigma_j/\sigma_i\)`
+
+.right-column[
+When the two forecasts are equally accurate (or inaccurate), the optimal weight is `\(0.5\)`, regardless of the correlation between the forecasts. 
+
+The less accurate is a forecast, the smaller is the weight attached to it.
+
+When the forecasts are highly correlated, the negative optimal weight may be attached to the less accurate forecast. This happens when `\(\rho&gt;\sigma_i/\sigma_j\)`.
+
+When the forecasts are uncorrelated, the weights attached to the forecasts are inversely proportional to the variances of these forecasts: `$$w^* = \frac{\sigma_i^2}{\sigma_i^2+\sigma_j^2} = \frac{\sigma_j^{-2}}{\sigma_i^{-2}+\sigma_j^{-2}}$$`
+]
+
+---
+
+
+# Variance of the optimally combined forecast error
 
 .right-column[
 Substitute `\(w^*\)` in place of `\(w\)` in the formula for variance to obtain: `$$\mathbb{V}\left[\hat{e}_{c,t+1|t}(w^*)\right] = \sigma_c^2(w^*) = \frac{\sigma_i^2\sigma_j^2(1-\rho^2)}{\sigma_i^2+\sigma_j^2-2\rho\sigma_i\sigma_j}$$`
@@ -311,39 +334,21 @@ As it turns out: `\(\sigma_c^2(w^*) \leq \min\{\sigma_i^2,\sigma_j^2\}\)`. That 
 ---
 
 
-# Combining equally accurate forecasts
+# Variance for different `\(\rho\)` and `\(\sigma_j/\sigma_i\)`
 
-.right-column[
-*Assumption*: `\(\sigma_i = \sigma_j = \sigma\)`.
-
-Suppose the individual forecasts are equally accurate, then the combined forecast error variance reduces to: `$$\sigma_c^2(w^*) = \frac{\sigma^2(1+\rho)}{2} \leq \sigma^2$$`
-
-The equation shows there are diversification gains even when the forecasts are equally accurate (unless the forecasts are perfectly correlated, in which case there are no gains from combination).
+.right-figure[
+![](figures/lecture3/rho_variance.png)
 ]
 
 ---
 
 
-# Combining uncorrelated forecasts
+# Variance for different `\(\rho\)` and `\(\sigma_j/\sigma_i\)`
 
 .right-column[
-*Assumption*: `\(\rho=0\)`.
+Generally, the less correlated (or, especially the more negatively correlated) are the forecasts, the more accurate is the combined forecast.
 
-Suppose the forecast errors are uncorrelated, then the sample estimator of `\(w^*\)` is given by: `$$w^* = \frac{\sigma_i^2}{\sigma_i^2+\sigma_j^2} = \frac{\sigma_j^{-2}}{\sigma_i^{-2}+\sigma_j^{-2}}$$`
-
-Thus, the weights attached to forecasts are inversely proportional to the variance of these forecasts.
-]
-
----
-
-
-# Combining equally accurate uncorrelated forecasts
-
-.right-column[
-*Assumption*: `\(\sigma_i = \sigma_j = \sigma\)` and `\(\rho=0\)`.
-
-Suppose the individual forecasts are equally accurate and the forecast errors are uncorrelated, then the sample estimator of `\(w^*\)` reduces to `\(0.5\)`, resulting in the equal-weighted forecast combination: `$$\hat{y}_{c,t+h|t} = 0.5\hat{y}_{i,t+h|t} + 0.5\hat{y}_{j,t+h|t}$$`
-
+When the forecasts are equally accurate (or inaccurate), the equal-weight combination of the forecasts will almost always make things better (and never make things worse): `$$\sigma_c^2(w^*) = \frac{\sigma^2(1+\rho)}{2} \leq \sigma^2$$` 
 ]
 
 ---

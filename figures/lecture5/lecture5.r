@@ -1,7 +1,6 @@
 # load the libraries (install them if needed)
 library(data.table)
 library(ggplot2)
-# library(camcorder)
 library(extrafont)
 # font_import()
 loadfonts(device="win",quiet=T)
@@ -18,29 +17,26 @@ library(sandwich)
 
 all_wpi <- read_abs("6345.0")
 
-# # camcorder stuff
-# camcorder::gg_record(
-#   dir='figures/lecture4',
-#   width=6.5,
-#   height=6.5*9/16,
-#   dpi=300,
-#   bg="white"
-# )
-
 # plot aesthetics
 theme_eg <- function(base_size=12,base_family="Segoe Print",border=F){
   theme(
     panel.background=element_rect(fill="white",color=NA),
-    panel.grid=element_line(colour=NULL,linetype=3,linewidth=.3),
+    panel.grid=element_line(colour=NULL,linetype=3),
     panel.grid.major=element_line(colour="dimgray"),
+    panel.grid.major.x=element_blank(),
     panel.grid.minor=element_blank(),
     plot.background=element_rect(fill="white",color=NA),
-    plot.title=element_text(family=base_family,size=rel(1.2),colour="dimgray"),
-    plot.caption=element_text(family=base_family,colour="darkgray"),
+    plot.title=element_text(family=base_family,size=rel(1.3),colour="dimgray"),
+    plot.subtitle=element_text(family=base_family,size=rel(1.2),colour="dimgray",hjust=0),
+    plot.caption=element_text(colour="darkgray",size=rel(0.8),hjust=0),
     plot.margin=margin(.25,.25,.25,.25,"lines"),
-    axis.title=element_text(family=base_family,face="bold",size=rel(1.3),colour="dimgray"),
-    axis.text=element_text(family=base_family,size=rel(1.1),colour="dimgray",margin=margin(t=1,r=1,b=1,l=1)),
-    axis.line=element_blank(),
+    plot.title.position="plot",
+    plot.caption.position="plot",
+    axis.title=element_text(family=base_family,size=rel(1.2),colour="dimgray"),
+    axis.title.x=element_text(hjust=1),
+    axis.text=element_text(family=base_family,size=rel(1.1),colour="dimgray"),
+    axis.line=element_line(colour="dimgray"),
+    axis.line.y=element_blank(),
     axis.ticks=element_blank(),
     legend.background=element_rect(fill="transparent",color=NA),
     legend.position="none",
@@ -59,20 +55,18 @@ corn_dt <- fread("figures/lecture5/Corn_Yields_USA.csv")
 
 gg_corn <- ggplot(corn_dt[Year>1960 & Year<=2020],aes(x=Year,y=Value))+
   geom_line(linewidth=.8,na.rm=T,color="dimgray")+
-  labs(title="Maize (USA)",x="Year",y="Yield (bu/acre)")+
+  labs(y="",x="Year",subtitle="USA maize yield (bu/acre)")+
   coord_cartesian(ylim=c(50,200),xlim=c(1960,2023))+
-  theme_eg()+
-  theme(plot.title=element_text(size=rel(1.1),colour="dimgray"))
+  theme_eg()
 
 
 life_dt <- fread("figures/lecture5/life-expectancy-at-birth-including-the-un-projections.csv")
 
 gg_life <- ggplot(life_dt[Country=="Japan" & Year>1950 & Year<=2020],aes(x=Year,y=Estimate))+
   geom_line(linewidth=.8,na.rm=T,color="dimgray")+
-  labs(title="Life expectancy (Japan)",x="Year",y="Years")+
+  labs(y="",x="Year",subtitle="Life expectancy in Japan (years)")+
   coord_cartesian(ylim=c(60,85),xlim=c(1950,2023))+
-  theme_eg()+
-  theme(plot.title=element_text(size=rel(1.1),colour="dimgray"))
+  theme_eg()
 
 
 mortgate_dt <- data.table(fredr(series_id="MORTGAGE30US",observation_start=as.Date("1990-01-01"),observation_end=as.Date("2022-12-31"),frequency="m",units="lin"))
@@ -82,10 +76,9 @@ mortgate_dt <- data.table(fredr(series_id="MORTGAGE30US",observation_start=as.Da
 gg_mortgage <- ggplot(mortgate_dt,aes(x=date,y=value))+
   geom_line(linewidth=.8,na.rm=T,color="dimgray")+
   scale_y_continuous(breaks=c(2,4,6,8,10,12))+
-  labs(title="Mortgage average (USA)",x="Year",y="Interest rate (%)")+
+  labs(y="",x="Year",subtitle="USA average mortgage rate (%)")+
   coord_cartesian(ylim=c(2,12),xlim=c(as.Date("1990-01-01"),as.Date("2022-12-31")))+
-  theme_eg()+
-  theme(plot.title=element_text(size=rel(1.1),colour="dimgray"))
+  theme_eg()
 
 
 gg_combined <- plot_grid(gg_life,gg_mortgage,ncol=2,align="hv",hjust=0,vjust=1)
@@ -111,10 +104,12 @@ gg_corn <- ggplot(sub_lg,aes(x=Year,y=Value,color=Series,linetype=Series))+
   geom_line(linewidth=.8)+
   scale_color_manual(values=c("dimgray","black"))+
   scale_linetype_manual(values=c(1,5))+
-  labs(title="",x="Year",y="Yield (bu/acre)")+
+  labs(y="",x="Year",subtitle="USA maize yield (bu/acre): realized and fitted")+
   coord_cartesian(ylim=c(50,200),xlim=c(1960,2023))+
   theme_eg()+
-  theme(legend.position="none",legend.key=element_rect(colour="transparent",fill="white"),legend.key.width= unit(2,'lines'))
+  theme(legend.position="none")
+
+gg_corn
 
 ggsave("figures/lecture5/corn_fitted.png",gg_corn,width=6.5,height=6.5*9/16,dpi="retina",device="png")
 
@@ -124,20 +119,21 @@ sub_dt[,Residuals:=Value-Fitted]
 
 gg_resid <- ggplot(sub_dt,aes(x=Year,y=Residuals))+
   geom_line(linewidth=.8,color="dimgray")+
-  labs(title="",x="Year",y="Yield residual (bu/acre)")+
-  coord_cartesian(ylim=c(-35,35),xlim=c(1960,2023))+
-  theme_eg()+
-  theme(legend.position="top",legend.key=element_rect(colour="transparent",fill="white"),legend.key.width= unit(2,'lines'))
+  labs(y="",x="Year",subtitle="USA maize yield residuals (bu/acre)")+
+  coord_cartesian(ylim=c(-35,25),xlim=c(1960,2023))+
+  theme_eg()
 
 gg_dots <- ggplot(sub_dt,aes(x=Residuals))+
-  geom_dotplot(binwidth=2,color="black",fill="gray",stroke=1,method="histodot",stackratio=1.1)+
-  xlim(-35,35)+
+  geom_dotplot(binwidth=2,color="dimgray",fill="lightgray",stroke=1,method="histodot",stackratio=1.1)+
+  xlim(-35,25)+
   coord_flip()+
   theme_eg()+
-  theme(axis.title=element_blank(),axis.title.y=element_blank(),axis.text=element_blank(),axis.line=element_blank(),panel.grid.major=element_blank())
+  theme(axis.title=element_blank(),axis.title.y=element_blank(),axis.title.x=element_blank(),axis.text=element_blank(),axis.line=element_blank(),panel.grid.major=element_blank())
 
 # combine the two graphs
 gg_comb <- plot_grid(gg_resid,gg_dots,align="hv",ncol=2,rel_widths = c(3,1))
+
+gg_comb
 
 ggsave("figures/lecture5/residuals.png",gg_comb,width=6.5,height=6.5*9/16,dpi="retina",device="png")
 
@@ -151,12 +147,15 @@ acf_dt <- data.table(k=c(1:maxlag),rho=c(acf(sub_dt$Residuals,lag.max=maxlag,plo
 # plot the autocorrelogram
 gg_acf <- ggplot(acf_dt,aes(x=k,y=rho))+
   geom_hline(yintercept=c(-1.96/sqrt(nrow(sub_dt)),1.96/sqrt(nrow(sub_dt))),linewidth=.8,linetype=5,col="dimgray")+
-  geom_segment(aes(xend=k,yend=0),linewidth=0.8,col="gray")+
-  geom_point(shape=21,size=2.5,stroke=.8,color="black",fill="gray")+
+  geom_segment(aes(xend=k,yend=0),linewidth=0.8,col="lightgray")+
+  geom_point(shape=21,size=2.5,stroke=.8,color="dimgray",fill="lightgray")+
   scale_x_continuous(breaks=1:8)+
-  labs(x="k",y=expression(hat(rho)[k]))+
+  scale_y_continuous(breaks=seq(-.2,1,.2),labels=sprintf("%.1f",round(seq(-.2,1,.2),1)))+
+  labs(y="",x="k",subtitle=expression(hat(rho)[k]))+
   coord_cartesian(ylim=c(-.25,1))+
   theme_eg()
+
+gg_acf
 
 ggsave("figures/lecture5/autocorrelogram.png",gg_acf,width=6.5,height=6.5*9/16,dpi="retina",device="png")
 
@@ -185,9 +184,9 @@ ggsave("figures/lecture5/autocorrelogram.png",gg_acf,width=6.5,height=6.5*9/16,d
 # btc_dt <- data.table(btc_tb)
 # save(btc_dt,file="data/c2/btc.RData")
 
-load("figures/lecture5/btc.RData")
+load("figures/lecture4/btc.RData")
 
-h1=as.Date("2022-01-01")
+h1 <- as.Date("2023-01-01")
 
 # keep only date and closing price (expressed in thousand dollars)
 btc_dt <- btc_dt[,.(date=as.Date(substr(timestamp,1,10)),BTC=close/1000)]
@@ -205,9 +204,11 @@ gg_btc <- ggplot(btc_dt,aes(x=date))+
   geom_line(aes(y=btc_lo),linetype=2,linewidth=.4,color="coral",na.rm=T)+
   geom_line(aes(y=btc_hi),linetype=2,linewidth=.4,color="coral",na.rm=T)+
   geom_line(aes(y=btc_rw),linetype=5,linewidth=.6,color="coral",na.rm=T)+
-  labs(x="Year",y="Bitcoin price ('000 USD)")+
-  coord_cartesian(ylim=c(0,100))+
+  labs(y="",x="Year",subtitle="Bitcoin price ('000 USD)")+
+  coord_cartesian(ylim=c(-30,70))+
   theme_eg()
+
+gg_btc
 
 ggsave("figures/lecture5/btc_forecast.png",gg_btc,width=6.5,height=6.5*9/16,dpi="retina",device="png")
 
@@ -222,13 +223,6 @@ interest_rates[,`:=`(w=log(y),t=1:nrow(interest_rates))]
 interest_rates[,`:=`(haty=fitted(lm(y~t)))]
 interest_rates[,`:=`(hatw=fitted(lm(w~t)))]
 interest_rates[,`:=`(hatz=exp(hatw+summary(lm(w~t))$sigma^2/2))]
-
-ggplot(interest_rates,aes(x=date,y=y))+
-  geom_line(color="dimgray",linewidth=.8)+
-  geom_line(aes(y=haty),color="black",linewidth=.8,linetype=5)+
-  labs(x="Year",y="Interest Rate (%)")+
-  theme_eg()+
-  theme(axis.title = element_text(size=22),axis.text = element_text(size=18))
 
 h1 <- as.Date("2010-12-31")
 
@@ -246,10 +240,12 @@ gg_mortgage <- ggplot(interest_rates,aes(x=date,y=y))+
   geom_line(aes(y=f),color="coral",linewidth=.6,linetype=5,na.rm=T)+
   geom_line(aes(y=l),color="coral",linewidth=.4,linetype=2,na.rm=T)+
   geom_line(aes(y=u),color="coral",linewidth=.4,linetype=2,na.rm=T)+
-  scale_y_continuous(breaks=c(2,4,6,8,10,12))+
-  labs(x="Year",y="Interest rate (%)")+
-  coord_cartesian(ylim=c(1,13),xlim=c(as.Date("1990-01-01"),as.Date("2022-12-31")))+
+  scale_y_continuous(breaks=seq(0,10,2))+
+  labs(y="",x="Year",subtitle="USA average mortgage rate (%)")+
+  coord_cartesian(ylim=c(0,11),xlim=c(as.Date("1990-01-01"),as.Date("2022-12-31")))+
   theme_eg()
+
+gg_mortgage
 
 ggsave("figures/lecture5/mortgage_forecast.png",gg_mortgage,width=6.5,height=6.5*9/16,dpi="retina",device="png")
 
@@ -280,10 +276,12 @@ gg_mortgage1 <- ggplot(interest_rates,aes(x=date,y=y))+
   geom_line(aes(y=f_t),color="coral",linewidth=.6,linetype=5,na.rm=T)+
   geom_line(aes(y=f_tl),color="coral",linewidth=.4,linetype=2,na.rm=T)+
   geom_line(aes(y=f_tu),color="coral",linewidth=.4,linetype=2,na.rm=T)+
-  scale_y_continuous(breaks=c(2,4,6,8,10,12))+
-  labs(x="Year",y="Interest rate (%)")+
-  coord_cartesian(ylim=c(1,13),xlim=c(as.Date("1990-01-01"),as.Date("2022-12-31")))+
+  scale_y_continuous(breaks=seq(0,10,2))+
+  labs(y="",x="Year",subtitle="USA average mortgage rate (%)")+
+  coord_cartesian(ylim=c(0,11),xlim=c(as.Date("1990-01-01"),as.Date("2022-12-31")))+
   theme_eg()
+
+gg_mortgage1
 
 ggsave("figures/lecture5/mortgage1_forecast.png",gg_mortgage1,width=6.5,height=6.5*9/16,dpi="retina",device="png")
 
@@ -299,11 +297,11 @@ acf_dt <- data.table(k=c(1:maxlag),rho=c(acf(interest_rates[date%in%oos]$e_t,lag
 # plot the autocorrelogram
 gg_acf <- ggplot(acf_dt,aes(x=k,y=rho))+
   geom_hline(yintercept=c(-1.96/sqrt(nrow(interest_rates[date%in%oos])),1.96/sqrt(nrow(interest_rates[date%in%oos]))),linewidth=.8,linetype=5,col="dimgray")+
-  geom_segment(aes(xend=k,yend=0),linewidth=0.8,col="gray")+
-  geom_point(shape=21,size=2.5,stroke=.8,color="black",fill="gray")+
+  geom_segment(aes(xend=k,yend=0),linewidth=0.8,col="lightgray")+
+  geom_point(shape=21,size=2.5,stroke=.8,color="dimgray",fill="lightgray")+
   scale_x_continuous(breaks=seq(5,maxlag,5),labels=seq(5,maxlag,5))+
   scale_y_continuous(breaks=seq(-.2,1,.2),labels=sprintf("%.1f",round(seq(-.2,1,.2),1)))+
-  labs(x="k",y=expression(hat(rho)[k]))+
+  labs(y="",x="k",subtitle=expression(hat(rho)[k]))+
   coord_cartesian(ylim=c(-.2,1),xlim=c(1.5,maxlag-0.5))+
   theme_eg()
 
@@ -333,6 +331,12 @@ ggplot(interest_rates,aes(x=date,y=y))+
 
 
 
+
+
+
+
+
+
 r <- 1000
 n <- 120
 tr <- 1:n
@@ -349,7 +353,8 @@ gg_spurious_d <- ggplot(dl,aes(x=tr,y=value,color=variable,linetype=variable)) +
   geom_line(linewidth=.8) +
   scale_color_manual(values=c("dimgray","coral"))+
   scale_linetype_manual(values=c(1,5))+
-  labs(x="t",y=expression(paste(y[t],", ",x[t],sep=""))) +
+  scale_x_continuous(breaks=seq(0,120,20))+
+  labs(y="",x="t",subtitle=expression(paste(y[t],", ",x[t],sep=""))) +
   theme_eg()
 
 ggsave("figures/lecture5/spurious_d.png",gg_spurious_d,width=6.5,height=6.5*9/16,dpi="retina",device="png")
@@ -367,7 +372,8 @@ gg_spurious_s <- ggplot(dl,aes(x=tr,y=value,color=variable,linetype=variable)) +
   geom_line(linewidth=.8) +
   scale_color_manual(values=c("dimgray","coral"))+
   scale_linetype_manual(values=c(1,5))+
-  labs(x="t",y=expression(paste(y[t],", ",x[t],sep=""))) +
+  scale_x_continuous(breaks=seq(0,120,20))+
+  labs(y="",x="t",subtitle=expression(paste(y[t],", ",x[t],sep=""))) +
   theme_eg()
 
 ggsave("figures/lecture5/spurious_s.png",gg_spurious_s,width=6.5,height=6.5*9/16,dpi="retina",device="png")

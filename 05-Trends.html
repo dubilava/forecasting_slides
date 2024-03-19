@@ -81,7 +81,7 @@ It is also possible for the rate of the change to alter.
 
 # Flavours of trends
 
-.right-column[
+.right-figure[
 
 ![](figures/lecture5/trends_combined.png)
 
@@ -123,13 +123,13 @@ By backward iteration we can show that: `$$y_t=y_{0}+\sum_{i=1}^{t}\varepsilon_i
 
 ---
 
-# Random walk has time-varying variance and covariances
+# Time-varying variance and covariances
 
 .right-column[
 So, at any point in time, a realization of the random walk process can be given as the sum of the iid random variables. It then follows that:
 `$$\begin{aligned}
-		&amp; \mathbb{E}\left(y_t\right)=\mathbb{E}\left(\varepsilon_1+\ldots+\varepsilon_t\right) = 0\\
-    &amp; Var\left(y_t\right) = Var\left(\sum_{i=1}^{t}\varepsilon_i\right)=t\sigma^2\\
+		&amp; \mathbb{E}\left(y_t\right)=\mathbb{E}\left(\sum_{i=1}^{t}\varepsilon_i\right) = 0\\
+    &amp; \mathbb{V}\left(y_t\right) = \mathbb{V}\left(\sum_{i=1}^{t}\varepsilon_i\right)=t\sigma^2\\
     &amp; Cov\left(y_t,y_{t-k}\right) = Cov\left(\sum_{i=1}^{t}\varepsilon_i,\sum_{i=1}^{t-k}\varepsilon_i\right)=(t-k)\sigma^2
   \end{aligned}$$`
 
@@ -141,7 +141,7 @@ So, at any point in time, a realization of the random walk process can be given 
 # Point forecast from a random walk model
 
 .right-column[
-Suppose we would like to obtain an `\(h\)`-step-ahead optimal point forecast of a time series that follows random walk, that is, `\(y_{t+h|t}\)` (note that random walk is a parameter-free model).
+Suppose we would like to obtain an `\(h\)`-step-ahead optimal point forecast of a time series that follows random walk, that is, `\(y_{t+h|t}\)`.
 
 But we know that the only difference between `\(y_t\)` and `\(y_{t+h}\)` is the sum of mean-zero stochastic shocks: `\(\sum_{i=t+1}^{t+h}\varepsilon_i\)`. So, `$$y_{t+h|t}=\mathbb{E}\left(y_{t+h}|\Omega_t\right)=\mathbb{E}\left(y_t+\sum_{i=t+1}^{t+h}\varepsilon_i\right)=y_t.$$`
 
@@ -156,9 +156,9 @@ So, the optimal point forecast, at any horizon, is the most recent realization o
 The forecast error, for a given `\(h\)`, is `\(\sum_{i=t+1}^{t+h}\varepsilon_i\)`.
 
 It then follows that the forecast error variance changes with the horizon. Specifically,
-`$$\sigma_{t+h|t}^2=Var\left(y_{t+h}|\Omega_t\right)=Var\left(\sum_{i=t+1}^{t+h}\varepsilon_i\right)=\sigma^2h$$`
+`$$\sigma_{t+h|t}^2=Var\left(y_{t+h}|\Omega_t\right)=\mathbb{V}\left(\sum_{i=t+1}^{t+h}\varepsilon_i\right)=h\sigma^2$$`
 
-From this, we can obtain lower and upper intervals of the forecast:: `$$y_{t+h|t}\pm 1.96\sigma_{t+h|t}\sqrt{h}$$`
+From this, we can obtain lower and upper intervals of the forecast:: `$$y_{t+h|t}\pm 1.96\sigma_{t+h|t}$$`
 
 
 ]
@@ -167,7 +167,7 @@ From this, we can obtain lower and upper intervals of the forecast:: `$$y_{t+h|t
 
 # Forecasting Bitcoin prices (assuming random walk)
 
-.right-column[
+.right-figure[
 
 ![](figures/lecture5/btc_forecast.png)
 ]
@@ -202,11 +202,11 @@ The simplest of the functional forms is linear. We can model a linearly trending
 # Linear trend model
 
 .right-column[
-The error term, as given, is a Gaussian white noise process, which is a stationary process. 
+The error term is a Gaussian white noise process, which is stationary. 
 
 And `\(\delta_0\)` is just a constant, which is time-invariant.
 
-Thus, the only source of nonstationarity is the trend component given by `\(\delta_1 t\)`. 
+Nonstationarity thus comes from the trend component given by `\(\delta_1 t\)`. 
 ]
 
 ---
@@ -216,7 +216,7 @@ Thus, the only source of nonstationarity is the trend component given by `\(\del
 .right-column[
 Indeed, the expectation of the time series is: `$$\mathbb{E}\left(y_t\right) = \delta_0+\delta_1 t,$$` which changes with `\(t\)` (so long as `\(\delta_1 \ne 0\)`). 
 
-That is, the time series is expected to change by `\(\delta_1\)` with each increment of time.
+The time series is expected to change by `\(\delta_1\)` with each increment of time.
 
 We can easily show that, for example, `$$\mathbb{E}\left(y_{t+1}-y_t\right) = \mathbb{E}\left(y_{t+1}\right)-\mathbb{E}\left(y_t\right)=\delta_1$$`
 ]
@@ -229,7 +229,7 @@ We can easily show that, for example, `$$\mathbb{E}\left(y_{t+1}-y_t\right) = \m
 .right-column[
 Generally, a deterministic trend assumes that the realizations of a stochastic process are a fixed function of time plus the error component. 
 
-Under such assumption, the expectation of a time series is a function of constants. 
+Under such an assumption, the expectation of a time series is a function of constants. 
 
 In our foregoing example, these are `\(\delta_0\)` and `\(\delta_1\)`, and time, `\(t\)`.
 ]
@@ -272,7 +272,7 @@ While hardly trivial, sometimes it is easy to argue a presence of a deterministi
 # Fitting trends
 
 .right-column[
-Consider cereal grain yields, for example. The likely key drivers of the average yield over time are (gradual) changes in technology and climate (both broadly defined). 
+Consider cereal grain yields, for example. The likely key drivers of the average yield over time are (gradual) changes in technology and climate. 
 
 The main source of year-to-year variation in yields is the weather. 
 
@@ -287,7 +287,7 @@ To that end, cereal grain yields likely is a realization of a trend-stationary p
 # Fitting trends
 
 .right-column[
-If we were to fit a linear trend to the time series of U.S. maize yields ranging from 1961 to 2020, the estimated coefficients for the intercept and slope, respectively, would be `\(61.87\)` and `\(1.85\)` (both statistically significantly different from zero).
+If we were to fit a linear trend to the time series of U.S. maize yields (measured in bu/acre) ranging from 1961 to 2020, the estimated coefficients for the intercept and slope, respectively, would be `\(61.87\)` and `\(1.85\)` (both statistically significantly different from zero).
 
 Thus, our expectation of U.S. maize yield in 1960 would have been `\(61.87\)`, and with each successive period, this expectation would increase by `\(1.85\)`. 
 
@@ -298,7 +298,7 @@ There are a total of 60 periods in the sample. So, for example, the expectation 
 
 # Linear trend explains the long-run pattern
 
-.right-column[
+.right-figure[
 
 ![](figures/lecture5/corn_fitted.png)
 ]
@@ -311,7 +311,7 @@ There are a total of 60 periods in the sample. So, for example, the expectation 
 .right-column[
 A couple of things become apparent from the figure. 
 - First, the linear tend, as anticipated, well approximates the average change of the time series over time. 
-- Second, the deviations from the trend&amp;mdash;the residuals of the fitted regression&amp;mdash;might not be symmetrically distributed: It appears that the negative deviations are larger in magnitude than the positive deviations. 
+- Second, the deviations from the trend&amp;mdash;the residuals of the fitted regression&amp;mdash;might not be symmetrically distributed: It appears that the negative deviations are of larger size than the positive deviations. 
 ]
 
 ---
@@ -324,7 +324,7 @@ That the residuals of the fitted regression are not normally distributed is not 
 
 At least, it is not an issue for estimating the parameters of the model. 
 
-And specifically, it doesn't indicate that the model is not specified correctly.  
+And specifically, it doesn't suggest the model is not correctly specified.   
 ]
 
 ---
@@ -345,7 +345,7 @@ The serial correlation of the residuals typically suggests that the model is mis
 
 # Residuals from the linear trend model
 
-.right-column[
+.right-figure[
 
 ![](figures/lecture5/residuals.png)
 ]
@@ -357,7 +357,7 @@ The serial correlation of the residuals typically suggests that the model is mis
 
 # The autocorrelogram of the residuals
 
-.right-column[
+.right-figure[
 
 ![](figures/lecture5/autocorrelogram.png)
 ]
@@ -393,10 +393,10 @@ We are going to ignore the parameter uncertainty. That is, we are going to assum
 .right-column[
 Forecast error, then, will be: `$$e_{t+h} = y_{t+h} - y_{t+h|t} = \varepsilon_{t+h}$$` 
 
-Forecast variance is: `$$\sigma_{t+h|t}^2 = Var\left(y_{t+h}|\Omega_t\right)=Var\left(\varepsilon_{t+h}\right) = \sigma^2,\;~~\forall\;h$$`
+Forecast variance is: `$$\sigma_{t+h|t}^2 = \mathbb{V}\left(y_{t+h}|\Omega_t\right)=\mathbb{V}\left(\varepsilon_{t+h}\right) = \sigma^2,\;~~\forall\;h$$`
 Note, the forecast variance does not change with the horizon.
 
-From this, we can obtain lower and upper intervals of the forecast, given by: `$$\hat{y}_{t+h|t}\pm 1.96\sigma_{t+h|t}$$`
+We can obtain lower and upper intervals of the forecast: `$$\hat{y}_{t+h|t}\pm 1.96\sigma_{t+h|t}$$`
 
 ]
 
@@ -405,7 +405,7 @@ From this, we can obtain lower and upper intervals of the forecast, given by: `$
 
 # U.S. Mortgage Rates: Multi-step-ahead forecasts
 
-.right-column[
+.right-figure[
 
 ![](figures/lecture5/mortgage_forecast.png)
 
@@ -416,7 +416,7 @@ From this, we can obtain lower and upper intervals of the forecast, given by: `$
 
 # U.S. Mortgage Rates: One-step-ahead forecasts
 
-.right-column[
+.right-figure[
 
 ![](figures/lecture5/mortgage1_forecast.png)
 
@@ -427,7 +427,7 @@ From this, we can obtain lower and upper intervals of the forecast, given by: `$
 
 # U.S. Mortgage Rates: Forecast errors
 
-.right-column[
+.right-figure[
 
 ![](figures/lecture5/ac_mortgage.png)
 
@@ -543,7 +543,7 @@ Suppose `\(\zeta\sim N(0,1)\)` and `\(\xi\sim N(0,1)\)`, and `\(Cov(\zeta_t,\xi_
 
 # Spurious relationship: Stochastic trends
 
-.right-column[
+.right-figure[
 
 ![](figures/lecture5/spurious_s.png)
 
@@ -575,7 +575,7 @@ To keep things simple, suppose `\(\sigma_{\nu}^2=\sigma_{\upsilon}^2=1\)`. And, 
 
 # Spurious relationship: Deterministic trends
 
-.right-column[
+.right-figure[
 
 ![](figures/lecture5/spurious_d.png)
 
@@ -606,16 +606,16 @@ Indeed, if we regress `\(y\)` on `\(x\)` and `\(t\)`, where `\(t=1,\ldots,T\)`, 
 
 ---
 
-# Readings
+# Key takeaways
 
 .pull-left[
 ![](Art/todolist.png)
 ]
 
 .pull-right[
-Gonzalez-Rivera, Chapter 10
-
-Hyndman &amp; Athanasopoulos, [3.2](https://otexts.com/fpp3/components.html), [10.4](https://otexts.com/fpp3/weekly.html)
+- Time series can have stochastic or deterministic trends. Such time series are non-stationary.
+- Random walk is an example of a stochastic trend. Its point forecast, at any horizon, is the realization in the most recent period. Its interval forecast increases with horizon.
+- Linear trend model is an example of a deterministic trend. Its forecast is a continuation of the fitted regression line. Its interval forecast is the same at any horizon. 
 ]
 
     </textarea>

@@ -4,7 +4,7 @@
     <title>Forecasting for Economics and Business</title>
     <meta charset="utf-8" />
     <meta name="author" content="David Ubilava" />
-    <script src="libs/header-attrs-2.22/header-attrs.js"></script>
+    <script src="libs/header-attrs-2.25/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/metropolis.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/metropolis-fonts.css" rel="stylesheet" />
@@ -74,7 +74,7 @@ Trends do not need to be unidirectional, or monotonic. It is possible for the si
 
 It is also possible for the rate of the change to alter. 
 - The life expectancy at birth in Japan has increased at a decreasing rate, meaning that the positive trend has become flatter over time. 
-- Likewise, the slope of the downward trend in the U.S. 10-year real interest rates, observed since the early 1980s, has flattened as the interest rates approached zero.
+- However, the slope of the U.S. maize yields have remained constant.
 ]
 
 ---
@@ -347,7 +347,7 @@ The serial correlation of the residuals typically suggests that the model is mis
 
 .right-figure[
 
-![](figures/lecture5/residuals.png)
+![](figures/lecture5/corn_residuals.png)
 ]
 
 ---
@@ -359,7 +359,7 @@ The serial correlation of the residuals typically suggests that the model is mis
 
 .right-figure[
 
-![](figures/lecture5/autocorrelogram.png)
+![](figures/lecture5/corn_autocorrelogram.png)
 ]
 
 ---
@@ -418,7 +418,7 @@ We can obtain lower and upper intervals of the forecast: `$$\hat{y}_{t+h|t}\pm 1
 
 .right-figure[
 
-![](figures/lecture5/mortgage1_forecast.png)
+![](figures/lecture5/onestep_forecast.png)
 
 ]
 
@@ -429,7 +429,7 @@ We can obtain lower and upper intervals of the forecast: `$$\hat{y}_{t+h|t}\pm 1
 
 .right-figure[
 
-![](figures/lecture5/ac_mortgage.png)
+![](figures/lecture5/mortgage_autocorrelogram.png)
 
 ]
 
@@ -525,7 +525,55 @@ In any case, a care is needed to avoid "spurious" findings when analyzing relati
 
 If we are careless, we may conclude that there is a relationship between the series when, in fact, there is none.
 
-We may encounter the issue of spurious relationship in both stochastic and deterministic trend types.
+We may encounter the issue of spurious relationship in both deterministic and stochastic trend types.
+]
+
+---
+
+
+# Spurious relationship: Deterministic trends
+
+.right-column[
+Does the change in U.S. maize yields cause the change in life expectancy in Japan? 
+
+An obvious and sensible answer to this question is a "No." 
+
+So, if we were to regress life expectancy on maize yields, the coefficient associated with the regressor should be indistinguishable from zero, right? 
+]
+
+---
+
+
+# Spurious relationship: Deterministic trends
+
+.right-column[
+Indeed, it should. But it is not. As it turns out, the estimated coefficient is `\(0.15\)` and the associated standard error is `\(0.01\)`, so the coefficient is highly statistically significant.
+
+This is because we are picking up a spurious relationship stemming from the presence of (deterministic) trends in the two series.
+]
+
+---
+
+# Spurious relationship: Deterministic trends
+
+.right-column[
+We can think of a trend as an omitted variable, in this instance. 
+
+If so, then there is an easy 'fix' to the issue. We just need to include trend as an additional variable in the regression.
+
+Indeed, when we regress life expectancy on maize yields and trend, the previously detected (statistically significant but, as we know, spurious) effect vanishes. The estimated coefficient becomes `\(0.03\)` with the associated standard error `\(0.02\)`
+
+]
+
+---
+
+
+# Spurious relationship: Stochastic trends
+
+.right-column[
+Consider two unrelated random walk processes: Bitcoin prices, which we denote by `\(y_t\)`, and some `$$x_t=x_{t-1}+\upsilon_t$$`, where `\(\upsilon\sim\text{N}(0,1)\)`.
+
+So, if we were to regress `\(y_t\)` on `\(x_t\)`, the coefficient associated with the regressor should be indistinguishable from zero (most of the time), right? 
 ]
 
 ---
@@ -533,9 +581,9 @@ We may encounter the issue of spurious relationship in both stochastic and deter
 # Spurious relationship: Stochastic trends
 
 .right-column[
-Consider two unrelated random walk processes: `$$y_t=y_{t-1}+\zeta_t$$` and `$$x_t=x_{t-1}+\xi_t$$` 
+Yes, it should. Indeed, if we assess the estimated coefficient at `\(\alpha=0.05\)` significance level, then we should be rejecting the null hypothesis of no effect only five percent of the time. 
 
-Suppose `\(\zeta\sim N(0,1)\)` and `\(\xi\sim N(0,1)\)`, and `\(Cov(\zeta_t,\xi_t)=0\)`.
+To illustrate the point, let's generate a large set of regressors, `\(x_{i,t}\)`, where `\(i=1,\ldots,M\)`, and where `\(M\)` is some large number (e.g., `\(1000\)`); regress `\(y_t\)` on `\(x_{it}\)` for each `\(i\)`,and collect the t statistic associated with the regressor.
 ]
 
 ---
@@ -562,49 +610,18 @@ Luckily, we can 'fix' the issue. We can do so by first-differencing both series 
 
 ---
 
-# Spurious relationship: Deterministic trends
 
-.right-column[
-To illustrate a spurious relationship, consider two trending variables: `$$y_t = \gamma t + \nu_t,\;~~\nu\sim iid~\text{N}(0,\sigma_{\nu}^2),$$` and `$$x_t = \delta t + \upsilon_t,\;~~\upsilon\sim iid~\text{N}(0,\sigma_{\upsilon}^2),$$` where `\(Cov(\nu_t,\upsilon_t) = 0\)`. 
-
-To keep things simple, suppose `\(\sigma_{\nu}^2=\sigma_{\upsilon}^2=1\)`. And, also, suppose `\(y\)` and `\(x\)` are trending in the same direction, i.e., `\(\gamma\)` and `\(\delta\)` are some positive scalars, say, `\(0.3\)` and `\(0.5\)`, respectively.
-]
-
----
-
-
-# Spurious relationship: Deterministic trends
+# Spurious relationship: Stochastic trends
 
 .right-figure[
 
-![](figures/lecture5/spurious_d.png)
+![](figures/lecture5/fixed_s.png)
 
 ]
 
 ---
 
-# Spurious relationship: Deterministic trends
 
-.right-column[
-These two series are not related, we know. 
-
-But if we were to regress `\(y\)` on `\(x\)`, we are likely to find the (statistically significant) relationship between the two. This would be a spurious relationship stemming from the presence of (deterministic) trends in the two series.
-]
-
----
-
-# Spurious relationship: Deterministic trends
-
-.right-column[
-We can think of a trend as an omitted variable, in this instance. 
-
-If so, then there is an easy 'fix' to the issue: Include a trend as an additional variable in the regression.
-
-Indeed, if we regress `\(y\)` on `\(x\)` and `\(t\)`, where `\(t=1,\ldots,T\)`, the previously detected (statistically significant but, as we know, spurious) relationship between the two series will vanish.
-
-]
-
----
 
 # Key takeaways
 

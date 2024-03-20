@@ -49,14 +49,14 @@ theme_eg <- function(base_size=12,base_family="Segoe Print",border=F){
 }
 
 
-# 4.1 - trends ----
+# 5.1 - trends ----
 
 corn_dt <- fread("figures/lecture5/Corn_Yields_USA.csv")
 
-gg_corn <- ggplot(corn_dt[Year>1960 & Year<=2020],aes(x=Year,y=Value))+
+gg_corn <- ggplot(corn_dt[Year>1950 & Year<=2020],aes(x=Year,y=Value))+
   geom_line(linewidth=.8,na.rm=T,color="dimgray")+
   labs(y="",x="Year",subtitle="USA maize yield (bu/acre)")+
-  coord_cartesian(ylim=c(50,200),xlim=c(1960,2023))+
+  coord_cartesian(ylim=c(20,200),xlim=c(1950,2022))+
   theme_eg()
 
 
@@ -65,35 +65,20 @@ life_dt <- fread("figures/lecture5/life-expectancy-at-birth-including-the-un-pro
 gg_life <- ggplot(life_dt[Country=="Japan" & Year>1950 & Year<=2020],aes(x=Year,y=Estimate))+
   geom_line(linewidth=.8,na.rm=T,color="dimgray")+
   labs(y="",x="Year",subtitle="Life expectancy in Japan (years)")+
-  coord_cartesian(ylim=c(60,85),xlim=c(1950,2023))+
+  coord_cartesian(ylim=c(54,90),xlim=c(1950,2022))+
   theme_eg()
 
 
-mortgate_dt <- data.table(fredr(series_id="MORTGAGE30US",observation_start=as.Date("1990-01-01"),observation_end=as.Date("2022-12-31"),frequency="m",units="lin"))
-
-# interest_dt <- fread("figures/lecture5/real_interest_rates_10y.csv")
-
-gg_mortgage <- ggplot(mortgate_dt,aes(x=date,y=value))+
-  geom_line(linewidth=.8,na.rm=T,color="dimgray")+
-  scale_y_continuous(breaks=c(2,4,6,8,10,12))+
-  labs(y="",x="Year",subtitle="USA average mortgage rate (%)")+
-  coord_cartesian(ylim=c(2,12),xlim=c(as.Date("1990-01-01"),as.Date("2022-12-31")))+
-  theme_eg()
-
-
-gg_combined <- plot_grid(gg_life,gg_mortgage,ncol=2,align="hv",hjust=0,vjust=1)
+gg_combined <- plot_grid(gg_life,gg_corn,ncol=2,align="hv",hjust=0,vjust=1)
 
 gg_combined
-
 
 ggsave("figures/lecture5/trends_combined.png",gg_combined,width=6.5,height=6.5*9/16,dpi="retina",device="png")
 
 
-# 4.2 - trending process
+# 5.2 - linear trend ----
 
-# 4.3 - linear trend ----
-
-sub_dt <- corn_dt[Year>1960 & Year<=2020]
+sub_dt <- corn_dt[Year>1950 & Year<=2020]
 sub_dt[,Trend:=1:nrow(sub_dt)]
 reg <- lm(Value~Trend,data=sub_dt)
 sub_dt[,Fitted:=(reg$coefficients["(Intercept)"]+reg$coefficients["Trend"]*Trend)]
@@ -105,7 +90,7 @@ gg_corn <- ggplot(sub_lg,aes(x=Year,y=Value,color=Series,linetype=Series))+
   scale_color_manual(values=c("dimgray","black"))+
   scale_linetype_manual(values=c(1,5))+
   labs(y="",x="Year",subtitle="USA maize yield (bu/acre): realized and fitted")+
-  coord_cartesian(ylim=c(50,200),xlim=c(1960,2023))+
+  coord_cartesian(ylim=c(30,200),xlim=c(1950,2022))+
   theme_eg()+
   theme(legend.position="none")
 
@@ -114,18 +99,18 @@ gg_corn
 ggsave("figures/lecture5/corn_fitted.png",gg_corn,width=6.5,height=6.5*9/16,dpi="retina",device="png")
 
 
-# 4.4 - residuals ----
+# 5.3 - residuals ----
 sub_dt[,Residuals:=Value-Fitted]
 
 gg_resid <- ggplot(sub_dt,aes(x=Year,y=Residuals))+
   geom_line(linewidth=.8,color="dimgray")+
   labs(y="",x="Year",subtitle="USA maize yield residuals (bu/acre)")+
-  coord_cartesian(ylim=c(-35,25),xlim=c(1960,2023))+
+  coord_cartesian(ylim=c(-40,25),xlim=c(1950,2022))+
   theme_eg()
 
 gg_dots <- ggplot(sub_dt,aes(x=Residuals))+
-  geom_dotplot(binwidth=2,color="dimgray",fill="lightgray",stroke=1,method="histodot",stackratio=1.1)+
-  xlim(-35,25)+
+  geom_dotplot(binwidth=1.6,color="dimgray",fill="lightgray",stroke=1,method="histodot",stackratio=1.1)+
+  xlim(-40,25)+
   coord_flip()+
   theme_eg()+
   theme(axis.title=element_blank(),axis.title.y=element_blank(),axis.title.x=element_blank(),axis.text=element_blank(),axis.line=element_blank(),panel.grid.major=element_blank())
@@ -135,10 +120,10 @@ gg_comb <- plot_grid(gg_resid,gg_dots,align="hv",ncol=2,rel_widths = c(3,1))
 
 gg_comb
 
-ggsave("figures/lecture5/residuals.png",gg_comb,width=6.5,height=6.5*9/16,dpi="retina",device="png")
+ggsave("figures/lecture5/corn_residuals.png",gg_comb,width=6.5,height=6.5*9/16,dpi="retina",device="png")
 
 
-# 4.5 - autocorrelogram ----
+# 5.4 - autocorrelogram ----
 
 # obtain autocorrelations
 maxlag <- round(sqrt(nrow(sub_dt)))
@@ -157,32 +142,10 @@ gg_acf <- ggplot(acf_dt,aes(x=k,y=rho))+
 
 gg_acf
 
-ggsave("figures/lecture5/autocorrelogram.png",gg_acf,width=6.5,height=6.5*9/16,dpi="retina",device="png")
+ggsave("figures/lecture5/corn_autocorrelogram.png",gg_acf,width=6.5,height=6.5*9/16,dpi="retina",device="png")
 
-# 2.7 - bitcoin series ----
 
-# # load all active coins
-# coins <- crypto_list()
-# 
-# # store as the data.table object
-# coins_dt <- data.table(coins)
-# 
-# # select the coin of interest -- Bitcoin
-# coins_sub_dt <- coins_dt[symbol=="BTC"]
-# 
-# # fetch the historical data beginning from 1 Jan 2020
-# btc_tb <- crypto_history(coin_list = coins_sub_dt,start_date="20200101",end_date="20221231")
-# 
-# # reformat the dates
-# btc_tb$timestamp <- as.POSIXct(btc_tb$timestamp,format="%Y-%m-%d")
-# btc_tb$time_open <- as.POSIXct(btc_tb$time_open,format="%Y-%m-%d")
-# btc_tb$time_close <- as.POSIXct(btc_tb$time_close,format="%Y-%m-%d")
-# btc_tb$time_high <- as.POSIXct(btc_tb$time_high,format="%Y-%m-%d")
-# btc_tb$time_low <- as.POSIXct(btc_tb$time_low,format="%Y-%m-%d")
-# 
-# # store the dataset as the data.table object
-# btc_dt <- data.table(btc_tb)
-# save(btc_dt,file="data/c2/btc.RData")
+# 5.5 - random walk ----
 
 load("figures/lecture4/btc.RData")
 
@@ -190,6 +153,7 @@ h1 <- as.Date("2023-01-01")
 
 # keep only date and closing price (expressed in thousand dollars)
 btc_dt <- btc_dt[,.(date=as.Date(substr(timestamp,1,10)),BTC=close/1000)]
+
 btc_dt[,`:=`(btc_y=ifelse(date<h1,BTC,NA),btc_f=ifelse(date<h1,NA,BTC),btc_rw=ifelse(date<h1,NA,btc_dt[date==h1-1]$BTC))]
 
 btc_dt[,`:=`(h=c(rep(NA,nrow(btc_dt[date<h1])),1:nrow(btc_dt[date>=h1])))]
@@ -213,9 +177,20 @@ gg_btc
 ggsave("figures/lecture5/btc_forecast.png",gg_btc,width=6.5,height=6.5*9/16,dpi="retina",device="png")
 
 
+# 5.6 - bad forecast ----
 
+mortgate_dt <- data.table(fredr(series_id="MORTGAGE30US",observation_start=as.Date("1990-01-01"),observation_end=as.Date("2022-12-31"),frequency="m",units="lin"))
 
-load("figures/lecture5/interest_rates.RData")
+# interest_dt <- fread("figures/lecture5/real_interest_rates_10y.csv")
+
+# gg_mortgage <- ggplot(mortgate_dt,aes(x=date,y=value))+
+#   geom_line(linewidth=.8,na.rm=T,color="dimgray")+
+#   scale_y_continuous(breaks=c(2,4,6,8,10,12))+
+#   labs(y="",x="Year",subtitle="USA average mortgage rate (%)")+
+#   coord_cartesian(ylim=c(2,12),xlim=c(as.Date("1990-01-01"),as.Date("2022-12-31")))+
+#   theme_eg()
+
+# load("figures/lecture5/interest_rates.RData")
 
 interest_rates <- mortgate_dt[,.(date,y=value)]
 
@@ -283,7 +258,7 @@ gg_mortgage1 <- ggplot(interest_rates,aes(x=date,y=y))+
 
 gg_mortgage1
 
-ggsave("figures/lecture5/mortgage1_forecast.png",gg_mortgage1,width=6.5,height=6.5*9/16,dpi="retina",device="png")
+ggsave("figures/lecture5/onestep_forecast.png",gg_mortgage1,width=6.5,height=6.5*9/16,dpi="retina",device="png")
 
 interest_rates[,`:=`(e_t=y-f_t)]
 
@@ -307,7 +282,7 @@ gg_acf <- ggplot(acf_dt,aes(x=k,y=rho))+
 
 gg_acf
 
-ggsave("figures/lecture5/ac_mortgage.png",gg_acf,width=6.5,height=6.5*9/16,dpi="retina",device="png")
+ggsave("figures/lecture5/mortgage_autocorrelogram.png",gg_acf,width=6.5,height=6.5*9/16,dpi="retina",device="png")
 
 
 
@@ -333,47 +308,89 @@ ggplot(interest_rates,aes(x=date,y=y))+
 
 
 
+# 5.7 - spurious trends ----
+
+# 5.7.1 - deterministic ----
+
+
+life_sub <- life_dt[Country=="Japan" & Year>1950 & Year<=2020]
+corn_sub <- corn_dt[Year>1950 & Year<=2020]
+
+trends_dt <- merge(life_sub,corn_sub,by="Year")
+
+dt <- trends_dt[,.(Year,Life=Estimate,Corn=Value)]
+
+reg <- lm(Life~Corn,data=dt)
+summary(reg)
+
+reg <- lm(Life~Corn+Year,data=dt)
+summary(reg)
 
 
 
+# 5.7.1 - stochastic ----
 
-r <- 1000
-n <- 120
-tr <- 1:n
+btc_sub <- btc_dt[,.(date,y=BTC)]
 
-set.seed(1)
-y <- 0.3*tr+rnorm(n)
-set.seed(n)
-x <- 0.5*tr+rnorm(n)
+M <- 1000
 
-dt <- data.table(tr=tr,x=x,y=y)
-dl <- melt(dt,id.vars="tr")
+dt <- data.table(iter=1:M,trat=as.numeric(NA))
 
-gg_spurious_d <- ggplot(dl,aes(x=tr,y=value,color=variable,linetype=variable)) +
-  geom_line(linewidth=.8) +
+for(i in 1:M){
+  
+  set.seed(i)
+  x_i <- cumsum(rnorm(nrow(btc_sub)))
+  
+  btc_sub[,x:=x_i]
+  
+  reg <- lm(y~x,data=btc_sub)
+  
+  dt[i,]$trat <- coefficients(summary(reg))["x","t value"]
+}
+
+dt[,col:=ifelse(abs(trat)>1.96,"sig","non")]
+
+gg_spurious_s <- ggplot(dt,aes(x=trat,color=col,fill=col))+
+  geom_dotplot(binwidth=1.2,stroke=.5,method="histodot",stackratio=1.1,dotsize=.9)+
   scale_color_manual(values=c("dimgray","coral"))+
-  scale_linetype_manual(values=c(1,5))+
-  scale_x_continuous(breaks=seq(0,120,20))+
-  labs(y="",x="t",subtitle=expression(paste(y[t],", ",x[t],sep=""))) +
-  theme_eg()
+  scale_fill_manual(values=c("lightgray","coral"))+
+  coord_cartesian(xlim=c(-60,60))+
+  theme_eg()+
+  theme(axis.title=element_blank(),axis.title.y=element_blank(),axis.title.x=element_blank(),axis.text.y=element_blank(),axis.line=element_blank(),panel.grid.major=element_blank())
 
-ggsave("figures/lecture5/spurious_d.png",gg_spurious_d,width=6.5,height=6.5*9/16,dpi="retina",device="png")
-
-
-set.seed(1)
-y <- cumsum(rnorm(n))
-set.seed(n)
-x <- cumsum(rnorm(n))
-
-dt <- data.table(tr=tr,x=x,y=y)
-dl <- melt(dt,id.vars="tr")
-
-gg_spurious_s <- ggplot(dl,aes(x=tr,y=value,color=variable,linetype=variable)) +
-  geom_line(linewidth=.8) +
-  scale_color_manual(values=c("dimgray","coral"))+
-  scale_linetype_manual(values=c(1,5))+
-  scale_x_continuous(breaks=seq(0,120,20))+
-  labs(y="",x="t",subtitle=expression(paste(y[t],", ",x[t],sep=""))) +
-  theme_eg()
+gg_spurious_s
 
 ggsave("figures/lecture5/spurious_s.png",gg_spurious_s,width=6.5,height=6.5*9/16,dpi="retina",device="png")
+
+
+dt <- data.table(iter=1:M,trat=as.numeric(NA))
+
+for(i in 1:M){
+  
+  set.seed(i)
+  x_i <- cumsum(rnorm(nrow(btc_sub)))
+  
+  btc_sub[,x:=x_i]
+  
+  btc_sub[,`:=`(dy=c(0,diff(y)),dx=c(0,diff(x)))]
+  
+  reg <- lm(dy~dx,data=btc_sub)
+  
+  dt[i,]$trat <- coefficients(summary(reg))["dx","t value"]
+}
+
+dt[,col:=ifelse(abs(trat)>1.96,"sig","non")]
+
+gg_fixed_s <- ggplot(dt,aes(x=trat,color=col,fill=col))+
+  geom_dotplot(binwidth=0.1,stroke=.5,method="histodot",stackratio=1.1,dotsize=.9)+
+  scale_color_manual(values=c("dimgray","coral"))+
+  scale_fill_manual(values=c("lightgray","coral"))+
+  coord_cartesian(xlim=c(-5,5))+
+  theme_eg()+
+  theme(axis.title=element_blank(),axis.title.y=element_blank(),axis.title.x=element_blank(),axis.text.y=element_blank(),axis.line=element_blank(),panel.grid.major=element_blank())
+
+gg_fixed_s
+
+ggsave("figures/lecture5/fixed_s.png",gg_fixed_s,width=6.5,height=6.5*9/16,dpi="retina",device="png")
+
+

@@ -487,7 +487,7 @@ But there are better, more formal ways of testing whether the series is integrat
 .right-column[
 The test, proposed by Dickey and Fuller (1979), involves regressing the first-differenced values of the series on the lagged values of the series. That is: $$y_t = \alpha + \phi y_{t-1}+\varepsilon_t$$
 
-The null hypothesis of a unit root, or indeed, of nonstationarity, is equivalent to $H_0:\phi=0$. And the one-sided alternative is that $H_1:\phi < 0$. 
+The null hypothesis of a unit root, or indeed, of nonstationarity, is equivalent to $H_0:\phi=1$. And the one-sided alternative is that $H_1:\phi < 1$. 
 ]
 
 ---

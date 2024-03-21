@@ -485,9 +485,10 @@ But there are better, more formal ways of testing whether the series is integrat
 # Testing for unit roots
 
 .right-column[
-The test, proposed by Dickey and Fuller (1979), involves regressing the first-differenced values of the series on the lagged values of the series. That is: $$y_t = \alpha + \phi y_{t-1}+\varepsilon_t$$
 
-The null hypothesis of a unit root, or indeed, of nonstationarity, is equivalent to $H_0:\phi=1$. And the one-sided alternative is that $H_1:\phi < 1$. 
+The test, proposed by Dickey and Fuller (1979), involves regressing the first-differenced values of the series on the lagged values of the series. That is: $$\Delta y_t = \alpha + \phi y_{t-1}+\varepsilon_t$$
+
+The null hypothesis of nonstationarity, i.e., if the series is characterized by a unit root process, is equivalent to testing $H_0:\gamma=0$ vs. the one-sided alternative that $H_1:\gamma < 1$. 
 ]
 
 ---
@@ -496,13 +497,11 @@ The null hypothesis of a unit root, or indeed, of nonstationarity, is equivalent
 # Testing for unit roots
 
 .right-column[
-Thus, testing whether the time series has a unit root, that is whether the time series is integrated, is a straightforward task. 
+In practice, it is common to apply the *augmented* Dickey-fuller (ADF) test, which involves including the lagged values $\Delta y_t$ on the right-hand side of the equation: $$\Delta y_t = \alpha + \gamma y_{t-1}+\Delta y_{t-1}+\ldots+\Delta y_{t-k}+\varepsilon_t,$$ where $k$ is some positive integer.
 
-We need to regress $\Delta y_t$ on $y_{t-1}$, obtain the t statistic, and compare it to the relevant critical values. 
+One caveat is that the distribution of the **t** statistic is not standard, instead it has what is known as the Dickey-Fuller distribution. 
 
-The only remaining caveat is that the distribution of the t statistic is not standard, instead it has what is known as the Dickey-Fuller distribution. 
-
-In practice all this means once we obtain the t statistic we compare it to the critical values from the Dickey-Fuller distribution.
+So, once we obtain the test statistic, we need to compare it to the critical values from the Dickey-Fuller distribution.
 ]
 
 ---

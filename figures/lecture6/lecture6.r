@@ -17,31 +17,26 @@ library(sandwich)
 
 library(fastDummies)
 
-# all_wpi <- read_abs("6345.0")
-
-# # camcorder stuff
-# camcorder::gg_record(
-#   dir='figures/lecture4',
-#   width=6.5,
-#   height=6.5*9/16,
-#   dpi=300,
-#   bg="white"
-# )
-
 # plot aesthetics
 theme_eg <- function(base_size=12,base_family="Segoe Print",border=F){
   theme(
     panel.background=element_rect(fill="white",color=NA),
-    panel.grid=element_line(colour=NULL,linetype=3,linewidth=.3),
+    panel.grid=element_line(colour=NULL,linetype=3),
     panel.grid.major=element_line(colour="dimgray"),
+    panel.grid.major.x=element_blank(),
     panel.grid.minor=element_blank(),
     plot.background=element_rect(fill="white",color=NA),
-    plot.title=element_text(family=base_family,size=rel(1.2),colour="dimgray"),
-    plot.caption=element_text(family=base_family,colour="darkgray"),
+    plot.title=element_text(family=base_family,size=rel(1.3),colour="dimgray"),
+    plot.subtitle=element_text(family=base_family,size=rel(1.2),colour="dimgray",hjust=0),
+    plot.caption=element_text(colour="darkgray",size=rel(0.8),hjust=0),
     plot.margin=margin(.25,.25,.25,.25,"lines"),
-    axis.title=element_text(family=base_family,face="bold",size=rel(1.3),colour="dimgray"),
-    axis.text=element_text(family=base_family,size=rel(1.1),colour="dimgray",margin=margin(t=1,r=1,b=1,l=1)),
-    axis.line=element_blank(),
+    plot.title.position="plot",
+    plot.caption.position="plot",
+    axis.title=element_text(family=base_family,size=rel(1.2),colour="dimgray"),
+    axis.title.x=element_text(hjust=1),
+    axis.text=element_text(family=base_family,size=rel(1.1),colour="dimgray"),
+    axis.line=element_line(colour="dimgray"),
+    axis.line.y=element_blank(),
     axis.ticks=element_blank(),
     legend.background=element_rect(fill="transparent",color=NA),
     legend.position="none",
@@ -54,7 +49,7 @@ theme_eg <- function(base_size=12,base_family="Segoe Print",border=F){
 }
 
 
-
+# 6.1 - unemployment rates ----
 
 unrate_dt <- data.table(fredr(series_id="UNRATE",observation_start=as.Date("1980-01-01"),observation_end=as.Date("2019-12-31"),frequency="m",units="lin"))
 
@@ -64,30 +59,34 @@ ur_dt <- rbind(unrate_dt,unratensa_dt)
 ur_dt$series_id <- factor(ur_dt$series_id,levels=c("UNRATENSA","UNRATE"),labels=c("not seasonally adjusted","seasonally adjusted"))
 
 gg_ur <- ggplot(ur_dt,aes(x=date,y=value,color=series_id,linetype=series_id))+
-  geom_line(linewidth=.5,na.rm=T)+
-  scale_color_manual(values=c("dimgray","coral"))+
+  geom_line(linewidth=.4,na.rm=T)+
+  scale_color_manual(values=c("dimgray","black"))+
   scale_linetype_manual(values=c(1,5))+
-  scale_y_continuous(breaks=c(2,4,6,8,10,12))+
-  labs(x="Year",y="Unemployment rate (%)")+
-  coord_cartesian(ylim=c(2,12),xlim=c(as.Date("1980-01-01"),as.Date("2019-12-31")))+
+  scale_y_continuous(breaks=seq(0,12,2))+
+  labs(y="",x="Year",subtitle="Unemployment (%)")+
+  coord_cartesian(ylim=c(0,12),xlim=c(as.Date("1980-01-01"),as.Date("2019-12-31")))+
   theme_eg()+
-  theme(legend.position="top",legend.key=element_rect(fill="transparent"),legend.key.width=unit(.4,"in"))
+  theme(legend.position=c(.5,.1),legend.key=element_rect(fill="transparent"),legend.key.width=unit(.4,"in"))+
+  guides(color=guide_legend(ncol=2))
 
 ggsave("figures/lecture6/unemployment_rates.png",gg_ur,width=6.5,height=6.5*9/16,dpi="retina",device="png")
 
 
+# 6.2 - natural gas consumption ----
 
 natgas_dt <- data.table(fredr(series_id="NATURALGAS",observation_start=as.Date("2000-01-01"),observation_end=as.Date("2010-12-31"),frequency="m",units="lin"))
 
 gg_ng <- ggplot(natgas_dt,aes(x=date,y=value))+
-  geom_line(linewidth=.5,na.rm=T,color="dimgray")+
-  labs(x="Year",y="Billion Cubic Feet")+
+  geom_line(linewidth=.6,na.rm=T,color="dimgray")+
+  labs(y="",x="Year",subtitle="Gas consumption (billion cubic feet)")+
   coord_cartesian(ylim=c(1000,3000),xlim=c(as.Date("2000-01-01"),as.Date("2010-12-31")))+
   theme_eg()
 
 ggsave("figures/lecture6/natgas.png",gg_ng,width=6.5,height=6.5*9/16,dpi="retina",device="png")
 
 
+
+# 6.3 - natural gas fit ----
 
 natgas_dt$month <- month(natgas_dt$date)
 natgas_dum <- dummy_cols(natgas_dt$month,remove_selected_columns=T)
@@ -103,16 +102,18 @@ natgas_lg <- melt(natgas_dt[,.(date,value,value_fit)],id.vars="date")
 natgas_lg$variable <- factor(natgas_lg$variable,levels=c("value","value_fit"),labels=c("observed data","fitted data"))
 
 gg_ngfit <- ggplot(natgas_lg,aes(x=date,y=value,color=variable,linetype=variable))+
-  geom_line(linewidth=.5,na.rm=T)+
-  scale_color_manual(values=c("dimgray","coral"))+
+  geom_line(linewidth=.6,na.rm=T)+
+  scale_color_manual(values=c("dimgray","black"))+
   scale_linetype_manual(values=c(1,5))+
-  labs(x="Year",y="Billion Cubic Feet")+
+  labs(y="",x="Year",subtitle="Gas consumption (billion cubic feet)")+
   coord_cartesian(ylim=c(1000,3000),xlim=c(as.Date("2000-01-01"),as.Date("2010-12-31")))+
   theme_eg()
 
 ggsave("figures/lecture6/natgasfit.png",gg_ngfit,width=6.5,height=6.5*9/16,dpi="retina",device="png")
 
 
+
+# 6.4 - natural gas forecast ----
 
 est <- lm(value~d1+d2+d3+d4+d5+d6+d7+d8+d9+d10+d11,data=natgas_dt[date<=as.Date("2006-12-31")])
 natgas_dt[,`:=`(value_f=value,value_s=est$coefficients[1]+as.matrix(natgas_dt[,.(d1,d2,d3,d4,d5,d6,d7,d8,d9,d10,d11)])%*%as.matrix(est$coefficients[-1]))]
@@ -129,20 +130,17 @@ gg_ngfor <- ggplot(natgas_dt,aes(x=date))+
   geom_line(aes(y=value_lo),linetype=2,linewidth=.4,color="coral",na.rm=T)+
   geom_line(aes(y=value_hi),linetype=2,linewidth=.4,color="coral",na.rm=T)+
   geom_line(aes(y=value_s),linetype=5,linewidth=.6,color="coral",na.rm=T)+
+  labs(y="",x="Year",subtitle="Gas consumption (billion cubic feet)")+
   coord_cartesian(ylim=c(1000,3000),xlim=c(as.Date("2000-01-01"),as.Date("2010-12-31")))+
   theme_eg()
 
 ggsave("figures/lecture6/natgasfor.png",gg_ngfor,width=6.5,height=6.5*9/16,dpi="retina",device="png")
 
 
+# 6.5 - natural gas harmonic ----
+
 natgas_dt[,trend:=1:nrow(natgas_dt)]
 natgas_dt[,`:=`(s1=sin(2*pi*1*trend/12),c1=cos(2*pi*1*trend/12),s2=sin(2*pi*2*trend/12),c2=cos(2*pi*2*trend/12),s3=sin(2*pi*3*trend/12),c3=cos(2*pi*3*trend/12),s4=sin(2*pi*4*trend/12),c4=cos(2*pi*4*trend/12),s5=sin(2*pi*5*trend/12),c5=cos(2*pi*5*trend/12),s6=sin(2*pi*6*trend/12),c6=cos(2*pi*6*trend/12))]
-
-ggplot(natgas_dt[trend%in%1:12],aes(x=date))+
-  geom_line(aes(y=s1))+
-  geom_line(aes(y=c1))+
-  geom_line(aes(y=s2))+
-  geom_line(aes(y=c2))
 
 
 est1 <- lm(value~s1+c1,data=natgas_dt[date<=as.Date("2006-12-31")])
@@ -161,8 +159,6 @@ icf <- function(m,ic){
 dt <- data.table(aic=round(sapply(list(est1,est2,est3,est4,est5,est6),icf,ic="a"),3),sic=round(sapply(list(est1,est2,est3,est4,est5,est6),icf,ic="s"),3))
 
 
-
-
 natgas_dt[,`:=`(value_h=est3$coefficients[1]+as.matrix(natgas_dt[,.(s1,c1,s2,c2,s3,c3)])%*%as.matrix(est3$coefficients[-1]))]
 
 natgas_dt[date<=as.Date("2006-12-31")]$value_h <- NA
@@ -176,6 +172,7 @@ gg_nghar <- ggplot(natgas_dt,aes(x=date))+
   geom_line(aes(y=value_hlo),linetype=2,linewidth=.4,color="coral",na.rm=T)+
   geom_line(aes(y=value_hhi),linetype=2,linewidth=.4,color="coral",na.rm=T)+
   geom_line(aes(y=value_h),linetype=5,linewidth=.6,color="coral",na.rm=T)+
+  labs(y="",x="Year",subtitle="Gas consumption (billion cubic feet)")+
   coord_cartesian(ylim=c(1000,3000),xlim=c(as.Date("2000-01-01"),as.Date("2010-12-31")))+
   theme_eg()
 
@@ -183,66 +180,7 @@ ggsave("figures/lecture6/natgashar.png",gg_nghar,width=6.5,height=6.5*9/16,dpi="
 
 
 
-
-
-
-tide_dt <- fread("figures/lecture6/cairns_2020.csv")
-
-tide_dt[,`:=`(Date=as.Date(Date),Time=paste0(Time,":00"))]
-
-format <- "%Y-%m-%d %H:%M:%S"
-
-tide_dt[,DateTime:=as.POSIXct(paste(Date,Time),format=format)]
-
-
-tseq_dt <- data.table(DateTime=seq(from=tide_dt$DateTime[1],length.out=366*24*6,by=600))
-
-tide_dt <- merge(tseq_dt,tide_dt,by="DateTime",all.x=T)
-
-tide_dt[,Date:=as.IDate(DateTime)]
-tide_dt[,Time:=as.ITime(DateTime)]
-tide_dt[,Reading:=na.approx(Reading)]
-
-ggplot(tide_dt[Date>="2020-10-01" & Date<="2020-10-31"],aes(x=DateTime,y=Reading))+
-  geom_line()
-
-tide_dt[,trend:=1:nrow(tide_dt)]
-
-freq <- 24*6+5
-
-tide_dt[,`:=`(s1=sin(2*pi*1*trend/freq),c1=cos(2*pi*1*trend/freq),s2=sin(2*pi*2*trend/freq),c2=cos(2*pi*2*trend/freq),s3=sin(2*pi*3*trend/freq),c3=cos(2*pi*3*trend/freq),s4=sin(2*pi*4*trend/freq),c4=cos(2*pi*4*trend/freq),s5=sin(2*pi*5*trend/freq),c5=cos(2*pi*5*trend/freq),s6=sin(2*pi*6*trend/freq),c6=cos(2*pi*6*trend/freq))]
-
-
-
-est1 <- lm(Reading~s1+c1,data=tide_dt)
-est2 <- lm(Reading~s1+c1+s2+c2,data=tide_dt)
-est3 <- lm(Reading~s1+c1+s2+c2+s3+c3,data=tide_dt)
-est4 <- lm(Reading~s1+c1+s2+c2+s3+c3+s4+c4,data=tide_dt)
-est5 <- lm(Reading~s1+c1+s2+c2+s3+c3+s4+c4+s5+c5,data=tide_dt)
-est6 <- lm(Reading~s1+c1+s2+c2+s3+c3+s4+c4+s5+c5+s6+c6,data=tide_dt)
-
-
-icf <- function(m,ic){
-  aic=log(crossprod(m$residuals))+2*length(m$coefficients)/length(m$residuals)
-  sic=log(crossprod(m$residuals))+log(length(m$residuals))*length(m$coefficients)/length(m$residuals)
-  if(ic=="a"){return(aic)}else{return(sic)}
-}
-
-dt <- data.table(aic=round(sapply(list(est1,est2,est3,est4,est5,est6),icf,ic="a"),5),sic=round(sapply(list(est1,est2,est3,est4,est5,est6),icf,ic="s"),5))
-
-
-
-tide_dt[,`:=`(Reading_h2=est2$coefficients[1]+as.matrix(tide_dt[,.(s1,c1,s2,c2)])%*%as.matrix(est2$coefficients[-1]),Reading_h4=est4$coefficients[1]+as.matrix(tide_dt[,.(s1,c1,s2,c2,s3,c3,s4,c4)])%*%as.matrix(est4$coefficients[-1]))]
-
-ggplot(tide_dt[Date>="2020-10-01" & Date<="2020-10-31"],aes(x=DateTime))+
-  geom_line(aes(y=Reading),linewidth=.6,color="dimgray",na.rm=T)+
-  geom_line(aes(y=Reading_h4),linetype=5,linewidth=.6,color="coral",na.rm=T)+
-  theme_eg()
-
-
-
-
-
+# 6.5 - natural gas longer ----
 
 natgas_dt <- data.table(fredr(series_id="NATURALGAS",observation_start=as.Date("2000-01-01"),observation_end=as.Date("2022-12-31"),frequency="m",units="lin"))
 
@@ -277,6 +215,8 @@ gg_ngfit <- ggplot(natgas_lg,aes(x=date,y=value,color=variable,linetype=variable
   labs(x="Year",y="Billion Cubic Feet")+
   coord_cartesian(ylim=c(1000,4000),xlim=c(as.Date("2000-01-01"),as.Date("2022-12-31")))+
   theme_eg()
+
+gg_ngfit
 
 ggsave("figures/lecture6/natgasfitlong.png",gg_ngfit,width=6.5,height=6.5*9/16,dpi="retina",device="png")
 
@@ -402,5 +342,76 @@ gg_ngfor <- ggplot(natgas_dt,aes(x=date))+
   theme_eg()
 
 ggsave("figures/lecture6/natgasfor.png",gg_ngfor,width=6.5,height=6.5*9/16,dpi="retina",device="png")
+
+
+
+
+
+
+
+
+
+
+
+
+tide_dt <- fread("figures/lecture6/cairns_2020.csv")
+
+tide_dt[,`:=`(Date=as.Date(Date),Time=paste0(Time,":00"))]
+
+format <- "%Y-%m-%d %H:%M:%S"
+
+tide_dt[,DateTime:=as.POSIXct(paste(Date,Time),format=format)]
+
+
+tseq_dt <- data.table(DateTime=seq(from=tide_dt$DateTime[1],length.out=366*24*6,by=600))
+
+tide_dt <- merge(tseq_dt,tide_dt,by="DateTime",all.x=T)
+
+tide_dt[,Date:=as.IDate(DateTime)]
+tide_dt[,Time:=as.ITime(DateTime)]
+tide_dt[,Reading:=na.approx(Reading)]
+
+ggplot(tide_dt[Date>="2020-10-01" & Date<="2020-10-31"],aes(x=DateTime,y=Reading))+
+  geom_line()
+
+tide_dt[,trend:=1:nrow(tide_dt)]
+
+freq <- 24*6+5
+
+tide_dt[,`:=`(s1=sin(2*pi*1*trend/freq),c1=cos(2*pi*1*trend/freq),s2=sin(2*pi*2*trend/freq),c2=cos(2*pi*2*trend/freq),s3=sin(2*pi*3*trend/freq),c3=cos(2*pi*3*trend/freq),s4=sin(2*pi*4*trend/freq),c4=cos(2*pi*4*trend/freq),s5=sin(2*pi*5*trend/freq),c5=cos(2*pi*5*trend/freq),s6=sin(2*pi*6*trend/freq),c6=cos(2*pi*6*trend/freq))]
+
+
+
+est1 <- lm(Reading~s1+c1,data=tide_dt)
+est2 <- lm(Reading~s1+c1+s2+c2,data=tide_dt)
+est3 <- lm(Reading~s1+c1+s2+c2+s3+c3,data=tide_dt)
+est4 <- lm(Reading~s1+c1+s2+c2+s3+c3+s4+c4,data=tide_dt)
+est5 <- lm(Reading~s1+c1+s2+c2+s3+c3+s4+c4+s5+c5,data=tide_dt)
+est6 <- lm(Reading~s1+c1+s2+c2+s3+c3+s4+c4+s5+c5+s6+c6,data=tide_dt)
+
+
+icf <- function(m,ic){
+  aic=log(crossprod(m$residuals))+2*length(m$coefficients)/length(m$residuals)
+  sic=log(crossprod(m$residuals))+log(length(m$residuals))*length(m$coefficients)/length(m$residuals)
+  if(ic=="a"){return(aic)}else{return(sic)}
+}
+
+dt <- data.table(aic=round(sapply(list(est1,est2,est3,est4,est5,est6),icf,ic="a"),5),sic=round(sapply(list(est1,est2,est3,est4,est5,est6),icf,ic="s"),5))
+
+
+
+tide_dt[,`:=`(Reading_h2=est2$coefficients[1]+as.matrix(tide_dt[,.(s1,c1,s2,c2)])%*%as.matrix(est2$coefficients[-1]),Reading_h4=est4$coefficients[1]+as.matrix(tide_dt[,.(s1,c1,s2,c2,s3,c3,s4,c4)])%*%as.matrix(est4$coefficients[-1]))]
+
+ggplot(tide_dt[Date>="2020-10-01" & Date<="2020-10-31"],aes(x=DateTime))+
+  geom_line(aes(y=Reading),linewidth=.6,color="dimgray",na.rm=T)+
+  geom_line(aes(y=Reading_h4),linetype=5,linewidth=.6,color="coral",na.rm=T)+
+  theme_eg()
+
+
+
+
+
+
+
 
 

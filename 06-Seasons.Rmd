@@ -28,7 +28,7 @@ library(ggplot2)
 library(fastDummies)
 ```
 
-# Sources of seasonality
+# Some series feature a clear seasonal pattern
 
 .pull-left[
 ![](Art/seasonality.png)
@@ -45,7 +45,7 @@ Agricultural prices, energy sales, airfare are some of the examples of time seri
 ---
 
 
-# Some series are seasonally adjusted
+# Seasonal series may come in an adjusted form
 
 .right-column[
 A way to deal with the seasonality in data is to remove it prior to use of the series (seasonally adjusted time series). 
@@ -58,7 +58,7 @@ Indeed, some economic time series are only/also available in a seasonally-adjust
 
 # Seasonally adjusted unemployment rates
 
-.right-column[
+.right-figure[
 ![](figures/lecture6/unemployment_rates.png)
 ]
 
@@ -127,7 +127,7 @@ The two models are equivalent. Assuming the dummy variable associated with the s
 
 # U.S. natural gas consumption: Observed series
 
-.right-column[
+.right-figure[
 ![](figures/lecture6/natgas.png)
 ]
 
@@ -137,7 +137,7 @@ The two models are equivalent. Assuming the dummy variable associated with the s
 
 # U.S. natural gas consumption: Fitted series
 
-.right-column[
+.right-figure[
 ![](figures/lecture6/natgasfit.png)
 ]
 
@@ -177,7 +177,7 @@ $$\hat{y}_{t+h|t}\pm 1.96\sigma_{t+h}$$
 
 # U.S. natural gas consumption: Multistep forecasts
 
-.right-column[
+.right-figure[
 ![](figures/lecture6/natgasfor.png)
 ]
 
@@ -234,7 +234,7 @@ cat(tabl)
 
 # U.S. natural gas consumption: Multistep forecasts
 
-.right-column[
+.right-figure[
 ![](figures/lecture6/natgashar.png)
 ]
 
@@ -258,7 +258,7 @@ Any $h$-step-ahead forecast can be obtained in a usual manner.
 
 # U.S. natural gas consumption: One-step forecasts
 
-.right-column[
+.right-figure[
 
 ![](figures/lecture6/natgas1_forecast.png)
 
@@ -269,7 +269,7 @@ Any $h$-step-ahead forecast can be obtained in a usual manner.
 
 # U.S. natural gas consumption: Forecast errors
 
-.right-column[
+.right-figure[
 
 ![](figures/lecture6/natgas1_error.png)
 
@@ -277,6 +277,16 @@ Any $h$-step-ahead forecast can be obtained in a usual manner.
 
 ---
 
+
+# U.S. natural gas consumption: Forecast errors
+
+.right-figure[
+
+![](figures/lecture6/ac_natgas.png)
+
+]
+
+---
 
 
 
@@ -287,6 +297,7 @@ Any $h$-step-ahead forecast can be obtained in a usual manner.
 ]
 
 .pull-right[
-Hyndman & Athanasopoulos,  [7.4](https://otexts.com/fpp3/weekly.html),  [10.5](https://otexts.com/fpp3/weekly.html),  [13.1](https://otexts.com/fpp3/weekly.html)
+- Time series can have a seasonal pattern (possibly together with a trending pattern). Seasonality is necessarily a within-year phenomenon.
+- We can easily model forecast seasonal time series using dummy variables. For high frequency data (e.g., weekly data) the so-called harmonic seasonal variables can be an appropriate parsimonious way of modeling and forecasting seasonal series.
 ]
 

@@ -4,7 +4,7 @@
     <title>Forecasting for Economics and Business</title>
     <meta charset="utf-8" />
     <meta name="author" content="David Ubilava" />
-    <script src="libs/header-attrs-2.22/header-attrs.js"></script>
+    <script src="libs/header-attrs-2.25/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/metropolis.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/metropolis-fonts.css" rel="stylesheet" />
@@ -49,19 +49,19 @@ class: center, middle, inverse, title-slide
 ]
 
 .pull-right[
-A cycle, in a time series, is a pattern of periodic fluctuations. Unlike seasonality, cycles are not contained within a calendar year.
+A time series that exhibit a pattern of periodic fluctuations is referred to as a cyclical series. 
 
 Cycles can be *deterministic* or *stochastic*. 
 
-Deterministic cycles can be modeled in a fashion similar to seasonality (e.g., using terms from a Fourier series). However, economic time series are better characterized by stochastic cycles.
+Deterministic cycles can be modeled in a fashion similar to seasonality (e.g., using terms from a Fourier series). However, many time series, and especially economic time series, are better characterized by stochastic cycles.
 ]
 
 ---
 
 
-# Seasonally adjusted unemployment rates
+# Cycles in seasonally adjusted unemployment rates
 
-.right-column[
+.right-figure[
 ![](figures/lecture7/unrate.png)
 ]
 
@@ -90,50 +90,10 @@ This is also referred to as an *autoregressive process*.
 .right-column[
 We can apply an autoregresive model to approximate the relationship between the realizations of the random variables from previous periods and that from the current period.
 
-For exammple, an autoregressive model of order `\(p\)`, `\(AR(p)\)`, has the following functional form:
+In general terms, an autoregressive model of order `\(p\)`, `\(AR(p)\)`, has the following functional form:
 `$$y_t = \alpha + \beta_1 y_{t-1}+\beta_2 y_{t-2}+ \cdots + \beta_p y_{t-p}+\varepsilon_t$$`
 
 The sum of the autoregressive parameters, `\(\beta_1,\ldots,\beta_p\)`, depicts the persistence of the series. The larger is the persistence (i.e., closer it is to one), the longer it takes for the effect of a shock to dissolve.
-]
-
----
-
-
-# Autoregression of order one&amp;mdash;AR(1)
-
-.right-column[
-The simplest, i.e., the most parsimonious model is the first-order autoregression: `$$y_t = \alpha + \beta_1 y_{t-1} + \varepsilon_t,$$` where `\(\alpha\)` is a constant term; `\(\beta_1\)` is the *persistence* parameter; and `\(\varepsilon_t\)` is a white noise process.
-
-We only require `\(|\beta_1| &lt; 1\)` for an `\(AR(1)\)` process to be covariance stationary.
-]
-
----
-
-
-# Autoregression of order one&amp;mdash;AR(1)
-
-.right-column[
-Substitute recursively lagged dependent variables:
-$$
-`\begin{align}
-y_t &amp;= \alpha + \beta_1 y_{t-1} + \varepsilon_t \notag \\
-y_t &amp;= \alpha + \beta_1 (\alpha + \beta_1 y_{t-2} + \varepsilon_{t-1}) + \varepsilon_t \notag \\
-&amp;= \alpha(1+\beta_1) + \beta_1^2 (\alpha + \beta_1 y_{t-3} + \varepsilon_{t-2}) + \beta_1\varepsilon_{t-1} + \varepsilon_t \notag \\
-&amp;\vdots  \notag \\
-&amp;= \alpha\sum_{i=0}^{k-1}\beta_1^i + \beta_1^k y_{t-k} + \sum_{i=0}^{k-1}\beta_1^i\varepsilon_{t-i}
-\end{align}`
-$$
-]
-
----
-
-
-# Autoregression of order one&amp;mdash;AR(1)
-
-.right-column[
-The end-result is a general linear process with geometrically declining coefficients. The `\(|\beta_1| &lt; 1\)` (i.e., covariance-stationarity) is required for convergence.
-
-Then, as `\(k \to \infty\)`: `$$y_t = \frac{\alpha}{1-\beta_1} + \sum_{i=0}^{\infty}\beta_1^i\varepsilon_{t-i}$$`
 ]
 
 ---
@@ -220,7 +180,7 @@ Generally, the autocorrelation and partial autocorrelation functions of the cova
 
 # Autocorrelogram of the unemployment rates
 
-.right-column[
+.right-figure[
 ![](figures/lecture7/unrate_ac.png)
 ]
 
@@ -230,7 +190,7 @@ Generally, the autocorrelation and partial autocorrelation functions of the cova
 
 # Partial autocorrelogram of the unemployment rates
 
-.right-column[
+.right-figure[
 ![](figures/lecture7/unrate_pac.png)
 ]
 
@@ -293,9 +253,9 @@ One-step-ahead (95%) interval forecast: `$$y_{t+1|t} \pm 1.96\sigma_{\varepsilon
 ---
 
 
-# Onestep forecasts of the unemployment rates
+# Onestep forecasts of unemployment
 
-.right-column[
+.right-figure[
 ![](figures/lecture7/unrate_osa.png)
 ]
 
@@ -333,9 +293,9 @@ h-step-ahead (95%) interval forecast: `$$y_{t+h|t} \pm 1.96\sigma_{t+h|t}$$`
 
 
 
-# Iterated multistep forecasts of the unemployment rates
+# Iterated multistep forecasts of unemployment
 
-.right-column[
+.right-figure[
 ![](figures/lecture7/unrate_ite.png)
 ]
 
@@ -344,7 +304,7 @@ h-step-ahead (95%) interval forecast: `$$y_{t+h|t} \pm 1.96\sigma_{t+h|t}$$`
 
 
 
-# Direct multi-step-ahead forecasts
+# Direct multistep forecasts
 
 .right-column[
 We can, also, directly obtain multi-step-ahead forecasts. To illustrate, consider a first-order autoregression: `\(y_t=\alpha+\beta_1 y_{t-1}+\varepsilon_t.\)` 
@@ -357,7 +317,7 @@ Two-step-ahead point forecast, from the iterative method, is: `$$y_{t+2|t}=\alph
 ---
 
 
-# Direct multi-step-ahead forecasts
+# Direct multistep forecasts
 
 .right-column[
 If we substitute `\(y_{t+1|t}=\alpha+\beta_1 y_{t}\)` into the iterated two-step-ahead forecast equation, we obtain:
@@ -371,7 +331,7 @@ This is the *direct* method of multi-step-ahead forecasting, which can be extend
 ---
 
 
-# Direct multi-step-ahead interval forecast
+# Direct multistep interval forecast
 
 .right-column[
 In the direct method of multistep forecasting, error terms are serially correlated (by construction). For example, note that in the direct two-step-ahead forecast from a re-specified AR(1) model, `\(u_t = \varepsilon_t+\beta_1\varepsilon_{t-1}\)`. It then follows that: `$$\sigma^2_u = \mathbb{E}\left[(\varepsilon_t+\beta_1\varepsilon_{t-1})^2\right] = \sigma^2_{\varepsilon}(1+\beta_1^2).$$` 
@@ -382,9 +342,9 @@ Thus, when applying the direct method of forecasting, interval forecasts for a g
 ---
 
 
-# Direct multistep forecasts of the unemployment rates
+# Direct multistep forecasts of unemployment
 
-.right-column[
+.right-figure[
 ![](figures/lecture7/unrate_dir.png)
 ]
 
@@ -392,7 +352,7 @@ Thus, when applying the direct method of forecasting, interval forecasts for a g
 ---
 
 
-# Direct and iterative multi-step-ahead forecasts
+# Direct and iterated multistep forecasts
 
 .right-column[
 In summary, an `\(h\)`-step-ahead forecast from an AR(p) model, using:
@@ -404,7 +364,7 @@ In summary, an `\(h\)`-step-ahead forecast from an AR(p) model, using:
 ---
 
 
-# Direct vs iterative multi-step-ahead forecasts
+# Direct vs iterated multistep forecasts
 
 .right-column[
 The relative performance of the two forecasts, `\(y_{t+h|t,i}\)` and `\(y_{t+h|t,d}\)`, in terms of bias and efficiency depends on the bias and efficiency of the estimators of each method. 
@@ -417,17 +377,59 @@ In the model is mis-specified&amp;mdash;hardly an unusual scenario&amp;mdash;the
 ---
 
 
-# Readings
+# Key takeaways
 
 .pull-left[
 ![](Art/todolist.png)
 ]
 
 .pull-right[
-Gonzalez-Rivera, Chapter 7
 
-Hyndman &amp; Athanasopoulos, [9.3](https://otexts.com/fpp3/AR.html)
 ]
+
+
+---
+
+
+# Autoregression of order one&amp;mdash;AR(1)
+
+.right-column[
+The simplest, i.e., the most parsimonious model in the family of autoregressive models, is the first-order autoregression: `$$y_t = \alpha + \beta_1 y_{t-1} + \varepsilon_t,$$` where `\(\alpha\)` is a constant term; `\(\beta_1\)` is the *persistence* parameter; and `\(\varepsilon_t\)` is a white noise process.
+
+We only require `\(|\beta_1| &lt; 1\)` for an `\(AR(1)\)` process to be covariance stationary.
+]
+
+---
+
+
+# Autoregression of order one&amp;mdash;AR(1)
+
+.right-column[
+Substitute recursively lagged dependent variables:
+$$
+`\begin{align}
+y_t &amp;= \alpha + \beta_1 y_{t-1} + \varepsilon_t \notag \\
+y_t &amp;= \alpha + \beta_1 (\alpha + \beta_1 y_{t-2} + \varepsilon_{t-1}) + \varepsilon_t \notag \\
+&amp;= \alpha(1+\beta_1) + \beta_1^2 (\alpha + \beta_1 y_{t-3} + \varepsilon_{t-2}) + \beta_1\varepsilon_{t-1} + \varepsilon_t \notag \\
+&amp;\vdots  \notag \\
+&amp;= \alpha\sum_{i=0}^{k-1}\beta_1^i + \beta_1^k y_{t-k} + \sum_{i=0}^{k-1}\beta_1^i\varepsilon_{t-i}
+\end{align}`
+$$
+]
+
+---
+
+
+# Autoregression of order one&amp;mdash;AR(1)
+
+.right-column[
+The end-result is a general linear process with geometrically declining coefficients. The `\(|\beta_1| &lt; 1\)` (i.e., covariance-stationarity) is required for convergence.
+
+Then, as `\(k \to \infty\)`: `$$y_t = \frac{\alpha}{1-\beta_1} + \sum_{i=0}^{\infty}\beta_1^i\varepsilon_{t-i}$$`
+]
+
+---
+
 
 
 

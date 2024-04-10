@@ -53,7 +53,7 @@ A time series that exhibit a pattern of periodic fluctuations can be a cyclical 
 
 Cycles can be *deterministic* or *stochastic*. 
 
-Deterministic cycles can be modeled in a fashion similar to seasonality (e.g., using terms from a Fourier series). However, many time series, and especially economic time series, are better characterized by stochastic cycles.
+Deterministic cycles can be modeled in a fashion similar to seasonality (e.g., using terms from a Fourier series). However, many time series are better characterized by stochastic cycles.
 ]
 
 ---
@@ -100,7 +100,7 @@ The sum of the autoregressive parameters depicts the persistence of the series. 
 .right-column[
 In practice, we don't know the values of the autoregressive parameters. So, we estimate those.
 
-For that, we also need to select the lag order of the autoregressive model. We can do that using information criteria.
+For that, we also need to select the lag order of the autoregressive model. 
 ]
 
 ---
@@ -127,17 +127,32 @@ In this instance, both information criteria suggest that AR(2) is the model that
 ---
 
 
-# Mean and variance of AR(1)
+# Unconditional mean of an AR(1)
 
 .right-column[
 Let `\(\mu\)` be the mean of the time series. Under the assumption of covariance stationarity, `\(\mu\equiv\mathbb{E}\left(y_t\right),\;~~\forall~t.\)`
 
-If we take the expectation of the AR(p) and solve for `\(\mu\)`, we obtain:
-`$$\mu = \frac{\alpha}{1-\left(\beta_1+\ldots+\beta_p\right)}.$$`
+The expectation of the AR(1) is:
+`$$\mu = \alpha + \beta_1 \mu$$`
 
-Let `\(\gamma_0\)` be the variance of the time series. Under the assumption of covariance stationarity, `\(\gamma_0\equiv\mathbb{V}\left(y_t\right),\;~~\forall~t.\)`
+We can solve this for `\(\mu\)` to obtain:
+`$$\mu = \frac{\alpha}{1-\beta_1}$$`
 
-`$$\gamma_0 = \mathbb{V}\left(y_t\right) = \mathbb{V}\left(\frac{\alpha}{1-\beta_1} + \sum_{i=0}^{\infty}\beta_1^i\varepsilon_{t-i}\right) = \frac{\sigma_{\varepsilon}^2}{1-\beta_1^2}$$`
+]
+
+---
+
+
+# Unconditional variance of an AR(1)
+
+.right-column[
+Let `\(\gamma_0\)` be the variance of the time series. Under the assumption of covariance stationarity, `\(\gamma_0\equiv\mathbb{V}\left(y_t\right),\;~\forall~t.\)`
+
+The variance of the AR(1) is:
+`$$\gamma_0 = \beta_1^2 \gamma_0+\sigma_{\varepsilon}^2$$`
+
+We can solve this for `\(\gamma_0\)` to obtain:
+`$$\gamma_0 = \frac{\sigma_{\varepsilon}^2}{1-\beta_1^2}$$`
 ]
 
 ---
@@ -146,11 +161,11 @@ Let `\(\gamma_0\)` be the variance of the time series. Under the assumption of c
 # Autocovariance of AR(1)
 
 .right-column[
-*Autocovariance*: `$$\gamma_k = Cov(y_t,y_{t-k}) = E[(y_t - \mu)(y_{t-k} - \mu)] = \mathbb{E}(y_t y_{t-k}) - \mu^2$$`
+Let `\(\gamma_k\)` be the autocovariance of the time series. Under the assumption of covariance stationarity, `\(\gamma_k\equiv Cov\left(y_t,y_{t-k}\right)=\mathbb{E}(y_t y_{t-k}) - \mu^2,\;~\forall~t,k.\)`
 
-Multiply both sides of `\(AR(1)\)` with `\(y_{t-k}\)` and take the expectation: `$$\mathbb{E}(y_t y_{t-k}) = \alpha \mu + \beta_1 \mathbb{E}(y_{t-1}y_{t-k})$$`
+To obtain the expression of `\(\mathbb{E}(y_t y_{t-k})\)`, multiply both sides of an `\(AR(1)\)` with `\(y_{t-k}\)` and take the expectation: `$$\mathbb{E}(y_t y_{t-k}) = \alpha \mu + \beta_1 \mathbb{E}(y_{t-1}y_{t-k})$$`
 
-Substitute in expressions of `\(\mathbb{E}(y_t y_{t-k})\)` and `\(\mathbb{E}(y_{t-1} y_{t-k})\)`, which is equivalent to `\(\mathbb{E}(y_{t} y_{t-k+1})\)`, to obtain: `$$\gamma_k = \beta_1\gamma_{k-1}$$`
+Substitute in `\(\gamma_k+\mu^2\)` for `\(\mathbb{E}(y_t y_{t-k})\)` and `\(\gamma_{k-1}+\mu^2\)` for `\(\mathbb{E}(y_{t-1} y_{t-k})\)`, which is equivalent to `\(\mathbb{E}(y_{t} y_{t-(k-1)})\)`, to obtain: `$$\gamma_k = \beta_1\gamma_{k-1}$$`
 ]
 
 ---
@@ -159,7 +174,7 @@ Substitute in expressions of `\(\mathbb{E}(y_t y_{t-k})\)` and `\(\mathbb{E}(y_{
 # Autocorrelations of AR(1)
 
 .right-column[
-*Autocorrelation* (recall, `\(\rho_k = \gamma_k/\gamma_0\)`): `\(\rho_{k} = \beta_1\rho_{k-1}\)`
+Divide both side of the equation by `\(\gamma_0\)` to obtain  `\(\frac{\gamma_k}{\gamma_0}=\beta_1\frac{\gamma_{k-1}}{\gamma_0}\)`. Note that this is equivalent to `\(\rho_k=\beta_1\rho_{k-1}\)`.
 
 It then follows that:
 `$$\begin{align}
@@ -181,18 +196,6 @@ The autocorrelation, `\(\rho\)`, and partial autocorrelation, `\(\pi\)`, functio
 - `\(\rho_1 = \pi_1 = \beta_1\)`. That is, the persistence parameter is also the autocorrelation and the partial autocorrelation coefficient.
 - The autocorrelation function decreases exponentially toward zero, and the decay is faster when the persistence parameter is smaller.
 - The partial autocorrelation function is characterized by only one spike `\(\pi_1 \neq 0\)`, and the remaining `\(\pi_k = 0\)`, `\(\forall k &gt; 1\)`.
-]
-
----
-
-
-# Autoregression of order p&amp;mdash;AR(p)
-
-.right-column[
-Most things about AR(1) can be generalized to any AR(p). 
-
-AR(p) can be viewed as a bit more complex version of an AR(1). 
-- For example, requirements on the parameters to ensure that an AR(p) is a covariance-stationary process become tedious as the order of autoregression increases (luckily, we don't need to worry too much about it).
 ]
 
 ---
@@ -233,66 +236,14 @@ Generally, the autocorrelation and partial autocorrelation functions of the cova
 
 
 
-# Order selection in autoregression
-
-.right-column[
-Partial autocorrelations can give a hint about the lag order of the autoregression.
-
-More formally, we can apply an information criterion (AIC or SIC) to select the order of autoregression.
-]
-
----
-
-
-
-
-
-# Autoregression of order one&amp;mdash;AR(1)
-
-.right-column[
-The simplest, i.e., the most parsimonious model in the family of autoregressive models, is the first-order autoregression: `$$y_t = \alpha + \beta_1 y_{t-1} + \varepsilon_t,$$` where `\(\alpha\)` is a constant term; `\(\beta_1\)` is the *persistence* parameter; and `\(\varepsilon_t\)` is a white noise process.
-
-We only require `\(|\beta_1| &lt; 1\)` for an `\(AR(1)\)` process to be covariance stationary.
-]
-
----
-
-
-# Autoregression of order one&amp;mdash;AR(1)
-
-.right-column[
-Substitute recursively lagged dependent variables:
-$$
-`\begin{align}
-y_t &amp;= \alpha + \beta_1 y_{t-1} + \varepsilon_t \notag \\
-y_t &amp;= \alpha + \beta_1 (\alpha + \beta_1 y_{t-2} + \varepsilon_{t-1}) + \varepsilon_t \notag \\
-&amp;= \alpha(1+\beta_1) + \beta_1^2 (\alpha + \beta_1 y_{t-3} + \varepsilon_{t-2}) + \beta_1\varepsilon_{t-1} + \varepsilon_t \notag \\
-&amp;\vdots  \notag \\
-&amp;= \alpha\sum_{i=0}^{k-1}\beta_1^i + \beta_1^k y_{t-k} + \sum_{i=0}^{k-1}\beta_1^i\varepsilon_{t-i}
-\end{align}`
-$$
-]
-
----
-
-
-# Autoregression of order one&amp;mdash;AR(1)
-
-.right-column[
-The end-result is a general linear process with geometrically declining coefficients. The `\(|\beta_1| &lt; 1\)` (i.e., covariance-stationarity) is required for convergence.
-
-Then, as `\(k \to \infty\)`: `$$y_t = \frac{\alpha}{1-\beta_1} + \sum_{i=0}^{\infty}\beta_1^i\varepsilon_{t-i}$$`
-]
-
----
 
 
 # Point forecast from an autoregressive model
 
 .right-column[
-A one-step-ahead point forecast (assuming quadratic loss) is a conditional mean of the random variable in the next period: `$$\hat{y}_{t+1|t} = \mathbb{E}\left(y_{t+1}|\Omega_t;\mathbf{\theta}\right) = \hat{\alpha} + \hat{\beta}_1 y_{t} + \cdots  + \hat{\beta}_p y_{t-p+1}$$`
+A one-step-ahead point forecast (assuming quadratic loss) is a conditional mean of the random variable in the next period: `$$y_{t+1|t} = \mathbb{E}\left(y_{t+1}|\Omega_t;\mathbf{\theta}\right) = \alpha + \beta_1 y_{t} + \cdots + \beta_p y_{t-p+1}$$`
 
-So, one-step-ahead point forecast is a linear function of the most recent observations, all of which are available (to a forecaster) at the time when the forecast is made, and the parameter estimates. So, we can readily generate such a forecast.
+So, one-step-ahead point forecast is a linear function of the most recent observations, all of which are available (to a forecaster) at the time when the forecast is made, and the parameters of the model. So, we can readily generate such a forecast.
 
 ]
 
@@ -301,7 +252,7 @@ So, one-step-ahead point forecast is a linear function of the most recent observ
 # Point forecast from an autoregressive model
 
 .right-column[
-To be able to make a two-step-ahead forecast in period `\(t\)`, we need to have observed data up to period `\(t+1\)`. In other words, we need to have observed `\(y_{t+1}\)`, which we haven't. Instead, we can use our best guess about `\(y_{t+1}\)`, which is `\(\hat{y}_{t+1|t}\)`
+To be able to make a two-step-ahead forecast in period `\(t\)`, we need to have observed data up to period `\(t+1\)`. In other words, we need to have observed `\(y_{t+1}\)`, which we haven't. Instead, we can use our best guess about `\(y_{t+1}\)`, which is `\(y_{t+1|t}\)`
 
 So, a two-step-ahead point forecast is a linear function of the one-step-ahead forecast, the most recent observations at the time when the forecast is made, and the parameter estimates.
 
@@ -312,9 +263,9 @@ So, a two-step-ahead point forecast is a linear function of the one-step-ahead f
 # Point forecast from an autoregressive model
 
 .right-column[
-Generally, a h-step-ahead point forecast: `$$\hat{y}_{t+h|t} = \mathbb{E}\left(y_{t+h}|\Omega_t;\mathbf{\theta}\right) = \hat{\alpha} + \hat{\beta}_1 \hat{y}_{t+h-1|t} + \cdots + \hat{\beta}_p \hat{y}_{t+h-p|t},$$` where each `\(\hat{y}_{t+h-j|t}\)`, `\(j&lt;h\)`, is sequentially generated. 
+Generally, a h-step-ahead point forecast: `$$y_{t+h|t} = \mathbb{E}\left(y_{t+h}|\Omega_t;\mathbf{\theta}\right) = \alpha + \beta_1 y_{t+h-1|t} + \cdots + \beta_p y_{t+h-p|t},$$` where each `\(y_{t+h-j|t}\)`, `\(j&lt;h\)`, is sequentially generated. 
 
-When `\(j\ge h\)`, `\(\hat{y}_{t+h-j|t}\equiv y_{t+h-j}\)`.
+For any `\(j\ge h\)`, `\(y_{t+h-j|t}\equiv y_{t+h-j}\)`.
 
 So, to generate a forecast for horizon `\(h\)`, forecasts for horizons `\(1\)` through `\(h-1\)` need to be generated first. This is known as the *iterated* method of multistep forecasting. 
 
@@ -324,14 +275,14 @@ So, to generate a forecast for horizon `\(h\)`, forecasts for horizons `\(1\)` t
 
 
 
-# Interval forecast from an autoregressive model
+# Forecast errors from an autoregressive model
 
 .right-column[
-One-step-ahead forecast error: `$$e_{t+1|t} = y_{t+1} - y_{t+1|t} = \varepsilon_{t+1}$$`
+A h-step-ahead forecast error is: `$$e_{t+h|t} = y_{t+h} - y_{t+h|t} = \beta_1 e_{t+h-1|t} + \ldots + \beta_p e_{t+h-p|t} + \varepsilon_{t+h}$$`
 
-One-step-ahead forecast variance: `$$\sigma_{t+1|t}^2 = \mathbb{E}(e_{t+1|t}^2) = \mathbb{E}(\varepsilon_{t+1}^2) = \sigma_{\varepsilon}^2$$`
+For any `\(j\ge h\)`, `\(e_{t+h-j|t}=0\)`. 
 
-One-step-ahead (95%) interval forecast: `$$y_{t+1|t} \pm 1.96\sigma_{\varepsilon}$$`
+So, for example, a one-step-ahead forecast error: `\(e_{t+1|t} = \varepsilon_{t+1}\)`
 ]
 
 ---
@@ -340,17 +291,15 @@ One-step-ahead (95%) interval forecast: `$$y_{t+1|t} \pm 1.96\sigma_{\varepsilon
 # Interval forecast from an autoregressive model
 
 .right-column[
-h-step-ahead forecast error: `$$e_{t+h|t} = \varepsilon_{t+h} + \beta_1 e_{t+h-1|t} + \cdots + \beta_p e_{t+h-p|t}$$`
-
-h-step-ahead forecast variance: 
+A h-step-ahead forecast variance: 
 $$
 `\begin{align}
-\sigma_{t+h|t}^2 &amp;= \sigma_{\varepsilon}^2 + \sum_{i=1}^{p}\beta_i^2 Var(e_{t+h-i|t}) \\ 
+\sigma_{h}^2 &amp;= \sigma_{\varepsilon}^2 + \sum_{i=1}^{p}\beta_i^2 Var(e_{t+h-i|t}) \\ 
 &amp;+ 2\sum_{i \neq j}\beta_i\beta_j Cov(e_{t+h-i|t},e_{t+h-j|t})
 \end{align}`
 $$
 
-h-step-ahead (95%) interval forecast: `\(y_{t+h|t} \pm 1.96\sigma_{t+h|t}\)`
+A h-step-ahead (95%) interval forecast: `\(y_{t+h|t} \pm 1.96\sigma_{h}\)`
 ]
 
 ---
@@ -371,10 +320,10 @@ h-step-ahead (95%) interval forecast: `\(y_{t+h|t} \pm 1.96\sigma_{t+h|t}\)`
 .right-column[
 We can, also, directly obtain multi-step-ahead point forecasts. 
 
-Take an expression of a two-step-ahead point forecast, for example: `$$\hat{y}_{t+2|t} = \hat{\alpha} + \hat{\beta}_1 \hat{y}_{t+1|t} + \hat{\beta}_2 y_t + \cdots + \hat{\beta}_p y_{t+2-p}.$$`
+Take an expression of a two-step-ahead point forecast, for example: `$$y_{t+2|t} = \alpha + \beta_1 y_{t+1|t} + \beta_2 y_t + \cdots + \beta_p y_{t-p+2}.$$`
 
-If we substitute in an expression for the `\(\hat{y}_{t+1|t}\)`, and re-arrange terms, we obtain:
-`$$\hat{y}_{t+2|t}=\tilde{\alpha} + \tilde{\beta}_1 y_{t} + \cdots  + \tilde{\beta}_p y_{t-p+1},$$` where `\(\tilde{\alpha}=\hat{\alpha}(1+\hat{\beta}_1)\)`, and `\(\tilde{\beta}_j=\hat{\beta}_1\hat{\beta}_j\)`, for all `\(j=1,\ldots,p\)`. 
+Substitute in an expression for the `\(y_{t+1|t}\)` and re-arrange terms to obtain:
+`$$y_{t+2|t}=\tilde{\alpha} + \tilde{\beta}_1 y_{t} + \cdots  + \tilde{\beta}_p y_{t-p+1},$$` where `\(\tilde{\alpha}=\alpha(1+\beta_1)\)`, and `\(\tilde{\beta}_j=\beta_1\beta_j\)`, for all `\(j=1,\ldots,p\)`. 
 ]
 
 ---
@@ -393,11 +342,11 @@ This is the *direct* method of multistep forecasting, which can be extended to a
 # Direct multistep interval forecast
 
 .right-column[
-In the direct method of multistep forecasting, error terms are serially correlated (by construction). For example, note that in the direct two-step-ahead forecast, the error term is `\(u_t = \varepsilon_t+\beta_1\varepsilon_{t-1}\)`, where `\(\varepsilon_t\)` and  `\(\varepsilon_{t-1}\)` are the error terms of the AR(p) model. 
+In the direct method of multistep forecasting, forecast errors are serially correlated (by construction). For example,in the direct two-step-ahead forecast, the forecast error is `\(e_{t+2|t} = \varepsilon_{t+2}+\beta_1\varepsilon_{t+1}\)`. 
 
-It then follows that: `$$\sigma^2_{u,2} = \mathbb{E}\left[(\varepsilon_t+\beta_1\varepsilon_{t-1})^2\right] = \sigma^2_{\varepsilon}(1+\beta_1^2).$$` 
+It then follows that: `$$\sigma^2_{2} = \mathbb{E}\left[(\varepsilon_{t+2}+\beta_1\varepsilon_{t+1})^2\right] = \sigma^2_{\varepsilon}(1+\beta_1^2).$$` 
 
-Thus, when applying the direct method of forecasting, interval forecasts are obtained 'directly,' from the standard deviation of the residuals: `$$y_{t+h|t} \pm 1.96\sigma_{u,h}$$`
+And the interval forecast is obtained 'directly' from the standard deviation of the residuals: `$$y_{t+2|t} \pm 1.96\sigma_{2}$$`
 ]
 
 ---
@@ -445,6 +394,10 @@ In the model is mis-specified&amp;mdash;hardly an unusual scenario&amp;mdash;the
 ]
 
 .pull-right[
+
+- We use autoregressive models to approximate dynamics of a stationary time series with stochastic cycles.
+- We can apply iterated or direct methods to generate multi-step-ahead forecasts from an autoregressive model.
+- At long horizons, point forecast converges to the unconditional mean, and the forecast variance converges to the unconditional variance of a time series (so, the interval forecast plateaus).
 
 ]
 

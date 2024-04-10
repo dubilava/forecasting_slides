@@ -28,6 +28,36 @@ library(cowplot)
 library(forecast)
 ```
 
+
+# Autoregression of order one&mdash;AR(1)
+
+.right-column[
+Substitute recursively lagged dependent variables:
+$$
+\begin{align}
+y_t &= \alpha + \beta_1 y_{t-1} + \varepsilon_t \notag \\
+y_t &= \alpha + \beta_1 (\alpha + \beta_1 y_{t-2} + \varepsilon_{t-1}) + \varepsilon_t \notag \\
+&= \alpha(1+\beta_1) + \beta_1^2 (\alpha + \beta_1 y_{t-3} + \varepsilon_{t-2}) + \beta_1\varepsilon_{t-1} + \varepsilon_t \notag \\
+&\vdots  \notag \\
+&= \alpha\sum_{i=0}^{k-1}\beta_1^i + \beta_1^k y_{t-k} + \sum_{i=0}^{k-1}\beta_1^i\varepsilon_{t-i}
+\end{align}
+$$
+]
+
+---
+
+
+# Autoregression of order one&mdash;AR(1)
+
+.right-column[
+The end-result is a general linear process with geometrically declining coefficients. The $|\beta_1| < 1$ (i.e., covariance-stationarity) is required for convergence.
+
+Then, as $k \to \infty$: $$y_t = \frac{\alpha}{1-\beta_1} + \sum_{i=0}^{\infty}\beta_1^i\varepsilon_{t-i}$$
+]
+
+---
+
+
 # Wold decomposition
 
 .pull-left[

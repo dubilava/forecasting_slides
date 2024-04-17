@@ -29,7 +29,24 @@ library(forecast)
 ```
 
 
-# Autoregression of order one&mdash;AR(1)
+
+# Wold decomposition
+
+.pull-left[
+![](Art/movingaverage.png)
+]
+
+.pull-right[
+It is possible to decompose any covariance stationary autoregressive process into a weighted sum of its error terms (plus a constant).
+
+This is known as the *Wold decomposition*.
+
+]
+
+---
+
+
+# Wold decomposition
 
 .right-column[
 Substitute recursively lagged dependent variables:
@@ -47,29 +64,12 @@ $$
 ---
 
 
-# Autoregression of order one&mdash;AR(1)
+# Wold decomposition
 
 .right-column[
 The end-result is a general linear process with geometrically declining coefficients. The $|\beta_1| < 1$ (i.e., covariance-stationarity) is required for convergence.
 
 Then, as $k \to \infty$: $$y_t = \frac{\alpha}{1-\beta_1} + \sum_{i=0}^{\infty}\beta_1^i\varepsilon_{t-i}$$
-]
-
----
-
-
-# Wold decomposition
-
-.pull-left[
-![](Art/movingaverage.png)
-]
-
-.pull-right[
-It is possible to decompose any covariance stationary autoregression into a weighted sum of its error terms (plus a constant).
-
-Recall, for example, that using recursive substitution we can represent an $AR(1)$ process as:
-$$y_t = \alpha + \beta y_{t-1} + \varepsilon_t = \frac{\alpha}{1-\beta} + \sum_{i=0}^{\infty}\beta^i\varepsilon_{t-i}$$
-This is known as the *Wold decomposition*.
 ]
 
 ---
@@ -87,7 +87,7 @@ This is an infinite-order moving average process, $MA(\infty)$.
 ---
 
 
-# First-order moving average
+# MA(1) process
 
 .right-column[
 What does a time series of a moving average process looks like?
@@ -101,46 +101,46 @@ The next three slides will present these simulated time series along with the as
 ---
 
 
-# First-order moving average: $\theta=0.5$
+# MA(1) process: $\theta=0.5$
 
-.right-column[
+.right-figure[
 ![](figures/lecture8/ma1a.png)
 ]
 
 ---
 
 
-# First-order moving average: $\theta=-1$
+# MA(1) process: $\theta=-1$
 
-.right-column[
+.right-figure[
 ![](figures/lecture8/ma1b.png)
 ]
 
 ---
 
 
-# First-order moving average: $\theta=2$
+# MA(1) process: $\theta=2$
 
-.right-column[
+.right-figure[
 ![](figures/lecture8/ma1c.png)
 ]
 
 ---
 
 
-# Features of the first-order moving average process
+# General features of a MA(1) process
 
 .right-column[
 Several features of interest are apparent:
 - only one spike at the first lag (i.e., only $\rho_1 \neq 0$), the remaining autocorrelations are zero; 
-- the size of the spike is directly proportional to the size of $\theta$, for $|\theta| < 1$; 
+- the size of the spike is proportional to the size of $\theta$, for $|\theta| < 1$; 
 - the sign of the spike is the same as that of $\theta$.
 ]
 
 ---
 
 
-# Mean and variance of the first-order moving average
+# Mean and variance of a MA(1) process
 
 .right-column[
 The unconditional mean of the series is equal to its deterministic component, $\mu$. That is: $$E(y_t) = E(\mu + \varepsilon_t + \theta\varepsilon_{t-1}) = \mu$$
@@ -150,7 +150,7 @@ The unconditional variance is proportional to $\theta$. $$Var(y_t) = E(y_t - \mu
 ---
 
 
-# Covariances of the first-order moving average
+# Covariances of a MA(1) process
 
 .right-column[
 The first-order autocovariance: 
@@ -161,13 +161,13 @@ $$\begin{align}
 
 The higher-order covariances are zero.
 
-The time-invariant autocovariance, in conjunction with time-invariant mean and variance measures, suggest that MA(1) is a covariance stationary process.
+The time-invariant autocovariance, in conjunction with time-invariant mean and variance, suggest that MA(1) is a covariance stationary process.
 ]
 
 ---
 
 
-# Autocorrelation of the first-order moving average
+# Autocorrelation of a MA(1) process
 
 .right-column[
 Note that the two cases, $\theta=0.5$ and $\theta=2$ produce identical autocorrelation functions (and that $\theta=0.5$ is the inverse of $\theta=2$). 
@@ -191,7 +191,7 @@ Invertability of a moving average process is a useful feature as it allows us to
 ---
 
 
-# Second-order moving average
+# MA(2) process
 
 .right-column[
 Everything that we said about a MA(1) process can be generalized to any MA(q) process. Let's focus on MA(2): $$y_t = \mu + \varepsilon_t+\theta_1\varepsilon_{t-1}+\theta_2\varepsilon_{t-2}$$
@@ -203,33 +203,33 @@ Suppose, as before, $\mu = 5$, and $\sigma_{\varepsilon}=0.5$, and let's simulat
 ---
 
 
-# Second-order moving average: $\theta_1=0.5; \theta_2=0.5$
+# MA(2) process: $\theta_1=0.5; \theta_2=0.5$
 
-.right-column[
+.right-figure[
 ![](figures/lecture8/ma2a.png)
 ]
 
 ---
 
 
-# Second-order moving average: $\theta_1=-1; \theta_2=0.5$
+# MA(2) process: $\theta_1=-1; \theta_2=0.5$
 
-.right-column[
+.right-figure[
 ![](figures/lecture8/ma2b.png)
 ]
 
 ---
 
 
-# Second-order moving average: $\theta_1=2; \theta_2=-0.5$
+# MA(2) process: $\theta_1=2; \theta_2=-0.5$
 
-.right-column[
+.right-figure[
 ![](figures/lecture8/ma2c.png)
 ]
 
 ---
 
-# Mean and variance of the second-order moving average
+# Mean and variance of a MA(2) process
 
 .right-column[
 The unconditional mean and variance are: $$E(y_t) = E(\mu + \varepsilon_t+\theta_1\varepsilon_{t-1}+\theta_2\varepsilon_{t-2}) = \mu$$ and $$Var(y_t) = E(y_t-\mu)^2 = (1+\theta_1^2+\theta_2^2)\sigma_{\varepsilon}^2$$
@@ -238,7 +238,7 @@ The unconditional mean and variance are: $$E(y_t) = E(\mu + \varepsilon_t+\theta
 ---
 
 
-# Covariances of the second-order moving average
+# Covariances of a MA(2) process
 
 .right-column[
 The autocovariance at the first lag is: $$\gamma_1 = E[(y_t-\mu)(y_{t-1}-\mu)] = (\theta_1+\theta_1\theta_2)\sigma_{\varepsilon}^2$$ 
@@ -251,7 +251,7 @@ The autocovariance and autocorrelation at higher lags are zero.
 ---
 
 
-# Autocorrelations of the second-order moving average
+# Autocorrelations of a MA(2) process
 
 .right-column[
 The autocorrelation at the first lag is: $$\rho_1 = \frac{\gamma_1}{\gamma_0} = \frac{\theta_1+\theta_1\theta_2}{1+\theta_1^2+\theta_2^2}$$
@@ -266,88 +266,8 @@ In general, for any $MA(q)$, $\rho_k=0,\;\;\forall\; k>q$.
 ---
 
 
-# Bitcoin weekly returns
 
-.right-column[
-![](figures/lecture8/btc.png)
-]
-
----
-
-
-# Order selection using information criteria
-
-.right-column[
-```{r echo=FALSE, message=FALSE, cache=FALSE}
-load("figures/lecture8/btc.RData")
-
-btc_dt <- btc_dt[,.(date=as.Date(substr(timestamp,1,10)),BTC=close/1000)]
-
-btc_dt[,`:=`(lnBTC=log(BTC))]
-btc_dt[,`:=`(BTC1=shift(BTC,7),lnBTC1=shift(lnBTC,7))]
-btc_dt[,`:=`(dBTC=BTC-BTC1,rBTC=(lnBTC-lnBTC1)*100)]
-btc_dt <- btc_dt[complete.cases(btc_dt)]
-
-y <- btc_dt$rBTC
-
-dt <- data.table(q=1:9,AIC=NA,SIC=NA)
-
-ma1 <- arima(y,order=c(0,0,1))
-ma2 <- arima(y,order=c(0,0,2))
-ma3 <- arima(y,order=c(0,0,3))
-ma4 <- arima(y,order=c(0,0,4))
-ma5 <- arima(y,order=c(0,0,5))
-ma6 <- arima(y,order=c(0,0,6))
-ma7 <- arima(y,order=c(0,0,7))
-ma8 <- arima(y,order=c(0,0,8))
-ma9 <- arima(y,order=c(0,0,9))
-
-dt$AIC[1] <- log(sum(ma1$resid^2,na.rm=T))+2*length(ma1$coef)/length(ma1$resid)
-dt$AIC[2] <- log(sum(ma2$resid^2,na.rm=T))+2*length(ma2$coef)/length(ma2$resid)
-dt$AIC[3] <- log(sum(ma3$resid^2,na.rm=T))+2*length(ma3$coef)/length(ma3$resid)
-dt$AIC[4] <- log(sum(ma4$resid^2,na.rm=T))+2*length(ma4$coef)/length(ma4$resid)
-dt$AIC[5] <- log(sum(ma5$resid^2,na.rm=T))+2*length(ma5$coef)/length(ma5$resid)
-dt$AIC[6] <- log(sum(ma6$resid^2,na.rm=T))+2*length(ma6$coef)/length(ma6$resid)
-dt$AIC[7] <- log(sum(ma7$resid^2,na.rm=T))+2*length(ma7$coef)/length(ma7$resid)
-dt$AIC[8] <- log(sum(ma8$resid^2,na.rm=T))+2*length(ma8$coef)/length(ma8$resid)
-dt$AIC[9] <- log(sum(ma9$resid^2,na.rm=T))+2*length(ma9$coef)/length(ma9$resid)
-
-dt$SIC[1] <- log(sum(ma1$resid^2,na.rm=T))+log(length(ma1$resid))*length(ma1$coef)/length(ma1$resid)
-dt$SIC[2] <- log(sum(ma2$resid^2,na.rm=T))+log(length(ma2$resid))*length(ma2$coef)/length(ma2$resid)
-dt$SIC[3] <- log(sum(ma3$resid^2,na.rm=T))+log(length(ma3$resid))*length(ma3$coef)/length(ma3$resid)
-dt$SIC[4] <- log(sum(ma4$resid^2,na.rm=T))+log(length(ma4$resid))*length(ma4$coef)/length(ma4$resid)
-dt$SIC[5] <- log(sum(ma5$resid^2,na.rm=T))+log(length(ma5$resid))*length(ma5$coef)/length(ma5$resid)
-dt$SIC[6] <- log(sum(ma6$resid^2,na.rm=T))+log(length(ma6$resid))*length(ma6$coef)/length(ma6$resid)
-dt$SIC[7] <- log(sum(ma7$resid^2,na.rm=T))+log(length(ma7$resid))*length(ma7$coef)/length(ma7$resid)
-dt$SIC[8] <- log(sum(ma8$resid^2,na.rm=T))+log(length(ma8$resid))*length(ma8$coef)/length(ma8$resid)
-dt$SIC[9] <- log(sum(ma9$resid^2,na.rm=T))+log(length(ma9$resid))*length(ma9$coef)/length(ma9$resid)
-
-knitr::kable(dt,digits=3,align="r",table.attr='class="myTable"')
-```
-]
-
----
-
-
-# Order selection using information criteria
-
-.right-column[
-Both AIC and SIC indicate $MA(7)$.
-
-The estimated parameters and their standard errors are:
-
-```{r echo=FALSE, message=FALSE, cache=FALSE}
-out <- rbind(ma7$coef,sqrt(diag(ma7$var.coef)))[,c(5,1:7)]
-rownames(out) <- c("estimate","s.e.")
-knitr::kable(out,digits=3,align="c", table.attr='class="myTable"',row.names = T,col.names = c('$\\mu$',"$\\theta_1$","$\\theta_2$","$\\theta_3$","$\\theta_4$","$\\theta_5$","$\\theta_6$","$\\theta_7$"),escape = FALSE)
-```
-
-]
-
----
-
-
-# Forecasting MA(1) process
+# Forecasting a MA(1) process
 
 .right-column[
 Point forecasts:
@@ -359,7 +279,7 @@ Point forecasts:
 ---
 
 
-# Forecasting MA(1) process
+# Forecasting a MA(1) process
 
 .right-column[
 Forecast errors:
@@ -371,7 +291,7 @@ Forecast errors:
 ---
 
 
-# Forecasting MA(1) process
+# Forecasting a MA(1) process
 
 .right-column[
 Forecast variances:
@@ -383,7 +303,7 @@ Forecast variances:
 ---
 
 
-# Forecasting MA(1) process
+# Forecasting a MA(1) process
 
 .right-column[
 Interval forecasts (95%):
@@ -396,7 +316,7 @@ Interval forecasts (95%):
 ---
 
 
-# Forecasting MA(q) process
+# Forecasting a MA(q) process
 
 .right-column[
 Point forecasts:
@@ -411,7 +331,7 @@ $\vdots$
 ---
 
 
-# Forecasting MA(q) process
+# Forecasting a MA(q) process
 
 .right-column[
 Forecast errors:
@@ -426,7 +346,7 @@ $\vdots$
 ---
 
 
-# Forecasting MA(q) process
+# Forecasting a MA(q) process
 
 .right-column[
 Forecast variances:
@@ -441,7 +361,7 @@ $\vdots$
 ---
 
 
-# Forecasting MA(q) process
+# Forecasting a MA(q) process
 
 .right-column[
 Interval forecasts (95%):
@@ -457,61 +377,15 @@ $\vdots$
 ---
 
 
-
-# Forecasting Bitcoin weekly returns
-
-.right-column[
-![](figures/lecture8/btc_forecast.png)
-]
-
----
-
-
-# Comparing forecasts of MA(7) with RW
-
-.right-column[
-Are forecasts from MA(7), our preferred model, more accurate than those from the random walk model?
-
-Let's generate a sequence of one-step-ahead forecasts from 4 July 2021 onward (using a recursive window approach).
-]
-
----
-
-
-# Densities of the forecast errors
-
-.right-column[
-![](figures/lecture8/btc_errors.png)
-]
-
----
-
-
-# Comparing forecasts of MA(7) with RW
-
-.right-column[
-As it turns out, the RMSFE from MA(7) is $3.46$ and the RMSFE from RW is $4.88$.
-
-So, the answer is *yes*, on average.
-
-The DM statistic is $7.49$. 
-
-So, forecasts from MA(7) are statistically significantly more accurate than those from RW.
-]
-
----
-
-
-# Readings
+# Key takeaways
 
 .pull-left[
 ![](Art/todolist.png)
 ]
 
 .pull-right[
-Gonzalez-Rivera, Chapter 6
-
-Hyndman & Athanasopoulos, [9.4](https://otexts.com/fpp3/MA.html)
+- The dynamics of some time series can be best characterized as a linear function of past errors. Such a process is referred to as the moving average process.
+- A finite-order moving average process is a short-memory process, insofar as the shocks (or forecast errors) from distant past are irrelevant in predicting the ourcome of the random variable.
 ]
 
 

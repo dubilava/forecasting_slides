@@ -385,7 +385,7 @@ $\vdots$
 
 .pull-right[
 - The dynamics of some time series can be best characterized as a linear function of past errors. Such a process is referred to as the moving average process.
-- A finite-order moving average process is a short-memory process, insofar as the shocks (or forecast errors) from distant past are irrelevant in predicting the ourcome of the random variable.
+- A finite-order moving average process is a short-memory process, insofar as the shocks (or forecast errors) from distant past are irrelevant in predicting the outcome of the random variable.
 ]
 
 

@@ -48,7 +48,7 @@ There can be a wide range of functional forms of nonlinear models.
 # An autoregressive model with a linear trend
 
 .right-column[
-Consider an AR(p) process with a deterministic trend: $$y_t = \alpha_0 + \alpha_1 t + \sum_{i=1}^{p}\beta_i y_{t-i} + \varepsilon_t,$$ where $\alpha_0 + \alpha_1 t$ is the time-specific deterministic component. Let's denote it with $\delta_t$. 
+Consider an AR(p) process with a linear trend: $$y_t = \alpha_0 + \alpha_1 t + \sum_{i=1}^{p}\beta_i y_{t-i} + \varepsilon_t,$$ where $\alpha_0 + \alpha_1 t$ is a deterministic component; denote it with $\delta_t$. 
 
 This specification implies a linear trend, but that doesn't need to be the case. We can have quadratic or cubic trends, for example, or we can have no trend component at all.
 ]
@@ -59,9 +59,7 @@ This specification implies a linear trend, but that doesn't need to be the case.
 # An autoregressive model with a nonlinear trend
 
 .right-column[
-A simple augmentation of the foregoing model is an autoregressive model with a switching trend component: $$y_t = \delta_t + \sum_{i=1}^{p}\beta_i y_{t-i} + \varepsilon_t,$$ where $$\delta_t = \delta_{0} + \delta_{1} t + \delta_{2}(t-\tau)I(t>\tau),$$ and where $\tau$ is the threshold parameter.
-
-Such switch can be extended to the whole autoregressive process. 
+A simple augmentation of the foregoing model is an autoregressive model with a switching trend component: $$y_t = \delta_t + \sum_{i=1}^{p}\beta_i y_{t-i} + \varepsilon_t,$$ where $$\delta_t = \delta_{0} + \delta_{1} t + \delta_{2}(t-\tau)I(t>\tau),$$ and where $\tau$ is the threshold parameter. Such a switch can be extended to the entire autoregressive process. 
 ]
 
 ---
@@ -81,9 +79,7 @@ Consider a two-regime AR(p) with drift: $$y_t = \delta_t + \sum_{i=1}^{p}\beta_{
 .right-column[
 Thus far we have assumed that the switch occurs at some point in time, i.e. the regime-switching variable is a function of time. 
 
-But the regime-switching variable can also be a function of the dependent variable, or other (potentially) related variables: $$y_t = \alpha_0 + \sum_{i=1}^{p}\beta_{0i} y_{t-i} + \left(\alpha_1 + \sum_{i=1}^{p}\beta_{1i} y_{t-i}\right)I(s_t>\kappa) + \varepsilon_t,$$ where $s_t$ is the regime-switching variable, and $\kappa$ is the threshold parameter. 
-
-This model is a threshold autoregression of order $p$, TAR(p). 
+But the regime-switching variable can also be a function of the dependent variable, or other (potentially) related variables: $$y_t = \alpha_0 + \sum_{i=1}^{p}\beta_{0i} y_{t-i} + \left(\alpha_1 + \sum_{i=1}^{p}\beta_{1i} y_{t-i}\right)I(s_t>\kappa) + \varepsilon_t,$$ where $s_t$ is the regime-switching variable, and $\kappa$ is the threshold parameter. This is a threshold autoregression of order $p$, TAR(p). 
 ]
 
 ---
@@ -92,7 +88,7 @@ This model is a threshold autoregression of order $p$, TAR(p).
 # Threshold autoregressive models
 
 .right-column[
-If in TAR(p), $s_t = y_{t-d}$, where $d$ is a positive integer referred to as the delay factor&mdash;usually bounded by the order of the autoregression&mdash;then the model is referred to as a self-exciting threshold autoregression, or SETAR(p).
+If in TAR(p), $s_t = y_{t-d}$, where $d\le p$ is a positive integer referred to as the delay factor, then the model is referred to as a self-exciting threshold autoregression, or SETAR(p).
 
 If in TAR(p), $s_t = \Delta y_{t-d}$, then the model is referred to as a momentum threshold autoregression, or momentum-TAR(p).
 ]
@@ -120,7 +116,7 @@ When threshold values are unknown (and need to be estimated), standard statistic
 
 # U.S. Inflation
 
-.right-column[
+.right-figure[
 ![](figures/lecture9/inflation.png)
 ]
 
@@ -174,7 +170,7 @@ knitr::kable(dt,format='html',digits=3,align="c", table.attr='class="myTable"')
 
 ---
 
-# Estimated SETAR(3)
+# Estimated SETAR(2)
 
 .right-column[
 We thus estimate the SETAR(2) model with $y_{t-1}$ as the regime-switching variable, while setting the threshold parameter to `r trs`. 
@@ -191,7 +187,7 @@ rownames(out) <- c("estimate","s.e.")
 knitr::kable(out,format="html",digits=3,align="r",row.names = T,col.names = c("$\\alpha$","$\\beta_{11}$","$\\beta_{12}$","$\\beta_{21}$","$\\beta_{22}$"),escape = FALSE)
 ```
 
-The AIC of this SETAR(2) model is `r round(aic,3)`, which is less than the AIC of the AR(2) model. But the SIC is `r round(sic,3)` which is greater than the SIC of the AR(2) model.
+The AIC of this SETAR(2) is `r round(aic,3)`, which is less than the AIC of the AR(2). But the SIC is `r round(sic,3)` which is greater than the SIC of the AR(2). 
 ]
 
 
@@ -216,10 +212,10 @@ y_{t+1|t} &= \alpha_0+\beta_{01}y_{t}+\beta_{02}y_{t-1}+\ldots \\
 # Forecasting with Nonlinear Models
 
 .right-column[
-Obtaining $h$-step-ahead forecasts (where $h \ge 1$) is a less trivial exercise (because of the nonlinearity). Several options are available to the forecaster:
+Obtaining $h$-step-ahead forecasts (where $h \ge 1$) is less trivial (because of the nonlinearity). Several options are available to a forecaster:
 
-- The iterated method (or, the so-called skeleton extrapolation) is an easy option, but but it yields biased forecasts and is inefficient. 
-- The analytical method yields unbiased (assuming the model is correctly specified) and efficient forecasts, but can be tedious.
+- The iterated method (or, the so-called skeleton extrapolation) is an easy option, but but it yields biased and inefficient forecasts. 
+- The analytical method (assuming the model is correctly specified) yields unbiased and efficient forecasts, but can be tedious.
 - The numerical method addresses the issues of the iterated method and offers a suitable approximation to the analytical method.
 ]
 
@@ -263,7 +259,7 @@ Skeleton extrapolation yields biased point forecasts for horizons $h>d$. That's 
 .right-column[
 Bootstrap (or Monte Carlo) resampling helps approximate the optimal forecast from nonlinear models and circumvents the complexity of integration (which would be needed for generating forecasts using the analytical method).
 
-As an additional benefit, the procedure generates empirical density of bootstrap extrapolates, which allows us to examine the potential multimodality of these densities&mdash;a characteristic feature of those generated from regime-dependent nonlinear models such as SETAR, for example.
+As an additional benefit, the procedure generates empirical density of bootstrap projections, which allows us to examine potential multimodality of these densities&mdash;a characteristic feature of those generated from regime-dependent nonlinear models such as SETAR.
 ]
 
 ---
@@ -272,8 +268,6 @@ As an additional benefit, the procedure generates empirical density of bootstrap
 # Numerical Method - Bootstrap Resampling
 
 .right-column[
-Algorithm:
-
 1. Estimate the regime-dependent model and store the residuals.
 2. From this set of residuals, sample (with replacement) a vector of shocks for a bootstrap iteration, $\varepsilon^b = (\varepsilon_{t+1}^b,\varepsilon_{t+2}^b,\ldots,\varepsilon_{t+h}^b)'$.
 3. Use this sample of shocks, along with the estimated parameters and historical observations, to generate a forecast path for the given bootstrap iteration.
@@ -342,7 +336,7 @@ For interval forecasts, we will need to resort to the relevant percentiles of th
 
 # Multistep forecasts of the inflation rate
 
-.right-column[
+.right-figure[
 ![](figures/lecture9/inflation_boot.png)
 ]
 
@@ -350,21 +344,23 @@ For interval forecasts, we will need to resort to the relevant percentiles of th
 
 # The density forecast of the inflation rate
 
-.right-column[
+.right-figure[
 ![](figures/lecture9/inflation_den.png)
 ]
 
 ---
 
 
-# Readings
+# Key takeaways
 
 .pull-left[
 ![](Art/todolist.png)
 ]
 
 .pull-right[
-Gonzalez-Rivera, Chapter 16
+- Nonlinear modeling is a way to address dynamic intricacies of some time series. An example of such a time series is that characterized by asymmetric cycles.
+- Regime-dependent nonlinear models is one of many options available to a forecaster.
+- One-step-ahead forecasts are obtained the "usual" way. For multi-step-ahead forecasts, a numerical approximation is, typically, the way to generate point and interval forecasts. 
 ]
 
 

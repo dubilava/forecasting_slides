@@ -1,6 +1,7 @@
 # load the libraries (install them if needed)
 library(data.table)
 library(ggplot2)
+library(ggpubr)
 # library(camcorder)
 library(extrafont)
 # font_import()
@@ -21,31 +22,28 @@ library(fastDummies)
 rm(list=ls())
 gc()
 
-# all_wpi <- read_abs("6345.0")
 
-# # camcorder stuff
-# camcorder::gg_record(
-#   dir='figures/lecture4',
-#   width=6.5,
-#   height=6.5*9/16,
-#   dpi=300,
-#   bg="white"
-# )
 
 # plot aesthetics
 theme_eg <- function(base_size=12,base_family="Segoe Print",border=F){
   theme(
     panel.background=element_rect(fill="white",color=NA),
-    panel.grid=element_line(colour=NULL,linetype=3,linewidth=.3),
+    panel.grid=element_line(colour=NULL,linetype=3),
     panel.grid.major=element_line(colour="dimgray"),
+    panel.grid.major.x=element_blank(),
     panel.grid.minor=element_blank(),
     plot.background=element_rect(fill="white",color=NA),
-    plot.title=element_text(family=base_family,size=rel(1.2),colour="dimgray"),
-    plot.caption=element_text(family=base_family,colour="darkgray"),
+    plot.title=element_text(family=base_family,size=rel(1.3),colour="dimgray"),
+    plot.subtitle=element_text(family=base_family,size=rel(1.2),colour="dimgray",hjust=0),
+    plot.caption=element_text(colour="darkgray",size=rel(0.8),hjust=0),
     plot.margin=margin(.25,.25,.25,.25,"lines"),
-    axis.title=element_text(family=base_family,face="bold",size=rel(1.3),colour="dimgray"),
-    axis.text=element_text(family=base_family,size=rel(1.1),colour="dimgray",margin=margin(t=1,r=1,b=1,l=1)),
-    axis.line=element_blank(),
+    plot.title.position="plot",
+    plot.caption.position="plot",
+    axis.title=element_text(family=base_family,size=rel(1.2),colour="dimgray"),
+    axis.title.x=element_text(hjust=1),
+    axis.text=element_text(family=base_family,size=rel(1.1),colour="dimgray"),
+    axis.line=element_line(colour="dimgray"),
+    axis.line.y=element_blank(),
     axis.ticks=element_blank(),
     legend.background=element_rect(fill="transparent",color=NA),
     legend.position="none",
@@ -58,14 +56,14 @@ theme_eg <- function(base_size=12,base_family="Segoe Print",border=F){
 }
 
 # inflation series ----
-inflation_dt <- data.table(fredr(series_id="CPIAUCNS",observation_start=as.Date("1970-01-01"),observation_end=as.Date("2022-12-31"),frequency="m",units="pc1"))
+inflation_dt <- data.table(fredr(series_id="CPIAUCNS",observation_start=as.Date("1970-01-01"),observation_end=as.Date("2023-12-31"),frequency="m",units="pc1"))
 
 save(inflation_dt,file="figures/lecture9/inflation.RData")
 
 gg_inflation <- ggplot(inflation_dt,aes(x=date,y=value))+
-  geom_line(linewidth=.5,color="dimgray",na.rm=T)+
+  geom_line(linewidth=.6,color="dimgray",na.rm=T)+
   scale_y_continuous(breaks=seq(0,15,5))+
-  labs(x="Year",y="Year-on-Year Inflation (%)")+
+  labs(y="",x="Year",subtitle="Year-on-Year Inflation (%)",caption="Source: FRED, Federal Reserve Bank of St. Louis\nhttps://fred.stlouisfed.org/series/CPIAUCNS")+
   coord_cartesian(ylim=c(-2,16),xlim=c(as.Date("1970-01-01"),as.Date("2022-12-31")))+
   theme_eg()
 
@@ -95,27 +93,27 @@ icf <- function(m,ic){
 dt <- data.table(aic=round(sapply(list(ar1,ar2,ar3,ar4),icf,ic="a"),3),sic=round(sapply(list(ar1,ar2,ar3,ar4),icf,ic="s"),3))
 
   
-quantiles <- round(quantile(inflation_dt$y,c(.15,.85)),1)
+quantiles <- round(quantile(inflation_dt$y,c(.2,.8)),1)
 
 candidates <- seq(quantiles[1],quantiles[2],by=.1)
 
 ssr_dt <- data.table(candidates,ssr=NA)
 for(i in 1:length(candidates)){
   inflation_dt[,`:=`(ind=ifelse(y1>candidates[i],1,0))]
-  setar3 <- lm(y~(y1+y2):I(1-ind)+(y1+y2):I(ind),data=inflation_dt)
-  ssr_dt$ssr[i] <- sum(setar3$residuals^2)
+  setar2 <- lm(y~(y1+y2):I(1-ind)+(y1+y2):I(ind),data=inflation_dt)
+  ssr_dt$ssr[i] <- sum(setar2$residuals^2)
 }
 
 trs <- ssr_dt[ssr==min(ssr)]$candidates
   
 gg_ssr <- ggplot(ssr_dt,aes(x=candidates,y=ssr))+
-  geom_line(linewidth=.5,color="coral",na.rm=T)+
-  labs(x="Thresholds (Inflation, %)",y="SSR")+
+  geom_line(linewidth=.6,color="dimgray",na.rm=T)+
+  labs(y="",x="Thresholds (Inflation, %)",subtitle="Sum of Squared Residuals")+
   theme_eg()
 
 gg_ssr
 
-ggsave("figures/lecture9/ssr.png",gg_ssr,width=6.5*.85,height=6.5*9/16,dpi="retina",device="png")
+ggsave("figures/lecture9/ssr.png",gg_ssr,width=6.5,height=6.5*9/16,dpi="retina",device="png")
 
 
 inflation_dt[,`:=`(ind=ifelse(y1>trs,1,0))]
@@ -136,6 +134,7 @@ R <- which(inflation_dt$date==est_end)
 P <- nrow(inflation_dt)-R
 
 setar2 <- lm(y~(y1+y2):I(1-ind)+(y1+y2):I(ind),data=inflation_dt[1:R])
+setar2
 
 eps <- setar2$residuals
 
@@ -162,15 +161,6 @@ inflation_dt$f[1:R] <- NA
 inflation_dt$l[1:R] <- NA
 inflation_dt$u[1:R] <- NA
 
-ggplot(inflation_dt,aes(x=date,y=y))+
-  geom_ribbon(aes(ymin=l,ymax=u),fill="coral",alpha=.2)+
-  geom_line(color="powderblue",size=.8)+
-  geom_line(data=inflation_dt[date>as.Date(est_end)],color="gray",size=.8)+
-  geom_line(aes(y=f),color="coral",size=.8,linetype=5,na.rm=T)+
-  labs(x="Year",y="Year-Over-Year Inflation",caption="retrieved from FRED, Federal Reserve Bank of St. Louis\nhttps://fred.stlouisfed.org/series/CPIAUCNS")+
-  theme_classic()+
-  theme(axis.title = element_text(size=22),axis.text = element_text(size=18))
-
 
 gg_boot <- ggplot(inflation_dt,aes(x=date))+
   geom_ribbon(aes(ymin=l,ymax=u),fill="coral",alpha=.2)+
@@ -180,7 +170,7 @@ gg_boot <- ggplot(inflation_dt,aes(x=date))+
   geom_line(aes(y=u),linetype=2,linewidth=.4,color="coral",na.rm=T)+
   geom_line(aes(y=f),linetype=5,linewidth=.6,color="coral",na.rm=T)+
   scale_y_continuous(breaks=seq(0,15,5))+
-  labs(x="Year",y="Year-on-Year Inflation (%)")+
+  labs(y="",x="Year",subtitle="Year-on-Year Inflation (%)",caption="Source: FRED, Federal Reserve Bank of St. Louis\nhttps://fred.stlouisfed.org/series/CPIAUCNS")+
   coord_cartesian(ylim=c(-2,16),xlim=c(as.Date("1970-01-01"),as.Date("2022-12-31")))+
   theme_eg()
 
@@ -193,13 +183,13 @@ ggsave("figures/lecture9/inflation_boot.png",gg_boot,width=6.5,height=6.5*9/16,d
 
 dt <- data.table(x=boot_mat[R+P,])
 gg_den <- ggplot(dt,aes(x=x))+
-  geom_density(color="coral",size=1,fill="coral",alpha=.2)+
-  labs(x="156-step-ahead forecast (Inflation, %)",y="Density")+
+  geom_density(color="coral",linewidth=1,fill="coral",alpha=.2)+
+  labs(y="",x="156-step-ahead forecast (Inflation, %)",subtitle="Density")+
   theme_eg()
 
+gg_den
 
 ggsave("figures/lecture9/inflation_den.png",gg_den,width=6.5,height=6.5*9/16,dpi="retina",device="png")
-
 
 
 

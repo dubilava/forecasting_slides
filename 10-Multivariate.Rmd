@@ -498,18 +498,16 @@ The testing procedure is otherwise similar to the Diebold-Mariano test.
 ---
 
 
-
-
-# Readings
+# Key Takeaways
 
 .pull-left[
 ![](Art/todolist.png)
 ]
 
 .pull-right[
-Gonzalez-Rivera, Chapter 11
-
-Hyndman & Athanasopoulos, [12.3](https://otexts.com/fpp3/VAR.html)
+- Many economic time series are inter-related. We can model such series as a system of equations known as the Vector Autoregressive (VAR) model.
+- Autoregressive Distributed Lag (ARDL) model is a special case (which is, in effect, a single equation) of a VAR model.
+- We can use information on related variables to help better forecast a variable of interest. If improved accuracy is achieved, we have a case of Granger causality.
 ]
 
 

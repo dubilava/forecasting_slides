@@ -249,7 +249,7 @@ The following must hold for the loss function:
 - $l(e_{t+h|t}) \ge 0$ for all $e_{t+h|t} \ne 0$
 
 And (assuming symmetric loss function) for all $t \ne s$:
-- $l(e_{t+h|t}) \ge l(e_{s+h|s})$ for all $|l(e_{t+h|t})| \ge |l(e_{s+h|s})|$
+- $l(e_{t+h|t}) \ge l(e_{s+h|s})$ for all $|e_{t+h|t}| \ge |e_{s+h|s}|$
 
 ]
 

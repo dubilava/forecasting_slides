@@ -4,10 +4,8 @@ library(ggbrace)
 library(magick)
 library(stringr)
 library(fredr)
-library(extrafont)
-loadfonts(device="win",quiet=T)
 
-theme_eg <- function(base_size=12,base_family="Segoe Print",border=F){
+theme_eg <- function(base_size=12,base_family="sans",border=F){
   theme(
     panel.background=element_rect(fill="white",color=NA),
     panel.grid=element_line(colour=NULL,linetype=3),
@@ -59,10 +57,9 @@ for(i in 1:(n-R)){
     geom_line(linewidth=.8,na.rm=T,color="gray")+
     geom_line(data=y_dt[x%in%c(i:(R+i-1))],aes(x=x,y=y),linewidth=.8,na.rm=T,color="black")+
     geom_point(data=y_dt[x%in%c(R+i)],aes(x=x,y=rolling),size=3,stroke=1,shape=21,color="black",fill="gray")+
-    geom_text(data=y_dt[x%in%c(R+i)],aes(x=x,y=rolling,label="forecast"),size=5,nudge_y = c(-.2),nudge_x = c(-.5),family="Segoe Print",colour="black")+
+    geom_text(data=y_dt[x%in%c(R+i)],aes(x=x,y=rolling,label="forecast"),size=5,nudge_y = c(-.2),nudge_x = c(-.5),family="sans",colour="black")+
     labs(title="",x="t",y="",subtitle=expression(y[t]))+
-    geom_brace(aes(x=c(i,R+i-1),y=c(2.2,2.3)),inherit.data=F,rotate=0,bending=.2)+
-    geom_text(data=data.table(x=mean(c(i,R+i-1)),y=mean(c(2.4,2.5)),lab="estimation window"),aes(x=x,y=y,label=lab),size=5,family="Segoe Print")+
+    geom_text(data=data.table(x=mean(c(i,R+i-1)),y=mean(c(2.4,2.5)),lab="estimation window"),aes(x=x,y=y,label=lab),size=5,family="sans")+
     coord_cartesian(x=c(1,n+1),y=c(0,2.3),clip="off")+
     theme_eg()+
     theme(axis.title.y=element_blank(),plot.title.position="plot")
@@ -94,10 +91,9 @@ for(i in 1:(n-R)){
     geom_line(linewidth=.8,na.rm=T,color="gray")+
     geom_line(data=y_dt[x%in%c(1:(R+i-1))],aes(x=x,y=y),linewidth=.8,na.rm=T,color="black")+
     geom_point(data=y_dt[x%in%c(R+i)],aes(x=x,y=recursive),size=3,stroke=1,shape=21,color="black",fill="gray")+
-    geom_text(data=y_dt[x%in%c(R+i)],aes(x=x,y=recursive,label="forecast"),size=5,nudge_y = c(-.2),nudge_x = c(-.5),family="Segoe Print",colour="black")+
+    geom_text(data=y_dt[x%in%c(R+i)],aes(x=x,y=recursive,label="forecast"),size=5,nudge_y = c(-.2),nudge_x = c(-.5),family="sans",colour="black")+
     labs(title="",x="t",y="",subtitle=expression(y[t]))+
-    geom_brace(aes(x=c(1,R+i-1),y=c(2.2,2.3)),inherit.data=F,rotate=0,bending=.2)+
-    geom_text(data=data.table(x=mean(c(1,R+i-1)),y=mean(c(2.4,2.5)),lab="estimation window"),aes(x=x,y=y,label=lab),size=5,family="Segoe Print")+
+    geom_text(data=data.table(x=mean(c(1,R+i-1)),y=mean(c(2.4,2.5)),lab="estimation window"),aes(x=x,y=y,label=lab),size=5,family="sans")+
     coord_cartesian(x=c(1,n+1),y=c(0,2.3),clip="off")+
     theme_eg()+
     theme(axis.title.y=element_blank(),plot.title.position="plot")
@@ -119,4 +115,3 @@ animation <- image_animate(image_join(frames),fps=2)
 
 ## save the gif
 image_write(animation,"figures/lecture2/recursive.gif")
-

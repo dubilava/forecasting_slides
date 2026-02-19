@@ -31,7 +31,7 @@ library(fastDummies)
 # Trending series
 
 .pull-left[
-![](Art/trends.png)
+![](art/trends.png)
 ]
 
 .pull-right[
@@ -617,7 +617,7 @@ Luckily, we can 'fix' the issue. We can do so by first-differencing both series 
 # Key takeaways
 
 .pull-left[
-![](Art/todolist.png)
+![](art/todolist.png)
 ]
 
 .pull-right[

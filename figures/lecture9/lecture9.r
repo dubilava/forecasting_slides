@@ -3,9 +3,7 @@ library(data.table)
 library(ggplot2)
 library(ggpubr)
 # library(camcorder)
-library(extrafont)
 # font_import()
-loadfonts(device="win",quiet=T)
 library(cowplot)
 library(crypto2)
 library(fredr)
@@ -25,7 +23,7 @@ gc()
 
 
 # plot aesthetics
-theme_eg <- function(base_size=12,base_family="Segoe Print",border=F){
+theme_eg <- function(base_size=12,base_family="sans",border=F){
   theme(
     panel.background=element_rect(fill="white",color=NA),
     panel.grid=element_line(colour=NULL,linetype=3),
@@ -190,11 +188,3 @@ gg_den <- ggplot(dt,aes(x=x))+
 gg_den
 
 ggsave("figures/lecture9/inflation_den.png",gg_den,width=6.5,height=6.5*9/16,dpi="retina",device="png")
-
-
-
-
-
-
-
-

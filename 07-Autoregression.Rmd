@@ -36,7 +36,7 @@ library(forecast)
 # Cycles
 
 .pull-left[
-![](Art/autoregression.png)
+![](art/autoregression.png)
 ]
 
 .pull-right[
@@ -385,7 +385,7 @@ In the model is mis-specified&mdash;hardly an unusual scenario&mdash;the ranking
 # Key takeaways
 
 .pull-left[
-![](Art/todolist.png)
+![](art/todolist.png)
 ]
 
 .pull-right[

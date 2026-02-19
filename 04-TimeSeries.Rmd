@@ -32,7 +32,7 @@ library(Quandl)
 # Stochastic process
 
 .pull-left[
-![](Art/timeseries.png)
+![](art/timeseries.png)
 ]
 
 .pull-right[
@@ -510,7 +510,7 @@ So, once we obtain the test statistic, we need to compare it to the critical val
 # Key takeaways
 
 .pull-left[
-![](Art/todolist.png)
+![](art/todolist.png)
 ]
 
 .pull-right[

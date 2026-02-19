@@ -31,7 +31,7 @@ library(ggplot2)
 # Pseudo forecasting routine
 
 .pull-left[
-![](Art/forecast.png)
+![](art/forecast.png)
 ]
 
 .pull-right[
@@ -111,7 +111,7 @@ These two pseudo-forecasting routines are technically very similar. But they can
 
 The recursive scheme uses increasingly more data to generate successive forecasts. If the data-generating process does not change over time this may be a preferred scheme as it allows us to estimate the model parameters more precisely. 
 
-But if the data-generating process changes over time, then the use of all available data may as well harm our forecasts—they will be biased toward the historical past that is no longer relevant. In such instances, the rolling scheme may be a preferred alternative. 
+But if the data-generating process changes over time, then the use of all available data may as well harm our forecastsâ€”they will be biased toward the historical past that is no longer relevant. In such instances, the rolling scheme may be a preferred alternative. 
 ]
 
 ---
@@ -423,7 +423,7 @@ Moreover, (2) given (1) would result in the regression line overlapping with the
 # Key takeaways
 
 .pull-left[
-![](Art/todolist.png)
+![](art/todolist.png)
 ]
 
 .pull-right[

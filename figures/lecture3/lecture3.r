@@ -3,8 +3,6 @@ library(data.table)
 library(ggplot2)
 library(ggthemes)
 library(geomtextpath)
-library(extrafont)
-loadfonts(device="win",quiet=T)
 # font_import()
 # loadfonts(device="win")
 library(cowplot)
@@ -17,7 +15,7 @@ library(lmtest)
 
 
 # plot aesthetics
-theme_eg <- function(base_size=12,base_family="Segoe Print",border=F){
+theme_eg <- function(base_size=12,base_family="sans",border=F){
   theme(
     panel.background=element_rect(fill="white",color=NA),
     panel.grid=element_line(colour=NULL,linetype=3),
@@ -82,7 +80,7 @@ dt <- dt[date>="2003-01-01" & date<="2018-12-31"]
 gg1 <- ggplot()+
   geom_boxplot(data=dt,aes(x=date,y=oni_f,group=date),color="dimgray",fill="lightgray",linewidth=.3,outlier.size=.1,shape=1)+
   geom_line(data=dt[model==unique(model)[1]],aes(x=date,y=oni_y),linewidth=.6,color="black")+
-  labs(subtitle="Oceanic Nino Index (°C)",y="",x="Year",caption="Source: The International Research Institute for Climate and Society, Columbia University")+
+  labs(subtitle="Oceanic Nino Index (Â°C)",y="",x="Year",caption="Source: The International Research Institute for Climate and Society, Columbia University")+
   coord_cartesian(ylim=c(-2,3))+
   theme_eg()+
   theme(plot.title.position="plot",plot.caption.position="plot",plot.caption=element_text(hjust=0))
@@ -344,6 +342,3 @@ ggsave("figures/lecture3/rho_variance.png",gg_s,width=6.5,height=6.5*9/16,dpi="r
 # rm(list=setdiff(ls(),c("iri_dt")))
 # 
 # save.image("../R/Main/Data/iri_forecasts.RData")
-
-
-

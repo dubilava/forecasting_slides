@@ -2,9 +2,7 @@
 library(data.table)
 library(ggplot2)
 # library(camcorder)
-library(extrafont)
 # font_import()
-loadfonts(device="win",quiet=T)
 library(cowplot)
 library(crypto2)
 library(fredr)
@@ -24,7 +22,7 @@ gc()
 # all_wpi <- read_abs("6345.0")
 
 # plot aesthetics
-theme_eg <- function(base_size=12,base_family="Segoe Print",border=F){
+theme_eg <- function(base_size=12,base_family="sans",border=F){
   theme(
     panel.background=element_rect(fill="white",color=NA),
     panel.grid=element_line(colour=NULL,linetype=3),
@@ -277,8 +275,3 @@ gg_dir
 
 
 ggsave("figures/lecture7/unrate_dir.png",gg_dir,width=6.5,height=6.5*9/16,dpi="retina",device="png")
-
-
-
-
-

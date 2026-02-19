@@ -31,7 +31,7 @@ library(knitr)
 # Nonlinear Models
 
 .pull-left[
-![](Art/nonlinear.png)
+![](art/nonlinear.png)
 ]
 
 .pull-right[
@@ -354,7 +354,7 @@ For interval forecasts, we will need to resort to the relevant percentiles of th
 # Key takeaways
 
 .pull-left[
-![](Art/todolist.png)
+![](art/todolist.png)
 ]
 
 .pull-right[

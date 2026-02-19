@@ -2,18 +2,18 @@
 library(data.table)
 library(ggplot2)
 library(ggthemes)
-library(extrafont)
-loadfonts(device="win",quiet=T)
 # font_import()
 # loadfonts(device="win")
 library(cowplot)
 library(readrba)
 library(viridis)
 library(car)
+library(lmtest)
+library(sandwich)
 library(stringr)
 
 # plot aesthetics
-theme_eg <- function(base_size=12,base_family="Segoe Print",border=F){
+theme_eg <- function(base_size=12,base_family="sans",border=F){
   theme(
     panel.background=element_rect(fill="white",color=NA),
     panel.grid=element_line(colour=NULL,linetype=3),

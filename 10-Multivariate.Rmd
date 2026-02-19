@@ -34,7 +34,7 @@ library(kableExtra)
 # Economic variables are inter-related
 
 .pull-left[
-![](Art/multivariate.png)
+![](art/multivariate.png)
 ]
 
 .pull-right[
@@ -501,7 +501,7 @@ The testing procedure is otherwise similar to the Diebold-Mariano test.
 # Key Takeaways
 
 .pull-left[
-![](Art/todolist.png)
+![](art/todolist.png)
 ]
 
 .pull-right[

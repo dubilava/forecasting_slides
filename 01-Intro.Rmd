@@ -26,7 +26,7 @@ knitr::opts_chunk$set(echo = FALSE)
 # People have made forecasts for ages
 
 .pull-left[
-![](Art/astrologer.png)
+![](art/astrologer.png)
 ]
 
 .pull-right[
@@ -45,7 +45,7 @@ We forecast things that matter to us. There are many such things, one of which i
 
 Historically, weather was the single most important factor that impacted the livelihood of people, and indeed the fate of civilizations.
  - The Babylonians based weather forecasts on the appearance of clouds. 
- - The ancient Egyptians measured the levels of the Nile River’s waters to predict an approaching famine due to droughts or destructive floods.
+ - The ancient Egyptians measured the levels of the Nile Riverâ€™s waters to predict an approaching famine due to droughts or destructive floods.
 
 ]
 
@@ -335,7 +335,7 @@ Forecast is not one value, however. It's a distribution of possible values.
 # Key takeaways
 
 .pull-left[
-![](Art/todolist.png)
+![](art/todolist.png)
 ]
 
 .pull-right[

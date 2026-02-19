@@ -1,9 +1,7 @@
 # load the libraries (install them if needed)
 library(data.table)
 library(ggplot2)
-library(extrafont)
 # font_import()
-loadfonts(device="win",quiet=T)
 library(cowplot)
 library(crypto2)
 library(fredr)
@@ -18,7 +16,7 @@ library(sandwich)
 all_wpi <- read_abs("6345.0")
 
 # plot aesthetics
-theme_eg <- function(base_size=12,base_family="Segoe Print",border=F){
+theme_eg <- function(base_size=12,base_family="sans",border=F){
   theme(
     panel.background=element_rect(fill="white",color=NA),
     panel.grid=element_line(colour=NULL,linetype=3),
@@ -392,5 +390,3 @@ gg_fixed_s <- ggplot(dt,aes(x=trat,color=col,fill=col))+
 gg_fixed_s
 
 ggsave("figures/lecture5/fixed_s.png",gg_fixed_s,width=6.5,height=6.5*9/16,dpi="retina",device="png")
-
-

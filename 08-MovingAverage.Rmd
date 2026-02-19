@@ -33,7 +33,7 @@ library(forecast)
 # Wold decomposition
 
 .pull-left[
-![](Art/movingaverage.png)
+![](art/movingaverage.png)
 ]
 
 .pull-right[
@@ -380,7 +380,7 @@ $\vdots$
 # Key takeaways
 
 .pull-left[
-![](Art/todolist.png)
+![](art/todolist.png)
 ]
 
 .pull-right[

@@ -2,9 +2,7 @@
 library(data.table)
 library(ggplot2)
 library(camcorder)
-library(extrafont)
 # font_import()
-loadfonts(device="win",quiet=T)
 library(cowplot)
 library(crypto2)
 library(fredr)
@@ -12,7 +10,7 @@ fredr_set_key("7a1db535f59c2ac4382b9c22a15b5f06")
 
 
 # plot aesthetics
-theme_eg <- function(base_size=12,base_family="Segoe Print",border=F){
+theme_eg <- function(base_size=12,base_family="sans",border=F){
   theme(
     panel.background=element_rect(fill="white",color=NA),
     panel.grid=element_line(colour=NULL,linetype=3),
@@ -427,7 +425,3 @@ gg_ts <- ggplot(btc_dt,aes(x=date,y=rBTC))+
   theme_eg()
 
 ggsave("figures/lecture4/btc_return.png",gg_ts,width=6.5,height=6.5*9/16,dpi="retina",device="png")
-
-
-
-

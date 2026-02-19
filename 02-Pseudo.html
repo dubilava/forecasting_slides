@@ -4,7 +4,7 @@
     <title>Forecasting for Economics and Business</title>
     <meta charset="utf-8" />
     <meta name="author" content="David Ubilava" />
-    <script src="libs/header-attrs-2.25/header-attrs.js"></script>
+    <script src="libs/header-attrs-2.30/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/metropolis.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/metropolis-fonts.css" rel="stylesheet" />
@@ -41,7 +41,7 @@ class: center, middle, inverse, title-slide
 # Pseudo forecasting routine
 
 .pull-left[
-![](Art/forecast.png)
+![](art/forecast.png)
 ]
 
 .pull-right[
@@ -117,7 +117,7 @@ These two pseudo-forecasting routines are technically very similar. But they can
 
 The recursive scheme uses increasingly more data to generate successive forecasts. If the data-generating process does not change over time this may be a preferred scheme as it allows us to estimate the model parameters more precisely. 
 
-But if the data-generating process changes over time, then the use of all available data may as well harm our forecasts—they will be biased toward the historical past that is no longer relevant. In such instances, the rolling scheme may be a preferred alternative. 
+But if the data-generating process changes over time, then the use of all available data may as well harm our forecastsâ€”they will be biased toward the historical past that is no longer relevant. In such instances, the rolling scheme may be a preferred alternative. 
 ]
 
 ---
@@ -207,7 +207,7 @@ The following graphs illustrate this (using the rolling windows approach).
 # Biased forecasts
 
 .right-column[
-&lt;img src="figures/lecture2/trending.png" width="2773" /&gt;
+![](figures/lecture2/trending.png)&lt;!-- --&gt;
 ]
 
 ---
@@ -216,7 +216,7 @@ The following graphs illustrate this (using the rolling windows approach).
 # Biased forecast errors
 
 .right-column[
-&lt;img src="figures/lecture2/trending_errors.png" width="2773" /&gt;
+![](figures/lecture2/trending_errors.png)&lt;!-- --&gt;
 ]
 
 ---
@@ -281,7 +281,7 @@ This assumption will result in forecasts that overestimate the realizations in t
 # Inefficient forecasts
 
 .right-column[
-&lt;img src="figures/lecture2/meanreverting.png" width="2773" /&gt;
+![](figures/lecture2/meanreverting.png)&lt;!-- --&gt;
 ]
 
 ---
@@ -290,7 +290,7 @@ This assumption will result in forecasts that overestimate the realizations in t
 # Inefficient forecast errors
 
 .right-column[
-&lt;img src="figures/lecture2/meanreverting_errors.png" width="2773" /&gt;
+![](figures/lecture2/meanreverting_errors.png)&lt;!-- --&gt;
 ]
 
 ---
@@ -363,7 +363,7 @@ The left panel of the following graph presents this series.
 # Crude oil prices and Mincer-Zarnowitz regression
 
 .right-column[
-&lt;img src="figures/lecture2/mincer-zarnowitz.png" width="2773" /&gt;
+![](figures/lecture2/mincer-zarnowitz.png)&lt;!-- --&gt;
 ]
 
 ---
@@ -419,7 +419,7 @@ Moreover, (2) given (1) would result in the regression line overlapping with the
 # Key takeaways
 
 .pull-left[
-![](Art/todolist.png)
+![](art/todolist.png)
 ]
 
 .pull-right[
@@ -433,9 +433,9 @@ Moreover, (2) given (1) would result in the regression line overlapping with the
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
 <script>var slideshow = remark.create({
-"highlightStyle": "github",
-"countIncrementalSlides": false,
-"ratio": "16:9"
+  "highlightStyle": "github",
+  "countIncrementalSlides": false,
+  "ratio": "16:9"
 });
 if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
   window.dispatchEvent(new Event('resize'));

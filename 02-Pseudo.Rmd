@@ -30,11 +30,7 @@ library(ggplot2)
 
 # Pseudo forecasting routine
 
-.pull-left[
-![](art/forecast.png)
-]
-
-.pull-right[
+.right-column[
 When we make forecasts, we would want to have some idea of how accurate they are. 
 
 We can get an idea about forecast accuracy by comparing the forecast for some future period, $\hat{y}_{t+h|t}$, with the actual future realization, $y_{t+h}$.
@@ -423,7 +419,7 @@ Moreover, (2) given (1) would result in the regression line overlapping with the
 # Key takeaways
 
 .pull-left[
-![](art/todolist.png)
+![](art/02-image.png)
 ]
 
 .pull-right[

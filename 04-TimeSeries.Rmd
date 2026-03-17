@@ -31,11 +31,7 @@ library(Quandl)
 
 # Stochastic process
 
-.pull-left[
-![](art/timeseries.png)
-]
-
-.pull-right[
+.right-column[
 Time series is a realization of chronologically stored sequence of random variables. 
 
 This sequence of random variables is referred to as the *stochastic process*. 
@@ -510,7 +506,7 @@ So, once we obtain the test statistic, we need to compare it to the critical val
 # Key takeaways
 
 .pull-left[
-![](art/todolist.png)
+![](art/04-image.png)
 ]
 
 .pull-right[

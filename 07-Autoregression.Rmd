@@ -35,12 +35,8 @@ library(forecast)
 
 # Cycles
 
-.pull-left[
-![](art/autoregression.png)
-]
-
-.pull-right[
-A time series that exhibit a pattern of periodic fluctuations can be a cyclical series. 
+.right-column[
+A time series often exhibit a pattern of periodic fluctuations - cycles. 
 
 Cycles can be *deterministic* or *stochastic*. 
 
@@ -385,7 +381,7 @@ In the model is mis-specified&mdash;hardly an unusual scenario&mdash;the ranking
 # Key takeaways
 
 .pull-left[
-![](art/todolist.png)
+![](art/07-image.png)
 ]
 
 .pull-right[

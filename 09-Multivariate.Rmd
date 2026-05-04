@@ -1,6 +1,6 @@
 ---
 title: "Forecasting for Economics and Business"
-subtitle: "Lecture 10: Forecasting Inter-related Series"
+subtitle: "Lecture 9: Forecasting Inter-related Series"
 author: "David Ubilava"
 date: "University of Sydney"
 output:
@@ -33,17 +33,13 @@ library(kableExtra)
 
 # Economic variables are inter-related
 
-.pull-left[
-![](art/multivariate.png)
-]
+.right-column[
+Economic variables are often (and usually) inter-related. 
 
-.pull-right[
-Economic variables are often (and usually) inter-related; for example,
-
-- when incomes increase, people consume more; 
+- when incomes increase, people consume more. 
 - when interest rates increase, people invest less.
 
-We can model these relationships by regressing one variable on the other(s). 
+We can model such relationships by regressing one variable on one or more other variables. 
 ]
 
 ---
@@ -501,7 +497,7 @@ The testing procedure is otherwise similar to the Diebold-Mariano test.
 # Key Takeaways
 
 .pull-left[
-![](art/todolist.png)
+![](art/09-image.png)
 ]
 
 .pull-right[

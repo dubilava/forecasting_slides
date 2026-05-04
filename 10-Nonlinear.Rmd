@@ -1,6 +1,6 @@
 ---
 title: "Forecasting for Economics and Business"
-subtitle: "Lecture 9: Forecasting Regime Dependent Series"
+subtitle: "Lecture 10: Forecasting Regime Dependent Series"
 author: "David Ubilava"
 date: "University of Sydney"
 output:

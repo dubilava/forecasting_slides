@@ -25,11 +25,7 @@ knitr::opts_chunk$set(echo = FALSE)
 
 # People have made forecasts for ages
 
-.pull-left[
-![](art/astrologer.png)
-]
-
-.pull-right[
+.right-column[
 The roots of forecasting extend to the early days of human history. In their desire to predict the future, people have attempted to make forecasts of their own, or have used services of others. 
 - Fortunetellers were forecast 'experts' of some sort, basing their predictions on magic. They are less common in the current age. 
 - Astrologers rely on astronomical phenomena to foresee the future. They maintain their relevance to this date. 
@@ -45,7 +41,7 @@ We forecast things that matter to us. There are many such things, one of which i
 
 Historically, weather was the single most important factor that impacted the livelihood of people, and indeed the fate of civilizations.
  - The Babylonians based weather forecasts on the appearance of clouds. 
- - The ancient Egyptians measured the levels of the Nile Riverâ€™s waters to predict an approaching famine due to droughts or destructive floods.
+ - The ancient Egyptians measured the levels of the Nile River's waters to predict an approaching famine due to droughts or destructive floods.
 
 ]
 
@@ -153,6 +149,7 @@ But even then, because what we forecast are random variables, there is always a 
 .right-column[	
 Much less predictable are events that involve people and their behavioral peculiarities. People, of course, are front and center in business and economic relationships.  
 - Irving Fisher notoriously made the claim in early October 1929 that "*stock prices have reached [...] a permanently high plateau.*" The Wall Street Crash and Great Depression followed shortly after.
+- Philip Lowe, then the Governor of the Reserve Bank of Australia, said in the beginning of 2021 that the board did not envisage increasing the cash rate "until 2024 at the earliest." The cash rate was 4.25% higher, and Dr Lowe was no longer the Governor, by the end of 2023.
 ]
 
 ---
@@ -335,7 +332,7 @@ Forecast is not one value, however. It's a distribution of possible values.
 # Key takeaways
 
 .pull-left[
-![](art/todolist.png)
+![](art/01-image.png)
 ]
 
 .pull-right[

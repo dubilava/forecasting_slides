@@ -32,11 +32,7 @@ library(forecast)
 
 # Wold decomposition
 
-.pull-left[
-![](art/movingaverage.png)
-]
-
-.pull-right[
+.right-column[
 It is possible to decompose any covariance stationary autoregressive process into a weighted sum of its error terms (plus a constant).
 
 This is known as the *Wold decomposition*.
@@ -380,7 +376,7 @@ $\vdots$
 # Key takeaways
 
 .pull-left[
-![](art/todolist.png)
+![](art/08-image.png)
 ]
 
 .pull-right[

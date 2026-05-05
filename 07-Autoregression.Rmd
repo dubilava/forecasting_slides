@@ -35,12 +35,8 @@ library(forecast)
 
 # Cycles
 
-.pull-left[
-![](art/autoregression.png)
-]
-
-.pull-right[
-A time series that exhibit a pattern of periodic fluctuations can be a cyclical series. 
+.right-column[
+A time series often exhibit a pattern of periodic fluctuations - cycles. 
 
 Cycles can be *deterministic* or *stochastic*. 
 
@@ -318,7 +314,7 @@ We can, also, directly obtain multi-step-ahead point forecasts.
 Take an expression of a two-step-ahead point forecast, for example: $$y_{t+2|t} = \alpha + \beta_1 y_{t+1|t} + \beta_2 y_t + \cdots + \beta_p y_{t-p+2}.$$
 
 Substitute in an expression for the $y_{t+1|t}$ and re-arrange terms to obtain:
-$$y_{t+2|t}=\tilde{\alpha} + \tilde{\beta}_1 y_{t} + \cdots  + \tilde{\beta}_p y_{t-p+1},$$ where $\tilde{\alpha}=\alpha(1+\beta_1)$, and $\tilde{\beta}_j=\beta_1\beta_j$, for all $j=1,\ldots,p$. 
+$$y_{t+2|t}=\tilde{\alpha} + \tilde{\beta}_1 y_{t} + \cdots  + \tilde{\beta}_p y_{t-p+1},$$ where $\tilde{\alpha}=\alpha(1+\beta_1)$, $\tilde{\beta}_j=(\beta_1\beta_j+\beta_{j+1})$, for all $j=1,\ldots,p-1$, and $\tilde{\beta}_p=\beta_1\beta_p$. 
 ]
 
 ---
@@ -385,7 +381,7 @@ In the model is mis-specified&mdash;hardly an unusual scenario&mdash;the ranking
 # Key takeaways
 
 .pull-left[
-![](art/todolist.png)
+![](art/07-image.png)
 ]
 
 .pull-right[

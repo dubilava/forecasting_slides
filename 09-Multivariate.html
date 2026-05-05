@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Forecasting for Economics and Business</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="David Ubilava" />
+    <script src="libs/header-attrs-2.30/header-attrs.js"></script>
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/metropolis.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/metropolis-fonts.css" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+.title[
+# Forecasting for Economics and Business
+]
+.subtitle[
+## Lecture 9: Forecasting Inter-related Series
+]
+.author[
+### David Ubilava
+]
+.date[
+### University of Sydney
+]
+
+---
+
+
+
+
+
+
+
+
+# Economic variables are inter-related
+
+.right-column[
+Economic variables are often (and usually) inter-related. 
+
+- when incomes increase, people consume more. 
+- when interest rates increase, people invest less.
+
+We can model such relationships by regressing one variable on one or more other variables. 
+]
+
+---
+
+
+# Autoregressive distributed lag (ARDL)
+
+.right-column[
+Because of possible delays in adjustment to a new equilibrium, we typically need to include lagged values in the regression.
+
+This leads to an autoregressive distributed lag (ARDL) model, as follows: `$$y_t=\alpha+\beta_1y_{t-1}+\ldots+\beta_py_{t-p}+\delta_0x_t+\ldots+\delta_qx_{t-q}+\varepsilon_t$$`
+
+Note that an autoregressive model and a distributed lag model are special cases of the ARDL.
+
+As usual, we can use an information criterion to select `\(p\)` and `\(q\)`.
+]
+
+---
+
+
+# A relationship between oil prices and inflation
+
+.right-column[
+![](figures/lecture10/series.png)
+]
+
+---
+
+
+# ARDL lag length and estimated parameters
+
+.pull-left[
+Obtain AIC and SIC for lags 1 through 4
+&lt;table class="myTable"&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:center;"&gt; AIC &lt;/th&gt;
+   &lt;th style="text-align:center;"&gt; SIC &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:center;"&gt; 1.997 &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 2.058 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:center;"&gt; 1.932 &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 2.023 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:center;"&gt; 1.946 &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 2.068 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:center;"&gt; 1.913 &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 2.065 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+]
+
+.pull-right[
+AIC suggests four lags while SIC indicates two lags. Let's go with SIC.
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt;   &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; `\(\alpha\)` &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; `\(\beta_{1}\)` &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; `\(\beta_{2}\)` &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; `\(\delta_{0}\)` &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; `\(\delta_{1}\)` &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; `\(\delta_{2}\)` &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; estimate &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.251 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.986 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.098 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.016 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.010 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.007 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; s.e. &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.048 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.065 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.063 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.002 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.003 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.002 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+]
+
+---
+
+
+# Forecasting with ARDL
+
+.right-column[
+Point forecasts:
+
+`$$\begin{align}
+y_{t+1|t} &amp;= \alpha + \beta_1y_{t} + \beta_2y_{t-1}+\delta_0\hat{x}_{t+1}+\delta_1x_{t}+\delta_2x_{t-1}\\
+y_{t+2|t} &amp;= \alpha + \beta_1y_{t+1|t} + \beta_2y_{t}+\delta_0\hat{x}_{t+2}+\delta_1\hat{x}_{t+1}+\delta_2x_{t}\\
+y_{t+h|t} &amp;= \alpha + \beta_1y_{t+h-1|t} + \beta_2y_{t+h-2|t}\\
+&amp;+\delta_0\hat{x}_{t+h}+\delta_1\hat{x}_{t+h-1}+\delta_2\hat{x}_{t+h-2}
+\end{align}$$`
+
+Note, and this is one of the caveats of using ARDL in forecasting, we need to have a knowledge of future realized values of `\(x\)`. Often, that involves also (separately) forecasting those values, or setting them to some values (e.g., scenario forecasting).
+]
+
+---
+
+
+# Forecasting with ARDL
+
+.right-column[
+If we assume (somewhat unrealistically) that we know the future realized values of `\(x\)`, then the forecast errors and forecast error variances from the ARDL model will be the same as those from an AR model. 
+
+This is, in a way, akin to working with an AR model that includes a trend or a seasonal component.
+
+Of course, obtaining direct multistep forecasts is always an option.
+]
+
+---
+
+
+# If we knew future realized values of oil prices
+
+.right-column[
+![](figures/lecture10/inflation_known.png)
+]
+
+---
+
+
+# If we set future realized values to the current oil price
+
+.right-column[
+![](figures/lecture10/inflation_fixed.png)
+]
+
+---
+
+
+# Vector autoregression
+
+.right-column[
+More generally, dynamic linkages between two (or more) economic variables can be modeled as a *system of equations*, better known as a vector autoregression (VAR).
+]
+
+---
+
+# Vector autoregression
+
+.right-column[
+To begin, consider a bivariate first-order VAR. 
+
+Let `\(\{X_{1t}\}\)` and `\(\{X_{2t}\}\)` be the stationary stochastic processes. A bivariate VAR(1), is then given by:
+`$$\begin{aligned}
+x_{1t} &amp;= \alpha_1 + \pi_{111}x_{1t-1} + \pi_{121}x_{2t-1} + \varepsilon_{1t} \\
+x_{2t} &amp;= \alpha_2 + \pi_{211}x_{1t-1} + \pi_{221}x_{2t-1} + \varepsilon_{2t}
+\end{aligned}$$`
+
+where `\(\varepsilon_{1t} \sim iid(0,\sigma_1^2)\)` and `\(\varepsilon_{2t} \sim iid(0,\sigma_2^2)\)`, and the two can be correlated, i.e., `\(Cov(\varepsilon_{1t},\varepsilon_{2t}) \neq 0\)`.
+]
+
+---
+
+# Vector autoregression
+
+.right-column[
+An `\(n\)`-dimensional VAR of order `\(p\)`, VAR(p), presented in matrix notation: `$$\mathbf{x}_t = \mathbf{\alpha} + \Pi_1 \mathbf{x}_{t-1} + \ldots + \Pi_p \mathbf{x}_{t-p} + \mathbf{\varepsilon}_t,$$` where `\(\mathbf{x}_t = (x_{1t},\ldots,x_{nt})'\)` is a vector of `\(n\)` (potentially) related variables; `\(\mathbf{\varepsilon}_t = (\varepsilon_{1t},\ldots,\varepsilon_{nt})'\)` is a vector of error terms, such that `\(\mathbb{E}\left(\mathbf{\varepsilon}_t\right) = \mathbf{0}\)`, `\(\mathbb{E}\left(\mathbf{\varepsilon}_t^{}\mathbf{\varepsilon}_t^{\prime}\right) = \Sigma_{\mathbf{\varepsilon}}\)`, and `\(\mathbb{E}\left(\mathbf{\varepsilon}_{t}^{}\mathbf{\varepsilon}_{s \neq t}^{\prime}\right) = 0\)`.
+]
+		
+---
+
+# A parameter matrix of a vector autoregression
+
+.right-column[
+`\(\Pi_1,\ldots,\Pi_p\)` are `\(n\)`-dimensional parameter matrices such that: 
+`$$\Pi_j = 
+	    \left[ 
+		\begin{array}{cccc} 
+		\pi_{11j} &amp; \pi_{12j} &amp; \cdots &amp;  \pi_{1nj} \\ 
+		\pi_{21j} &amp; \pi_{22j} &amp; \cdots &amp;  \pi_{2nj} \\  
+		\vdots &amp; \vdots &amp; \ddots &amp;  \vdots \\  
+		\pi_{n1j} &amp; \pi_{n2j} &amp; \cdots &amp;  \pi_{nnj} 
+		\end{array} 
+		\right],\;~~j=1,\ldots,p$$`
+]
+		
+---
+
+
+# Features of vector autoregression
+
+.right-column[
+General features of a (reduced-form) vector autoregression are that:
+- only the lagged (i.e., no contemporaneous) values of the dependent variables are on the right-hand-side of the equations.
+  * Although, trends and seasonal variables can also be included.
+- each equation has the same set of right-hand-side variables.
+  * However, it is possible to impose different lag structure across the equations, especially when `\(p\)` is relatively large. This is because the number of parameters increases very quickly with the number of lags or the number of variables in the system.
+- the autregressive order, `\(p\)`, is the largest lag across all equations.
+]
+
+---
+
+# Modeling vector autoregression
+
+.right-column[
+The autoregressive order, `\(p\)`, can be determined using system-wide information criteria:
+
+`$$\begin{aligned}
+&amp; AIC = \ln\left|\Sigma_{\mathbf{\varepsilon}}\right| + \frac{2}{T}(pn^2+n) \\
+&amp; SIC = \ln\left|\Sigma_{\mathbf{\varepsilon}}\right| + \frac{\ln{T}}{T}(pn^2+n)
+\end{aligned}$$`
+
+where `\(\left|\Sigma_{\mathbf{\varepsilon}}\right|\)` is the determinant of the residual covariance matrix; `\(n\)` is the number of equations, and `\(T\)` is the total number of observations.
+]
+
+---
+
+# Estimating vector autoregression
+
+.right-column[
+When each equation of VAR has the same regressors, the OLS can be applied to each equation individually to estimate the regression parameters - i.e., the estimation can be carried out on the equation-by-equation basis.
+
+Indeed, taken separately, each equation is just an ARDL (albeit without any contemporaneous regressors in the right-hand side of the equation).
+
+When processes are covariance-stationarity, conventional t-tests and F-tests are applicable for hypotheses testing.
+]
+
+---
+
+
+# Testing in-sample Granger causality
+
+.right-column[
+Consider a bivariate VAR(p): 
+`$$\begin{aligned}
+x_{1t} &amp;= \alpha_1 + \pi_{111} x_{1t-1} + \cdots + \pi_{11p} x_{1t-p} \\
+&amp;+ \pi_{121} x_{2t-1} + \cdots + \pi_{12p} x_{2t-p} +\varepsilon_{1t}  \\
+x_{2t} &amp;= \alpha_1 + \pi_{211} x_{1t-1} + \cdots + \pi_{21p} x_{1t-p} \\
+&amp;+ \pi_{221} x_{2t-1} + \cdots + \pi_{22p} x_{2t-p} +\varepsilon_{2t} 
+\end{aligned}$$`
+
+- `\(\{X_2\}\)` does not Granger cause `\(\{X_1\}\)` if `\(\pi_{121}=\cdots=\pi_{12p}=0\)`
+- `\(\{X_1\}\)` does not Granger cause `\(\{X_2\}\)` if `\(\pi_{211}=\cdots=\pi_{21p}=0\)`
+]
+
+---
+
+
+
+# Testing in-sample Granger causality
+
+.right-column[
+In our example:
+
+
+`\(\text{Crude Oil}\xrightarrow{gc}\text{Inflation}\)`: F statistic is 12.12
+
+`\(\text{Inflation}\xrightarrow{gc}\text{Crude Oil}\)`: F statistic is 1.98
+
+So, we have a unidirectional Granger causality (from crude oil prices to 5-year expected inflation).
+]
+
+---
+
+
+
+# Forecasting with VAR models: one-step ahead
+
+.right-column[
+To keep things simple, we illustrate using bivariate VAR(1).
+
+Point forecasts:
+`$$\begin{aligned}
+x_{1t+1|t} &amp;= \alpha_1 + \pi_{111} x_{1t} + \pi_{121} x_{2t} \\
+x_{2t+1|t} &amp;= \alpha_2 + \pi_{211} x_{1t} + \pi_{221} x_{2t}
+\end{aligned}$$`
+
+Forecast errors: 
+`$$\begin{aligned}
+e_{1t+1} &amp;= x_{1t+1} - x_{1t+1|t} = \varepsilon_{1t+1} \\
+e_{2t+1} &amp;= x_{2t+1} - x_{2t+1|t} = \varepsilon_{2t+1}
+\end{aligned}$$`
+]
+
+---
+
+# Forecasting with VAR models: one-step ahead
+
+.right-column[
+Forecast variances:
+`$$\begin{aligned}
+\sigma_{1t+1}^2 &amp;= \mathbb{E}(e_{1t+1}|\Omega_t)^2 = \mathbb{E}(\varepsilon_{1t+1}^2) = \sigma_{1}^2 \\
+\sigma_{2t+1}^2 &amp;= \mathbb{E}(e_{2t+1}|\Omega_t)^2 = \mathbb{E}(\varepsilon_{2t+1}^2) = \sigma_{2}^2
+\end{aligned}$$`
+
+Assuming normality of forecast errors, interval forecasts are obtained the usual way.
+]
+
+---
+
+# Forecasting with VAR models: multi-step ahead
+
+.right-column[
+Point forecasts:
+`$$\begin{aligned}
+x_{1t+h|t} &amp;= \alpha_1 + \pi_{111} x_{1t+h-1|t} + \pi_{121} x_{2t+h-1|t} \\
+x_{2t+h|t} &amp;= \alpha_2 + \pi_{211} x_{1t+h-1|t} + \pi_{221} x_{2t+h-1|t}
+\end{aligned}$$`
+
+Forecast errors: 
+`$$\begin{aligned}
+e_{1t+h} &amp;= \pi_{111} e_{1t+h-1} + \pi_{121} e_{2t+h-1} + \varepsilon_{1t+h} \\
+e_{2t+h} &amp;= \pi_{211} e_{1t+h-1} + \pi_{221} e_{2t+h-1} + \varepsilon_{2t+h}
+\end{aligned}$$`
+
+Forecast variances are the functions of error variances and covariances, and the model parameters.
+]
+
+---
+
+
+
+# Forecasting oil prices and inflation
+
+.right-column[
+![](figures/lecture10/forecasts.png)
+]
+
+---
+
+
+# Direct multi-step ahead forecasts
+
+.right-column[
+For a given horizon, `\(h\)`, the estimated model:
+`$$\begin{aligned}
+x_{1t} &amp;= \phi_1 + \psi_{111} x_{1t-h} + \psi_{121} x_{2t-h} + \upsilon_{1ht} \\
+x_{2t} &amp;= \phi_2 + \psi_{211} x_{1t-h} + \psi_{221} x_{2t-h} + \upsilon_{2ht}
+\end{aligned}$$`
+
+where `\(\upsilon_{1ht} \sim iid(0,\sigma_{1h}^2)\)` and `\(\upsilon_{2ht} \sim iid(0,\sigma_{2h}^2)\)`, and the two can be correlated, i.e., `\(Cov(\upsilon_{1ht},\upsilon_{2ht}) \neq 0\)`.
+
+Point forecasts:
+`$$\begin{aligned}
+x_{1t+h|t} &amp;= \phi_1 + \psi_{111} x_{1t} + \psi_{121} x_{2t} \\
+x_{2t+h|t} &amp;= \phi_2 + \psi_{211} x_{1t} + \psi_{221} x_{2t}
+\end{aligned}$$`
+]
+
+---
+
+
+# Direct multi-step ahead forecasts
+
+.right-column[
+Forecast errors: 
+`$$\begin{aligned}
+e_{1t+h} &amp;= \upsilon_{1t+h} \\
+e_{2t+h} &amp;= \upsilon_{2t+h}
+\end{aligned}$$`
+
+Forecast variances:
+`$$\begin{aligned}
+\sigma_{1t+h}^2 &amp;= \mathbb{E}(e_{1t+h}|\Omega_t)^2 = \mathbb{E}(\upsilon_{1t+h}^2) = \sigma_{1h}^2 \\
+\sigma_{2t+h}^2 &amp;= \mathbb{E}(e_{2t+h}|\Omega_t)^2 = \mathbb{E}(\upsilon_{2t+h}^2) = \sigma_{2h}^2
+\end{aligned}$$`
+
+Assuming normality, interval forecasts are obtained directly from these variances, the usual way.
+]
+
+---
+
+
+
+# Out-of-Sample Granger Causality
+
+.right-column[
+The previously discussed (in sample) tests of causality in Granger sense are frequently performed in practice, but the 'true spirit' of such test is to assess the ability of a variable to help predict another variable in an out-of-sample setting.
+]
+
+---
+
+
+# Out-of-Sample Granger Causality
+
+.right-column[
+Consider restricted and unrestricted information sets:
+`$$\begin{aligned}
+&amp;\Omega_{t}^{(r)} \equiv \Omega_{t}(X_1) = \{x_{1,t},x_{1,t-1},\ldots\} \\
+&amp;\Omega_{t}^{(u)} \equiv \Omega_{t}(X_1,X_2) = \{x_{1,t},x_{1,t-1},\ldots,x_{2,t},x_{2,t-1},\ldots\}
+\end{aligned}$$`
+
+Following Granger's definition of causality: `\(\{X_2\}\)` is said to cause `\(\{X_1\}\)` if `\(\sigma_{x_1}^2\left(\Omega_{t}^{(u)}\right) &lt; \sigma_{x_1}^2\left(\Omega_{t}^{(r)}\right)\)`, meaning that we can better predict `\(X_1\)` using all available information on `\(X_1\)` and `\(X_2\)`, rather than that on `\(X_1\)` only.
+]
+
+---
+
+# Out-of-Sample Granger Causality
+
+.right-column[
+Let the forecasts based on each of the information sets be:
+`$$\begin{aligned}
+	&amp;x_{1t+h|t}^{(r)} = E\left(x_{1t+h}|\Omega_{t}^{(r)}\right) \\
+	&amp;x_{1t+h|t}^{(u)} = E\left(x_{1t+h}|\Omega_{t}^{(u)}\right)
+\end{aligned}$$`
+]
+
+---
+
+
+# Out-of-Sample Granger Causality
+
+.right-column[
+For these forecasts, the corresponding forecast errors are:
+`$$\begin{aligned}
+	&amp; e_{1t+h}^{(r)} = x_{1t+h} - x_{1t+h|t}^{(r)}\\
+	&amp; e_{1t+h}^{(u)} = x_{1t+h} - x_{1t+h|t}^{(u)}
+\end{aligned}$$`
+
+The out-of-sample forecast errors are then evaluated by comparing the loss functions based on these forecasts errors.
+
+The out of sample Granger causality test is, in effect, a test of relative forecast accuracy between the two models.
+]
+
+---
+
+# Accuracy Tests for Nested Models
+
+.right-column[
+In testing Out-of-sample Granger causality, we compare nested models.
+
+For example, consider a bivariate VAR(1). A test of out-of-sample Granger causality involves comparing forecasts from these two models:
+`$$\begin{aligned}
+(A):~~x_{1t} &amp;= \beta_0+\beta_{1}x_{1t-1}+\beta_{2}x_{2t-1}+\upsilon_t \\
+(B):~~x_{1t} &amp;= \alpha_0+\alpha_{1}x_{1t-1}+\varepsilon_t
+\end{aligned}$$`
+
+Obviously, here model (B) is nested in model (A). Under the null of Granger non-causality, the disturbances of the two models are identical. This leads to 'issues' in the usual tests. 
+]
+
+---
+
+
+# Accuracy Tests for Nested Models
+
+.right-column[
+There is a way to circumvent these issues, which involves an adjustment of the loss differential. 
+
+In particular, the loss differential now becomes: `$$d(e_{t+h,ij})=e_{t+h,i}^2-e_{t+h,j}^2+(y_{t+h|t,i}-y_{t+h|t,j})^2,$$` where model `\(i\)` is nested in model `\(j\)`.
+
+The testing procedure is otherwise similar to the Diebold-Mariano test.
+]
+
+---
+
+
+# Key Takeaways
+
+.pull-left[
+![](art/09-image.png)
+]
+
+.pull-right[
+- Many economic time series are inter-related. We can model such series as a system of equations known as the Vector Autoregressive (VAR) model.
+- Autoregressive Distributed Lag (ARDL) model is a special case (which is, in effect, a single equation) of a VAR model.
+- We can use information on related variables to help better forecast a variable of interest. If improved accuracy is achieved, we have a case of Granger causality.
+]
+
+
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+  "highlightStyle": "github",
+  "countIncrementalSlides": false,
+  "ratio": "16:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();</script>
+<style>
+.logo {
+  background-image: url(forecasting-logo.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+  position: absolute;
+  bottom: .5em;
+  left: 2em;
+  width: 91px;
+  height: 105px;
+  z-index: 0;
+}
+</style>
+
+<script>
+document
+  .querySelectorAll(
+    '.remark-slide-content' +
+    ':not(.title-slide)' +
+    // add additional classes to exclude here, e.g.
+    // ':not(.inverse)' +
+    ':not(.hide-logo)'
+  )
+  .forEach(el => {
+    el.innerHTML += '<div class="logo"></div>';
+  });
+</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

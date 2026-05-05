@@ -16,7 +16,7 @@ Below are the links to the lecture slides for the unit on economic forecasting.
 
 [Lecture 8: Forecasting Temporally Dependent Series&mdash;Moving Average](https://davidubilava.com/forecasting_slides/08-MovingAverage.html)
 
-[Lecture 9: Forecasting Regime-Dependent Series](https://davidubilava.com/forecasting_slides/09-Nonlinear.html)
+[Lecture 9: Forecasting Regime-Dependent Series](https://davidubilava.com/forecasting_slides/09-Multivariate.html)
 
-[Lecture 10: Forecasting Inter-related Series](https://davidubilava.com/forecasting_slides/10-Multivariate.html)
+[Lecture 10: Forecasting Inter-related Series](https://davidubilava.com/forecasting_slides/10-Nonlinear.html)
 
